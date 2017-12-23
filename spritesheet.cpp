@@ -1,9 +1,9 @@
-#include <SDL2/SDL.h>
 #include "spritesheet.h"
 
 // create with SDL_Surface and todo: array containing durations of frames (in seconds)
 // the size of the array is used to determine the number of frames in the sheet
 void Spritesheet::init(SDL_Surface* img, int numFrames) {
+	printf("Creating Spritesheet with %d frames\n", numFrames);
 	sheet = img;
 	frameWidth = img->w / numFrames;
 	frameHeight = img->h;
@@ -17,6 +17,8 @@ void Spritesheet::init(SDL_Surface* img, int numFrames) {
 	
 	dest.w = frameWidth;
 	dest.h = frameHeight;
+	
+	printf("Spritesheet has %d frames, each of width %dpx and height %dpx\n", this->numFrames, frameWidth, frameHeight);
 }
 
 void Spritesheet::passTime(float offset) {
@@ -28,5 +30,5 @@ void Spritesheet::drawTo(SDL_Surface* screenSurface, float x, float y) {
 	src.x = frameWidth * frameCounter;
 	dest.x = x;
 	dest.y = y;
-	SDL_BlitSurface( screenSurface, &src, sheet, &dest );
+	SDL_BlitSurface( sheet, &src, screenSurface, &dest );
 }

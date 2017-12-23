@@ -66,11 +66,11 @@ bool loadMedia()
 	//Loading success flag
 	bool success = true;
 	
-	player_idle_img = loadSurface("player_sprite.bmp");
-	player_mvup_img = loadSurface("player_mvup_spritesheet.bmp");
-	player_mvdown_img = loadSurface("player_mvdown_spritesheet.bmp");
-	player_mvright_img = loadSurface("player_mvright_spritesheet.bmp");
-	player_mvleft_img = loadSurface("player_mvleft_spritesheet.bmp");
+	player_idle_img = loadSurface("graphics/player_idle_spritesheet.bmp");
+	player_mvup_img = loadSurface("graphics/player_mvup_spritesheet.bmp");
+	player_mvdown_img = loadSurface("graphics/player_mvdown_spritesheet.bmp");
+	player_mvright_img = loadSurface("graphics/player_mvright_spritesheet.bmp");
+	player_mvleft_img = loadSurface("graphics/player_mvleft_spritesheet.bmp");
 	
 	return success;
 }
@@ -105,9 +105,14 @@ SDL_Surface* loadSurface( std::string path )
 
 int main( int argc, char* args[] )
 {
+	printf("Hello from main\n");
 	init();
+	printf("Initialized\n");
 	loadMedia();
-	PlayerSprite playerSprite = PlayerSprite(100, 140, player_idle_img, player_mvup_img, player_mvdown_img, player_mvleft_img, player_mvright_img);
+	printf("Loaded Media\n");
+	PlayerSprite playerSprite = PlayerSprite(100.0f, 140.0f, player_idle_img, player_mvup_img, player_mvdown_img, player_mvleft_img, player_mvright_img);
+	printf("Created player sprite\n");
+	
 	//Main loop flag
 	bool quit = false;
 	bool pause = false;
@@ -118,9 +123,11 @@ int main( int argc, char* args[] )
 	//While application is running
 	while( !quit )
 	{
+		//printf("In game loop");
 		//Handle events on queue
 		while( SDL_PollEvent( &e ) != 0 )
 		{
+			//printf("Handling Input");
 			//User requests quit
 			if( e.type == SDL_QUIT )
 			{
@@ -131,6 +138,7 @@ int main( int argc, char* args[] )
 			{
 				// send event to playerSprite, which will handle it in almost all cases.
 				if (!playerSprite.handleKeyEvent(e)) {
+					printf("PlayerSprite did not handle--checking on main thread\n");
 					switch( e.key.keysym.sym )
 					{ 
 
@@ -148,8 +156,12 @@ int main( int argc, char* args[] )
 			}
 		}
 
+		playerSprite.passTime(0.03f);
+		
 		// draw white background todo: background
 		SDL_FillRect( gScreenSurface, NULL, SDL_MapRGB( gScreenSurface->format, 0xFF, 0xFF, 0xFF ) );
+		
+		//SDL_BlitSurface( player_idle_img, NULL, gScreenSurface, NULL );
 		
 		//Apply the current image
 		//SDL_BlitSurface( gCurrentSurface, NULL, gScreenSurface, NULL );

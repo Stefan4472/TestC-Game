@@ -22,7 +22,7 @@ class PlayerSprite
 	// todo: hitbox
 
 	public:
-		PlayerSprite(float x, float y, 
+		PlayerSprite(float xCoord, float yCoord, 
 					 SDL_Surface* idle_anim_sheet, 
 					 SDL_Surface* mv_up_anim_sheet, 
 					 SDL_Surface* mv_down_anim_sheet,

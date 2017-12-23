@@ -1,16 +1,16 @@
 #include "player_sprite.h"
 
-PlayerSprite::PlayerSprite(float x, float y, 
+PlayerSprite::PlayerSprite(float xCoord, float yCoord, 
 					 SDL_Surface* idle_anim_sheet, 
 					 SDL_Surface* mv_up_anim_sheet, 
 					 SDL_Surface* mv_down_anim_sheet, 
 				 	 SDL_Surface* mv_left_anim_sheet, 
 				 	 SDL_Surface* mv_right_anim_sheet) {
-	printf("Created sprite at %d, %d", x, y);
+	printf("Creating sprite at %f, %f\n", xCoord, yCoord);
 	
-	this->x = x;
-	this->y = y;
-	
+	x = xCoord;
+	y = yCoord;
+
 	idle_anim.init(idle_anim_sheet, 1);
 	mv_up_anim.init(mv_up_anim_sheet, 4);
 	mv_down_anim.init(mv_down_anim_sheet, 4);
@@ -40,33 +40,37 @@ void PlayerSprite::drawTo(SDL_Surface* screenSurface) {
 		case MOVEMENT_LEFT:
 			mv_left_anim.drawTo(screenSurface, x, y);
 			break;
+			
+		default:
+			printf("Weird!! Don't know which animation to show!\n");
+			break;
 	}
 }
 
 bool PlayerSprite::handleKeyEvent(SDL_Event e) 
 {
+	printf("PlayerSprite attempting to handle KeyEvent\n");
 	switch( e.key.keysym.sym )
 	{ 
 		case SDLK_RIGHT:
 			movementDir = MOVEMENT_RIGHT;
-			break;								
+			return true;					
 
 		case SDLK_UP:
 			movementDir = MOVEMENT_UP;
-			break;
+			return true;
 
 		case SDLK_LEFT:
 			movementDir = MOVEMENT_LEFT;
-			break;
+			return true;
 
 		case SDLK_DOWN:
 			movementDir = MOVEMENT_DOWN;
-			break;
+			return true;
 			
 		default:
 			return false;
 	}
-	return true;
 }
 
 void PlayerSprite::passTime(float elapsedSec) 

@@ -1,6 +1,9 @@
 #ifndef SPRITESHEET_H
 #define SPRITESHEET_H
 
+#include <SDL2/SDL.h>
+#include <stdio.h>
+
 class Spritesheet
 {
 	private:
