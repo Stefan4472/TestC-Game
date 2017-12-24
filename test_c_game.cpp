@@ -31,6 +31,7 @@ SDL_Window* gWindow = NULL;
 SDL_Surface* gScreenSurface = NULL;
 
 SDL_Surface *player_idle_img = NULL, *player_mvup_img = NULL, *player_mvdown_img = NULL, *player_mvright_img = NULL, *player_mvleft_img = NULL;
+SDL_Surface *grass_tile_img = NULL, *stone_tile_img = NULL, *obstacle_tile_img = NULL, *water_tile_img = NULL;
 
 bool init()
 {
@@ -73,6 +74,10 @@ bool loadMedia()
 	player_mvright_img = loadSurface("graphics/player_mvright_spritesheet.bmp");
 	player_mvleft_img = loadSurface("graphics/player_mvleft_spritesheet.bmp");
 	
+	grass_tile_img = loadSurface("graphics/grass_tile.bmp");
+	stone_tile_img = loadSurface("graphics/stone_tile.bmp");
+	obstacle_tile_img = loadSurface("graphics/obstacle_tile.bmp");
+	water_tile_img = loadSurface("graphics/water_tile.bmp");
 	return success;
 }
 
@@ -83,6 +88,12 @@ void close()
 	SDL_FreeSurface(player_mvdown_img);
 	SDL_FreeSurface(player_mvright_img);
 	SDL_FreeSurface(player_mvleft_img);
+	
+	SDL_FreeSurface(grass_tile_img);
+	SDL_FreeSurface(stone_tile_img);
+	SDL_FreeSurface(obstacle_tile_img);
+	SDL_FreeSurface(water_tile_img);
+	
 	//Destroy window
 	SDL_DestroyWindow( gWindow );
 	gWindow = NULL;
@@ -114,6 +125,7 @@ int main( int argc, char* args[] )
 	PlayerSprite playerSprite = PlayerSprite(100.0f, 140.0f, player_idle_img, player_mvup_img, player_mvdown_img, player_mvleft_img, player_mvright_img);
 	printf("Created player sprite\n");
 	Map map;
+	map.init(grass_tile_img, stone_tile_img, obstacle_tile_img, water_tile_img);
 	printf("Created map\n");
 	
 	//Main loop flag
@@ -174,8 +186,6 @@ int main( int argc, char* args[] )
 		playerSprite.update(ticks_since_last_frame);
 		
 		map.drawTo(gScreenSurface);
-		// draw white background todo: background
-		//SDL_FillRect( gScreenSurface, NULL, SDL_MapRGB( gScreenSurface->format, 0xFF, 0xFF, 0xFF ) );
 		
 		playerSprite.drawTo(gScreenSurface);
 		

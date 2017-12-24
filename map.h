@@ -12,11 +12,12 @@ enum TILE_IDS {
 	TILE_WATER
 };
 
-//int TILE_WIDTH = 64;
-
 class Map
 {
 
+	int TILE_WIDTH = 64;
+	int TILE_HEIGHT = 64;
+	
 	int mapRows = 5;
 	int mapCols = 5;
 	
@@ -30,10 +31,17 @@ class Map
 		{ TILE_GRASS, TILE_GRASS, TILE_WATER, TILE_WATER, TILE_STONE }
 	};
 	
+	SDL_Surface* tileImgs[4] = { NULL, NULL, NULL, NULL };
+	
 	// source and destination rects 
-	SDL_Rect src = {0, 0, 0, 0}, dest = {0, 0, 0, 0};
+	SDL_Rect src = {0, 0, TILE_WIDTH, TILE_HEIGHT}, dest = {0, 0, TILE_WIDTH, TILE_HEIGHT};
 
 	public:
+		// init tile images
+		void init(SDL_Surface* grassTileImg, 
+				  SDL_Surface* stoneTileImg, 
+				  SDL_Surface* obstacleTileImg, 
+				  SDL_Surface* waterTileImg);
 		// draws background to the given surface/screen
 		void drawTo(SDL_Surface* screenSurface);
 };
