@@ -13,15 +13,17 @@ class Spritesheet
 		SDL_Rect src = {0, 0, 0, 0}, dest = {0, 0, 0, 0};
 		// width/height of each individual frame
 		int frameWidth, frameHeight;
-		// total number of frames in animation
-		int numFrames;
 		// frame index currently on
 		int frameCounter;
 		// duration animation has been playing
 		float totalDuration;
 	public:
+		// total number of frames in animation
+		int numFrames;
 		// constructor with image and frame durations
 		void init(SDL_Surface* img, int numFrames);
+		// resets state of spritesheet, so it can start again from the beginning
+		void reset();
 		// increments duration by offset (milliseconds)
 		void passTime(int ms);
 		// draws current frame to given SDL_Surface

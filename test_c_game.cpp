@@ -130,7 +130,7 @@ int main( int argc, char* args[] )
 	{
 		// calculate number of milliseconds since last frame was rendered 
 		curr_time = SDL_GetTicks();
-		printf("Curr time is %d\n", curr_time);
+		//printf("Curr time is %d\n", curr_time);
 		ticks_since_last_frame = curr_time - last_time;
 		
 		//printf("%u\n", ticks_since_last_frame);

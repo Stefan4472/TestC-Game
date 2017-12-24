@@ -21,6 +21,7 @@ enum MOVEMENT {
 class PlayerSprite
 {
 	float x, y, dx, dy;
+	float SPEED_CAP = 0.6f;
 	int movementDir = MOVEMENT_NONE; // todo: accomodate bidirectionality
 	// default constructor: will be initialized in the PlayerSprite constructor
 	Spritesheet idle_anim, mv_up_anim, mv_down_anim, mv_right_anim, mv_left_anim;
@@ -44,7 +45,8 @@ class PlayerSprite
 		~PlayerSprite();
 		
 	private:
-		// changes movement direction. Must be a Movement constant
+		// changes movement direction todo: given the Movement constant that has been added/removed from input.
+		// positive input = player intends to go in that direction. negative input = player released key going in direction
 		void changeDir(int newDir);
 };
 #endif

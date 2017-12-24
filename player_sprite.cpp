@@ -11,111 +11,131 @@ PlayerSprite::PlayerSprite(float xCoord, float yCoord,
 	x = xCoord;
 	y = yCoord;
 
-	idle_anim.init(idle_anim_sheet, 1);
+	idle_anim.init(idle_anim_sheet, 2);
 	mv_up_anim.init(mv_up_anim_sheet, 4);
 	mv_down_anim.init(mv_down_anim_sheet, 4);
 	mv_left_anim.init(mv_left_anim_sheet, 4);
 	mv_right_anim.init(mv_right_anim_sheet, 4);
+	
+	current_anim = &idle_anim;
 }
 
 bool PlayerSprite::handleKeyEvent(SDL_Event e) 
 {
 	printf("PlayerSprite attempting to handle KeyEvent\n");
 	
-	if (e.type == SDL_KEYUP) {
+	// player pressed a key
+	if (e.type == SDL_KEYDOWN) 
+	{
+		switch( e.key.keysym.sym )
+		{ 
+			case SDLK_RIGHT:
+				changeDir(MOVEMENT_RIGHT);
+				return true;					
+
+			case SDLK_UP:
+				changeDir(MOVEMENT_UP);
+				return true;
+
+			case SDLK_LEFT:
+				changeDir(MOVEMENT_LEFT);
+				return true;
+
+			case SDLK_DOWN:
+				changeDir(MOVEMENT_DOWN);
+				return true;
+
+			default:
+				return false;
+		}
+	}
+	// player released a key
+	else
+	{
 		switch (e.key.keysym.sym) 
 		{
-			case SDLK_RIGHT:
+			case SDLK_RIGHT: // todo: support bi-directionality
+				//changeDir(-MOVEMENT_RIGHT);
+				
 			case SDLK_UP:
+				//changeDir(-MOVEMENT_UP);
+				
 			case SDLK_LEFT:
+				//changeDir(-MOVEMENT_LEFT);
+				
 			case SDLK_DOWN:
-				movementDir = MOVEMENT_NONE;
+				//changeDir(-MOVEMENT_DOWN);
+				changeDir(MOVEMENT_NONE);
 				return true;
 
 			default:
 				return false;
 		}
 	} 
-	else {
-		switch( e.key.keysym.sym )
-		{ 
-			case SDLK_RIGHT:
-				movementDir = MOVEMENT_RIGHT;
-				return true;					
-
-			case SDLK_UP:
-				movementDir = MOVEMENT_UP;
-				return true;
-
-			case SDLK_LEFT:
-				movementDir = MOVEMENT_LEFT;
-				return true;
-
-			case SDLK_DOWN:
-				movementDir = MOVEMENT_DOWN;
-				return true;
-
-			default:
-				return false;
-		}
-	}
 }
 
 void PlayerSprite::move(int ms) {
 	if (movementDir == MOVEMENT_RIGHT) {
-		//x += 2;
+		x += SPEED_CAP;
 	} else if (movementDir == MOVEMENT_LEFT) {
-		//x -= 2;
+		x -= SPEED_CAP;
 	}
 
 	if (movementDir == MOVEMENT_UP) {
-		//y -= 2;
+		y -= SPEED_CAP;
 	} else if (movementDir == MOVEMENT_DOWN) {
-		//y += 2;
+		y += SPEED_CAP;
 	}	
 }
 
 void PlayerSprite::changeDir(int newDir) {
-	
+	// only change if direction has been changed
+	if (newDir != movementDir) {
+		printf("Movement Change to %d\n", newDir);
+		
+		// reset currently-playing animation
+		(*current_anim).reset();
+		
+		movementDir = newDir;
+		
+		switch (movementDir) 
+		{	
+			case MOVEMENT_NONE:
+				current_anim = &idle_anim;
+				break;
+
+			case MOVEMENT_RIGHT:
+				current_anim = &mv_right_anim;
+				break;
+
+			case MOVEMENT_UP:
+				current_anim = &mv_up_anim;
+				break;
+
+			case MOVEMENT_DOWN:
+				current_anim = &mv_down_anim;
+				break;
+
+			case MOVEMENT_LEFT:
+				current_anim = &mv_left_anim;
+				break;
+
+			default:
+				printf("Weird!! Don't know which animation to show!\n");
+				break;
+		}
+	}
+	printf("currentanim set to %d", current_anim);
+	printf("some stuff from currentanim: %d", (*current_anim).numFrames);
 }
 
 void PlayerSprite::update(int ms) {
-	
+	(*current_anim).passTime(ms);
 }
 
 void PlayerSprite::drawTo(SDL_Surface* screenSurface) {
-	switch (movementDir) 
-	{	
-		case MOVEMENT_NONE:
-			//current_anim = &
-			idle_anim.passTime(0.03f);
-			idle_anim.drawTo(screenSurface, x, y);
-			break;
-		
-		case MOVEMENT_RIGHT:
-			mv_right_anim.passTime(0.03f);
-			mv_right_anim.drawTo(screenSurface, x, y);
-			break;
-			
-		case MOVEMENT_UP:
-			mv_up_anim.passTime(0.03f);
-			mv_up_anim.drawTo(screenSurface, x, y);
-			break;
-			
-		case MOVEMENT_DOWN:
-			mv_down_anim.passTime(0.03f);
-			mv_down_anim.drawTo(screenSurface, x, y);
-			break;
-			
-		case MOVEMENT_LEFT:
-			mv_left_anim.passTime(0.03f);
-			mv_left_anim.drawTo(screenSurface, x, y);
-			break;
-			
-		default:
-			printf("Weird!! Don't know which animation to show!\n");
-			break;
-	}
+	// draw current animatino frame to screen
+	(*current_anim).drawTo(screenSurface, x, y);
 }
 
 PlayerSprite::~PlayerSprite() 

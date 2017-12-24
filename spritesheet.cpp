@@ -21,6 +21,11 @@ void Spritesheet::init(SDL_Surface* img, int numFrames) {
 	printf("Spritesheet has %d frames, each of width %dpx and height %dpx\n", this->numFrames, frameWidth, frameHeight);
 }
 
+void Spritesheet::reset() {
+	frameCounter = 0;
+	totalDuration = 0;
+}
+
 void Spritesheet::passTime(int ms) {
 	totalDuration += ms;  // todo: better track of time
 	frameCounter = (frameCounter + 1) % numFrames;
