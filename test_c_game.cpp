@@ -6,6 +6,7 @@ and may not be redistributed without written permission.*/
 #include <stdio.h>
 #include <string>
 #include "player_sprite.h"
+#include "map.h"
 
 //Screen dimension constants
 const int SCREEN_WIDTH = 640;
@@ -112,6 +113,8 @@ int main( int argc, char* args[] )
 	printf("Loaded Media\n");
 	PlayerSprite playerSprite = PlayerSprite(100.0f, 140.0f, player_idle_img, player_mvup_img, player_mvdown_img, player_mvleft_img, player_mvright_img);
 	printf("Created player sprite\n");
+	Map map;
+	printf("Created map\n");
 	
 	//Main loop flag
 	bool quit = false;
@@ -169,14 +172,11 @@ int main( int argc, char* args[] )
 
 		playerSprite.move(ticks_since_last_frame);
 		playerSprite.update(ticks_since_last_frame);
+		
+		map.drawTo(gScreenSurface);
 		// draw white background todo: background
-		SDL_FillRect( gScreenSurface, NULL, SDL_MapRGB( gScreenSurface->format, 0xFF, 0xFF, 0xFF ) );
+		//SDL_FillRect( gScreenSurface, NULL, SDL_MapRGB( gScreenSurface->format, 0xFF, 0xFF, 0xFF ) );
 		
-		//SDL_BlitSurface( player_idle_img, NULL, gScreenSurface, NULL );
-		
-		//Apply the current image
-		//SDL_BlitSurface( gCurrentSurface, NULL, gScreenSurface, NULL );
-
 		playerSprite.drawTo(gScreenSurface);
 		
 		//Update the surface
