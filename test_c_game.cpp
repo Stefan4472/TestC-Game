@@ -115,14 +115,20 @@ int main( int argc, char* args[] )
 	
 	//Main loop flag
 	bool quit = false;
-	bool pause = false;
-
+	bool paused = false;
+	
+	Uint32 last_frame_ticks = SDL_GetTicks(); 
+	Uint32 ticks_since_last_frame;
+	
 	//Event handler
 	SDL_Event e;
 
 	//While application is running
 	while( !quit )
 	{
+		// calculate number of milliseconds since last frame was rendered 
+		ticks_since_last_frame = SDL_GetTicks() - last_frame_ticks;
+		printf("%d ticks since last frame\n", ticks_since_last_frame);
 		//printf("In game loop");
 		//Handle events on queue
 		while( SDL_PollEvent( &e ) != 0 )
@@ -133,27 +139,30 @@ int main( int argc, char* args[] )
 			{
 				quit = true;
 			}
-			//User presses a key
-			else if( e.type == SDL_KEYDOWN )
-			{
-				// send event to playerSprite, which will handle it in almost all cases.
-				if (!playerSprite.handleKeyEvent(e)) {
-					printf("PlayerSprite did not handle--checking on main thread\n");
-					switch( e.key.keysym.sym )
-					{ 
-
-					// this switch-case only runs if the playerSprite did not use the input.
-					case SDLK_p: // todo: pause on "p" key
-						printf("Pausing\n");
-						pause = true;
+			// first send event to playerSprite, which will handle it in almost all cases.
+			else if (!playerSprite.handleKeyEvent(e)) {
+				// process if playerSprite didn't handle it
+				printf("PlayerSprite did not handle--checking on main thread\n");
+				switch( e.key.keysym.sym )
+				{ 
+					case SDLK_p: // pause/unpause on "p"
+						if (e.type == SDL_KEYDOWN && !paused) {
+							printf("Pausing\n");
+							paused = true;
+						} else if (e.type == SDL_KEYUP) {
+							printf("Unpausing\n");
+							paused = false;
+						}
 						break;
-
-					case SDLK_ESCAPE || SDLK_q: // quit on ESC or "q" key
+					
+					case SDLK_ESCAPE:
+					case SDLK_q: // quit on ESC or "q" key
 						quit = true;
 						break;
-					}
 				}
 			}
+			// update last_frame_ticks
+			last_frame_ticks += ticks_since_last_frame;
 		}
 
 		playerSprite.passTime(0.03f);

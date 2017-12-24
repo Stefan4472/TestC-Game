@@ -22,22 +22,28 @@ void PlayerSprite::drawTo(SDL_Surface* screenSurface) {
 	switch (movementDir) 
 	{	
 		case MOVEMENT_NONE:
+			//current_anim = &
+			idle_anim.passTime(0.03f);
 			idle_anim.drawTo(screenSurface, x, y);
 			break;
 		
 		case MOVEMENT_RIGHT:
+			mv_right_anim.passTime(0.03f);
 			mv_right_anim.drawTo(screenSurface, x, y);
 			break;
 			
 		case MOVEMENT_UP:
+			mv_up_anim.passTime(0.03f);
 			mv_up_anim.drawTo(screenSurface, x, y);
 			break;
 			
 		case MOVEMENT_DOWN:
+			mv_down_anim.passTime(0.03f);
 			mv_down_anim.drawTo(screenSurface, x, y);
 			break;
 			
 		case MOVEMENT_LEFT:
+			mv_left_anim.passTime(0.03f);
 			mv_left_anim.drawTo(screenSurface, x, y);
 			break;
 			
@@ -50,41 +56,58 @@ void PlayerSprite::drawTo(SDL_Surface* screenSurface) {
 bool PlayerSprite::handleKeyEvent(SDL_Event e) 
 {
 	printf("PlayerSprite attempting to handle KeyEvent\n");
-	switch( e.key.keysym.sym )
-	{ 
-		case SDLK_RIGHT:
-			movementDir = MOVEMENT_RIGHT;
-			return true;					
+	
+	if (e.type == SDL_KEYUP) {
+		switch (e.key.keysym.sym) 
+		{
+			case SDLK_RIGHT:
+			case SDLK_UP:
+			case SDLK_LEFT:
+			case SDLK_DOWN:
+				movementDir = MOVEMENT_NONE;
+				return true;
 
-		case SDLK_UP:
-			movementDir = MOVEMENT_UP;
-			return true;
+			default:
+				return false;
+		}
+	} 
+	else {
+		switch( e.key.keysym.sym )
+		{ 
+			case SDLK_RIGHT:
+				movementDir = MOVEMENT_RIGHT;
+				return true;					
 
-		case SDLK_LEFT:
-			movementDir = MOVEMENT_LEFT;
-			return true;
+			case SDLK_UP:
+				movementDir = MOVEMENT_UP;
+				return true;
 
-		case SDLK_DOWN:
-			movementDir = MOVEMENT_DOWN;
-			return true;
-			
-		default:
-			return false;
+			case SDLK_LEFT:
+				movementDir = MOVEMENT_LEFT;
+				return true;
+
+			case SDLK_DOWN:
+				movementDir = MOVEMENT_DOWN;
+				return true;
+
+			default:
+				return false;
+		}
 	}
 }
 
 void PlayerSprite::passTime(float elapsedSec) 
 {
 	if (movementDir == MOVEMENT_RIGHT) {
-		x += 2;
+		//x += 2;
 	} else if (movementDir == MOVEMENT_LEFT) {
-		x -= 2;
+		//x -= 2;
 	}
 
 	if (movementDir == MOVEMENT_UP) {
-		y -= 2;
+		//y -= 2;
 	} else if (movementDir == MOVEMENT_DOWN) {
-		y += 2;
+		//y += 2;
 	}
 }
 
