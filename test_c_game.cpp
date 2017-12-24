@@ -117,8 +117,10 @@ int main( int argc, char* args[] )
 	bool quit = false;
 	bool paused = false;
 	
-	Uint32 last_frame_ticks = SDL_GetTicks(); 
+	Uint32 last_time = SDL_GetTicks();
+	Uint32 curr_time;
 	Uint32 ticks_since_last_frame;
+	int frames = 0;
 	
 	//Event handler
 	SDL_Event e;
@@ -127,9 +129,11 @@ int main( int argc, char* args[] )
 	while( !quit )
 	{
 		// calculate number of milliseconds since last frame was rendered 
-		ticks_since_last_frame = SDL_GetTicks() - last_frame_ticks;
-		printf("%d ticks since last frame\n", ticks_since_last_frame);
-		//printf("In game loop");
+		curr_time = SDL_GetTicks();
+		printf("Curr time is %d\n", curr_time);
+		ticks_since_last_frame = curr_time - last_time;
+		
+		//printf("%u\n", ticks_since_last_frame);
 		//Handle events on queue
 		while( SDL_PollEvent( &e ) != 0 )
 		{
@@ -161,12 +165,10 @@ int main( int argc, char* args[] )
 						break;
 				}
 			}
-			// update last_frame_ticks
-			last_frame_ticks += ticks_since_last_frame;
 		}
 
-		playerSprite.passTime(0.03f);
-		
+		playerSprite.move(ticks_since_last_frame);
+		playerSprite.update(ticks_since_last_frame);
 		// draw white background todo: background
 		SDL_FillRect( gScreenSurface, NULL, SDL_MapRGB( gScreenSurface->format, 0xFF, 0xFF, 0xFF ) );
 		
@@ -179,6 +181,9 @@ int main( int argc, char* args[] )
 		
 		//Update the surface
 		SDL_UpdateWindowSurface( gWindow );
+		
+		// update last_frame_ticks
+		last_time = curr_time;
 	}
 
 	//Free resources and close SDL

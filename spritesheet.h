@@ -22,8 +22,8 @@ class Spritesheet
 	public:
 		// constructor with image and frame durations
 		void init(SDL_Surface* img, int numFrames);
-		// increments duration by offset
-		void passTime(float offset);
+		// increments duration by offset (milliseconds)
+		void passTime(int ms);
 		// draws current frame to given SDL_Surface
 		void drawTo(SDL_Surface* screenSurface, float x, float y);
 };
