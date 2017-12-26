@@ -17,11 +17,11 @@ PlayerSprite::PlayerSprite(float xCoord, float yCoord,
 	hitbox.w = 100;
 	hitbox.h = 134;
 	
-	idle_anim.init(idle_anim_sheet, 2);
-	mv_up_anim.init(mv_up_anim_sheet, 4);
-	mv_down_anim.init(mv_down_anim_sheet, 4);
-	mv_left_anim.init(mv_left_anim_sheet, 4);
-	mv_right_anim.init(mv_right_anim_sheet, 4);
+	idle_anim.init(idle_anim_sheet, 2, 100);
+	mv_up_anim.init(mv_up_anim_sheet, 4, 100);
+	mv_down_anim.init(mv_down_anim_sheet, 4, 100);
+	mv_left_anim.init(mv_left_anim_sheet, 4, 100);
+	mv_right_anim.init(mv_right_anim_sheet, 4, 100);
 	
 	current_anim = &idle_anim;
 }

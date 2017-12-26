@@ -25,7 +25,6 @@ void Map::centerTo(SDL_Rect newCenter)
 
 void Map::drawTo(SDL_Surface* screenSurface) 
 {
-	printf("Drawing Map centered on %d, %d\n", center.x, center.y);
 	// virtual coordinates for top-left of view 
 	int top_left_x = center.x - (SCREEN_WIDTH - center.w) / 2;
 	int top_left_y = center.y - (SCREEN_HEIGHT - center.h) / 2;
@@ -42,7 +41,7 @@ void Map::drawTo(SDL_Surface* screenSurface)
 	int start_tile_x = top_left_x / TILE_WIDTH;
 	int start_tile_y = top_left_y / TILE_HEIGHT;
 	
-	printf("Finished Calculations\n");
+	//printf("Finished Calculations\n");
 	
 	// render proper tiles, at offsets
 	for (int i = 0; i < tiles_tall; i++) 

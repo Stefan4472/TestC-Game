@@ -207,19 +207,19 @@ int main( int argc, char* args[] )
 			}
 		}
 
-		//printf("Moving playersprite\n");
+		printf("Moving playersprite\n");
 		playerSprite.move(ticks_since_last_frame);
-		//printf("Updating playersprite\n");
+		printf("Updating playersprite\n");
 		playerSprite.update(ticks_since_last_frame);
 		
-		//printf("Drawing Map\n");
+		printf("Drawing Map\n");
 		
-		printf("Centering on %d, %d, %d, %d. Sprite at %f, %f\n", playerSprite.hitbox.x, playerSprite.hitbox.y, playerSprite.hitbox.w, playerSprite.hitbox.h, playerSprite.x, playerSprite.y);
+		//printf("Centering on %d, %d, %d, %d. Sprite at %f, %f\n", playerSprite.hitbox.x, playerSprite.hitbox.y, playerSprite.hitbox.w, playerSprite.hitbox.h, playerSprite.x, playerSprite.y);
 		// center map on playerSprite and draw
 		map.centerTo(playerSprite.hitbox);
 		map.drawTo(gScreenSurface);
 		
-		//printf("Drawing sprite\n");
+		printf("Drawing sprite\n");
 		
 		playerSprite.drawTo(gScreenSurface, map.viewOffsetX, map.viewOffsetY);
 		

@@ -1,15 +1,16 @@
 #include "spritesheet.h"
 
-// create with SDL_Surface and todo: array containing durations of frames (in seconds)
-// the size of the array is used to determine the number of frames in the sheet
-void Spritesheet::init(SDL_Surface* img, int numFrames) {
-	printf("Creating Spritesheet with %d frames\n", numFrames);
+void Spritesheet::init(SDL_Surface* img, int numFrames, int frameDuration) {
+	printf("Creating Spritesheet with %d frames, %d ms per frame\n", numFrames, frameDuration);
 	sheet = img;
+	
 	frameWidth = img->w / numFrames;
 	frameHeight = img->h;
-	this->numFrames = numFrames;
+	
 	frameCounter = 0;
-	totalDuration = 0;
+	this->numFrames = numFrames;
+	msPerFrame = frameDuration;
+	msLeftThisFrame = frameDuration;
 	
 	src.y = 0;
 	src.w = frameWidth;
@@ -23,12 +24,18 @@ void Spritesheet::init(SDL_Surface* img, int numFrames) {
 
 void Spritesheet::reset() {
 	frameCounter = 0;
-	totalDuration = 0;
+	msLeftThisFrame = msPerFrame;
 }
 
 void Spritesheet::passTime(int ms) {
-	totalDuration += ms;  // todo: better track of time
-	frameCounter = (frameCounter + 1) % numFrames;
+	// more time passed than is left for the frame--show next frame
+	while (ms > msLeftThisFrame) 
+	{
+		ms -= msLeftThisFrame;
+		frameCounter = (frameCounter + 1) % numFrames;
+		msLeftThisFrame = msPerFrame;
+	}
+	msLeftThisFrame -= ms;
 }
 
 void Spritesheet::drawTo(SDL_Surface* screenSurface, float x, float y) {
