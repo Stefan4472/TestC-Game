@@ -82,15 +82,15 @@ bool PlayerSprite::handleKeyEvent(SDL_Event e)
 
 void PlayerSprite::move(int ms) {
 	if (movementDir == MOVEMENT_RIGHT) {
-		x += SPEED_CAP;
+		x += ms * PX_PER_MS;
 	} else if (movementDir == MOVEMENT_LEFT) {
-		x -= SPEED_CAP;
+		x -= ms * PX_PER_MS;
 	}
 
 	if (movementDir == MOVEMENT_UP) {
-		y -= SPEED_CAP;
+		y -= ms * PX_PER_MS;
 	} else if (movementDir == MOVEMENT_DOWN) {
-		y += SPEED_CAP;
+		y += ms * PX_PER_MS;
 	}	
 	hitbox.x = x + hitboxOffsetX;
 	hitbox.y = y + hitboxOffsetY;

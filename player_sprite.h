@@ -17,7 +17,8 @@ enum MOVEMENT {
 	MOVEMENT_NONE
 };
 
-const float SPEED_CAP = 0.6f;
+// pixels moved in x/y per millisecond
+const float PX_PER_MS = 0.25f;
 
 // updating: handle input events in queue, call move(), check collisions, handle any collisions, update, draw
 class PlayerSprite
