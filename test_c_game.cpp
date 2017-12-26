@@ -3,6 +3,7 @@ and may not be redistributed without written permission.*/
 
 //Using SDL, standard IO, and strings
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
 #include <stdio.h>
 #include <string>
 #include "player_sprite.h"
@@ -30,37 +31,56 @@ SDL_Window* gWindow = NULL;
 //The surface contained by the window
 SDL_Surface* gScreenSurface = NULL;
 
+// renderer for the window surface 
+SDL_Renderer* gRenderer = NULL;
+
 SDL_Surface *player_idle_img = NULL, *player_mvup_img = NULL, *player_mvdown_img = NULL, *player_mvright_img = NULL, *player_mvleft_img = NULL;
 SDL_Surface *grass_tile_img = NULL, *stone_tile_img = NULL, *obstacle_tile_img = NULL, *water_tile_img = NULL;
 
 bool init()
 {
-		//Initialization flag
-	bool success = true;
-
 	//Initialize SDL
 	if( SDL_Init( SDL_INIT_VIDEO ) < 0 )
 	{
 		printf( "SDL could not initialize! SDL Error: %s\n", SDL_GetError() );
-		success = false;
+		return false;
 	}
-	else
+	
+	// set texture filtering to linear
+	if( !SDL_SetHint( SDL_HINT_RENDER_SCALE_QUALITY, "1" ) )
 	{
-		//Create window
-		gWindow = SDL_CreateWindow( "SDL Tutorial", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN );
-		if( gWindow == NULL )
-		{
-			printf( "Window could not be created! SDL Error: %s\n", SDL_GetError() );
-			success = false;
-		}
-		else
-		{
-			//Get window surface
-			gScreenSurface = SDL_GetWindowSurface( gWindow );
-		}
+		printf( "Warning: Linear texture filtering not enabled!" );
 	}
-
-	return success;
+		
+	// create window
+	gWindow = SDL_CreateWindow( "Stefan's C++ Game", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN );
+	if( gWindow == NULL )
+	{
+		printf( "Window could not be created! SDL Error: %s\n", SDL_GetError() );
+		return false;
+	}
+	//Get window surface
+	gScreenSurface = SDL_GetWindowSurface( gWindow );
+	
+	// create renderer for window todo: figure out what the issue is (causes segfault)
+	/*gRenderer = SDL_CreateRenderer( gWindow, -1, SDL_RENDERER_ACCELERATED );
+	if( gRenderer == NULL )
+	{
+		printf( "Renderer could not be created! SDL Error: %s\n", SDL_GetError() );
+		return false;
+	}
+		
+	//Initialize renderer color
+	SDL_SetRenderDrawColor( gRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
+	*/
+	//Initialize PNG loading
+	int imgFlags = IMG_INIT_PNG;
+	if( !( IMG_Init( imgFlags ) & imgFlags ) )
+	{
+		printf( "SDL_image could not initialize! SDL_image Error: %s\n", IMG_GetError() );
+		return false;
+	}
+	return true;
 }
 
 bool loadMedia()
@@ -76,7 +96,7 @@ bool loadMedia()
 	
 	grass_tile_img = loadSurface("graphics/grass_tile.bmp");
 	stone_tile_img = loadSurface("graphics/stone_tile.bmp");
-	obstacle_tile_img = loadSurface("graphics/obstacle_tile.bmp");
+	obstacle_tile_img = loadSurface("graphics/barrier_tile.bmp");
 	water_tile_img = loadSurface("graphics/water_tile.bmp");
 	return success;
 }
@@ -97,8 +117,13 @@ void close()
 	//Destroy window
 	SDL_DestroyWindow( gWindow );
 	gWindow = NULL;
+	
+	//Destroy renderer
+	SDL_DestroyRenderer( gRenderer );
+	gRenderer = NULL;
 
 	//Quit SDL subsystems
+	IMG_Quit();
 	SDL_Quit();
 }
 
@@ -182,16 +207,22 @@ int main( int argc, char* args[] )
 			}
 		}
 
+		printf("Moving playersprite\n");
 		playerSprite.move(ticks_since_last_frame);
+		printf("Updating playersprite\n");
 		playerSprite.update(ticks_since_last_frame);
 		
+		printf("Drawing Map\n");
 		map.drawTo(gScreenSurface);
 		
+		printf("Drawing sprite\n");
 		playerSprite.drawTo(gScreenSurface);
 		
-		//Update the surface
+		printf("Updating window surface\n");
+		// draw changes to window
 		SDL_UpdateWindowSurface( gWindow );
 		
+		printf("Finished\n");
 		// update last_frame_ticks
 		last_time = curr_time;
 	}

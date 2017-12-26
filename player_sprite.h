@@ -26,9 +26,9 @@ class PlayerSprite
 	// default constructor: will be initialized in the PlayerSprite constructor
 	Spritesheet idle_anim, mv_up_anim, mv_down_anim, mv_right_anim, mv_left_anim;
 	Spritesheet *current_anim = NULL;
-	// todo: hitbox
 
 	public:
+		SDL_Rect hitbox;
 		PlayerSprite(float xCoord, float yCoord,
 					 SDL_Surface* idle_anim_sheet, 
 					 SDL_Surface* mv_up_anim_sheet, 

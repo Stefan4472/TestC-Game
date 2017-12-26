@@ -11,6 +11,12 @@ PlayerSprite::PlayerSprite(float xCoord, float yCoord,
 	x = xCoord;
 	y = yCoord;
 
+	// note: this depends on the image of the sprite, and will need to be adjusted at times.
+	hitbox.x = xCoord + 17;
+	hitbox.y = yCoord + 11;
+	hitbox.w = 100;
+	hitbox.h = 134;
+	
 	idle_anim.init(idle_anim_sheet, 2);
 	mv_up_anim.init(mv_up_anim_sheet, 4);
 	mv_down_anim.init(mv_down_anim_sheet, 4);
@@ -77,14 +83,18 @@ bool PlayerSprite::handleKeyEvent(SDL_Event e)
 void PlayerSprite::move(int ms) {
 	if (movementDir == MOVEMENT_RIGHT) {
 		x += SPEED_CAP;
+		hitbox.x += SPEED_CAP;
 	} else if (movementDir == MOVEMENT_LEFT) {
 		x -= SPEED_CAP;
+		hitbox.x -= SPEED_CAP;
 	}
 
 	if (movementDir == MOVEMENT_UP) {
 		y -= SPEED_CAP;
+		hitbox.y -= SPEED_CAP;
 	} else if (movementDir == MOVEMENT_DOWN) {
 		y += SPEED_CAP;
+		hitbox.y += SPEED_CAP;
 	}	
 }
 
@@ -125,8 +135,6 @@ void PlayerSprite::changeDir(int newDir) {
 				break;
 		}
 	}
-	printf("currentanim set to %d", current_anim);
-	printf("some stuff from currentanim: %d", (*current_anim).numFrames);
 }
 
 void PlayerSprite::update(int ms) {

@@ -24,5 +24,5 @@ void Map::drawTo(SDL_Surface* screenSurface)
 			SDL_BlitSurface( tileImgs[ mapTiles[i][j] ], &src, screenSurface, &dest );			
 		}
 	}
-			
+
 }

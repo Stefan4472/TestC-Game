@@ -15,8 +15,8 @@ enum TILE_IDS {
 class Map
 {
 
-	int TILE_WIDTH = 64;
-	int TILE_HEIGHT = 64;
+	int TILE_WIDTH = 96;
+	int TILE_HEIGHT = 96;
 	
 	int mapRows = 5;
 	int mapCols = 5;
