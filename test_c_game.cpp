@@ -9,9 +9,9 @@ and may not be redistributed without written permission.*/
 #include "player_sprite.h"
 #include "map.h"
 
-//Screen dimension constants
-const int SCREEN_WIDTH = 640;
-const int SCREEN_HEIGHT = 480;
+//Screen dimension constants. Actually defined in map.h atm
+//const int SCREEN_WIDTH = 640;
+//const int SCREEN_HEIGHT = 480;
 
 //Starts up SDL and creates window
 bool init();
@@ -207,22 +207,28 @@ int main( int argc, char* args[] )
 			}
 		}
 
-		printf("Moving playersprite\n");
+		//printf("Moving playersprite\n");
 		playerSprite.move(ticks_since_last_frame);
-		printf("Updating playersprite\n");
+		//printf("Updating playersprite\n");
 		playerSprite.update(ticks_since_last_frame);
 		
-		printf("Drawing Map\n");
+		//printf("Drawing Map\n");
+		
+		printf("Centering on %d, %d, %d, %d. Sprite at %f, %f\n", playerSprite.hitbox.x, playerSprite.hitbox.y, playerSprite.hitbox.w, playerSprite.hitbox.h, playerSprite.x, playerSprite.y);
+		// center map on playerSprite and draw
+		map.centerTo(playerSprite.hitbox);
 		map.drawTo(gScreenSurface);
 		
-		printf("Drawing sprite\n");
-		playerSprite.drawTo(gScreenSurface);
+		//printf("Drawing sprite\n");
 		
-		printf("Updating window surface\n");
+		playerSprite.drawTo(gScreenSurface, map.viewOffsetX, map.viewOffsetY);
+		
+		//printf("Updating window surface\n");
+		
 		// draw changes to window
 		SDL_UpdateWindowSurface( gWindow );
 		
-		printf("Finished\n");
+		//printf("Finished\n");
 		// update last_frame_ticks
 		last_time = curr_time;
 	}

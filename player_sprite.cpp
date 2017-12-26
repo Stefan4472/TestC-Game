@@ -12,8 +12,8 @@ PlayerSprite::PlayerSprite(float xCoord, float yCoord,
 	y = yCoord;
 
 	// note: this depends on the image of the sprite, and will need to be adjusted at times.
-	hitbox.x = xCoord + 17;
-	hitbox.y = yCoord + 11;
+	hitboxOffsetX = 17;
+	hitboxOffsetY = 11;
 	hitbox.w = 100;
 	hitbox.h = 134;
 	
@@ -83,19 +83,17 @@ bool PlayerSprite::handleKeyEvent(SDL_Event e)
 void PlayerSprite::move(int ms) {
 	if (movementDir == MOVEMENT_RIGHT) {
 		x += SPEED_CAP;
-		hitbox.x += SPEED_CAP;
 	} else if (movementDir == MOVEMENT_LEFT) {
 		x -= SPEED_CAP;
-		hitbox.x -= SPEED_CAP;
 	}
 
 	if (movementDir == MOVEMENT_UP) {
 		y -= SPEED_CAP;
-		hitbox.y -= SPEED_CAP;
 	} else if (movementDir == MOVEMENT_DOWN) {
 		y += SPEED_CAP;
-		hitbox.y += SPEED_CAP;
 	}	
+	hitbox.x = x + hitboxOffsetX;
+	hitbox.y = y + hitboxOffsetY;
 }
 
 void PlayerSprite::changeDir(int newDir) {
@@ -141,9 +139,9 @@ void PlayerSprite::update(int ms) {
 	(*current_anim).passTime(ms);
 }
 
-void PlayerSprite::drawTo(SDL_Surface* screenSurface) {
+void PlayerSprite::drawTo(SDL_Surface* screenSurface, int offsetX, int offsetY) {
 	// draw current animatino frame to screen
-	(*current_anim).drawTo(screenSurface, x, y);
+	(*current_anim).drawTo(screenSurface, x - offsetX, y - offsetY);
 }
 
 PlayerSprite::~PlayerSprite() 

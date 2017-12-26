@@ -17,17 +17,23 @@ enum MOVEMENT {
 	MOVEMENT_NONE
 };
 
+const float SPEED_CAP = 0.6f;
+
 // updating: handle input events in queue, call move(), check collisions, handle any collisions, update, draw
 class PlayerSprite
 {
-	float x, y, dx, dy;
-	float SPEED_CAP = 0.6f;
+	// direction moving in currently
 	int movementDir = MOVEMENT_NONE; // todo: accomodate bidirectionality
 	// default constructor: will be initialized in the PlayerSprite constructor
 	Spritesheet idle_anim, mv_up_anim, mv_down_anim, mv_right_anim, mv_left_anim;
+	// pointer to animatino that's currently playing
 	Spritesheet *current_anim = NULL;
-
+	// offset of start of hitbox, from sprite's x and y (x + hitboxOffsetX = hitbox.x)
+	int hitboxOffsetX, hitboxOffsetY;
+	
 	public:
+		// virtual coordinates
+		float x, y;
 		SDL_Rect hitbox;
 		PlayerSprite(float xCoord, float yCoord,
 					 SDL_Surface* idle_anim_sheet, 
@@ -39,8 +45,8 @@ class PlayerSprite
 		void move(int ms);
 		// finalizes movement and any other updates to the sprite's state
 		void update(int ms);
-		// draws sprite to the given surface/screen
-		void drawTo(SDL_Surface* screenSurface);
+		// draws sprite to the given surface/screen. Subtracting offsets from coordinates results in on-canvas coordinate to draw to
+		void drawTo(SDL_Surface* screenSurface, int offsetX, int offsetY);
 		bool handleKeyEvent(SDL_Event e);
 		~PlayerSprite();
 		

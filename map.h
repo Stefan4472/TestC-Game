@@ -12,37 +12,51 @@ enum TILE_IDS {
 	TILE_WATER
 };
 
-class Map
-{
+// screen dimension constants: todo: read from a universal file
+const int SCREEN_WIDTH = 640;
+const int SCREEN_HEIGHT = 480;
+const int TILE_WIDTH = 96;
+const int TILE_HEIGHT = 96;
 
-	int TILE_WIDTH = 96;
-	int TILE_HEIGHT = 96;
-	
-	int mapRows = 5;
-	int mapCols = 5;
+class Map
+{	
+	int mapRows = 10;
+	int mapCols = 10;
 	
 	// tile grid
-	int mapTiles[5][5] = 
+	int mapTiles[10][10] = 
 	{
-		{ TILE_GRASS, TILE_GRASS, TILE_STONE, TILE_STONE, TILE_STONE },
-		{ TILE_GRASS, TILE_GRASS, TILE_GRASS, TILE_GRASS, TILE_GRASS },
-		{ TILE_GRASS, TILE_GRASS, TILE_OBSTACLE, TILE_STONE, TILE_STONE },
-		{ TILE_GRASS, TILE_GRASS, TILE_WATER, TILE_WATER, TILE_STONE },
-		{ TILE_GRASS, TILE_GRASS, TILE_WATER, TILE_WATER, TILE_STONE }
+		{ TILE_GRASS, TILE_GRASS, TILE_STONE, TILE_STONE, TILE_STONE, TILE_GRASS, TILE_GRASS, TILE_STONE, TILE_STONE, TILE_STONE },
+		{ TILE_GRASS, TILE_GRASS, TILE_GRASS, TILE_GRASS, TILE_GRASS, TILE_GRASS, TILE_GRASS, TILE_STONE, TILE_STONE, TILE_STONE },
+		{ TILE_GRASS, TILE_GRASS, TILE_OBSTACLE, TILE_STONE, TILE_STONE, TILE_GRASS, TILE_GRASS, TILE_STONE, TILE_STONE, TILE_STONE },
+		{ TILE_GRASS, TILE_GRASS, TILE_WATER, TILE_WATER, TILE_STONE, TILE_GRASS, TILE_GRASS, TILE_STONE, TILE_STONE, TILE_STONE },
+		{ TILE_GRASS, TILE_GRASS, TILE_WATER, TILE_WATER, TILE_STONE, TILE_GRASS, TILE_GRASS, TILE_STONE, TILE_STONE, TILE_STONE },
+		{ TILE_GRASS, TILE_GRASS, TILE_STONE, TILE_STONE, TILE_STONE, TILE_GRASS, TILE_GRASS, TILE_STONE, TILE_STONE, TILE_STONE },
+		{ TILE_GRASS, TILE_GRASS, TILE_GRASS, TILE_GRASS, TILE_GRASS, TILE_GRASS, TILE_GRASS, TILE_STONE, TILE_STONE, TILE_STONE },
+		{ TILE_GRASS, TILE_GRASS, TILE_OBSTACLE, TILE_STONE, TILE_STONE, TILE_GRASS, TILE_GRASS, TILE_STONE, TILE_STONE, TILE_STONE },
+		{ TILE_GRASS, TILE_GRASS, TILE_WATER, TILE_WATER, TILE_STONE, TILE_GRASS, TILE_GRASS, TILE_STONE, TILE_STONE, TILE_STONE },
+		{ TILE_GRASS, TILE_GRASS, TILE_WATER, TILE_WATER, TILE_STONE, TILE_GRASS, TILE_GRASS, TILE_STONE, TILE_STONE, TILE_STONE }
 	};
 	
 	SDL_Surface* tileImgs[4] = { NULL, NULL, NULL, NULL };
 	
+	// virtual coordinates view should center on
+	SDL_Rect center;
+	
 	// source and destination rects 
 	SDL_Rect src = {0, 0, TILE_WIDTH, TILE_HEIGHT}, dest = {0, 0, TILE_WIDTH, TILE_HEIGHT};
-
+	
 	public:
+		// offsets on x and y that graphics should be drawn to to convert virtual to canvas coordinates
+		int viewOffsetX, viewOffsetY;
 		// init tile images
 		void init(SDL_Surface* grassTileImg, 
 				  SDL_Surface* stoneTileImg, 
 				  SDL_Surface* obstacleTileImg, 
 				  SDL_Surface* waterTileImg);
-		// draws background to the given surface/screen
+		// center background to given rect, updating viewOffsetX and viewOffsetY to match
+		void centerTo(SDL_Rect newCenter);
+		// draws background to the given surface/screen. Use center() to center the background to a virtual rectangle
 		void drawTo(SDL_Surface* screenSurface);
 };
 
