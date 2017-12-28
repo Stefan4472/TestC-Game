@@ -88,16 +88,16 @@ bool loadMedia()
 	//Loading success flag
 	bool success = true;
 	
-	player_idle_img = loadSurface("graphics/player_idle_spritesheet.bmp");
-	player_mvup_img = loadSurface("graphics/player_mvup_spritesheet.bmp");
-	player_mvdown_img = loadSurface("graphics/player_mvdown_spritesheet.bmp");
-	player_mvright_img = loadSurface("graphics/player_mvright_spritesheet.bmp");
-	player_mvleft_img = loadSurface("graphics/player_mvleft_spritesheet.bmp");
+	player_idle_img = loadSurface("graphics/player_idle_spritesheet.png");
+	player_mvup_img = loadSurface("graphics/player_mvup_spritesheet.png");
+	player_mvdown_img = loadSurface("graphics/player_mvdown_spritesheet.png");
+	player_mvright_img = loadSurface("graphics/player_mvright_spritesheet.png");
+	player_mvleft_img = loadSurface("graphics/player_mvleft_spritesheet.png");
 	
-	grass_tile_img = loadSurface("graphics/grass_tile.bmp");
-	stone_tile_img = loadSurface("graphics/stone_tile.bmp");
-	obstacle_tile_img = loadSurface("graphics/barrier_tile.bmp");
-	water_tile_img = loadSurface("graphics/water_tile.bmp");
+	grass_tile_img = loadSurface("graphics/grass_tile.png");
+	stone_tile_img = loadSurface("graphics/stone_tile.png");
+	obstacle_tile_img = loadSurface("graphics/barrier_tile.png");
+	water_tile_img = loadSurface("graphics/water_tile.png");
 	return success;
 }
 
@@ -130,12 +130,19 @@ void close()
 SDL_Surface* loadSurface( std::string path )
 {
 	//Load image at specified path
-	SDL_Surface* loadedSurface = SDL_LoadBMP( path.c_str() );
+	SDL_Surface* loadedSurface = IMG_Load( path.c_str() );
 	if( loadedSurface == NULL )
 	{
 		printf( "Unable to load image %s! SDL Error: %s\n", path.c_str(), SDL_GetError() );
 	}
+	
+	// set flag for alpha channnel
+	//SDL_SetAlpha(loadedSurface, SDL_SRCALPHA /*| SDL_RLEACCEL*/, SDL_ALPHA_OPAQUE);
 
+	// set alpha format
+	//loadedSurface->format->Amask = 0xFF000000;
+	//loadedSurface->format->Ashift = 24; 
+	
 	return loadedSurface;
 }
 
@@ -219,7 +226,7 @@ int main( int argc, char* args[] )
 		map.centerTo(playerSprite.hitbox);
 		map.drawTo(gScreenSurface);
 		
-		printf("Drawing sprite\n");
+		//printf("Drawing sprite\n");
 		
 		playerSprite.drawTo(gScreenSurface, map.viewOffsetX, map.viewOffsetY);
 		
