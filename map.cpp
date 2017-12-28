@@ -1,13 +1,15 @@
 #include "map.h"
 
-void Map::init(SDL_Surface* grassTileImg, 
-				  SDL_Surface* stoneTileImg, 
-				  SDL_Surface* obstacleTileImg, 
-				  SDL_Surface* waterTileImg) {
-	tileImgs[0] = grassTileImg;
-	tileImgs[1] = stoneTileImg;
-	tileImgs[2] = obstacleTileImg;
-	tileImgs[3] = waterTileImg;
+void Map::init(SDL_Surface* brown_brick_tile_img, 
+				  SDL_Surface* dark_brick_tile_img, 
+				  SDL_Surface* white_brick_tile_img, 
+				  SDL_Surface* grass_tile_img, 
+				  SDL_Surface* water_tile_img) {
+	tileImgs[0] = brown_brick_tile_img;
+	tileImgs[1] = dark_brick_tile_img;
+	tileImgs[2] = white_brick_tile_img;
+	tileImgs[3] = grass_tile_img;
+	tileImgs[4] = water_tile_img;
 }
 
 void Map::centerTo(SDL_Rect newCenter) 
@@ -21,30 +23,34 @@ void Map::centerTo(SDL_Rect newCenter)
 	// distance from 0 to the top-left of the view
 	viewOffsetX = center.x - (SCREEN_WIDTH - center.w) / 2;
 	viewOffsetY = center.y - (SCREEN_HEIGHT - center.h) / 2;
+	
+	// don't allow to go negative
+	//viewOffsetX = (viewOffsetX ? viewOffsetX : 0);
+	//viewOffsetY = (viewOffsetY ? viewOffsetY : 0);
 }
 
 void Map::drawTo(SDL_Surface* screenSurface) 
 {
-	printf("Centered on %d %d %d %d\n", center.x, center.y, center.w, center.h);
+	//printf("Centered on %d %d %d %d\n", center.x, center.y, center.w, center.h);
 	// virtual coordinates for top-left of view 
 	int top_left_x = center.x - (SCREEN_WIDTH - center.w) / 2;
 	int top_left_y = center.y - (SCREEN_HEIGHT - center.h) / 2;
-	printf("%d, %d\n", top_left_x, top_left_y);
+	//printf("%d, %d\n", top_left_x, top_left_y);
 	
 	// offsets from tile borders on x and y
 	int offset_x = top_left_x % TILE_WIDTH;
 	int offset_y = top_left_y % TILE_HEIGHT;
-	printf("%d, %d\n", offset_x, offset_y);
+	//printf("%d, %d\n", offset_x, offset_y);
 	
 	// calculate # of tiles to render on width and height of screen (todo: make const)
 	int tiles_wide = (SCREEN_WIDTH / TILE_WIDTH) + 1;
 	int tiles_tall = (SCREEN_HEIGHT / TILE_HEIGHT) + 1;
-	printf("%d, %d\n", tiles_wide, tiles_tall);
+	//printf("%d, %d\n", tiles_wide, tiles_tall);
 	
 	// row and col of top-left tile to render
 	int start_tile_x = top_left_x / TILE_WIDTH;
 	int start_tile_y = top_left_y / TILE_HEIGHT;
-	printf("%d, %d\n", start_tile_x, start_tile_y);
+	//printf("%d, %d\n", start_tile_x, start_tile_y);
 	
 	//printf("Finished Calculations\n");
 	
@@ -70,18 +76,4 @@ void Map::drawTo(SDL_Surface* screenSurface)
 				//printf("Drew\n");
 		}
 	}
-	
-	// for now just paint screen white
-	//SDL_FillRect( screenSurface, NULL, SDL_MapRGB( screenSurface->format, 0x00, 0xFF, 0xFF ) );
-	
-	/*for (int i = 0; i < mapRows; i++) 
-	{
-		dest.y = i * TILE_HEIGHT;
-		for (int j = 0; j < mapCols; j++) 
-		{
-			dest.x = j * TILE_WIDTH;
-			SDL_BlitSurface( tileImgs[ mapTiles[i][j] ], &src, screenSurface, &dest );			
-		}
-	}*/
-
 }

@@ -35,7 +35,7 @@ SDL_Surface* gScreenSurface = NULL;
 SDL_Renderer* gRenderer = NULL;
 
 SDL_Surface *player_idle_img = NULL, *player_mvup_img = NULL, *player_mvdown_img = NULL, *player_mvright_img = NULL, *player_mvleft_img = NULL;
-SDL_Surface *grass_tile_img = NULL, *stone_tile_img = NULL, *obstacle_tile_img = NULL, *water_tile_img = NULL;
+SDL_Surface *brown_brick_tile_img = NULL, *dark_brick_tile_img = NULL, *white_brick_tile_img = NULL, *grass_tile_img = NULL, *water_tile_img = NULL;
 
 bool init()
 {
@@ -94,10 +94,12 @@ bool loadMedia()
 	player_mvright_img = loadSurface("graphics/player_mvright_spritesheet.png");
 	player_mvleft_img = loadSurface("graphics/player_mvleft_spritesheet.png");
 	
+	brown_brick_tile_img = loadSurface("graphics/brown_brick_tile.png");
+	dark_brick_tile_img = loadSurface("graphics/dark_brick_tile.png");
+	white_brick_tile_img = loadSurface("graphics/white_brick_tile_2.png");
 	grass_tile_img = loadSurface("graphics/grass_tile.png");
-	stone_tile_img = loadSurface("graphics/stone_tile.png");
-	obstacle_tile_img = loadSurface("graphics/barrier_tile.png");
 	water_tile_img = loadSurface("graphics/water_tile.png");
+	
 	return success;
 }
 
@@ -109,9 +111,10 @@ void close()
 	SDL_FreeSurface(player_mvright_img);
 	SDL_FreeSurface(player_mvleft_img);
 	
+	SDL_FreeSurface(brown_brick_tile_img);
+	SDL_FreeSurface(dark_brick_tile_img);
+	SDL_FreeSurface(white_brick_tile_img);
 	SDL_FreeSurface(grass_tile_img);
-	SDL_FreeSurface(stone_tile_img);
-	SDL_FreeSurface(obstacle_tile_img);
 	SDL_FreeSurface(water_tile_img);
 	
 	//Destroy window
@@ -136,13 +139,6 @@ SDL_Surface* loadSurface( std::string path )
 		printf( "Unable to load image %s! SDL Error: %s\n", path.c_str(), SDL_GetError() );
 	}
 	
-	// set flag for alpha channnel
-	//SDL_SetAlpha(loadedSurface, SDL_SRCALPHA /*| SDL_RLEACCEL*/, SDL_ALPHA_OPAQUE);
-
-	// set alpha format
-	//loadedSurface->format->Amask = 0xFF000000;
-	//loadedSurface->format->Ashift = 24; 
-	
 	return loadedSurface;
 }
 
@@ -157,7 +153,7 @@ int main( int argc, char* args[] )
 	PlayerSprite playerSprite = PlayerSprite(100.0f, 140.0f, player_idle_img, player_mvup_img, player_mvdown_img, player_mvleft_img, player_mvright_img);
 	printf("Created player sprite\n");
 	Map map;
-	map.init(grass_tile_img, stone_tile_img, obstacle_tile_img, water_tile_img);
+	map.init(brown_brick_tile_img, dark_brick_tile_img, white_brick_tile_img, grass_tile_img, water_tile_img);
 	printf("Created map\n");
 	
 	//Main loop flag
