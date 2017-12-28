@@ -4,12 +4,21 @@ void Map::init(SDL_Surface* brown_brick_tile_img,
 				  SDL_Surface* dark_brick_tile_img, 
 				  SDL_Surface* white_brick_tile_img, 
 				  SDL_Surface* grass_tile_img, 
-				  SDL_Surface* water_tile_img) {
+				  SDL_Surface* water_tile_img,
+				  SDL_Surface* tree_1_img,
+				  SDL_Surface* tree_2_img,
+				  SDL_Surface* rock_1_img,
+				  SDL_Surface* rock_2_img) {
 	tileImgs[0] = brown_brick_tile_img;
 	tileImgs[1] = dark_brick_tile_img;
 	tileImgs[2] = white_brick_tile_img;
 	tileImgs[3] = grass_tile_img;
 	tileImgs[4] = water_tile_img;
+	objectImgs[0] = NULL; // todo: bad practice (?)
+	objectImgs[1] = tree_1_img;
+	objectImgs[2] = tree_2_img;
+	objectImgs[3] = rock_1_img;
+	objectImgs[4] = rock_2_img;
 }
 
 void Map::centerTo(SDL_Rect newCenter) 
@@ -54,7 +63,7 @@ void Map::drawTo(SDL_Surface* screenSurface)
 	
 	//printf("Finished Calculations\n");
 	
-	// render proper tiles, at offsets
+	// render tiles to canvas, using offsets to get physical coordinates
 	for (int i = 0; i < tiles_tall; i++) 
 	{
 		dest.y = i * TILE_HEIGHT - offset_y;
@@ -73,7 +82,29 @@ void Map::drawTo(SDL_Surface* screenSurface)
 			{
 				SDL_BlitSurface( tileImgs[ mapTiles[start_tile_y + i][start_tile_x + j] ], &src, screenSurface, &dest );
 			}
-				//printf("Drew\n");
 		}
 	}
+	// render any objects
+	for (int i = 0; i < tiles_tall; i++) 
+	{
+		for (int j = 0; j < tiles_wide; j++) 
+		{
+			if (start_tile_y + i >= 0 && start_tile_x + j >= 0 && start_tile_y + i < mapRows && start_tile_x + j < mapCols && objectTiles[start_tile_y + i][start_tile_x + j])
+			{
+				src.w = objectImgs[ objectTiles[start_tile_y + i][start_tile_x + j] ]->w;
+				src.h = objectImgs[ objectTiles[start_tile_y + i][start_tile_x + j] ]->h;
+				// draw so image is centered, with bottom on tile
+				dest.y = i * TILE_HEIGHT - offset_y - src.h + TILE_HEIGHT;
+				dest.x = j * TILE_WIDTH - offset_x - (src.w - TILE_WIDTH) / 2;
+				dest.w = src.w;
+				dest.h = src.h;
+				SDL_BlitSurface( objectImgs[ objectTiles[start_tile_y + i][start_tile_x + j] ], &src, screenSurface, &dest );
+			}
+		 }
+	}
+	// set back to tile width/height
+	src.w = TILE_WIDTH;
+	src.h = TILE_HEIGHT;
+	dest.w = TILE_WIDTH;
+	dest.h = TILE_HEIGHT;
 }
