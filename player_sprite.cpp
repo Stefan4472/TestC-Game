@@ -11,11 +11,11 @@ PlayerSprite::PlayerSprite(float xCoord, float yCoord,
 	x = xCoord;
 	y = yCoord;
 
-	// note: this depends on the image of the sprite, and will need to be adjusted at times.
-	hitboxOffsetX = 17;
-	hitboxOffsetY = 11;
-	hitbox.w = 100;
-	hitbox.h = 134;
+	// note: this depends on the image of the sprite, and will need to be adjusted at times. Also: hitboxes corresponding to frames of spritesheets
+	hitboxOffsetX = 8;
+	hitboxOffsetY = 4;
+	hitbox.w = 30;
+	hitbox.h = 44;
 	
 	idle_anim.init(idle_anim_sheet, 2, 100);
 	mv_up_anim.init(mv_up_anim_sheet, 4, 100);
@@ -142,6 +142,16 @@ void PlayerSprite::update(int ms) {
 void PlayerSprite::drawTo(SDL_Surface* screenSurface, int offsetX, int offsetY) {
 	// draw current animatino frame to screen
 	(*current_anim).drawTo(screenSurface, x - offsetX, y - offsetY);
+}
+
+float PlayerSprite::getPosX() 
+{
+	return x + 27;
+}
+
+float PlayerSprite::getPosY()
+{
+	return y + 50;	
 }
 
 PlayerSprite::~PlayerSprite() 

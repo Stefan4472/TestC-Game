@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 #include <SDL2/SDL.h>
+#include "player_sprite.h"
 
 // available id's for tiles
 enum TILE_IDS 
@@ -87,10 +88,14 @@ class Map
 				  SDL_Surface* tree_2_img,
 				  SDL_Surface* rock_1_img,
 				  SDL_Surface* rock_2_img);
+	  	// handles playerSprite on the map. Checks for interactions and calles collision handler if necessary
+		void handlePlayer(PlayerSprite playerSprite);
 		// center background to given rect, updating viewOffsetX and viewOffsetY to match
 		void centerTo(SDL_Rect newCenter);
-		// draws background to the given surface/screen. Use center() to center the background to a virtual rectangle
-		void drawTo(SDL_Surface* screenSurface);
+		// draws tiled terrain to the given surface/screen. Use center() to center the background to a virtual rectangle
+		void drawTerrainTo(SDL_Surface* screenSurface);
+		// draws objects to the surface/screen
+		void drawObjectsTo(SDL_Surface* screenSurface);
 };
 
 #endif

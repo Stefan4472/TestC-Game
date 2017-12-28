@@ -21,6 +21,18 @@ void Map::init(SDL_Surface* brown_brick_tile_img,
 	objectImgs[4] = rock_2_img;
 }
 
+void Map::handlePlayer(PlayerSprite playerSprite) 
+{
+	// determine tile player is standing in   todo: this is actually pretty bad. Use hitbox to check against all tiles intersected
+	int tile_r = playerSprite.getPosX() / TILE_WIDTH;
+	int tile_c = playerSprite.getPosY() / TILE_HEIGHT;
+	
+	if (objectTiles[tile_r][tile_c])
+	{
+		printf("Collision\n");
+	}
+}
+
 void Map::centerTo(SDL_Rect newCenter) 
 {
 	// todo: better way to make a copy
@@ -38,7 +50,7 @@ void Map::centerTo(SDL_Rect newCenter)
 	//viewOffsetY = (viewOffsetY ? viewOffsetY : 0);
 }
 
-void Map::drawTo(SDL_Surface* screenSurface) 
+void Map::drawTerrainTo(SDL_Surface* screenSurface) 
 {
 	//printf("Centered on %d %d %d %d\n", center.x, center.y, center.w, center.h);
 	// virtual coordinates for top-left of view 
@@ -84,6 +96,30 @@ void Map::drawTo(SDL_Surface* screenSurface)
 			}
 		}
 	}
+}
+
+void Map::drawObjectsTo(SDL_Surface* screenSurface)  // todo: don't' redo calculations. ALSO: draw everything above player tile, then player, then everything at and below
+{
+	// virtual coordinates for top-left of view 
+	int top_left_x = center.x - (SCREEN_WIDTH - center.w) / 2;
+	int top_left_y = center.y - (SCREEN_HEIGHT - center.h) / 2;
+	//printf("%d, %d\n", top_left_x, top_left_y);
+	
+	// offsets from tile borders on x and y
+	int offset_x = top_left_x % TILE_WIDTH;
+	int offset_y = top_left_y % TILE_HEIGHT;
+	//printf("%d, %d\n", offset_x, offset_y);
+	
+	// calculate # of tiles to render on width and height of screen (todo: make const)
+	int tiles_wide = (SCREEN_WIDTH / TILE_WIDTH) + 1;
+	int tiles_tall = (SCREEN_HEIGHT / TILE_HEIGHT) + 1;
+	//printf("%d, %d\n", tiles_wide, tiles_tall);
+	
+	// row and col of top-left tile to render
+	int start_tile_x = top_left_x / TILE_WIDTH;
+	int start_tile_y = top_left_y / TILE_HEIGHT;
+	//printf("%d, %d\n", start_tile_x, start_tile_y);
+	
 	// render any objects
 	for (int i = 0; i < tiles_tall; i++) 
 	{

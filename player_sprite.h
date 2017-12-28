@@ -48,7 +48,11 @@ class PlayerSprite
 		void update(int ms);
 		// draws sprite to the given surface/screen. Subtracting offsets from coordinates results in on-canvas coordinate to draw to
 		void drawTo(SDL_Surface* screenSurface, int offsetX, int offsetY);
+		// given KeyEvent from user, sees whether it is relevant and consumes it. Returns true if it was consumed.
 		bool handleKeyEvent(SDL_Event e);
+		// return x- and y-coordinates of where the player is standing, in virtual coordinate space
+		float getPosX();
+		float getPosY();
 		~PlayerSprite();
 		
 	private:
