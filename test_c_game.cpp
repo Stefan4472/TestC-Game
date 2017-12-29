@@ -36,7 +36,8 @@ SDL_Renderer* gRenderer = NULL;
 
 SDL_Surface *player_idle_img = NULL, *player_mvup_img = NULL, *player_mvdown_img = NULL, *player_mvright_img = NULL, *player_mvleft_img = NULL;
 SDL_Surface *brown_brick_tile_img = NULL, *dark_brick_tile_img = NULL, *white_brick_tile_img = NULL, *grass_tile_img = NULL, *water_tile_img = NULL;
-SDL_Surface *tree_1_img = NULL, *tree_2_img = NULL, *rock_1_img = NULL, *rock_2_img = NULL;
+SDL_Surface *tree_1_img = NULL, *tree_2_img = NULL, *rock_1_img = NULL, *rock_2_img = NULL, *wooden_fence_left_img = NULL, *wooden_fence_post_img = NULL,\
+ *wooden_fence_post_vert_img = NULL;
 bool init()
 {
 	//Initialize SDL
@@ -104,6 +105,9 @@ bool loadMedia()
 	tree_2_img = loadSurface("graphics/tree_2.png");
 	rock_1_img = loadSurface("graphics/rock_1.png");
 	rock_2_img = loadSurface("graphics/rock_2.png");
+	wooden_fence_left_img = loadSurface("graphics/wooden_fence_left_2.png");
+	wooden_fence_post_img = loadSurface("graphics/wooden_fence_post.png");
+	wooden_fence_post_vert_img = loadSurface("graphics/wooden_fence_vertical.png");
 	
 	return success;
 }
@@ -126,6 +130,9 @@ void close()
 	SDL_FreeSurface(rock_2_img);
 	SDL_FreeSurface(tree_1_img);
 	SDL_FreeSurface(tree_2_img);
+	SDL_FreeSurface(wooden_fence_left_img);
+	SDL_FreeSurface(wooden_fence_post_img);
+	SDL_FreeSurface(wooden_fence_post_vert_img);
 	//Destroy window
 	SDL_DestroyWindow( gWindow );
 	gWindow = NULL;
@@ -163,7 +170,7 @@ int main( int argc, char* args[] )
 	printf("Created player sprite\n");
 	Map map;
 	map.init(brown_brick_tile_img, dark_brick_tile_img, white_brick_tile_img, grass_tile_img, water_tile_img,
-			tree_1_img, tree_2_img, rock_1_img, rock_2_img);
+			tree_1_img, tree_2_img, rock_1_img, rock_2_img, wooden_fence_left_img, wooden_fence_post_img, wooden_fence_post_vert_img);
 	printf("Created map\n");
 	
 	//Main loop flag

@@ -8,7 +8,10 @@ void Map::init(SDL_Surface* brown_brick_tile_img,
 				  SDL_Surface* tree_1_img,
 				  SDL_Surface* tree_2_img,
 				  SDL_Surface* rock_1_img,
-				  SDL_Surface* rock_2_img) {
+				  SDL_Surface* rock_2_img,
+			  	  SDL_Surface* wooden_fence_left_img,
+				  SDL_Surface* wooden_fence_post,
+				  SDL_Surface* wooden_fence_vert) {
 	tileImgs[0] = brown_brick_tile_img;
 	tileImgs[1] = dark_brick_tile_img;
 	tileImgs[2] = white_brick_tile_img;
@@ -19,6 +22,9 @@ void Map::init(SDL_Surface* brown_brick_tile_img,
 	objectImgs[2] = tree_2_img;
 	objectImgs[3] = rock_1_img;
 	objectImgs[4] = rock_2_img;
+	objectImgs[5] = wooden_fence_left_img;
+	objectImgs[6] = wooden_fence_post;
+	objectImgs[7] = wooden_fence_vert;
 }
 
 void Map::handlePlayer(PlayerSprite playerSprite) 
