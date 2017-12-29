@@ -15,7 +15,7 @@ enum TILE_IDS
 	TILE_WATER
 };
 
-enum OBJECT_IDS 
+enum OBJECT_IDS // todo: flowers, walkable vs. non-walkable
 {
 	OBJECT_NOTHING,
 	OBJECT_TREE_1,
@@ -39,7 +39,7 @@ class Map
 	int mapCols = 10;
 	
 	// tile grid
-	int mapTiles[10][10] = 
+	int mapTiles[10][10] =  // todo: should just be chars
 	{
 		{ TILE_GRASS, TILE_GRASS, TILE_WHITE_BRICK, TILE_WHITE_BRICK, TILE_WHITE_BRICK, TILE_GRASS, TILE_GRASS, TILE_WHITE_BRICK, TILE_WHITE_BRICK, TILE_WHITE_BRICK },
 		{ TILE_GRASS, TILE_GRASS, TILE_GRASS, TILE_GRASS, TILE_GRASS, TILE_GRASS, TILE_GRASS, TILE_WHITE_BRICK, TILE_WHITE_BRICK, TILE_WHITE_BRICK },

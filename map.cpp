@@ -30,12 +30,14 @@ void Map::init(SDL_Surface* brown_brick_tile_img,
 void Map::handlePlayer(PlayerSprite playerSprite) 
 {
 	// determine tile player is standing in   todo: this is actually pretty bad. Use hitbox to check against all tiles intersected
-	int tile_r = playerSprite.getPosX() / TILE_WIDTH;
-	int tile_c = playerSprite.getPosY() / TILE_HEIGHT;
+	int tile_r = playerSprite.getPosY() / TILE_HEIGHT;
+	int tile_c = playerSprite.getPosX() / TILE_WIDTH;
 	
+	printf("Tiles %d, %d\n", tile_r, tile_c);
 	if (objectTiles[tile_r][tile_c])
 	{
 		printf("Collision\n");
+		playerSprite.moveBack();
 	}
 }
 

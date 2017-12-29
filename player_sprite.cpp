@@ -81,6 +81,10 @@ bool PlayerSprite::handleKeyEvent(SDL_Event e)
 }
 
 void PlayerSprite::move(int ms) {
+	// save current position
+	lastX = x;
+	lastY = y;
+	
 	if (movementDir == MOVEMENT_RIGHT) {
 		x += ms * PX_PER_MS;
 	} else if (movementDir == MOVEMENT_LEFT) {
@@ -92,6 +96,15 @@ void PlayerSprite::move(int ms) {
 	} else if (movementDir == MOVEMENT_DOWN) {
 		y += ms * PX_PER_MS;
 	}	
+	hitbox.x = x + hitboxOffsetX;
+	hitbox.y = y + hitboxOffsetY;
+}
+
+void PlayerSprite::moveBack() 
+{
+	printf("Moving back to %f, %f from %f, %f\n", lastX, lastY, x, y);
+	x = lastX;
+	y = lastY;
 	hitbox.x = x + hitboxOffsetX;
 	hitbox.y = y + hitboxOffsetY;
 }
@@ -146,12 +159,44 @@ void PlayerSprite::drawTo(SDL_Surface* screenSurface, int offsetX, int offsetY) 
 
 float PlayerSprite::getPosX() 
 {
-	return x + 27;
+	switch (movementDir) 
+	{
+		case MOVEMENT_NONE:
+		case MOVEMENT_UP:
+		case MOVEMENT_DOWN:
+			return x + current_anim->frameWidth / 2;
+		
+		case MOVEMENT_LEFT:
+			return x;
+
+		case MOVEMENT_RIGHT:
+			return x + current_anim->frameWidth;
+		
+		default:
+			printf("This shouldn't happen");
+			return x;
+	}
 }
 
 float PlayerSprite::getPosY()
 {
-	return y + 50;	
+	switch (movementDir) 
+	{
+		case MOVEMENT_NONE:
+		case MOVEMENT_LEFT:
+		case MOVEMENT_RIGHT:
+			return y + current_anim->frameHeight;
+			
+		case MOVEMENT_UP:
+			return y + current_anim->frameHeight * 0.7f;
+			
+		case MOVEMENT_DOWN:
+			return y + current_anim->frameHeight;
+		
+		default:
+			printf("This shouldn't happen");
+			return x;
+	}
 }
 
 PlayerSprite::~PlayerSprite() 
