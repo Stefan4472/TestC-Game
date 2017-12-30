@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <SDL2/SDL.h>
 #include "player_sprite.h"
+#include "civilian_sprite.h"
 
 // available id's for tiles
 enum TILE_IDS 
@@ -80,6 +81,8 @@ class Map
 	
 	// source and destination rects 
 	SDL_Rect src = {0, 0, TILE_WIDTH, TILE_HEIGHT}, dest = {0, 0, TILE_WIDTH, TILE_HEIGHT};
+	
+	CivilianSprite civilian;
 	
 	public:
 		// offsets on x and y that graphics should be drawn to to convert virtual to canvas coordinates

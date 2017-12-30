@@ -1,5 +1,5 @@
-#ifndef SPRITE_H
-#define SPRITE_H
+#ifndef PLAYER_SPRITE_H
+#define PLAYER_SPRITE_H
 
 #include <stdio.h>
 #include <SDL2/SDL.h>
