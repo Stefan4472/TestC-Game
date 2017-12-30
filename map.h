@@ -67,6 +67,9 @@ class Map
 		{ OBJECT_NOTHING, OBJECT_NOTHING, OBJECT_NOTHING, OBJECT_NOTHING, OBJECT_NOTHING, OBJECT_NOTHING, OBJECT_NOTHING, OBJECT_NOTHING, OBJECT_NOTHING, OBJECT_NOTHING }
 	};
 	
+	// grid of tiles that are walkable--generated based on mapTiles and objectTiles
+	//bool walkableTiles[10][10] = 
+	
 	// images corresponding with TILE_IDS
 	SDL_Surface* tileImgs[5] = { NULL, NULL, NULL, NULL, NULL };
 	

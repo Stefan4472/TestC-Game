@@ -33,7 +33,7 @@ void Map::handlePlayer(PlayerSprite playerSprite)
 	int tile_r = playerSprite.getPosY() / TILE_HEIGHT;
 	int tile_c = playerSprite.getPosX() / TILE_WIDTH;
 	
-	printf("Tiles %d, %d\n", tile_r, tile_c);
+	//printf("Tiles %d, %d\n", tile_r, tile_c);
 	if (objectTiles[tile_r][tile_c])
 	{
 		printf("Collision\n");

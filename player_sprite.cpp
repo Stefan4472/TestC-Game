@@ -58,7 +58,7 @@ bool PlayerSprite::handleKeyEvent(SDL_Event e)
 	// player released a key
 	else
 	{
-		switch (e.key.keysym.sym) 
+		switch (e.key.keysym.sym) // todo: E: inventory, R reload, F action
 		{
 			case SDLK_RIGHT: // todo: support bi-directionality
 				//changeDir(-MOVEMENT_RIGHT);
@@ -105,8 +105,10 @@ void PlayerSprite::moveBack()
 	printf("Moving back to %f, %f from %f, %f\n", lastX, lastY, x, y);
 	x = lastX;
 	y = lastY;
+
 	hitbox.x = x + hitboxOffsetX;
 	hitbox.y = y + hitboxOffsetY;
+	
 }
 
 void PlayerSprite::changeDir(int newDir) {
