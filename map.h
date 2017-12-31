@@ -105,6 +105,8 @@ class Map
 				  SDL_Surface *civilian_mvdown_img,
 				  SDL_Surface *civilian_mvright_img, 
 				  SDL_Surface *civilian_mvleft_img);
+		// advances state by given number of milliseconds
+		void update(int ms);
 	  	// handles playerSprite on the map. Checks for interactions and calles collision handler if necessary
 		void handlePlayer(PlayerSprite* playerSprite);
 		// center background to given rect, updating viewOffsetX and viewOffsetY to match

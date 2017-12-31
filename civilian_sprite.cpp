@@ -27,7 +27,7 @@ void CivilianSprite::init(float xCoord, float yCoord,
 }
 
 void CivilianSprite::move(int ms) {
-/*	if (movementDir == MOVEMENT_RIGHT) {
+	if (movementDir == MOVEMENT_RIGHT) {
 		x += ms * PX_PER_MS;
 	} else if (movementDir == MOVEMENT_LEFT) {
 		x -= ms * PX_PER_MS;
@@ -39,24 +39,13 @@ void CivilianSprite::move(int ms) {
 		y += ms * PX_PER_MS;
 	}	
 	hitbox.x = x + hitboxOffsetX;
-	hitbox.y = y + hitboxOffsetY;*/
-}
-
-/*void PlayerSprite::moveBack() 
-{
-	printf("Moving back to %f, %f from %f, %f\n", lastX, lastY, x, y);
-	x = lastX;
-	y = lastY;
-
-	hitbox.x = x + hitboxOffsetX;
 	hitbox.y = y + hitboxOffsetY;
-	
 }
 
-void PlayerSprite::changeDir(int newDir) {
+void CivilianSprite::changeDir(int newDir)
+{
 	// only change if direction has been changed
 	if (newDir != movementDir) {
-		printf("Movement Change to %d\n", newDir);
 		
 		// reset currently-playing animation
 		(*current_anim).reset();
@@ -70,6 +59,7 @@ void PlayerSprite::changeDir(int newDir) {
 				break;
 
 			case MOVEMENT_RIGHT:
+				printf("Changing to right\n");
 				current_anim = &mv_right_anim;
 				break;
 
@@ -90,10 +80,29 @@ void PlayerSprite::changeDir(int newDir) {
 				break;
 		}
 	}
+}
+
+/*void PlayerSprite::moveBack() 
+{
+	printf("Moving back to %f, %f from %f, %f\n", lastX, lastY, x, y);
+	x = lastX;
+	y = lastY;
+
+	hitbox.x = x + hitboxOffsetX;
+	hitbox.y = y + hitboxOffsetY;
+	
 }*/
 
 void CivilianSprite::update(int ms) {
 	(*current_anim).passTime(ms);
+	if (x < 100) 
+	{
+		changeDir(MOVEMENT_RIGHT);
+	}
+	else if (x > 250) 
+	{
+		changeDir(MOVEMENT_LEFT);
+	}
 }
 
 void CivilianSprite::drawTo(SDL_Surface* screenSurface, int offsetX, int offsetY) {

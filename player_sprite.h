@@ -4,18 +4,7 @@
 #include <stdio.h>
 #include <SDL2/SDL.h>
 #include "spritesheet.h"
-
-enum MOVEMENT {
-	MOVEMENT_UP,
-	MOVEMENT_UP_RIGHT,
-	MOVEMENT_RIGHT, 
-	MOVEMENT_DOWN_RIGHT,
-	MOVEMENT_DOWN,
-	MOVEMENT_DOWN_LEFT,
-	MOVEMENT_LEFT,
-	MOVEMENT_UP_LEFT,
-	MOVEMENT_NONE
-};
+#include "sprite.h"
 
 // pixels moved in x/y per millisecond
 const float PX_PER_MS = 0.25f;

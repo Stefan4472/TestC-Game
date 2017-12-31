@@ -6,7 +6,7 @@
 
 // Sprite base class
 
-/*enum MOVEMENT {
+enum MOVEMENT {
 	MOVEMENT_UP,
 	MOVEMENT_UP_RIGHT,
 	MOVEMENT_RIGHT, 
@@ -16,7 +16,7 @@
 	MOVEMENT_LEFT,
 	MOVEMENT_UP_LEFT,
 	MOVEMENT_NONE
-};*/
+};
 
 class Sprite
 {

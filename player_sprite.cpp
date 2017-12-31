@@ -102,13 +102,11 @@ void PlayerSprite::move(int ms) {
 
 void PlayerSprite::moveBack() 
 {
-	printf("Moving back to %f, %f from %f, %f\n", lastX, lastY, x, y);
 	x = lastX;
 	y = lastY;
 
 	hitbox.x = x + hitboxOffsetX;
 	hitbox.y = y + hitboxOffsetY;
-	printf("New Position is %f, %f\n", x, y);
 }
 
 void PlayerSprite::changeDir(int newDir) {

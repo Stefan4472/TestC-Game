@@ -8,12 +8,18 @@
 
 class CivilianSprite
 {
+	// pixels moved in x/y per millisecond
+	const float PX_PER_MS = 0.10f;
+	// current direction moving in
+	int movementDir = MOVEMENT_LEFT;
 	// default constructor: will be initialized in the PlayerSprite constructor
 	Spritesheet idle_anim, mv_up_anim, mv_down_anim, mv_right_anim, mv_left_anim;
 	// pointer to animatino that's currently playing
 	Spritesheet *current_anim = NULL;
 	// offset of start of hitbox, from sprite's x and y (x + hitboxOffsetX = hitbox.x)
 	int hitboxOffsetX, hitboxOffsetY;
+	// changes movement direction
+	void changeDir(int newDir);
 	
 	public:
 		// virtual coordinates

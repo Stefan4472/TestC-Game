@@ -48,7 +48,13 @@ void Map::init(SDL_Surface* brown_brick_tile_img,
 	}
 	//printf("%d\n", civilian.x);
 	//civilian.hitbox;
-	civilian.init(200.0f, 200.0f, civilian_idle_img, civilian_mvup_img, civilian_mvdown_img, civilian_mvright_img, civilian_mvleft_img);
+	civilian.init(200.0f, 200.0f, civilian_idle_img, civilian_mvup_img, civilian_mvdown_img, civilian_mvleft_img, civilian_mvright_img);
+}
+
+void Map::update(int ms) 
+{
+	civilian.move(ms);
+	civilian.update(ms);
 }
 
 void Map::handlePlayer(PlayerSprite* playerSprite) 
