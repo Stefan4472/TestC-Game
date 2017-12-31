@@ -3,7 +3,7 @@
 #and may not be redistributed without written permission.
 
 #OBJS specifies which files to compile as part of the project
-OBJS = spritesheet.cpp item.cpp inventory.cpp player_sprite.cpp civilian_sprite.cpp map.cpp test_c_game.cpp 
+OBJS = spritesheet.cpp item.cpp inventory.cpp sprite.cpp player_sprite.cpp civilian_sprite.cpp map.cpp test_c_game.cpp 
 
 #CC specifies which compiler we're using
 CC = g++

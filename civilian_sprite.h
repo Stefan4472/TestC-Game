@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <SDL2/SDL.h>
 #include "spritesheet.h"
+#include "sprite.h"
 
 class CivilianSprite
 {
