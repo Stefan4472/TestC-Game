@@ -48,7 +48,7 @@ void Map::init(SDL_Surface* brown_brick_tile_img,
 	}
 	//printf("%d\n", civilian.x);
 	//civilian.hitbox;
-	//civilian.init(200.0f, 200.0f, civilian_idle_img, civilian_mvup_img, civilian_mvdown_img, civilian_mvright_img, civilian_mvleft_img);
+	civilian.init(200.0f, 200.0f, civilian_idle_img, civilian_mvup_img, civilian_mvdown_img, civilian_mvright_img, civilian_mvleft_img);
 }
 
 void Map::handlePlayer(PlayerSprite* playerSprite) 
@@ -178,5 +178,5 @@ void Map::drawObjectsTo(SDL_Surface* screenSurface)  // todo: don't' redo calcul
 
 void Map::drawSpritesTo(SDL_Surface* screenSurface)
 {
-	//civilian.drawTo(screenSurface, viewOffsetX, viewOffsetY);	
+	civilian.drawTo(screenSurface, viewOffsetX, viewOffsetY);	
 }
