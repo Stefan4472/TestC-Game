@@ -38,6 +38,8 @@ SDL_Surface *player_idle_img = NULL, *player_mvup_img = NULL, *player_mvdown_img
 SDL_Surface *brown_brick_tile_img = NULL, *dark_brick_tile_img = NULL, *white_brick_tile_img = NULL, *grass_tile_img = NULL, *water_tile_img = NULL;
 SDL_Surface *tree_1_img = NULL, *tree_2_img = NULL, *rock_1_img = NULL, *rock_2_img = NULL, *wooden_fence_left_img = NULL, *wooden_fence_post_img = NULL,\
  *wooden_fence_post_vert_img = NULL;
+SDL_Surface *civilian_idle_img = NULL, *civilian_mvup_img = NULL, *civilian_mvdown_img = NULL, *civilian_mvright_img = NULL, *civilian_mvleft_img = NULL;
+
 bool init()
 {
 	//Initialize SDL
@@ -95,6 +97,12 @@ bool loadMedia()
 	player_mvright_img = loadSurface("graphics/player_mvright_spritesheet.png");
 	player_mvleft_img = loadSurface("graphics/player_mvleft_spritesheet.png");
 	
+	civilian_idle_img = loadSurface("graphics/civilian_idle_spritesheet.png");
+	civilian_mvup_img = loadSurface("graphics/civilian_mvup_spritesheet.png");
+	civilian_mvdown_img = loadSurface("graphics/civilian_mvdown_spritesheet.png");
+	civilian_mvright_img = loadSurface("graphics/civilian_mvright_spritesheet.png");
+	civilian_mvleft_img = loadSurface("graphics/civilian_mvleft_spritesheet.png");
+	
 	brown_brick_tile_img = loadSurface("graphics/brown_brick_tile.png");
 	dark_brick_tile_img = loadSurface("graphics/dark_brick_tile.png");
 	white_brick_tile_img = loadSurface("graphics/white_brick_tile_2.png");
@@ -119,6 +127,12 @@ void close()
 	SDL_FreeSurface(player_mvdown_img);
 	SDL_FreeSurface(player_mvright_img);
 	SDL_FreeSurface(player_mvleft_img);
+	
+	SDL_FreeSurface(civilian_idle_img);
+	SDL_FreeSurface(civilian_mvup_img);
+	SDL_FreeSurface(civilian_mvdown_img);
+	SDL_FreeSurface(civilian_mvright_img);
+	SDL_FreeSurface(civilian_mvleft_img);
 	
 	SDL_FreeSurface(brown_brick_tile_img);
 	SDL_FreeSurface(dark_brick_tile_img);
@@ -170,7 +184,8 @@ int main( int argc, char* args[] )
 	printf("Created player sprite\n");
 	Map map;
 	map.init(brown_brick_tile_img, dark_brick_tile_img, white_brick_tile_img, grass_tile_img, water_tile_img,
-			tree_1_img, tree_2_img, rock_1_img, rock_2_img, wooden_fence_left_img, wooden_fence_post_img, wooden_fence_post_vert_img);
+			tree_1_img, tree_2_img, rock_1_img, rock_2_img, wooden_fence_left_img, wooden_fence_post_img, wooden_fence_post_vert_img,
+			civilian_idle_img, civilian_mvup_img, civilian_mvdown_img, civilian_mvright_img, civilian_mvleft_img);
 	printf("Created map\n");
 	
 	//Main loop flag
@@ -230,7 +245,7 @@ int main( int argc, char* args[] )
 		//printf("Moving playersprite\n");
 		playerSprite.move(ticks_since_last_frame);
 		
-		map.handlePlayer(playerSprite);
+		map.handlePlayer(&playerSprite);
 		
 		//printf("Updating playersprite\n");
 		playerSprite.update(ticks_since_last_frame);
@@ -248,6 +263,7 @@ int main( int argc, char* args[] )
 		playerSprite.drawTo(gScreenSurface, map.viewOffsetX, map.viewOffsetY);
 		
 		map.drawObjectsTo(gScreenSurface);
+		map.drawSpritesTo(gScreenSurface);
 		
 		//printf("Updating window surface\n");
 		

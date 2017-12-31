@@ -3,8 +3,8 @@
 
 #include <stdio.h>
 #include <SDL2/SDL.h>
-#include "player_sprite.h"
 #include "civilian_sprite.h"
+#include "player_sprite.h"
 
 // available id's for tiles
 enum TILE_IDS 
@@ -69,7 +69,7 @@ class Map
 	};
 	
 	// grid of tiles that are walkable--generated based on mapTiles and objectTiles
-	//bool walkableTiles[10][10] = 
+	bool walkableTiles[10][10]; 
 	
 	// images corresponding with TILE_IDS
 	SDL_Surface* tileImgs[5] = { NULL, NULL, NULL, NULL, NULL };
@@ -83,7 +83,7 @@ class Map
 	SDL_Rect src = {0, 0, TILE_WIDTH, TILE_HEIGHT}, dest = {0, 0, TILE_WIDTH, TILE_HEIGHT};
 	
 	CivilianSprite civilian;
-	
+
 	public:
 		// offsets on x and y that graphics should be drawn to to convert virtual to canvas coordinates
 		int viewOffsetX, viewOffsetY;
@@ -99,15 +99,23 @@ class Map
 				  SDL_Surface* rock_2_img,
 				  SDL_Surface* wooden_fence_left_img,
 				  SDL_Surface* wooden_fence_post,
-				  SDL_Surface* wooden_fence_vert);
+				  SDL_Surface* wooden_fence_vert,
+				  SDL_Surface *civilian_idle_img, 
+				  SDL_Surface *civilian_mvup_img,
+				  SDL_Surface *civilian_mvdown_img,
+				  SDL_Surface *civilian_mvright_img, 
+				  SDL_Surface *civilian_mvleft_img);
 	  	// handles playerSprite on the map. Checks for interactions and calles collision handler if necessary
-		void handlePlayer(PlayerSprite playerSprite);
+		void handlePlayer(PlayerSprite* playerSprite);
 		// center background to given rect, updating viewOffsetX and viewOffsetY to match
 		void centerTo(SDL_Rect newCenter);
 		// draws tiled terrain to the given surface/screen. Use center() to center the background to a virtual rectangle
 		void drawTerrainTo(SDL_Surface* screenSurface);
 		// draws objects to the surface/screen
 		void drawObjectsTo(SDL_Surface* screenSurface);
+		// draws sprites to the surface/screen
+		void drawSpritesTo(SDL_Surface* screenSurface);
+
 };
 
 #endif

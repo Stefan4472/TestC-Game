@@ -108,7 +108,7 @@ void PlayerSprite::moveBack()
 
 	hitbox.x = x + hitboxOffsetX;
 	hitbox.y = y + hitboxOffsetY;
-	
+	printf("New Position is %f, %f\n", x, y);
 }
 
 void PlayerSprite::changeDir(int newDir) {

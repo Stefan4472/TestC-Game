@@ -9,9 +9,14 @@ void Map::init(SDL_Surface* brown_brick_tile_img,
 				  SDL_Surface* tree_2_img,
 				  SDL_Surface* rock_1_img,
 				  SDL_Surface* rock_2_img,
-			  	  SDL_Surface* wooden_fence_left_img,
+				  SDL_Surface* wooden_fence_left_img,
 				  SDL_Surface* wooden_fence_post,
-				  SDL_Surface* wooden_fence_vert) {
+				  SDL_Surface* wooden_fence_vert,
+				  SDL_Surface *civilian_idle_img, 
+				  SDL_Surface *civilian_mvup_img,
+				  SDL_Surface *civilian_mvdown_img,
+				  SDL_Surface *civilian_mvright_img, 
+				  SDL_Surface *civilian_mvleft_img) {
 	tileImgs[0] = brown_brick_tile_img;
 	tileImgs[1] = dark_brick_tile_img;
 	tileImgs[2] = white_brick_tile_img;
@@ -25,19 +30,37 @@ void Map::init(SDL_Surface* brown_brick_tile_img,
 	objectImgs[5] = wooden_fence_left_img;
 	objectImgs[6] = wooden_fence_post;
 	objectImgs[7] = wooden_fence_vert;
+	
+	// figure out which tiles are walkable
+	for (int i = 0; i < mapRows; i++) 
+	{
+		for (int j = 0; j < mapCols; j++) 
+		{
+			if (mapTiles[i][j] == TILE_WATER || objectTiles[i][j] != OBJECT_NOTHING)
+			{
+				walkableTiles[i][j] = false;
+			} 
+			else 
+			{
+				walkableTiles[i][j] = true;
+			}
+		}
+	}
+	//printf("%d\n", civilian.x);
+	//civilian.hitbox;
+	//civilian.init(200.0f, 200.0f, civilian_idle_img, civilian_mvup_img, civilian_mvdown_img, civilian_mvright_img, civilian_mvleft_img);
 }
 
-void Map::handlePlayer(PlayerSprite playerSprite) 
+void Map::handlePlayer(PlayerSprite* playerSprite) 
 {
 	// determine tile player is standing in   todo: this is actually pretty bad. Use hitbox to check against all tiles intersected
-	int tile_r = playerSprite.getPosY() / TILE_HEIGHT;
-	int tile_c = playerSprite.getPosX() / TILE_WIDTH;
+	int tile_r = (*playerSprite).getPosY() / TILE_HEIGHT;
+	int tile_c = (*playerSprite).getPosX() / TILE_WIDTH;
 	
-	//printf("Tiles %d, %d\n", tile_r, tile_c);
-	if (objectTiles[tile_r][tile_c])
+	if (!walkableTiles[tile_r][tile_c])
 	{
 		printf("Collision\n");
-		playerSprite.moveBack();
+		(*playerSprite).moveBack();
 	}
 }
 
@@ -151,4 +174,9 @@ void Map::drawObjectsTo(SDL_Surface* screenSurface)  // todo: don't' redo calcul
 	src.h = TILE_HEIGHT;
 	dest.w = TILE_WIDTH;
 	dest.h = TILE_HEIGHT;
+}
+
+void Map::drawSpritesTo(SDL_Surface* screenSurface)
+{
+	//civilian.drawTo(screenSurface, viewOffsetX, viewOffsetY);	
 }
