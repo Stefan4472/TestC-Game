@@ -49,3 +49,37 @@ bool WanderAction::apply(Sprite* sprite, int ms)
 	
 	return duration != ACTION_LOOPING && elapsedTime >= duration;
 }
+
+FollowAction::FollowAction(int randomSeed, Sprite* target, int sampleRate)
+{
+	seed = randomSeed;
+	this->target = target;
+	this->sampleRate = sampleRate;
+}
+
+bool FollowAction::apply(Sprite* sprite, int ms)
+{
+	int dir = MOVEMENT_NONE;
+	// figure out which direction we need to move 
+	if (sprite->x < target->x)
+	{
+		dir = MOVEMENT_RIGHT;
+	} 
+	else if (sprite->x > target->x)
+	{
+		dir = MOVEMENT_LEFT;
+	}
+	else if (sprite->y < target->y)
+	{
+		dir = MOVEMENT_DOWN;
+	}
+	else if (sprite->y > target->y)
+	{
+		dir = MOVEMENT_UP;
+	}
+	// change direction if not correct
+	if (currMovement != dir) 
+	{
+		sprite->changeDir(dir);
+	}
+}

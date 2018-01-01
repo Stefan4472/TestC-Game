@@ -47,9 +47,21 @@ class WanderAction:public Action
 		bool apply(Sprite* sprite, int ms);
 };
 
-class FollowAction
+// sprite moves toward target sprite, following them
+class FollowAction:public Action
 {
-
+	// seed for random number generator
+	int seed;
+	// pause between samples of given Sprite's position
+	int sampleRate;
+	// current direction  of movement
+	int currMovement;
+	// sprite to follow
+	Sprite* target;
+	
+	public:
+		FollowAction(int randomSeed, Sprite* target, int sampleRate);
+		bool apply(Sprite* sprite, int ms);
 };
 
 class PatrolAction
