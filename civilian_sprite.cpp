@@ -11,6 +11,7 @@ void CivilianSprite::init(float xCoord, float yCoord,
 	x = xCoord;
 	y = yCoord;
 
+	speedPerMs = 0.1f;
 	// note: this depends on the image of the sprite, and will need to be adjusted at times. Also: hitboxes corresponding to frames of spritesheets
 	hitboxOffsetX = 8;
 	hitboxOffsetY = 4;
@@ -24,62 +25,8 @@ void CivilianSprite::init(float xCoord, float yCoord,
 	mv_right_anim.init(mv_right_anim_sheet, 3, 100);
 	
 	current_anim = &idle_anim;
-}
-
-void CivilianSprite::move(int ms) {
-	if (movementDir == MOVEMENT_RIGHT) {
-		x += ms * PX_PER_MS;
-	} else if (movementDir == MOVEMENT_LEFT) {
-		x -= ms * PX_PER_MS;
-	}
-
-	if (movementDir == MOVEMENT_UP) {
-		y -= ms * PX_PER_MS;
-	} else if (movementDir == MOVEMENT_DOWN) {
-		y += ms * PX_PER_MS;
-	}	
-	hitbox.x = x + hitboxOffsetX;
-	hitbox.y = y + hitboxOffsetY;
-}
-
-void CivilianSprite::changeDir(int newDir)
-{
-	// only change if direction has been changed
-	if (newDir != movementDir) {
-		
-		// reset currently-playing animation
-		(*current_anim).reset();
-		
-		movementDir = newDir;
-		
-		switch (movementDir) 
-		{	
-			case MOVEMENT_NONE:
-				current_anim = &idle_anim;
-				break;
-
-			case MOVEMENT_RIGHT:
-				printf("Changing to right\n");
-				current_anim = &mv_right_anim;
-				break;
-
-			case MOVEMENT_UP:
-				current_anim = &mv_up_anim;
-				break;
-
-			case MOVEMENT_DOWN:
-				current_anim = &mv_down_anim;
-				break;
-
-			case MOVEMENT_LEFT:
-				current_anim = &mv_left_anim;
-				break;
-
-			default:
-				printf("Weird!! Don't know which animation to show!\n");
-				break;
-		}
-	}
+	
+	changeDir(MOVEMENT_LEFT);
 }
 
 /*void PlayerSprite::moveBack() 

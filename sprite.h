@@ -26,17 +26,24 @@ class Sprite
 		Spritesheet *current_anim = NULL;
 		// offset of start of hitbox, from sprite's x and y (x + hitboxOffsetX = hitbox.x)
 		int hitboxOffsetX, hitboxOffsetY;
+		// default movement speed
+		float speedPerMs = 0;
 	
 	public:
 		// virtual coordinates
 		float x, y;
 		SDL_Rect hitbox;
+		// direction currently moving in
+		int movementDir = MOVEMENT_NONE;
 		// sets coordinates to intended movement, given number of milliseconds since last frame
 		virtual void move(int ms);
+		// changes to given movement direction
+		virtual void changeDir(int newDir);
 		// finalizes movement and any other updates to the sprite's state
 		virtual void update(int ms);
 		// draws sprite to the given surface/screen. Subtracting offsets from coordinates results in on-canvas coordinate to draw to
-		virtual void drawTo(SDL_Surface* screenSurface, int offsetX, int offsetY);
+		virtual void drawTo(SDL_Surface* screenSurface, int offsetX, int offsetY)=0;
 		
 };
+
 #endif
