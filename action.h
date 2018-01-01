@@ -54,6 +54,8 @@ class FollowAction:public Action
 	int seed;
 	// pause between samples of given Sprite's position
 	int sampleRate;
+	// time next sample should be taken
+	int nextSample;
 	// current direction  of movement
 	int currMovement;
 	// sprite to follow
@@ -61,6 +63,7 @@ class FollowAction:public Action
 	
 	public:
 		FollowAction(int randomSeed, Sprite* target, int sampleRate);
+		void setTarget(Sprite* target);
 		bool apply(Sprite* sprite, int ms);
 };
 

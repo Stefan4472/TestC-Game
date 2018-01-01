@@ -9,11 +9,15 @@
 
 class CivilianSprite:public Sprite
 {
+	// pointer to player
+	Sprite* playerSprite;
 	// actions defining default sprite behavior, and current behavior
-	Action *defaultAction = new WanderAction(ACTION_LOOPING, 10, 1000, 500), *currAction;
+	//Action *defaultAction = new IdleAction(ACTION_LOOPING);
+	//Action *defaultAction = new WanderAction(ACTION_LOOPING, 10, 1000, 500), *currAction;
+	Action *defaultAction;
 	
 	public:
-		void init(float xCoord, float yCoord,
+		void init(float xCoord, float yCoord, Sprite* playerSprite,
 					 SDL_Surface* idle_anim_sheet, 
 					 SDL_Surface* mv_up_anim_sheet, 
 					 SDL_Surface* mv_down_anim_sheet,

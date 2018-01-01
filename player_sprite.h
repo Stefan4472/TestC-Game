@@ -10,7 +10,7 @@
 const float PX_PER_MS = 0.25f;
 
 // updating: handle input events in queue, call move(), check collisions, handle any collisions, update, draw
-class PlayerSprite
+class PlayerSprite: public Sprite
 {
 	// coordinates at last frame--used for backtracking
 	float lastX, lastY;
@@ -24,9 +24,6 @@ class PlayerSprite
 	int hitboxOffsetX, hitboxOffsetY;
 	
 	public:
-		// virtual coordinates
-		float x, y;
-		SDL_Rect hitbox;
 		PlayerSprite(float xCoord, float yCoord,
 					 SDL_Surface* idle_anim_sheet, 
 					 SDL_Surface* mv_up_anim_sheet, 

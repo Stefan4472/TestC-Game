@@ -88,7 +88,7 @@ class Map
 		// offsets on x and y that graphics should be drawn to to convert virtual to canvas coordinates
 		int viewOffsetX, viewOffsetY;
 		// init tile images
-		void init(SDL_Surface* brown_brick_tile_img, 
+		void init(Sprite* playerSprite, SDL_Surface* brown_brick_tile_img, 
 				  SDL_Surface* dark_brick_tile_img, 
 				  SDL_Surface* white_brick_tile_img, 
 				  SDL_Surface* grass_tile_img, 

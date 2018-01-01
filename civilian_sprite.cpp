@@ -1,6 +1,6 @@
 #include "civilian_sprite.h"
 
-void CivilianSprite::init(float xCoord, float yCoord, 
+void CivilianSprite::init(float xCoord, float yCoord, Sprite* playerSprite,
 					 SDL_Surface* idle_anim_sheet, 
 					 SDL_Surface* mv_up_anim_sheet, 
 					 SDL_Surface* mv_down_anim_sheet, 
@@ -10,7 +10,9 @@ void CivilianSprite::init(float xCoord, float yCoord,
 	
 	x = xCoord;
 	y = yCoord;
-
+	this->playerSprite = playerSprite;
+	defaultAction = new FollowAction(10, playerSprite, 10);
+	
 	speedPerMs = 0.1f;
 	// note: this depends on the image of the sprite, and will need to be adjusted at times. Also: hitboxes corresponding to frames of spritesheets
 	hitboxOffsetX = 8;
