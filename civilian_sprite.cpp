@@ -25,31 +25,21 @@ void CivilianSprite::init(float xCoord, float yCoord,
 	mv_right_anim.init(mv_right_anim_sheet, 3, 100);
 	
 	current_anim = &idle_anim;
-	
-	changeDir(MOVEMENT_LEFT);
 }
 
-/*void PlayerSprite::moveBack() 
-{
-	printf("Moving back to %f, %f from %f, %f\n", lastX, lastY, x, y);
-	x = lastX;
-	y = lastY;
-
-	hitbox.x = x + hitboxOffsetX;
-	hitbox.y = y + hitboxOffsetY;
-	
-}*/
-
 void CivilianSprite::update(int ms) {
+	// apply current action 
+	defaultAction->apply(this, ms);
 	(*current_anim).passTime(ms);
-	if (x < 100) 
+	
+	/*if (x < 100) 
 	{
 		changeDir(MOVEMENT_RIGHT);
 	}
 	else if (x > 250) 
 	{
 		changeDir(MOVEMENT_LEFT);
-	}
+	}*/
 }
 
 void CivilianSprite::drawTo(SDL_Surface* screenSurface, int offsetX, int offsetY) {

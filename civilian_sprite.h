@@ -10,7 +10,7 @@
 class CivilianSprite:public Sprite
 {
 	// actions defining default sprite behavior, and current behavior
-	Action *defaultAction = new IdleAction(ACTION_LOOPING), *currAction;
+	Action *defaultAction = new WanderAction(ACTION_LOOPING, 10, 1000, 500), *currAction;
 	
 	public:
 		void init(float xCoord, float yCoord,
