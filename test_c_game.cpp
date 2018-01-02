@@ -2,6 +2,7 @@
 #include <SDL2/SDL_image.h>
 #include <stdio.h>
 #include <string>
+#include "gui_window.h"
 #include "player_sprite.h"
 #include "map.h"
 
@@ -36,6 +37,7 @@ SDL_Surface *tree_1_img = NULL, *tree_2_img = NULL, *rock_1_img = NULL, *rock_2_
  *wooden_fence_post_vert_img = NULL;
 SDL_Surface *civilian_idle_img = NULL, *civilian_mvup_img = NULL, *civilian_mvdown_img = NULL, *civilian_mvright_img = NULL, *civilian_mvleft_img = NULL;
 SDL_Surface *pistol_img = NULL;
+SDL_Surface *gui_window_img = NULL;
 
 bool init()
 {
@@ -116,6 +118,8 @@ bool loadMedia()
 	
 	pistol_img = loadSurface("graphics/pistol_1.png");
 	
+	gui_window_img = loadSurface("graphics/gui_window.png");
+	
 	return success;
 }
 
@@ -148,6 +152,8 @@ void close()
 	SDL_FreeSurface(wooden_fence_post_vert_img);
 	
 	SDL_FreeSurface(pistol_img);
+	
+	SDL_FreeSurface(gui_window_img);
 	
 	//Destroy window
 	SDL_DestroyWindow( gWindow );
@@ -189,10 +195,12 @@ int main( int argc, char* args[] )
 			tree_1_img, tree_2_img, rock_1_img, rock_2_img, wooden_fence_left_img, wooden_fence_post_img, wooden_fence_post_vert_img,
 			civilian_idle_img, civilian_mvup_img, civilian_mvdown_img, civilian_mvright_img, civilian_mvleft_img, pistol_img);
 	printf("Created map\n");
+	Window invWindow = Window(gui_window_img);
 	
 	//Main loop flag
 	bool quit = false;
 	bool paused = false;
+	bool showingInventory = false;
 	
 	Uint32 last_time = SDL_GetTicks();
 	Uint32 curr_time;
@@ -226,11 +234,25 @@ int main( int argc, char* args[] )
 				printf("PlayerSprite did not handle--checking on main thread\n");
 				switch( e.key.keysym.sym )
 				{ 
+					case SDLK_e: // show/hide inventory
+						if (e.type == SDL_KEYDOWN && !showingInventory)
+						{
+							showingInventory = true;	
+						} 
+						else if (e.type == SDL_KEYUP)
+						{
+							showingInventory = false;
+						}
+						break;
+						
 					case SDLK_p: // pause/unpause on "p"
-						if (e.type == SDL_KEYDOWN && !paused) {
+						if (e.type == SDL_KEYDOWN && !paused) 
+						{
 							printf("Pausing\n");
 							paused = true;
-						} else if (e.type == SDL_KEYUP) {
+						} 
+						else if (e.type == SDL_KEYUP) 
+						{
 							printf("Unpausing\n");
 							paused = false;
 						}
@@ -269,7 +291,11 @@ int main( int argc, char* args[] )
 		map.drawObjectsTo(gScreenSurface);
 		map.drawSpritesTo(gScreenSurface);
 		
-		//printf("Updating window surface\n");
+		// draw Inventory GUI
+		if (showingInventory)
+		{
+			invWindow.drawTo(gScreenSurface);
+		}
 		
 		// draw changes to window
 		SDL_UpdateWindowSurface( gWindow );
