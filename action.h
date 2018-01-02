@@ -1,7 +1,7 @@
 #ifndef SPRITE_ACTION_H
 #define SPRITE_ACTION_H
 
-#include <stdlib.h>
+#include "game_utils.h"
 #include "sprite.h"
 
 // constant indicating action should loop. It will only change if the sprite is interacted with in some way that breaks the current action.

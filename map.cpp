@@ -17,7 +17,8 @@ void Map::init(Sprite* playerSprite,
 				  SDL_Surface *civilian_mvup_img,
 				  SDL_Surface *civilian_mvdown_img,
 				  SDL_Surface *civilian_mvright_img, 
-				  SDL_Surface *civilian_mvleft_img) {
+				  SDL_Surface *civilian_mvleft_img,
+			  	SDL_Surface *pistol_img) {
 	tileImgs[0] = brown_brick_tile_img;
 	tileImgs[1] = dark_brick_tile_img;
 	tileImgs[2] = white_brick_tile_img;
@@ -50,6 +51,7 @@ void Map::init(Sprite* playerSprite,
 	//printf("%d\n", civilian.x);
 	//civilian.hitbox;
 	civilian.init(200.0f, 200.0f, playerSprite, civilian_idle_img, civilian_mvup_img, civilian_mvdown_img, civilian_mvleft_img, civilian_mvright_img);
+	pickup.init(pistol_img, pistol_img, 250.0f, 300.0f);
 }
 
 void Map::update(int ms) 
@@ -176,6 +178,9 @@ void Map::drawObjectsTo(SDL_Surface* screenSurface)  // todo: don't' redo calcul
 			}
 		 }
 	}
+	
+	pickup.drawToMap(screenSurface, offset_x, offset_y);
+	
 	// set back to tile width/height
 	src.w = TILE_WIDTH;
 	src.h = TILE_HEIGHT;

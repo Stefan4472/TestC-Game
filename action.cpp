@@ -1,3 +1,4 @@
+#include <cmath>
 #include "action.h"
 
 void Action::reset()
@@ -69,33 +70,31 @@ bool FollowAction::apply(Sprite* sprite, int ms)
 	// only update if it's time to take another sample
 	if (elapsedTime > nextSample) 
 	{
-		//printf("Sprite at %f, %f moving to %f, %f\n", sprite->x, sprite->y, target->x, target->y);
 		int dir = MOVEMENT_NONE;
 		int dx = target->x - sprite->x, dy = target->y - sprite->y;
-		// figure out which direction we need to move 
 		
-		// todo: if abs(dx) < 10, abs(dy) < 10: movement_none
-		
-		if (sprite->x < target->x)
+		// figure out which direction sprite needs to move 
+		if (distSquared(sprite, target) < 100.0f)
 		{
-			//printf("Moving Right\n");
+			dir = MOVEMENT_NONE;
+		} 
+		else if (dx > 5)
+		{
 			dir = MOVEMENT_RIGHT;
 		} 
-		else if (sprite->x > target->x)
+		else if (dx < -5)
 		{
-			//printf("Moving Left\n");
 			dir = MOVEMENT_LEFT;
 		}
-		else if (sprite->y < target->y)
+		else if (dy > 5)
 		{
-			//printf("Moving Down\n");
 			dir = MOVEMENT_DOWN;
 		}
-		else if (sprite->y > target->y)
+		else if (dy < -5)
 		{
-			//printf("Moving Up\n");
 			dir = MOVEMENT_UP;
 		}
+		
 		// change direction if not correct
 		if (currMovement != dir) 
 		{

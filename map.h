@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 #include <SDL2/SDL.h>
+#include "item.h"
 #include "civilian_sprite.h"
 #include "player_sprite.h"
 
@@ -83,6 +84,8 @@ class Map
 	SDL_Rect src = {0, 0, TILE_WIDTH, TILE_HEIGHT}, dest = {0, 0, TILE_WIDTH, TILE_HEIGHT};
 	
 	CivilianSprite civilian;
+	
+	Item pickup;
 
 	public:
 		// offsets on x and y that graphics should be drawn to to convert virtual to canvas coordinates
@@ -104,7 +107,8 @@ class Map
 				  SDL_Surface *civilian_mvup_img,
 				  SDL_Surface *civilian_mvdown_img,
 				  SDL_Surface *civilian_mvright_img, 
-				  SDL_Surface *civilian_mvleft_img);
+				  SDL_Surface *civilian_mvleft_img,
+				  SDL_Surface *pistol_img);
 		// advances state by given number of milliseconds
 		void update(int ms);
 	  	// handles playerSprite on the map. Checks for interactions and calles collision handler if necessary

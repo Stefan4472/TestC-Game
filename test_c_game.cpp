@@ -35,6 +35,7 @@ SDL_Surface *brown_brick_tile_img = NULL, *dark_brick_tile_img = NULL, *white_br
 SDL_Surface *tree_1_img = NULL, *tree_2_img = NULL, *rock_1_img = NULL, *rock_2_img = NULL, *wooden_fence_left_img = NULL, *wooden_fence_post_img = NULL,\
  *wooden_fence_post_vert_img = NULL;
 SDL_Surface *civilian_idle_img = NULL, *civilian_mvup_img = NULL, *civilian_mvdown_img = NULL, *civilian_mvright_img = NULL, *civilian_mvleft_img = NULL;
+SDL_Surface *pistol_img = NULL;
 
 bool init()
 {
@@ -113,6 +114,8 @@ bool loadMedia()
 	wooden_fence_post_img = loadSurface("graphics/wooden_fence_post.png");
 	wooden_fence_post_vert_img = loadSurface("graphics/wooden_fence_vertical.png");
 	
+	pistol_img = loadSurface("graphics/pistol_1.png");
+	
 	return success;
 }
 
@@ -143,6 +146,9 @@ void close()
 	SDL_FreeSurface(wooden_fence_left_img);
 	SDL_FreeSurface(wooden_fence_post_img);
 	SDL_FreeSurface(wooden_fence_post_vert_img);
+	
+	SDL_FreeSurface(pistol_img);
+	
 	//Destroy window
 	SDL_DestroyWindow( gWindow );
 	gWindow = NULL;
@@ -181,7 +187,7 @@ int main( int argc, char* args[] )
 	Map map;
 	map.init(&playerSprite, brown_brick_tile_img, dark_brick_tile_img, white_brick_tile_img, grass_tile_img, water_tile_img,
 			tree_1_img, tree_2_img, rock_1_img, rock_2_img, wooden_fence_left_img, wooden_fence_post_img, wooden_fence_post_vert_img,
-			civilian_idle_img, civilian_mvup_img, civilian_mvdown_img, civilian_mvright_img, civilian_mvleft_img);
+			civilian_idle_img, civilian_mvup_img, civilian_mvdown_img, civilian_mvright_img, civilian_mvleft_img, pistol_img);
 	printf("Created map\n");
 	
 	//Main loop flag
