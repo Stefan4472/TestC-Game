@@ -15,6 +15,8 @@ Window::Window(SDL_Surface* baseImg, int closeKeyCode)
 	dest.h = height;
 	
 	this->closeKeyCode = closeKeyCode;
+	
+	button = new Button(this, SDL_Rect{100, 200, 100, 50});
 }
 
 bool Window::isActive()
@@ -56,5 +58,7 @@ void Window::drawTo(SDL_Surface* screenSurface)
 		dest.y = (screenSurface->h - height) / 2;
 
 		SDL_BlitSurface(baseImg, &src, screenSurface, &dest);
+		
+		button->drawTo(screenSurface);
 	}
 }

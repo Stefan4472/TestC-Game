@@ -3,6 +3,8 @@
 
 #include <stdio.h>
 #include <SDL2/SDL.h>
+#include "gui_widget.h"
+#include "gui_button.h"
 
 // GUI window drawn on the screen
 class Window
@@ -16,6 +18,9 @@ class Window
 	bool active = false;
 	// key code of key that can close the window, besides ESC
 	int closeKeyCode = -1;
+	// test adding a widget
+	Widget *button = NULL;
+	
 	
 	public:
 		// construct window with image providing the window base
