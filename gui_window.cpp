@@ -1,22 +1,13 @@
 #include "gui_window.h"
 
-Window::Window(SDL_Surface* baseImg, int closeKeyCode, TTF_Font* font, SDL_Color textColor, SDL_Color backgroundColor)
+Window::Window(SDL_Rect position, int closeKeyCode)
 {
-	this->baseImg = baseImg;
-	width = baseImg->w;
-	height = baseImg->h;
-	
-	src.x = 0;
-	src.y = 0;
-	src.w = width;
-	src.h = height;
-	
-	dest.w = width;
-	dest.h = height;
+	this->position.x = position.x;
+	this->position.y = position.y; 
+	this->position.w = position.w; 
+	this->position.h = position.h; 
 	
 	this->closeKeyCode = closeKeyCode;
-	
-	button = new Button(this, SDL_Rect{100, 200, 100, 50}, font, textColor, backgroundColor);
 }
 
 bool Window::isActive()
@@ -27,6 +18,11 @@ bool Window::isActive()
 void Window::setActive(bool activeState)
 {
 	active = activeState;
+}
+
+void Window::addWidget(Widget* widget)
+{
+	widgets.push_back(widget);	
 }
 
 bool Window::handleKeyEvent(SDL_Event e)
@@ -53,12 +49,13 @@ void Window::drawTo(SDL_Surface* screenSurface)
 {
 	if (active) 
 	{
-		// determine top-left coordinates that will center the window
-		dest.x = (screenSurface->w - width) / 2;
-		dest.y = (screenSurface->h - height) / 2;
+		// draw window background
+		SDL_FillRect(screenSurface, &position, SDL_MapRGB(screenSurface->format, 0x47, 0x5C, 0x8D));
 
-		SDL_BlitSurface(baseImg, &src, screenSurface, &dest);
 		
-		button->drawTo(screenSurface);
+		for (int i = 0; i < widgets.size(); i++)
+		{
+			widgets[i]->drawTo(screenSurface);
+		} 
 	}
 }

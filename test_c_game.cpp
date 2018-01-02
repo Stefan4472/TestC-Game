@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <string>
 #include "gui_window.h"
+#include "menu_creator.h"
 #include "player_sprite.h"
 #include "map.h"
 
@@ -222,11 +223,11 @@ int main( int argc, char* args[] )
 	// pointer to current Window active on screen
 	Window* currWindow = NULL;
 	// window showing player inventory
-	Window invWindow = Window(gui_window_img, SDLK_e, font, textColor, backgroundColor);
+	Window* invWindow = createInventoryWindow(SCREEN_WIDTH, SCREEN_HEIGHT);
 	// window showing pause menu
-	Window pauseWindow = Window(gui_window_img, SDLK_p, font, textColor, backgroundColor);
+	Window* pauseWindow = createPauseMenu(SCREEN_WIDTH, SCREEN_HEIGHT);
 	// window showing quit menu
-	Window quitWindow = Window(gui_window_img, -1, font, textColor, backgroundColor);
+	Window* quitWindow = createQuitMenu(SCREEN_WIDTH, SCREEN_HEIGHT);
 	
 	printf("Created windows\n");
 	
@@ -274,26 +275,26 @@ int main( int argc, char* args[] )
 			{
 				switch( e.key.keysym.sym )
 				{ 
-				// show inventory
+					// show inventory
 					case SDLK_e: 
-						invWindow.setActive(true);
-						currWindow = &invWindow;
+						invWindow->setActive(true);
+						currWindow = invWindow;
 						break;
 
 					// show pause menu
 					case SDLK_p: 
 						printf("Pausing\n");
 						paused = true;
-						pauseWindow.setActive(true);
-						currWindow = &pauseWindow;
+						pauseWindow->setActive(true);
+						currWindow = pauseWindow;
 						break;
 
 					// show exit menu
 					case SDLK_ESCAPE:
 					case SDLK_q: 
 						quit = true;
-						quitWindow.setActive(true);
-						currWindow = &quitWindow;
+						quitWindow->setActive(true);
+						currWindow = quitWindow;
 						break;
 				}
 			}
