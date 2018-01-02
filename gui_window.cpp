@@ -15,16 +15,42 @@ Window::Window(SDL_Surface* baseImg)
 	dest.h = height;
 }
 
-bool Window::handleKeyEvent(SDL_Event* keyEvent)
+void Window::open()
 {
+	visible = true;	
+}
+
+void Window::close()
+{
+	visible = false;
+}
+
+bool Window::handleKeyEvent(SDL_Event e)
+{
+	// key pressed down
+	if (e.type == SDL_KEYDOWN) 
+	{
+		switch( e.key.keysym.sym )
+		{ 
+			case SDLK_ESCAPE:
+				close();
+				return true;
+
+			default:
+				return false;
+		}
+	}
 	return false;	
 }
 
 void Window::drawTo(SDL_Surface* screenSurface)
 {
-	// determine top-left coordinates that will center the window
-	dest.x = (screenSurface->w - width) / 2;
-	dest.y = (screenSurface->h - height) / 2;
-	
-	SDL_BlitSurface(baseImg, &src, screenSurface, &dest);
+	if (visible) 
+	{
+		// determine top-left coordinates that will center the window
+		dest.x = (screenSurface->w - width) / 2;
+		dest.y = (screenSurface->h - height) / 2;
+
+		SDL_BlitSurface(baseImg, &src, screenSurface, &dest);
+	}
 }

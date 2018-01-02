@@ -195,12 +195,14 @@ int main( int argc, char* args[] )
 			tree_1_img, tree_2_img, rock_1_img, rock_2_img, wooden_fence_left_img, wooden_fence_post_img, wooden_fence_post_vert_img,
 			civilian_idle_img, civilian_mvup_img, civilian_mvdown_img, civilian_mvright_img, civilian_mvleft_img, pistol_img);
 	printf("Created map\n");
+	// pointer to current Window active on screen
+	Window* currWindow = NULL;
+	// window showing player inventory
 	Window invWindow = Window(gui_window_img);
 	
 	//Main loop flag
 	bool quit = false;
 	bool paused = false;
-	bool showingInventory = false;
 	
 	Uint32 last_time = SDL_GetTicks();
 	Uint32 curr_time;
@@ -228,38 +230,35 @@ int main( int argc, char* args[] )
 			{
 				quit = true;
 			}
-			// first send event to playerSprite, which will handle it in almost all cases.
-			else if (!playerSprite.handleKeyEvent(e)) {
-				// process if playerSprite didn't handle it
-				printf("PlayerSprite did not handle--checking on main thread\n");
+			// send event to window, if active
+			else if (invWindow.visible && invWindow.handleKeyEvent(e))
+			{
+				
+			}
+			// send event to playerSprite, which will handle it in almost all cases.
+			else if (playerSprite.handleKeyEvent(e)) 
+			{
+				
+			}
+			// handle event on base window level
+			else if (e.type == SDL_KEYDOWN)
+			{
 				switch( e.key.keysym.sym )
 				{ 
-					case SDLK_e: // show/hide inventory
-						if (e.type == SDL_KEYDOWN && !showingInventory)
-						{
-							showingInventory = true;	
-						} 
-						else if (e.type == SDL_KEYUP)
-						{
-							showingInventory = false;
-						}
+				// show inventory
+					case SDLK_e: 
+						invWindow.open();
 						break;
-						
-					case SDLK_p: // pause/unpause on "p"
-						if (e.type == SDL_KEYDOWN && !paused) 
-						{
-							printf("Pausing\n");
-							paused = true;
-						} 
-						else if (e.type == SDL_KEYUP) 
-						{
-							printf("Unpausing\n");
-							paused = false;
-						}
+
+					// show pause menu
+					case SDLK_p: 
+						printf("Pausing\n");
+						paused = true;
 						break;
-					
+
+					// show exit menu
 					case SDLK_ESCAPE:
-					case SDLK_q: // quit on ESC or "q" key
+					case SDLK_q: 
 						quit = true;
 						break;
 				}
@@ -292,7 +291,7 @@ int main( int argc, char* args[] )
 		map.drawSpritesTo(gScreenSurface);
 		
 		// draw Inventory GUI
-		if (showingInventory)
+		if (invWindow.visible)
 		{
 			invWindow.drawTo(gScreenSurface);
 		}
