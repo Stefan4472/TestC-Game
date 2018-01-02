@@ -1,6 +1,6 @@
 #include "gui_window.h"
 
-Window::Window(SDL_Surface* baseImg, int closeKeyCode)
+Window::Window(SDL_Surface* baseImg, int closeKeyCode, TTF_Font* font, SDL_Color textColor, SDL_Color backgroundColor)
 {
 	this->baseImg = baseImg;
 	width = baseImg->w;
@@ -16,7 +16,7 @@ Window::Window(SDL_Surface* baseImg, int closeKeyCode)
 	
 	this->closeKeyCode = closeKeyCode;
 	
-	button = new Button(this, SDL_Rect{100, 200, 100, 50});
+	button = new Button(this, SDL_Rect{100, 200, 100, 50}, font, textColor, backgroundColor);
 }
 
 bool Window::isActive()

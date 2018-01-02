@@ -24,7 +24,7 @@ class Window
 	
 	public:
 		// construct window with image providing the window base
-		Window(SDL_Surface* baseImg, int closeKeyCode);
+		Window(SDL_Surface* baseImg, int closeKeyCode, TTF_Font* font, SDL_Color textColor, SDL_Color backgroundColor);
 		// whether window is currently active
 		bool isActive();
 		// set active state of window

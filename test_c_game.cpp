@@ -1,5 +1,6 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+#include <SDL2/SDL_ttf.h>
 #include <stdio.h>
 #include <string>
 #include "gui_window.h"
@@ -30,6 +31,11 @@ SDL_Surface* gScreenSurface = NULL;
 
 // renderer for the window surface 
 SDL_Renderer* gRenderer = NULL;
+// colors used in GUI
+SDL_Color textColor = {0, 0, 0}, backgroundColor = {0, 0, 0};
+
+// globally used font
+TTF_Font *font = NULL;
 
 SDL_Surface *player_idle_img = NULL, *player_mvup_img = NULL, *player_mvdown_img = NULL, *player_mvright_img = NULL, *player_mvleft_img = NULL;
 SDL_Surface *brown_brick_tile_img = NULL, *dark_brick_tile_img = NULL, *white_brick_tile_img = NULL, *grass_tile_img = NULL, *water_tile_img = NULL;
@@ -63,6 +69,13 @@ bool init()
 	}
 	//Get window surface
 	gScreenSurface = SDL_GetWindowSurface( gWindow );
+	
+	// initialize fonts
+	if( TTF_Init() == -1 )
+	{
+		printf( "SDL_ttf could not initialize! SDL_ttf Error: %s\n", TTF_GetError() );
+		return false;
+	}
 	
 	// create renderer for window todo: figure out what the issue is (causes segfault)
 	/*gRenderer = SDL_CreateRenderer( gWindow, -1, SDL_RENDERER_ACCELERATED );
@@ -120,6 +133,13 @@ bool loadMedia()
 	
 	gui_window_img = loadSurface("graphics/gui_window.png");
 	
+	// open the font
+	font = TTF_OpenFont( "graphics/lazy.ttf", 28 );
+	if(font == NULL)
+	{
+		printf( "Failed to load lazy font! SDL_ttf Error: %s\n", TTF_GetError() );
+		return false;
+	}
 	return success;
 }
 
@@ -155,15 +175,19 @@ void close()
 	
 	SDL_FreeSurface(gui_window_img);
 	
-	//Destroy window
+	TTF_CloseFont(font);
+	font = NULL;
+
+	// destroy window
 	SDL_DestroyWindow( gWindow );
 	gWindow = NULL;
 	
-	//Destroy renderer
+	// destroy renderer
 	SDL_DestroyRenderer( gRenderer );
 	gRenderer = NULL;
 
-	//Quit SDL subsystems
+	// quit SDL subsystems
+	TTF_Quit();
 	IMG_Quit();
 	SDL_Quit();
 }
@@ -198,11 +222,11 @@ int main( int argc, char* args[] )
 	// pointer to current Window active on screen
 	Window* currWindow = NULL;
 	// window showing player inventory
-	Window invWindow = Window(gui_window_img, SDLK_e);
+	Window invWindow = Window(gui_window_img, SDLK_e, font, textColor, backgroundColor);
 	// window showing pause menu
-	Window pauseWindow = Window(gui_window_img, SDLK_p);
+	Window pauseWindow = Window(gui_window_img, SDLK_p, font, textColor, backgroundColor);
 	// window showing quit menu
-	Window quitWindow = Window(gui_window_img, -1);
+	Window quitWindow = Window(gui_window_img, -1, font, textColor, backgroundColor);
 	
 	printf("Created windows\n");
 	

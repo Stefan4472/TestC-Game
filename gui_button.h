@@ -3,15 +3,23 @@
 
 #include <stdio.h>
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_ttf.h>
 #include "gui_widget.h"
 #include "gui_window.h"
 
 // button that can be clicked, and displays text
 class Button: public Widget
 {
+	// font used for button text
+	TTF_Font* font;
+	// color used for text, and background
+	SDL_Color textColor, backgroundColor;
+	// rendered button text
+	SDL_Surface* renderedText;
+	
 	public:
 		// inits widget with pointer to parent and defined position
-		Button(Window* parent, SDL_Rect position);
+		Button(Window* parent, SDL_Rect position, TTF_Font* font, SDL_Color textColor, SDL_Color backgroundColor);
 		// attempts to handle a given KeyEvent, and returns whether it was handled
 		bool handleEvent(SDL_Event e);
 		// gives the widget focus
