@@ -198,7 +198,13 @@ int main( int argc, char* args[] )
 	// pointer to current Window active on screen
 	Window* currWindow = NULL;
 	// window showing player inventory
-	Window invWindow = Window(gui_window_img);
+	Window invWindow = Window(gui_window_img, SDLK_e);
+	// window showing pause menu
+	Window pauseWindow = Window(gui_window_img, SDLK_p);
+	// window showing quit menu
+	Window quitWindow = Window(gui_window_img, -1);
+	
+	printf("Created windows\n");
 	
 	//Main loop flag
 	bool quit = false;
@@ -224,14 +230,13 @@ int main( int argc, char* args[] )
 		//Handle events on queue
 		while( SDL_PollEvent( &e ) != 0 )
 		{
-			//printf("Handling Input");
 			//User requests quit
 			if( e.type == SDL_QUIT )
 			{
 				quit = true;
 			}
-			// send event to window, if active
-			else if (invWindow.visible && invWindow.handleKeyEvent(e))
+			// send event to currWindow, if active
+			else if (currWindow && currWindow->isActive() && currWindow->handleKeyEvent(e))
 			{
 				
 			}
@@ -247,19 +252,24 @@ int main( int argc, char* args[] )
 				{ 
 				// show inventory
 					case SDLK_e: 
-						invWindow.open();
+						invWindow.setActive(true);
+						currWindow = &invWindow;
 						break;
 
 					// show pause menu
 					case SDLK_p: 
 						printf("Pausing\n");
 						paused = true;
+						pauseWindow.setActive(true);
+						currWindow = &pauseWindow;
 						break;
 
 					// show exit menu
 					case SDLK_ESCAPE:
 					case SDLK_q: 
 						quit = true;
+						quitWindow.setActive(true);
+						currWindow = &quitWindow;
 						break;
 				}
 			}
@@ -290,10 +300,18 @@ int main( int argc, char* args[] )
 		map.drawObjectsTo(gScreenSurface);
 		map.drawSpritesTo(gScreenSurface);
 		
-		// draw Inventory GUI
-		if (invWindow.visible)
+		// handle current window: draw if active, set to NULL if inactive
+		if (currWindow)
 		{
-			invWindow.drawTo(gScreenSurface);
+			if (currWindow->isActive())
+			{
+				currWindow->drawTo(gScreenSurface);
+			}
+			else
+			{
+				currWindow->setActive(false);
+				currWindow = NULL;
+			}
 		}
 		
 		// draw changes to window

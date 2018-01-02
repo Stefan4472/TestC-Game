@@ -1,6 +1,6 @@
 #include "gui_window.h"
 
-Window::Window(SDL_Surface* baseImg)
+Window::Window(SDL_Surface* baseImg, int closeKeyCode)
 {
 	this->baseImg = baseImg;
 	width = baseImg->w;
@@ -13,16 +13,18 @@ Window::Window(SDL_Surface* baseImg)
 	
 	dest.w = width;
 	dest.h = height;
+	
+	this->closeKeyCode = closeKeyCode;
 }
 
-void Window::open()
+bool Window::isActive()
 {
-	visible = true;	
+	return active; 
 }
 
-void Window::close()
+void Window::setActive(bool activeState)
 {
-	visible = false;
+	active = activeState;
 }
 
 bool Window::handleKeyEvent(SDL_Event e)
@@ -33,11 +35,13 @@ bool Window::handleKeyEvent(SDL_Event e)
 		switch( e.key.keysym.sym )
 		{ 
 			case SDLK_ESCAPE:
-				close();
+				active = false;
 				return true;
-
-			default:
-				return false;
+		}
+		if (e.key.keysym.sym == closeKeyCode)
+		{
+			active = false;
+			return true;
 		}
 	}
 	return false;	
@@ -45,7 +49,7 @@ bool Window::handleKeyEvent(SDL_Event e)
 
 void Window::drawTo(SDL_Surface* screenSurface)
 {
-	if (visible) 
+	if (active) 
 	{
 		// determine top-left coordinates that will center the window
 		dest.x = (screenSurface->w - width) / 2;
