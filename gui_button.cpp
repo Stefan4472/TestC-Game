@@ -1,7 +1,8 @@
 #include "gui_button.h"
 
-Button::Button(Window* parent, SDL_Rect position, TTF_Font* font, SDL_Color textColor, SDL_Color backgroundColor)
+Button::Button(int id, Window* parent, SDL_Rect position, TTF_Font* font, SDL_Color textColor, SDL_Color backgroundColor) : Widget(id)
 {
+	printf("Button created with id %d\n", id);
 	this->parent = parent;
 	this->position = position;
 	// render button text
@@ -12,7 +13,7 @@ Button::Button(Window* parent, SDL_Rect position, TTF_Font* font, SDL_Color text
 	}
 }
 
-bool Button::handleEvent(SDL_Event e)
+bool Button::handleInputEvent(SDL_Event e)
 {
 	return false;
 }
@@ -33,6 +34,5 @@ void Button::drawTo(SDL_Surface* screenSurface)
 	{
 		SDL_FillRect(screenSurface, &position, SDL_MapRGB(screenSurface->format, 0xFF, 0xFF, 0xFF));	
 		SDL_BlitSurface(renderedText, NULL, screenSurface, &position);
-		SDL_BlitSurface(renderedText, NULL, screenSurface, NULL);
 	}
 }

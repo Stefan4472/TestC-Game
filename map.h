@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 #include <SDL2/SDL.h>
+#include <vector>
 #include "item.h"
 #include "civilian_sprite.h"
 #include "player_sprite.h"
@@ -78,12 +79,18 @@ class Map
 	// images corresponding with OBJECT_IDS
 	SDL_Surface* objectImgs[8] = { NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL };
 	// virtual coordinates view should center on
-	SDL_Rect center;
+	SDL_Rect center;  // todo: replace with camera
 	
 	// source and destination rects 
 	SDL_Rect src = {0, 0, TILE_WIDTH, TILE_HEIGHT}, dest = {0, 0, TILE_WIDTH, TILE_HEIGHT};
 	
 	CivilianSprite civilian;
+	
+	// sprites generated and managed by map
+	std::vector<Sprite*> sprites;
+	
+	// items generated and managed by map
+	std::vector<Item*> items;
 	
 	Item pickup;
 

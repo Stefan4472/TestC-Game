@@ -22,10 +22,11 @@ void Window::setActive(bool activeState)
 
 void Window::addWidget(Widget* widget)
 {
+	//widget-> todo: make relative to window
 	widgets.push_back(widget);	
 }
 
-bool Window::handleKeyEvent(SDL_Event e)
+bool Window::handleInputEvent(SDL_Event e)
 {
 	// key pressed down
 	if (e.type == SDL_KEYDOWN) 

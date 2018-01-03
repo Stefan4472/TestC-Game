@@ -7,7 +7,7 @@
 #include "gui_widget.h"
 #include "gui_button.h"
 
-// GUI window drawn on the screen
+// base class for GUI window drawn on the screen
 class Window
 {
 	// rect defining bounds of the window
@@ -31,8 +31,10 @@ class Window
 		void setActive(bool activeState);
 		// adds widget to the window
 		void addWidget(Widget* widget);
-		// attempts to handle given KeyEvent. Returns false if it was not handled
-		bool handleKeyEvent(SDL_Event e);
+		// handles user input. Returns false if it was not handled
+		bool handleInputEvent(SDL_Event e);
+		// handles gui events, e.g. button clicks
+		virtual bool handleGUIEvent(Widget* target) = 0;
 		// draws this window to the given surface
 		void drawTo(SDL_Surface* screenSurface);
 };

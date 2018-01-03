@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <string>
 #include "gui_window.h"
-#include "menu_creator.h"
+#include "pause_dialog.h"
 #include "player_sprite.h"
 #include "map.h"
 
@@ -223,11 +223,11 @@ int main( int argc, char* args[] )
 	// pointer to current Window active on screen
 	Window* currWindow = NULL;
 	// window showing player inventory
-	Window* invWindow = createInventoryWindow(SCREEN_WIDTH, SCREEN_HEIGHT);
+	Window* invWindow = new PauseDialog(SDL_Rect{100, 100, 300, 300}, SDLK_e, SCREEN_WIDTH, SCREEN_HEIGHT, font, textColor, backgroundColor);
 	// window showing pause menu
-	Window* pauseWindow = createPauseMenu(SCREEN_WIDTH, SCREEN_HEIGHT);
+	Window* pauseWindow = new PauseDialog(SDL_Rect{100, 100, 300, 300}, SDLK_e, SCREEN_WIDTH, SCREEN_HEIGHT, font, textColor, backgroundColor);
 	// window showing quit menu
-	Window* quitWindow = createQuitMenu(SCREEN_WIDTH, SCREEN_HEIGHT);
+	Window* quitWindow = new PauseDialog(SDL_Rect{100, 100, 300, 300}, SDLK_e, SCREEN_WIDTH, SCREEN_HEIGHT, font, textColor, backgroundColor);
 	
 	printf("Created windows\n");
 	
@@ -261,7 +261,7 @@ int main( int argc, char* args[] )
 				quit = true;
 			}
 			// send event to currWindow, if active
-			else if (currWindow && currWindow->isActive() && currWindow->handleKeyEvent(e))
+			else if (currWindow && currWindow->isActive() && currWindow->handleInputEvent(e))
 			{
 				
 			}
