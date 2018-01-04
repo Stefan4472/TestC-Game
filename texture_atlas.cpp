@@ -14,3 +14,13 @@ void TextureAtlas::draw(SDL_Surface* screenSurface, int textureId, float x, floa
 	// draw from atlas 
 	SDL_BlitSurface( atlas, &textureRegions[textureId], screenSurface, &dest );
 }
+
+int TextureAtlas::getWidth(int textureId) 
+{
+	return textureRegions[textureId].w;
+}
+
+int TextureAtlas::getHeight(int textureId)
+{
+	return textureRegions[textureId].h;
+}

@@ -15,20 +15,36 @@
 // call draw(textureId, ...) functions to draw the desired texture to the screen
 
 enum Textures {
+	TEXTURE_NONE,
 	TILE_BROWN_BRICK,
 	TILE_DARK_BRICK,
 	TILE_WHITE_BRICK,
 	TILE_GRASS,
-	TILE_WATER
+	TILE_WATER,
+	OBJECT_TREE_1,
+	OBJECT_TREE_2, 
+	OBJECT_ROCK_1,
+	OBJECT_ROCK_2, 
+	OBJECT_WOODEN_FENCE_LEFT,
+	OBJECT_WOODEN_FENCE_POST,
+	OBJECT_WOODEN_FENCE_VERT
 };
 
-const SDL_Rect textureRegions[5] = 
+const SDL_Rect textureRegions[13] = 
 {
+	SDL_Rect { 0, 0, 0, 0 }, // todo: don't allow texture zero to be called, or give some hint it's null
 	SDL_Rect { 0, 0, 32, 32 },
 	SDL_Rect { 64, 0, 32, 32 },
 	SDL_Rect { 0, 32, 32, 32 },
-	SDL_Rect { 64, 0, 32, 32 },
-	SDL_Rect { 0, 64, 32, 32 }
+	SDL_Rect { 64, 32, 32, 32 },
+	SDL_Rect { 0, 64, 32, 32 },
+	SDL_Rect { 128, 0, 72, 112 },
+	SDL_Rect { 128, 112, 120, 100 },
+	SDL_Rect { 128, 216, 44, 36 },
+	SDL_Rect { 108, 217, 36, 60 },
+	SDL_Rect { 220, 0, 32, 32 },
+	SDL_Rect { 220, 32, 32, 32 },
+	SDL_Rect { 220, 64, 32, 32 }
 };
 
 class TextureAtlas 
@@ -41,6 +57,9 @@ class TextureAtlas
 		TextureAtlas(SDL_Surface* atlas);
 		// draws image given by textureId to given SDL_Surface at x,y 
 		void draw(SDL_Surface* screenSurface, int textureId, float x, float y);
-
+		// returns width (px) of specified Texture image
+		int getWidth(int textureId);
+		// returns height (px) of specified Texture image
+		int getHeight(int textureId);
 };
 #endif

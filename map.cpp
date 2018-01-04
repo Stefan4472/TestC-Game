@@ -39,7 +39,7 @@ void Map::init(Sprite* playerSprite,
 	{
 		for (int j = 0; j < mapCols; j++) 
 		{
-			if (mapTiles[i][j] == TILE_WATER || objectTiles[i][j] != OBJECT_NOTHING)
+			if (mapTiles[i][j] == TILE_WATER || objectTiles[i][j] != TEXTURE_NONE)
 			{
 				walkableTiles[i][j] = false;
 			} 
@@ -162,32 +162,27 @@ void Map::drawObjectsTo(SDL_Surface* screenSurface)  // todo: don't' redo calcul
 	int start_tile_y = top_left_y / TILE_HEIGHT;
 	//printf("%d, %d\n", start_tile_x, start_tile_y);
 	
+	int tile_row, tile_col;
+	
 	// render any objects
 	for (int i = 0; i < tiles_tall; i++) 
 	{
 		for (int j = 0; j < tiles_wide; j++) 
 		{
-			if (start_tile_y + i >= 0 && start_tile_x + j >= 0 && start_tile_y + i < mapRows && start_tile_x + j < mapCols && objectTiles[start_tile_y + i][start_tile_x + j])
+			tile_row = start_tile_y + i;
+			tile_col = start_tile_x + j;
+			
+			if (tile_row >= 0 && tile_col >= 0 && tile_row < mapRows && tile_col < mapCols && objectTiles[tile_row][tile_col])
 			{
-				src.w = objectImgs[ objectTiles[start_tile_y + i][start_tile_x + j] ]->w;
-				src.h = objectImgs[ objectTiles[start_tile_y + i][start_tile_x + j] ]->h;
 				// draw so image is centered, with bottom on tile
-				dest.y = i * TILE_HEIGHT - offset_y - src.h + TILE_HEIGHT;
-				dest.x = j * TILE_WIDTH - offset_x - (src.w - TILE_WIDTH) / 2;
-				dest.w = src.w;
-				dest.h = src.h;
-				SDL_BlitSurface( objectImgs[ objectTiles[start_tile_y + i][start_tile_x + j] ], &src, screenSurface, &dest );
+				dest.y = i * TILE_HEIGHT - offset_y - textureAtlas->getHeight(objectTiles[tile_row][tile_col]) + TILE_HEIGHT; 
+				dest.x = j * TILE_WIDTH - offset_x - (textureAtlas->getWidth(objectTiles[tile_row][tile_col]) - TILE_WIDTH) / 2;
+				textureAtlas->draw(screenSurface, objectTiles[start_tile_y + i][start_tile_x + j], dest.x, dest.y);
 			}
 		 }
 	}
 	
-	pickup.drawToMap(screenSurface, offset_x, offset_y);
-	
-	// set back to tile width/height
-	src.w = TILE_WIDTH;
-	src.h = TILE_HEIGHT;
-	dest.w = TILE_WIDTH;
-	dest.h = TILE_HEIGHT;
+	//pickup.drawToMap(screenSurface, offset_x, offset_y);
 }
 
 void Map::drawSpritesTo(SDL_Surface* screenSurface)
