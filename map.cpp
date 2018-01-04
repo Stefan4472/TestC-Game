@@ -1,7 +1,7 @@
 #include "map.h"
 
 void Map::init(Sprite* playerSprite, 
-			   SDL_Surface* brown_brick_tile_img, 
+			   TextureAtlas* textureAtlas, SDL_Surface* brown_brick_tile_img, 
 				  SDL_Surface* dark_brick_tile_img, 
 				  SDL_Surface* white_brick_tile_img, 
 				  SDL_Surface* grass_tile_img, 
@@ -19,6 +19,7 @@ void Map::init(Sprite* playerSprite,
 				  SDL_Surface *civilian_mvright_img, 
 				  SDL_Surface *civilian_mvleft_img,
 			  	SDL_Surface *pistol_img) {
+	this->textureAtlas = textureAtlas;
 	tileImgs[0] = brown_brick_tile_img;
 	tileImgs[1] = dark_brick_tile_img;
 	tileImgs[2] = white_brick_tile_img;
@@ -132,7 +133,8 @@ void Map::drawTerrainTo(SDL_Surface* screenSurface)
 			}
 			else 
 			{
-				SDL_BlitSurface( tileImgs[ mapTiles[start_tile_y + i][start_tile_x + j] ], &src, screenSurface, &dest );
+				textureAtlas->draw(screenSurface, mapTiles[start_tile_y + i][start_tile_x + j], dest.x, dest.y);
+				//SDL_BlitSurface( tileImgs[ mapTiles[start_tile_y + i][start_tile_x + j] ], &src, screenSurface, &dest );
 			}
 		}
 	}

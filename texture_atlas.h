@@ -15,11 +15,11 @@
 // call draw(textureId, ...) functions to draw the desired texture to the screen
 
 enum Textures {
-	BROWN_BRICK_TILE,
-	DARK_BRICK_TILE,
-	WHITE_BRICK_TILE,
-	GRASS_TILE,
-	WATER_TILE
+	TILE_BROWN_BRICK,
+	TILE_DARK_BRICK,
+	TILE_WHITE_BRICK,
+	TILE_GRASS,
+	TILE_WATER
 };
 
 const SDL_Rect textureRegions[5] = 

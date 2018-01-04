@@ -4,19 +4,20 @@
 #include <stdio.h>
 #include <SDL2/SDL.h>
 #include <vector>
+#include "texture_atlas.h"
 #include "item.h"
 #include "civilian_sprite.h"
 #include "player_sprite.h"
 
 // available id's for tiles
-enum TILE_IDS 
+/*enum TILE_IDS 
 { // TODO: TILE_NOTHING
 	TILE_BROWN_BRICK,
 	TILE_DARK_BRICK,
 	TILE_WHITE_BRICK,
 	TILE_GRASS,
 	TILE_WATER
-};
+};*/
 
 enum OBJECT_IDS // todo: flowers, walkable vs. non-walkable
 {
@@ -86,6 +87,9 @@ class Map
 	
 	CivilianSprite civilian;
 	
+	// pointer to TextureAtlas used for drawing images
+	TextureAtlas* textureAtlas;
+	
 	// sprites generated and managed by map
 	std::vector<Sprite*> sprites;
 	
@@ -98,7 +102,9 @@ class Map
 		// offsets on x and y that graphics should be drawn to to convert virtual to canvas coordinates
 		int viewOffsetX, viewOffsetY;
 		// init tile images
-		void init(Sprite* playerSprite, SDL_Surface* brown_brick_tile_img, 
+		void init(Sprite* playerSprite, 
+				TextureAtlas* textureAtlas,
+				SDL_Surface* brown_brick_tile_img, 
 				  SDL_Surface* dark_brick_tile_img, 
 				  SDL_Surface* white_brick_tile_img, 
 				  SDL_Surface* grass_tile_img, 

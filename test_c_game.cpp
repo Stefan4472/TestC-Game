@@ -3,6 +3,7 @@
 #include <SDL2/SDL_ttf.h>
 #include <stdio.h>
 #include <string>
+#include <sstream>
 #include "texture_atlas.h"
 #include "gui_window.h"
 #include "pause_dialog.h"
@@ -34,7 +35,7 @@ SDL_Surface* gScreenSurface = NULL;
 // renderer for the window surface 
 SDL_Renderer* gRenderer = NULL;
 // colors used in GUI
-SDL_Color textColor = {0, 0, 0}, backgroundColor = {0, 0, 0};
+SDL_Color textColor = {255, 255, 255}, backgroundColor = {0, 0, 0};
 
 // globally used font
 TTF_Font *font = NULL;
@@ -139,7 +140,7 @@ bool loadMedia()
 	gui_window_img = loadSurface("graphics/gui_window.png");
 	
 	// open the font
-	font = TTF_OpenFont( "graphics/lazy.ttf", 28 );
+	font = TTF_OpenFont( "fonts/AdventPro-Light.ttf", 28 );
 	if(font == NULL)
 	{
 		printf( "Failed to load lazy font! SDL_ttf Error: %s\n", TTF_GetError() );
@@ -224,7 +225,7 @@ int main( int argc, char* args[] )
 	PlayerSprite playerSprite = PlayerSprite(100.0f, 140.0f, player_idle_img, player_mvup_img, player_mvdown_img, player_mvleft_img, player_mvright_img);
 	printf("Created player sprite\n");
 	Map map;
-	map.init(&playerSprite, brown_brick_tile_img, dark_brick_tile_img, white_brick_tile_img, grass_tile_img, water_tile_img,
+	map.init(&playerSprite, &textureAtlas, brown_brick_tile_img, dark_brick_tile_img, white_brick_tile_img, grass_tile_img, water_tile_img,
 			tree_1_img, tree_2_img, rock_1_img, rock_2_img, wooden_fence_left_img, wooden_fence_post_img, wooden_fence_post_vert_img,
 			civilian_idle_img, civilian_mvup_img, civilian_mvdown_img, civilian_mvright_img, civilian_mvleft_img, pistol_img);
 	printf("Created map\n");
@@ -236,6 +237,11 @@ int main( int argc, char* args[] )
 	Window* pauseWindow = new PauseDialog(SDL_Rect{100, 100, 300, 300}, SDLK_e, SCREEN_WIDTH, SCREEN_HEIGHT, font, textColor, backgroundColor);
 	// window showing quit menu
 	Window* quitWindow = new PauseDialog(SDL_Rect{100, 100, 300, 300}, SDLK_e, SCREEN_WIDTH, SCREEN_HEIGHT, font, textColor, backgroundColor);
+	
+	// displays frame-rate in top-left corner
+	SDL_Surface* rendered_fps;
+	// string used to show frame rate 
+	std::stringstream fps_string;
 	
 	printf("Created windows\n");
 	
@@ -347,7 +353,17 @@ int main( int argc, char* args[] )
 			}
 		}
 		
-		textureAtlas.draw(gScreenSurface, BROWN_BRICK_TILE, 300, 300);
+		// calculate and render frame rate text. Draw to top-left of screen
+		if (ticks_since_last_frame > 0) 
+		{
+			float fps = 1000 / ticks_since_last_frame;
+			fps_string.str(""); 
+			fps_string << fps; 
+			rendered_fps = TTF_RenderText_Solid(font, fps_string.str().c_str(), textColor);
+			SDL_BlitSurface(rendered_fps, NULL, gScreenSurface, NULL);
+		}
+		
+		
 		// draw changes to window
 		SDL_UpdateWindowSurface( gWindow );
 		
