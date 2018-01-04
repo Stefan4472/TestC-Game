@@ -19,7 +19,7 @@ class Button: public Widget
 	
 	public:
 		// inits widget with pointer to parent and defined position
-		Button(int id, Window* parent, SDL_Rect position, TTF_Font* font, SDL_Color textColor, SDL_Color backgroundColor);
+		Button(int id, Window* parent, SDL_Rect position, char* text, TTF_Font* font, SDL_Color textColor, SDL_Color backgroundColor);
 		// attempts to handle a given KeyEvent, and returns whether it was handled
 		bool handleInputEvent(SDL_Event e);
 		// gives the widget focus

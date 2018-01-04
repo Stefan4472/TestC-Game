@@ -37,6 +37,8 @@ class Window
 		virtual bool handleGUIEvent(Widget* target) = 0;
 		// draws this window to the given surface
 		void drawTo(SDL_Surface* screenSurface);
+		// free all widgets and window
+		~Window();
 };
 
 #endif

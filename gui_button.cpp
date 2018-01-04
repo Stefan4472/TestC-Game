@@ -1,12 +1,12 @@
 #include "gui_button.h"
 
-Button::Button(int id, Window* parent, SDL_Rect position, TTF_Font* font, SDL_Color textColor, SDL_Color backgroundColor) : Widget(id)
+Button::Button(int id, Window* parent, SDL_Rect position, char* text, TTF_Font* font, SDL_Color textColor, SDL_Color backgroundColor) : Widget(id)
 {
 	printf("Button created with id %d\n", id);
 	this->parent = parent;
 	this->position = position;
 	// render button text
-	renderedText = TTF_RenderText_Solid(font, "button", textColor);
+	renderedText = TTF_RenderText_Solid(font, text, textColor);
 	if(renderedText == NULL)
 	{
 		printf( "Unable to render text surface! SDL_ttf Error: %s\n", TTF_GetError() );

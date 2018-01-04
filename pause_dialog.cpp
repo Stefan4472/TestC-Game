@@ -10,7 +10,7 @@ PauseDialog::PauseDialog(SDL_Rect position, int closeKeyCode, int screenWidth, i
 	position = { (screenWidth - width) / 2, (screenHeight - height) / 2, width, height };  
 	
 	//	int id, Window* parent, SDL_Rect position, TTF_Font* font, SDL_Color textColor, SDL_Color backgroundColor
-	addWidget(new Button(RESUME_BUTTON, this, SDL_Rect{ 0, 0, 100, 50 }, font, textColor, backgroundColor));
+	addWidget(new Button(RESUME_BUTTON, this, SDL_Rect{ 0, 0, 100, 50 }, "Resume", font, textColor, backgroundColor));
 	//int btw_width = (int) screenWidth * 
 	//Button* resume_btn = new Button(window, SDL_Rect { 50, 50, 50, 50 }*/
 }

@@ -3,6 +3,7 @@
 #include <SDL2/SDL_ttf.h>
 #include <stdio.h>
 #include <string>
+#include "texture_atlas.h"
 #include "gui_window.h"
 #include "pause_dialog.h"
 #include "player_sprite.h"
@@ -347,6 +348,9 @@ int main( int argc, char* args[] )
 		last_time = curr_time;
 	}
 
+	delete(invWindow);
+	delete(pauseWindow);
+	delete(quitWindow);
 	//Free resources and close SDL
 	close();
 

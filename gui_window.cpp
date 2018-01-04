@@ -28,8 +28,23 @@ void Window::addWidget(Widget* widget)
 
 bool Window::handleInputEvent(SDL_Event e)
 {
+	// user moved mouse
+	if (e.type == SDL_MOUSEMOTION)
+	{
+		printf("Received mouse motion\n");
+	}
+	// user clicked mouse
+	else if (e.type == SDL_MOUSEBUTTONDOWN)
+	{
+		printf("user clicked\n");
+	}
+	// user released mouse
+	else if (e.type == SDL_MOUSEBUTTONUP)
+	{
+		printf("user released\n");
+	}
 	// key pressed down
-	if (e.type == SDL_KEYDOWN) 
+	else if (e.type == SDL_KEYDOWN) 
 	{
 		switch( e.key.keysym.sym )
 		{ 
@@ -58,5 +73,15 @@ void Window::drawTo(SDL_Surface* screenSurface)
 		{
 			widgets[i]->drawTo(screenSurface);
 		} 
+	}
+}
+
+Window::~Window()
+{
+	printf("Destroying window\n");
+	for (int i = 0; i < widgets.size(); i++) 
+	{
+		printf("Destroying widget with id %d\n", widgets[i]->getId());
+		delete(widgets[i]);	
 	}
 }

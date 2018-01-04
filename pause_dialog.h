@@ -19,6 +19,7 @@ class PauseDialog : public Window
 		PauseDialog(SDL_Rect position, int closeKeyCode, int screenWidth, int screenHeight, TTF_Font* font, SDL_Color textColor, SDL_Color backgroundColor);
 		// handles GUI events (button clicks)
 		bool handleGUIEvent(Widget* target);
+
 };
 
 #endif
