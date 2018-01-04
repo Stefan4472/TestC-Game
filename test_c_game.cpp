@@ -39,6 +39,8 @@ SDL_Color textColor = {0, 0, 0}, backgroundColor = {0, 0, 0};
 // globally used font
 TTF_Font *font = NULL;
 
+// loaded texture atlas
+SDL_Surface *texture_atlas_img = NULL;
 SDL_Surface *player_idle_img = NULL, *player_mvup_img = NULL, *player_mvdown_img = NULL, *player_mvright_img = NULL, *player_mvleft_img = NULL;
 SDL_Surface *brown_brick_tile_img = NULL, *dark_brick_tile_img = NULL, *white_brick_tile_img = NULL, *grass_tile_img = NULL, *water_tile_img = NULL;
 SDL_Surface *tree_1_img = NULL, *tree_2_img = NULL, *rock_1_img = NULL, *rock_2_img = NULL, *wooden_fence_left_img = NULL, *wooden_fence_post_img = NULL,\
@@ -105,6 +107,7 @@ bool loadMedia()
 	//Loading success flag
 	bool success = true;
 	
+	texture_atlas_img = loadSurface("graphics/texture_atlas.png");
 	player_idle_img = loadSurface("graphics/player_idle_spritesheet.png");
 	player_mvup_img = loadSurface("graphics/player_mvup_spritesheet.png");
 	player_mvdown_img = loadSurface("graphics/player_mvdown_spritesheet.png");
@@ -147,6 +150,8 @@ bool loadMedia()
 
 void close()
 {
+	SDL_FreeSurface(texture_atlas_img);
+	
 	SDL_FreeSurface(player_idle_img);
 	SDL_FreeSurface(player_mvup_img);
 	SDL_FreeSurface(player_mvdown_img);
@@ -214,6 +219,8 @@ int main( int argc, char* args[] )
 	printf("Initialized\n");
 	loadMedia();
 	printf("Loaded Media\n");
+	TextureAtlas textureAtlas = TextureAtlas(texture_atlas_img);
+	printf("Loaded Texture Atlas\n");
 	PlayerSprite playerSprite = PlayerSprite(100.0f, 140.0f, player_idle_img, player_mvup_img, player_mvdown_img, player_mvleft_img, player_mvright_img);
 	printf("Created player sprite\n");
 	Map map;
@@ -340,6 +347,7 @@ int main( int argc, char* args[] )
 			}
 		}
 		
+		textureAtlas.draw(gScreenSurface, BROWN_BRICK_TILE, 300, 300);
 		// draw changes to window
 		SDL_UpdateWindowSurface( gWindow );
 		

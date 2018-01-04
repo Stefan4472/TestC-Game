@@ -22,19 +22,25 @@ enum Textures {
 	WATER_TILE
 };
 
-/*SDL_Rect textureRegions[5] = 
+const SDL_Rect textureRegions[5] = 
 {
 	SDL_Rect { 0, 0, 32, 32 },
 	SDL_Rect { 64, 0, 32, 32 },
 	SDL_Rect { 0, 32, 32, 32 },
 	SDL_Rect { 64, 0, 32, 32 },
 	SDL_Rect { 0, 64, 32, 32 }
-};*/
+};
 
 class TextureAtlas 
 {
+	SDL_Surface* atlas;
+	SDL_Rect src, dest;
+	
 	public:
 		// init with full atlas image
 		TextureAtlas(SDL_Surface* atlas);
+		// draws image given by textureId to given SDL_Surface at x,y 
+		void draw(SDL_Surface* screenSurface, int textureId, float x, float y);
+
 };
 #endif
