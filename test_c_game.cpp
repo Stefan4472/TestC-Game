@@ -321,7 +321,7 @@ int main( int argc, char* args[] )
 		
 		map.handlePlayer(&playerSprite);
 		
-		//printf("Updating playersprite\n");
+		printf("Updating playersprite\n");
 		playerSprite.update(ticks_since_last_frame);
 		
 		//printf("Drawing Map\n");
@@ -362,7 +362,6 @@ int main( int argc, char* args[] )
 			rendered_fps = TTF_RenderText_Solid(font, fps_string.str().c_str(), textColor);
 			SDL_BlitSurface(rendered_fps, NULL, gScreenSurface, NULL);
 		}
-		
 		
 		// draw changes to window
 		SDL_UpdateWindowSurface( gWindow );

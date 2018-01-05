@@ -52,6 +52,7 @@ void Map::init(Sprite* playerSprite,
 	//printf("%d\n", civilian.x);
 	//civilian.hitbox;
 	civilian.init(200.0f, 200.0f, playerSprite, civilian_idle_img, civilian_mvup_img, civilian_mvdown_img, civilian_mvleft_img, civilian_mvright_img);
+	addSprite(new CivilianSprite(100.0f, 100.0f, playerSprite, civilian_idle_img, civilian_mvup_img, civilian_mvdown_img, civilian_mvleft_img, civilian_mvright_img));
 	pickup.init(pistol_img, pistol_img, 250.0f, 300.0f);
 }
 
@@ -59,6 +60,15 @@ void Map::update(int ms)
 {
 	civilian.move(ms);
 	civilian.update(ms);
+	
+	printf("Updating Sprites\n");
+	printf("Size of sprites = %d\n", sprites.size());
+	for (int i = 0; i < sprites.size(); i++) 
+	{
+		sprites.at(i)->move(ms);
+		sprites.at(i)->update(ms);
+	}
+	printf("Done\n");
 }
 
 void Map::handlePlayer(PlayerSprite* playerSprite) 
@@ -72,6 +82,11 @@ void Map::handlePlayer(PlayerSprite* playerSprite)
 		printf("Collision\n");
 		(*playerSprite).moveBack();
 	}
+}
+
+void Map::addSprite(Sprite* sprite)
+{
+	sprites.push_back(sprite);	
 }
 
 void Map::centerTo(SDL_Rect newCenter) 
@@ -188,4 +203,8 @@ void Map::drawObjectsTo(SDL_Surface* screenSurface)  // todo: don't' redo calcul
 void Map::drawSpritesTo(SDL_Surface* screenSurface)
 {
 	civilian.drawTo(screenSurface, viewOffsetX, viewOffsetY);	
+	for (int i = 0; i < sprites.size(); i++) 
+	{
+		sprites[i]->drawTo(screenSurface, viewOffsetX, viewOffsetY);
+	}
 }

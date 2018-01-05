@@ -17,6 +17,13 @@ class CivilianSprite:public Sprite
 	Action *defaultAction;
 	
 	public:
+		CivilianSprite();
+		CivilianSprite(float xCoord, float yCoord, Sprite* playerSprite,
+					 SDL_Surface* idle_anim_sheet, 
+					 SDL_Surface* mv_up_anim_sheet, 
+					 SDL_Surface* mv_down_anim_sheet,
+				 	 SDL_Surface* mv_left_anim_sheet,
+				 	 SDL_Surface* mv_right_anim_sheet);
 		void init(float xCoord, float yCoord, Sprite* playerSprite,
 					 SDL_Surface* idle_anim_sheet, 
 					 SDL_Surface* mv_up_anim_sheet, 

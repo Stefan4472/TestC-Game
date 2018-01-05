@@ -9,28 +9,6 @@
 #include "civilian_sprite.h"
 #include "player_sprite.h"
 
-// available id's for tiles
-/*enum TILE_IDS 
-{ // TODO: TILE_NOTHING
-	TILE_BROWN_BRICK,
-	TILE_DARK_BRICK,
-	TILE_WHITE_BRICK,
-	TILE_GRASS,
-	TILE_WATER
-};*/
-
-/*enum OBJECT_IDS // todo: flowers, walkable vs. non-walkable
-{
-	TEXTURE_NONE,
-	OBJECT_TREE_1,
-	OBJECT_TREE_2, 
-	OBJECT_ROCK_1,
-	OBJECT_ROCK_2, 
-	OBJECT_WOODEN_FENCE_LEFT,
-	OBJECT_WOODEN_FENCE_POST,
-	OBJECT_WOODEN_FENCE_VERT
-};*/
-
 // screen dimension constants: todo: read from a universal file
 const int SCREEN_WIDTH = 640;
 const int SCREEN_HEIGHT = 480;
@@ -126,6 +104,8 @@ class Map
 		void update(int ms);
 	  	// handles playerSprite on the map. Checks for interactions and calles collision handler if necessary
 		void handlePlayer(PlayerSprite* playerSprite);
+		// adds sprite to list of tracked sprites
+		void addSprite(Sprite* sprite);
 		// center background to given rect, updating viewOffsetX and viewOffsetY to match
 		void centerTo(SDL_Rect newCenter);
 		// draws tiled terrain to the given surface/screen. Use center() to center the background to a virtual rectangle
