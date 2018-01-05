@@ -69,6 +69,9 @@ class Map
 	// items generated and managed by map
 	std::vector<Item*> items;
 	
+	// handles player request to interact with the map
+	void handlePlayerInteract(PlayerSprite* playerSprite);
+	
 	public:
 		// offsets on x and y that graphics should be drawn to to convert virtual to canvas coordinates
 		int viewOffsetX, viewOffsetY;
@@ -90,6 +93,8 @@ class Map
 		void drawObjectsTo(SDL_Surface* screenSurface);
 		// draws sprites to the surface/screen
 		void drawSpritesTo(SDL_Surface* screenSurface);
+		// returns whether the two rectangles have any intersection
+		bool checkCollision(SDL_Rect a, SDL_Rect b);
 
 };
 

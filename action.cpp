@@ -35,7 +35,7 @@ WanderAction::WanderAction(int ms, int randomSeed, int idleInterval, int wanderI
 bool WanderAction::apply(Sprite* sprite, int ms)
 {
 	elapsedTime += ms;
-	printf("Applying Wander to Sprite. %d ms elapsed, nextChange at %d\n", elapsedTime, nextChange);
+	//printf("Applying Wander to Sprite. %d ms elapsed, nextChange at %d\n", elapsedTime, nextChange);
 	// time to change states
 	if (elapsedTime >= nextChange)
 	{

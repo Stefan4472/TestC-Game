@@ -16,8 +16,8 @@ void CivilianSprite::init(float xCoord, float yCoord, Sprite* playerSprite, Text
 	x = xCoord;
 	y = yCoord;
 	this->playerSprite = playerSprite;
-	defaultAction = new FollowAction(10, playerSprite, 10);
-	
+	//defaultAction = new FollowAction(10, playerSprite, 10);
+	defaultAction = new IdleAction(ACTION_LOOPING);
 	speedPerMs = 0.1f;
 	// note: this depends on the image of the sprite, and will need to be adjusted at times. Also: hitboxes corresponding to frames of spritesheets
 	hitboxOffsetX = 8;
@@ -38,15 +38,6 @@ void CivilianSprite::update(int ms) {
 	// apply current action 
 	defaultAction->apply(this, ms);
 	(*current_anim).passTime(ms);
-	
-	/*if (x < 100) 
-	{
-		changeDir(MOVEMENT_RIGHT);
-	}
-	else if (x > 250) 
-	{
-		changeDir(MOVEMENT_LEFT);
-	}*/
 }
 
 void CivilianSprite::drawTo(SDL_Surface* screenSurface, int offsetX, int offsetY) {

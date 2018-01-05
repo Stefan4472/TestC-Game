@@ -34,7 +34,6 @@ void Sprite::changeDir(int newDir)
 				break;
 
 			case MOVEMENT_RIGHT:
-				printf("Changing to right\n");
 				current_anim = &mv_right_anim;
 				break;
 

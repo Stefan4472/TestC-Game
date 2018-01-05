@@ -23,7 +23,7 @@ PlayerSprite::PlayerSprite(float xCoord, float yCoord, TextureAtlas* textureAtla
 
 bool PlayerSprite::handleKeyEvent(SDL_Event e) 
 {
-	printf("PlayerSprite attempting to handle KeyEvent\n");
+	//printf("PlayerSprite attempting to handle KeyEvent\n");
 	
 	// player pressed a key
 	if (e.type == SDL_KEYDOWN) 
@@ -44,6 +44,16 @@ bool PlayerSprite::handleKeyEvent(SDL_Event e)
 
 			case SDLK_DOWN:
 				changeDir(MOVEMENT_DOWN);
+				return true;
+				
+			// interact key
+			case SDLK_f:
+				if (!interactPressed)
+				{
+					interactPressed = true;
+					interactHandled = false;
+					printf("Started Interact Request\n");
+				}
 				return true;
 
 			default:
@@ -69,6 +79,11 @@ bool PlayerSprite::handleKeyEvent(SDL_Event e)
 				changeDir(MOVEMENT_NONE);
 				return true;
 
+			case SDLK_f:
+				interactPressed = false;
+				printf("Stopped Interaction Request \n");
+				return true;
+				
 			default:
 				return false;
 		}

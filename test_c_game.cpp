@@ -222,7 +222,7 @@ int main( int argc, char* args[] )
 			{
 				switch( e.key.keysym.sym )
 				{ 
-					// show inventory
+					// show player's inventory in window
 					case SDLK_e: 
 						invWindow->setActive(true);
 						currWindow = invWindow;
@@ -254,7 +254,7 @@ int main( int argc, char* args[] )
 		
 		map.handlePlayer(&playerSprite);
 		
-		printf("Updating playersprite\n");
+		//printf("Updating playersprite\n");
 		playerSprite.update(ticks_since_last_frame);
 		
 		//printf("Drawing Map\n");

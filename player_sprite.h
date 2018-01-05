@@ -36,6 +36,10 @@ class PlayerSprite: public Sprite
 		void drawTo(SDL_Surface* screenSurface, int offsetX, int offsetY);
 		// given KeyEvent from user, sees whether it is relevant and consumes it. Returns true if it was consumed.
 		bool handleKeyEvent(SDL_Event e);
+		// whether key for interact has been pressed
+		bool interactPressed = false;
+		// whether the player has pressed key for interaction, and has been handled 
+		bool interactHandled = false;
 		// returns coordinates of where sprite's feet are. Used to determine the tile the sprite is standing on/moving to
 		SDL_Point getPosition();
 		~PlayerSprite();

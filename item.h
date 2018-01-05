@@ -14,10 +14,10 @@ class Item
 		int textureId;
 		// pointer to TextureAtlas used for drawing
 		TextureAtlas* textureAtlas;
-		// defines position of Item on the map
-		SDL_Rect hitbox = {0, 0, 0, 0};
 		
 	public: // todo: make base class
+		// defines position of Item on the map
+		SDL_Rect hitbox = {0, 0, 0, 0};
 		Item(TextureAtlas* textureAtlas, int textureId, float x, float y);
 		virtual void drawToMap(SDL_Surface* screenSurface, int offsetX, int offsetY);
 		virtual void drawToInventory(SDL_Surface* screenSurface, SDL_Rect dest);

@@ -23,7 +23,7 @@ void Map::init(Sprite* playerSprite, TextureAtlas* textureAtlas) {
 	civilian.init(200.0f, 200.0f, playerSprite, textureAtlas);
 	addSprite(new CivilianSprite(100.0f, 100.0f, playerSprite, textureAtlas));
 	
-	addItem(new Item(textureAtlas, OBJECT_PISTOL_1, 200, 200));
+	addItem(new Item(textureAtlas, OBJECT_PISTOL_1, 100, 200));
 }
 
 void Map::update(int ms) 
@@ -31,14 +31,11 @@ void Map::update(int ms)
 	civilian.move(ms);
 	civilian.update(ms);
 	
-	printf("Updating Sprites\n");
-	printf("Size of sprites = %d\n", sprites.size());
 	for (int i = 0; i < sprites.size(); i++) 
 	{
 		sprites.at(i)->move(ms);
 		sprites.at(i)->update(ms);
 	}
-	printf("Done\n");
 }
 
 void Map::handlePlayer(PlayerSprite* playerSprite) 
@@ -52,6 +49,41 @@ void Map::handlePlayer(PlayerSprite* playerSprite)
 	{
 		printf("Collision\n");
 		playerSprite->moveBack();
+	}
+	// handle playerSprite wanting to interact: delegate to handlePlayerInteract()
+	if (playerSprite->interactPressed && !playerSprite->interactHandled)
+	{
+		playerSprite->interactHandled = true;
+		handlePlayerInteract(playerSprite); // TODO: DIRECTIONAL INTERACTION
+	}
+}
+
+void Map::handlePlayerInteract(PlayerSprite* playerSprite)
+{
+	// check tile first, then hitboxes of sprites, then hitboxes of objects objects	
+	printf("Handling Player Interact\n");
+	
+	// TODO: INTERACTIBLE TILES
+	
+	SDL_Rect player_hitbox = playerSprite->hitbox;
+	
+	for (int i = 0; i < sprites.size(); i++) 
+	{
+		if (checkCollision(player_hitbox, sprites[i]->hitbox))
+		{
+			printf("Collision with sprite at %f, %f\n", sprites[i]->x, sprites[i]->y);
+				// TODO: HANDLE
+			return;
+		}
+	}
+	for (int i = 0; i < items.size(); i++) 
+	{
+		if (checkCollision(player_hitbox, items[i]->hitbox))
+		{
+			printf("Collision with object at %f, %f\n", items[i]->hitbox.x, items[i]->hitbox.y); // todo: something suspicious with the hitbox
+				// TODO: HANDLE
+			return;
+		}
 	}
 }
 
@@ -175,7 +207,7 @@ void Map::drawObjectsTo(SDL_Surface* screenSurface)  // todo: don't' redo calcul
 	
 	for (int i = 0; i < items.size(); i++) 
 	{
-		items[i]->drawToMap(screenSurface, offset_x, offset_y);	
+		items[i]->drawToMap(screenSurface, top_left_x, top_left_y);	
 	}
 }
 
@@ -186,4 +218,9 @@ void Map::drawSpritesTo(SDL_Surface* screenSurface)
 	{
 		sprites[i]->drawTo(screenSurface, viewOffsetX, viewOffsetY);
 	}
+}
+
+bool Map::checkCollision(SDL_Rect a, SDL_Rect b)
+{
+	return a.y + a.h > b.y && a.y < b.y + b.h && a.x + a.w > b.x && a.x < b.x + b.w;
 }
