@@ -42,13 +42,6 @@ TTF_Font *font = NULL;
 
 // loaded texture atlas
 SDL_Surface *texture_atlas_img = NULL;
-SDL_Surface *player_idle_img = NULL, *player_mvup_img = NULL, *player_mvdown_img = NULL, *player_mvright_img = NULL, *player_mvleft_img = NULL;
-SDL_Surface *brown_brick_tile_img = NULL, *dark_brick_tile_img = NULL, *white_brick_tile_img = NULL, *grass_tile_img = NULL, *water_tile_img = NULL;
-SDL_Surface *tree_1_img = NULL, *tree_2_img = NULL, *rock_1_img = NULL, *rock_2_img = NULL, *wooden_fence_left_img = NULL, *wooden_fence_post_img = NULL,\
- *wooden_fence_post_vert_img = NULL;
-SDL_Surface *civilian_idle_img = NULL, *civilian_mvup_img = NULL, *civilian_mvdown_img = NULL, *civilian_mvright_img = NULL, *civilian_mvleft_img = NULL;
-SDL_Surface *pistol_img = NULL;
-SDL_Surface *gui_window_img = NULL;
 
 bool init()
 {
@@ -109,35 +102,6 @@ bool loadMedia()
 	bool success = true;
 	
 	texture_atlas_img = loadSurface("graphics/texture_atlas.png");
-	player_idle_img = loadSurface("graphics/player_idle_spritesheet.png");
-	player_mvup_img = loadSurface("graphics/player_mvup_spritesheet.png");
-	player_mvdown_img = loadSurface("graphics/player_mvdown_spritesheet.png");
-	player_mvright_img = loadSurface("graphics/player_mvright_spritesheet.png");
-	player_mvleft_img = loadSurface("graphics/player_mvleft_spritesheet.png");
-	
-	civilian_idle_img = loadSurface("graphics/civilian_idle_spritesheet.png");
-	civilian_mvup_img = loadSurface("graphics/civilian_mvup_spritesheet.png");
-	civilian_mvdown_img = loadSurface("graphics/civilian_mvdown_spritesheet.png");
-	civilian_mvright_img = loadSurface("graphics/civilian_mvright_spritesheet.png");
-	civilian_mvleft_img = loadSurface("graphics/civilian_mvleft_spritesheet.png");
-	
-	brown_brick_tile_img = loadSurface("graphics/brown_brick_tile.png");
-	dark_brick_tile_img = loadSurface("graphics/dark_brick_tile.png");
-	white_brick_tile_img = loadSurface("graphics/white_brick_tile_2.png");
-	grass_tile_img = loadSurface("graphics/grass_tile.png");
-	water_tile_img = loadSurface("graphics/water_tile.png");
-	
-	tree_1_img = loadSurface("graphics/tree_1.png");
-	tree_2_img = loadSurface("graphics/tree_2.png");
-	rock_1_img = loadSurface("graphics/rock_1.png");
-	rock_2_img = loadSurface("graphics/rock_2.png");
-	wooden_fence_left_img = loadSurface("graphics/wooden_fence_left_2.png");
-	wooden_fence_post_img = loadSurface("graphics/wooden_fence_post.png");
-	wooden_fence_post_vert_img = loadSurface("graphics/wooden_fence_vertical.png");
-	
-	pistol_img = loadSurface("graphics/pistol_1.png");
-	
-	gui_window_img = loadSurface("graphics/gui_window.png");
 	
 	// open the font
 	font = TTF_OpenFont( "fonts/AdventPro-Light.ttf", 28 );
@@ -152,36 +116,6 @@ bool loadMedia()
 void close()
 {
 	SDL_FreeSurface(texture_atlas_img);
-	
-	SDL_FreeSurface(player_idle_img);
-	SDL_FreeSurface(player_mvup_img);
-	SDL_FreeSurface(player_mvdown_img);
-	SDL_FreeSurface(player_mvright_img);
-	SDL_FreeSurface(player_mvleft_img);
-	
-	SDL_FreeSurface(civilian_idle_img);
-	SDL_FreeSurface(civilian_mvup_img);
-	SDL_FreeSurface(civilian_mvdown_img);
-	SDL_FreeSurface(civilian_mvright_img);
-	SDL_FreeSurface(civilian_mvleft_img);
-	
-	SDL_FreeSurface(brown_brick_tile_img);
-	SDL_FreeSurface(dark_brick_tile_img);
-	SDL_FreeSurface(white_brick_tile_img);
-	SDL_FreeSurface(grass_tile_img);
-	SDL_FreeSurface(water_tile_img);
-	
-	SDL_FreeSurface(rock_1_img);
-	SDL_FreeSurface(rock_2_img);
-	SDL_FreeSurface(tree_1_img);
-	SDL_FreeSurface(tree_2_img);
-	SDL_FreeSurface(wooden_fence_left_img);
-	SDL_FreeSurface(wooden_fence_post_img);
-	SDL_FreeSurface(wooden_fence_post_vert_img);
-	
-	SDL_FreeSurface(pistol_img);
-	
-	SDL_FreeSurface(gui_window_img);
 	
 	TTF_CloseFont(font);
 	font = NULL;
@@ -225,9 +159,7 @@ int main( int argc, char* args[] )
 	PlayerSprite playerSprite = PlayerSprite(100.0f, 140.0f, &textureAtlas);
 	printf("Created player sprite\n");
 	Map map;
-	map.init(&playerSprite, &textureAtlas, brown_brick_tile_img, dark_brick_tile_img, white_brick_tile_img, grass_tile_img, water_tile_img,
-			tree_1_img, tree_2_img, rock_1_img, rock_2_img, wooden_fence_left_img, wooden_fence_post_img, wooden_fence_post_vert_img,
-			civilian_idle_img, civilian_mvup_img, civilian_mvdown_img, civilian_mvright_img, civilian_mvleft_img, pistol_img);
+	map.init(&playerSprite, &textureAtlas);
 	printf("Created map\n");
 	// pointer to current Window active on screen
 	Window* currWindow = NULL;

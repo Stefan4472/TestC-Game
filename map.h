@@ -75,26 +75,7 @@ class Map
 		// offsets on x and y that graphics should be drawn to to convert virtual to canvas coordinates
 		int viewOffsetX, viewOffsetY;
 		// init tile images
-		void init(Sprite* playerSprite, 
-				TextureAtlas* textureAtlas,
-				SDL_Surface* brown_brick_tile_img, 
-				  SDL_Surface* dark_brick_tile_img, 
-				  SDL_Surface* white_brick_tile_img, 
-				  SDL_Surface* grass_tile_img, 
-				  SDL_Surface* water_tile_img,
-				  SDL_Surface* tree_1_img,
-				  SDL_Surface* tree_2_img,
-				  SDL_Surface* rock_1_img,
-				  SDL_Surface* rock_2_img,
-				  SDL_Surface* wooden_fence_left_img,
-				  SDL_Surface* wooden_fence_post,
-				  SDL_Surface* wooden_fence_vert,
-				  SDL_Surface *civilian_idle_img, 
-				  SDL_Surface *civilian_mvup_img,
-				  SDL_Surface *civilian_mvdown_img,
-				  SDL_Surface *civilian_mvright_img, 
-				  SDL_Surface *civilian_mvleft_img,
-				  SDL_Surface *pistol_img);
+		void init(Sprite* playerSprite, TextureAtlas* textureAtlas);
 		// advances state by given number of milliseconds
 		void update(int ms);
 	  	// handles playerSprite on the map. Checks for interactions and calles collision handler if necessary

@@ -1,24 +1,6 @@
 #include "map.h"
 
-void Map::init(Sprite* playerSprite, 
-			   TextureAtlas* textureAtlas, SDL_Surface* brown_brick_tile_img, 
-				  SDL_Surface* dark_brick_tile_img, 
-				  SDL_Surface* white_brick_tile_img, 
-				  SDL_Surface* grass_tile_img, 
-				  SDL_Surface* water_tile_img,
-				  SDL_Surface* tree_1_img,
-				  SDL_Surface* tree_2_img,
-				  SDL_Surface* rock_1_img,
-				  SDL_Surface* rock_2_img,
-				  SDL_Surface* wooden_fence_left_img,
-				  SDL_Surface* wooden_fence_post,
-				  SDL_Surface* wooden_fence_vert,
-				  SDL_Surface *civilian_idle_img, 
-				  SDL_Surface *civilian_mvup_img,
-				  SDL_Surface *civilian_mvdown_img,
-				  SDL_Surface *civilian_mvright_img, 
-				  SDL_Surface *civilian_mvleft_img,
-			  	SDL_Surface *pistol_img) {
+void Map::init(Sprite* playerSprite, TextureAtlas* textureAtlas) {
 	this->textureAtlas = textureAtlas;
 	
 	// figure out which tiles are walkable
@@ -40,7 +22,7 @@ void Map::init(Sprite* playerSprite,
 	//civilian.hitbox;
 	civilian.init(200.0f, 200.0f, playerSprite, textureAtlas);
 	addSprite(new CivilianSprite(100.0f, 100.0f, playerSprite, textureAtlas));
-	pickup.init(pistol_img, pistol_img, 250.0f, 300.0f);
+	//pickup.init(pistol_img, pistol_img, 250.0f, 300.0f);
 }
 
 void Map::update(int ms) 
