@@ -43,13 +43,14 @@ void Map::update(int ms)
 void Map::handlePlayer(PlayerSprite* playerSprite) 
 {
 	// determine tile player is standing in   todo: this is actually pretty bad. Use hitbox to check against all tiles intersected
-	int tile_r = (*playerSprite).getPosY() / TILE_HEIGHT;
-	int tile_c = (*playerSprite).getPosX() / TILE_WIDTH;
+	//int tile_r = (*playerSprite).getPosY() / TILE_HEIGHT;
+	//int tile_c = (*playerSprite).getPosX() / TILE_WIDTH;
+	SDL_Point player_pos = playerSprite->getPosition();
 	
-	if (!walkableTiles[tile_r][tile_c])
+	if (!walkableTiles[player_pos.y / TILE_HEIGHT][player_pos.x / TILE_WIDTH])
 	{
 		printf("Collision\n");
-		(*playerSprite).moveBack();
+		playerSprite->moveBack();
 	}
 }
 

@@ -36,9 +36,8 @@ class PlayerSprite: public Sprite
 		void drawTo(SDL_Surface* screenSurface, int offsetX, int offsetY);
 		// given KeyEvent from user, sees whether it is relevant and consumes it. Returns true if it was consumed.
 		bool handleKeyEvent(SDL_Event e);
-		// return virtual x- and y-coordinates of point where the player's feet are
-		float getPosX(); // TODO: Point class, one function call for x and y
-		float getPosY();
+		// returns coordinates of where sprite's feet are. Used to determine the tile the sprite is standing on/moving to
+		SDL_Point getPosition();
 		~PlayerSprite();
 		
 	private:

@@ -192,6 +192,7 @@ int main( int argc, char* args[] )
 	//While application is running
 	while( !quit )
 	{
+		frames++;
 		// calculate number of milliseconds since last frame was rendered 
 		curr_time = SDL_GetTicks();
 		//printf("Curr time is %d\n", curr_time);
@@ -303,6 +304,7 @@ int main( int argc, char* args[] )
 		last_time = curr_time;
 	}
 
+	printf("%d frames over %d ms = %d fps\n", frames, last_time, frames * 1000 / last_time);
 	delete(invWindow);
 	delete(pauseWindow);
 	delete(quitWindow);

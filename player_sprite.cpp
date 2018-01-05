@@ -152,45 +152,28 @@ void PlayerSprite::drawTo(SDL_Surface* screenSurface, int offsetX, int offsetY) 
 	(*current_anim).drawTo(screenSurface, x - offsetX, y - offsetY);
 }
 
-float PlayerSprite::getPosX() 
+SDL_Point PlayerSprite::getPosition() 
 {
 	switch (movementDir) 
 	{
 		case MOVEMENT_NONE:
+			return SDL_Point {(int) x + current_anim->frameWidth / 2, (int) y + current_anim->frameHeight };
+			
 		case MOVEMENT_UP:
+			return SDL_Point {(int) x + current_anim->frameWidth / 2, (int) y + (int) (current_anim->frameHeight * 0.7f) };
+			
 		case MOVEMENT_DOWN:
-			return x + current_anim->frameWidth / 2;
+			return SDL_Point {(int) x + current_anim->frameWidth / 2, (int) y + current_anim->frameHeight };
 		
 		case MOVEMENT_LEFT:
-			return x;
+			return SDL_Point {(int) x, (int) y + current_anim->frameHeight };
 
 		case MOVEMENT_RIGHT:
-			return x + current_anim->frameWidth;
+			return SDL_Point {(int) x + current_anim->frameWidth, (int) y + current_anim->frameHeight };
 		
 		default:
 			printf("This shouldn't happen");
-			return x;
-	}
-}
-
-float PlayerSprite::getPosY()
-{
-	switch (movementDir) 
-	{
-		case MOVEMENT_NONE:
-		case MOVEMENT_LEFT:
-		case MOVEMENT_RIGHT:
-			return y + current_anim->frameHeight;
-			
-		case MOVEMENT_UP:
-			return y + current_anim->frameHeight * 0.7f;
-			
-		case MOVEMENT_DOWN:
-			return y + current_anim->frameHeight;
-		
-		default:
-			printf("This shouldn't happen");
-			return x;
+			return SDL_Point {-1, -1 };
 	}
 }
 
