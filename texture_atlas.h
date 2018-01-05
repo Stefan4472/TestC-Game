@@ -9,12 +9,15 @@
 
 // the Textures enum defines the graphics that may be used.
 // the TextureRegions array defines the bounds of the corresponding textures in the atlas
+
+// note: this animations were not implemented.
 // the Animations enum defines the animations that are known
 // the AnimationFrames array defines the corresponding Textures that make up the animation
 
 // call draw(textureId, ...) functions to draw the desired texture to the screen
 
-enum Textures {
+enum Textures 
+{
 	TEXTURE_NONE,
 	TILE_BROWN_BRICK,
 	TILE_DARK_BRICK,
@@ -27,10 +30,20 @@ enum Textures {
 	OBJECT_ROCK_2, 
 	OBJECT_WOODEN_FENCE_LEFT,
 	OBJECT_WOODEN_FENCE_POST,
-	OBJECT_WOODEN_FENCE_VERT
+	OBJECT_WOODEN_FENCE_VERT,
+	CIVILIAN_IDLE,
+	CIVILIAN_MVRIGHT,
+	CIVILIAN_MVLEFT,
+	CIVILIAN_UP,
+	CIVILIAN_DOWN,
+	PLAYER_IDLE,
+	PLAYER_MVDOWN,
+	PLAYER_MVUP,
+	PLAYER_MVLEFT,
+	PLAYER_MVRIGHT
 };
 
-const SDL_Rect textureRegions[13] = 
+const SDL_Rect textureRegions[23] = 
 {
 	SDL_Rect { 0, 0, 0, 0 }, // todo: don't allow texture zero to be called, or give some hint it's null
 	SDL_Rect { 0, 0, 32, 32 },
@@ -44,7 +57,17 @@ const SDL_Rect textureRegions[13] =
 	SDL_Rect { 108, 217, 36, 60 },
 	SDL_Rect { 220, 0, 32, 32 },
 	SDL_Rect { 220, 32, 32, 32 },
-	SDL_Rect { 220, 64, 32, 32 }
+	SDL_Rect { 220, 64, 32, 32 },
+	SDL_Rect { 416, 0, 34, 34 },
+	SDL_Rect { 416, 36, 103, 34 },
+	SDL_Rect { 416, 72, 102, 34 },
+	SDL_Rect { 416, 108, 100, 36 },
+	SDL_Rect { 416, 146, 99, 34 },
+	SDL_Rect { 416, 183, 52, 59 },
+	SDL_Rect { 416, 183, 197, 59 },
+	SDL_Rect { 416, 258, 197, 59 },
+	SDL_Rect { 416, 330, 197, 59 },
+	SDL_Rect { 416, 408, 197, 59 }
 };
 
 class TextureAtlas 
@@ -57,6 +80,8 @@ class TextureAtlas
 		TextureAtlas(SDL_Surface* atlas);
 		// draws image given by textureId to given SDL_Surface at x,y 
 		void draw(SDL_Surface* screenSurface, int textureId, float x, float y);
+		// draws subimage defined by src from specified image to coordinates x,y on screenSurface
+		void drawSubimg(SDL_Surface* screenSurface, int textureId, SDL_Rect src, float x, float y);
 		// returns width (px) of specified Texture image
 		int getWidth(int textureId);
 		// returns height (px) of specified Texture image

@@ -52,11 +52,6 @@ class Map
 	// grid of tiles that are walkable--generated based on mapTiles and objectTiles
 	bool walkableTiles[10][10]; 
 	
-	// images corresponding with TILE_IDS
-	SDL_Surface* tileImgs[5] = { NULL, NULL, NULL, NULL, NULL };
-	
-	// images corresponding with OBJECT_IDS
-	SDL_Surface* objectImgs[8] = { NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL };
 	// virtual coordinates view should center on
 	SDL_Rect center;  // todo: replace with camera
 	

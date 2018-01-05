@@ -20,19 +20,6 @@ void Map::init(Sprite* playerSprite,
 				  SDL_Surface *civilian_mvleft_img,
 			  	SDL_Surface *pistol_img) {
 	this->textureAtlas = textureAtlas;
-	tileImgs[0] = brown_brick_tile_img;
-	tileImgs[1] = dark_brick_tile_img;
-	tileImgs[2] = white_brick_tile_img;
-	tileImgs[3] = grass_tile_img;
-	tileImgs[4] = water_tile_img;
-	objectImgs[0] = NULL; // todo: bad practice (?)
-	objectImgs[1] = tree_1_img;
-	objectImgs[2] = tree_2_img;
-	objectImgs[3] = rock_1_img;
-	objectImgs[4] = rock_2_img;
-	objectImgs[5] = wooden_fence_left_img;
-	objectImgs[6] = wooden_fence_post;
-	objectImgs[7] = wooden_fence_vert;
 	
 	// figure out which tiles are walkable
 	for (int i = 0; i < mapRows; i++) 
