@@ -82,6 +82,12 @@ void Map::handlePlayerInteract(PlayerSprite* playerSprite)
 		{
 			printf("Collision with object at %f, %f\n", items[i]->hitbox.x, items[i]->hitbox.y); // todo: something suspicious with the hitbox
 				// TODO: HANDLE
+			//items[i]->handleInteract(playerSprite); 
+			
+			// add item to inventory
+			playerSprite->inventory.addItem(items[i]);
+			// remove item from map TODO: USE LINKED LIST
+			items.erase(items.begin() + i);
 			return;
 		}
 	}

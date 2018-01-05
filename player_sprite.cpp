@@ -63,7 +63,7 @@ bool PlayerSprite::handleKeyEvent(SDL_Event e)
 	// player released a key
 	else
 	{
-		switch (e.key.keysym.sym) // todo: E: inventory, R reload, F action
+		switch (e.key.keysym.sym) // todo: E: inventory, R reload, F action, Q drop
 		{
 			case SDLK_RIGHT: // todo: support bi-directionality
 				//changeDir(-MOVEMENT_RIGHT);

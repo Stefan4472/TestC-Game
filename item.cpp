@@ -11,6 +11,13 @@ Item::Item(TextureAtlas* textureAtlas, int textureId, float x, float y)
 	hitbox.h = textureAtlas->getHeight(textureId);
 }
 
+/*void Item::handleInteract(Sprite* sprite)
+{
+	// default: put item in sprite's inventory
+	printf("Item handling interact with Sprite\n");
+	sprite->inventory->addItem(this);
+}*/
+
 void Item::drawToMap(SDL_Surface* screenSurface, int offsetX, int offsetY)
 {
 	textureAtlas->draw(screenSurface, textureId, hitbox.x - offsetX, hitbox.y - offsetY);

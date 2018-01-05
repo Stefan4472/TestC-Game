@@ -3,6 +3,8 @@
 
 #include <SDL2/SDL.h>
 #include "spritesheet.h"
+#include "item.h"
+#include "inventory.h"
 
 // Sprite base class
 
@@ -32,7 +34,10 @@ class Sprite
 	public:
 		// virtual coordinates
 		float x, y;
+		// area on map this sprite can be hit
 		SDL_Rect hitbox;
+		// objects sprite is carrying
+		Inventory inventory;
 		// direction currently moving in
 		int movementDir = MOVEMENT_NONE;
 		// sets coordinates to intended movement, given number of milliseconds since last frame

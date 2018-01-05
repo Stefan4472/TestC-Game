@@ -19,6 +19,8 @@ class Item
 		// defines position of Item on the map
 		SDL_Rect hitbox = {0, 0, 0, 0};
 		Item(TextureAtlas* textureAtlas, int textureId, float x, float y);
+		// handles given sprite interacting with the object on the ground -- removed due to forward declaration errors
+		//virtual void handleInteract(Sprite* sprite);
 		virtual void drawToMap(SDL_Surface* screenSurface, int offsetX, int offsetY);
 		virtual void drawToInventory(SDL_Surface* screenSurface, SDL_Rect dest);
 		//virtual void use() = 0;
