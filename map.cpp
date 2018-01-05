@@ -22,7 +22,8 @@ void Map::init(Sprite* playerSprite, TextureAtlas* textureAtlas) {
 	//civilian.hitbox;
 	civilian.init(200.0f, 200.0f, playerSprite, textureAtlas);
 	addSprite(new CivilianSprite(100.0f, 100.0f, playerSprite, textureAtlas));
-	//pickup.init(pistol_img, pistol_img, 250.0f, 300.0f);
+	
+	addItem(new Item(textureAtlas, OBJECT_PISTOL_1, 200, 200));
 }
 
 void Map::update(int ms) 
@@ -57,6 +58,11 @@ void Map::handlePlayer(PlayerSprite* playerSprite)
 void Map::addSprite(Sprite* sprite)
 {
 	sprites.push_back(sprite);	
+}
+
+void Map::addItem(Item* item)
+{
+	items.push_back(item);	
 }
 
 void Map::centerTo(SDL_Rect newCenter) 
@@ -167,7 +173,10 @@ void Map::drawObjectsTo(SDL_Surface* screenSurface)  // todo: don't' redo calcul
 		 }
 	}
 	
-	//pickup.drawToMap(screenSurface, offset_x, offset_y);
+	for (int i = 0; i < items.size(); i++) 
+	{
+		items[i]->drawToMap(screenSurface, offset_x, offset_y);	
+	}
 }
 
 void Map::drawSpritesTo(SDL_Surface* screenSurface)

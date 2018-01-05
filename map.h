@@ -69,8 +69,6 @@ class Map
 	// items generated and managed by map
 	std::vector<Item*> items;
 	
-	Item pickup;
-
 	public:
 		// offsets on x and y that graphics should be drawn to to convert virtual to canvas coordinates
 		int viewOffsetX, viewOffsetY;
@@ -82,6 +80,8 @@ class Map
 		void handlePlayer(PlayerSprite* playerSprite);
 		// adds sprite to list of tracked sprites
 		void addSprite(Sprite* sprite);
+		// adds item to list of items on the map
+		void addItem(Item* item);
 		// center background to given rect, updating viewOffsetX and viewOffsetY to match
 		void centerTo(SDL_Rect newCenter);
 		// draws tiled terrain to the given surface/screen. Use center() to center the background to a virtual rectangle
