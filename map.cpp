@@ -38,8 +38,8 @@ void Map::init(Sprite* playerSprite,
 	}
 	//printf("%d\n", civilian.x);
 	//civilian.hitbox;
-	civilian.init(200.0f, 200.0f, playerSprite, civilian_idle_img, civilian_mvup_img, civilian_mvdown_img, civilian_mvleft_img, civilian_mvright_img);
-	addSprite(new CivilianSprite(100.0f, 100.0f, playerSprite, civilian_idle_img, civilian_mvup_img, civilian_mvdown_img, civilian_mvleft_img, civilian_mvright_img));
+	civilian.init(200.0f, 200.0f, playerSprite, textureAtlas);
+	addSprite(new CivilianSprite(100.0f, 100.0f, playerSprite, textureAtlas));
 	pickup.init(pistol_img, pistol_img, 250.0f, 300.0f);
 }
 

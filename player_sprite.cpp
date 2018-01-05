@@ -1,11 +1,6 @@
 #include "player_sprite.h"
 
-PlayerSprite::PlayerSprite(float xCoord, float yCoord, 
-					 SDL_Surface* idle_anim_sheet, 
-					 SDL_Surface* mv_up_anim_sheet, 
-					 SDL_Surface* mv_down_anim_sheet, 
-				 	 SDL_Surface* mv_left_anim_sheet, 
-				 	 SDL_Surface* mv_right_anim_sheet) {
+PlayerSprite::PlayerSprite(float xCoord, float yCoord, TextureAtlas* textureAtlas) {
 	printf("Creating sprite at %f, %f\n", xCoord, yCoord);
 	
 	x = xCoord;
@@ -17,11 +12,11 @@ PlayerSprite::PlayerSprite(float xCoord, float yCoord,
 	hitbox.w = 30;
 	hitbox.h = 44;
 	
-	idle_anim.init(idle_anim_sheet, 2, 100);
-	mv_up_anim.init(mv_up_anim_sheet, 4, 100);
-	mv_down_anim.init(mv_down_anim_sheet, 4, 100);
-	mv_left_anim.init(mv_left_anim_sheet, 4, 100);
-	mv_right_anim.init(mv_right_anim_sheet, 4, 100);
+	idle_anim.init(textureAtlas, PLAYER_IDLE, 1, 100);
+	mv_up_anim.init(textureAtlas, PLAYER_MVUP, 4, 100);
+	mv_down_anim.init(textureAtlas, PLAYER_MVDOWN, 4, 100);
+	mv_left_anim.init(textureAtlas, PLAYER_MVLEFT, 4, 100);
+	mv_right_anim.init(textureAtlas, PLAYER_MVRIGHT, 4, 100);
 	
 	current_anim = &idle_anim;
 }

@@ -222,7 +222,7 @@ int main( int argc, char* args[] )
 	printf("Loaded Media\n");
 	TextureAtlas textureAtlas = TextureAtlas(texture_atlas_img);
 	printf("Loaded Texture Atlas\n");
-	PlayerSprite playerSprite = PlayerSprite(100.0f, 140.0f, player_idle_img, player_mvup_img, player_mvdown_img, player_mvleft_img, player_mvright_img);
+	PlayerSprite playerSprite = PlayerSprite(100.0f, 140.0f, &textureAtlas);
 	printf("Created player sprite\n");
 	Map map;
 	map.init(&playerSprite, &textureAtlas, brown_brick_tile_img, dark_brick_tile_img, white_brick_tile_img, grass_tile_img, water_tile_img,

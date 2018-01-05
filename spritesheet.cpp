@@ -1,11 +1,13 @@
 #include "spritesheet.h"
 
-void Spritesheet::init(SDL_Surface* img, int numFrames, int frameDuration) {
+void Spritesheet::init(TextureAtlas* textureAtlas, int sheetImageId, int numFrames, int frameDuration) {
 	printf("Creating Spritesheet with %d frames, %d ms per frame\n", numFrames, frameDuration);
-	sheet = img;
+	this->textureAtlas = textureAtlas;
+	this->sheetImageId = sheetImageId;
 	
-	frameWidth = img->w / numFrames;
-	frameHeight = img->h;
+	// calculate width and height of individual frames, based on sheet width/height (taken from textureAtlas) divided by numFrames
+	frameWidth = textureAtlas->getWidth(sheetImageId) / numFrames;
+	frameHeight = textureAtlas->getHeight(sheetImageId);
 	
 	frameCounter = 0;
 	this->numFrames = numFrames;
@@ -42,5 +44,6 @@ void Spritesheet::drawTo(SDL_Surface* screenSurface, float x, float y) {
 	src.x = frameWidth * frameCounter;
 	dest.x = x;
 	dest.y = y;
-	SDL_BlitSurface( sheet, &src, screenSurface, &dest );
+	textureAtlas->drawSubimg( screenSurface, sheetImageId, src, x, y );
+	//SDL_BlitSurface( sheet, &src, screenSurface, &dest );
 }

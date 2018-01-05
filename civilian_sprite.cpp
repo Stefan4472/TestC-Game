@@ -5,22 +5,12 @@ CivilianSprite::CivilianSprite()
 	
 }
 
-CivilianSprite::CivilianSprite(float xCoord, float yCoord, Sprite* playerSprite,
-					 SDL_Surface* idle_anim_sheet, 
-					 SDL_Surface* mv_up_anim_sheet, 
-					 SDL_Surface* mv_down_anim_sheet,
-				 	 SDL_Surface* mv_left_anim_sheet,
-				 	 SDL_Surface* mv_right_anim_sheet)
+CivilianSprite::CivilianSprite(float xCoord, float yCoord, Sprite* playerSprite, TextureAtlas* textureAtlas)
 {
-	init(xCoord, yCoord, playerSprite, idle_anim_sheet, mv_up_anim_sheet, mv_down_anim_sheet, mv_left_anim_sheet, mv_right_anim_sheet);
+	init(xCoord, yCoord, playerSprite, textureAtlas);
 }
 
-void CivilianSprite::init(float xCoord, float yCoord, Sprite* playerSprite,
-					 SDL_Surface* idle_anim_sheet, 
-					 SDL_Surface* mv_up_anim_sheet, 
-					 SDL_Surface* mv_down_anim_sheet, 
-				 	 SDL_Surface* mv_left_anim_sheet, 
-				 	 SDL_Surface* mv_right_anim_sheet) {
+void CivilianSprite::init(float xCoord, float yCoord, Sprite* playerSprite, TextureAtlas* textureAtlas) {
 	printf("Creating civilian sprite at %f, %f\n", xCoord, yCoord);
 	
 	x = xCoord;
@@ -35,11 +25,11 @@ void CivilianSprite::init(float xCoord, float yCoord, Sprite* playerSprite,
 	hitbox.w = 30;
 	hitbox.h = 44;
 	
-	idle_anim.init(idle_anim_sheet, 1, 100);
-	mv_up_anim.init(mv_up_anim_sheet, 3, 100);
-	mv_down_anim.init(mv_down_anim_sheet, 3, 100);
-	mv_left_anim.init(mv_left_anim_sheet, 3, 100);
-	mv_right_anim.init(mv_right_anim_sheet, 3, 100);
+	idle_anim.init(textureAtlas, CIVILIAN_IDLE, 1, 100);
+	mv_up_anim.init(textureAtlas, CIVILIAN_MVUP, 3, 100);
+	mv_down_anim.init(textureAtlas, CIVILIAN_MVDOWN, 3, 100);
+	mv_left_anim.init(textureAtlas, CIVILIAN_MVLEFT, 3, 100);
+	mv_right_anim.init(textureAtlas, CIVILIAN_MVRIGHT, 3, 100);
 	
 	current_anim = &idle_anim;
 }

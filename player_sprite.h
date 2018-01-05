@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 #include <SDL2/SDL.h>
+#include "texture_atlas.h"
 #include "spritesheet.h"
 #include "sprite.h"
 
@@ -24,12 +25,7 @@ class PlayerSprite: public Sprite
 	int hitboxOffsetX, hitboxOffsetY;
 	
 	public:
-		PlayerSprite(float xCoord, float yCoord,
-					 SDL_Surface* idle_anim_sheet, 
-					 SDL_Surface* mv_up_anim_sheet, 
-					 SDL_Surface* mv_down_anim_sheet,
-				 	 SDL_Surface* mv_left_anim_sheet,
-				 	 SDL_Surface* mv_right_anim_sheet); // todo: use initialization list (?)
+		PlayerSprite(float xCoord, float yCoord, TextureAtlas* textureAtlas); // todo: use initialization list (?)
 		// sets coordinates to intended movement, given number of milliseconds since last frame
 		void move(int ms);
 		// moves sprite back to where it was the previous frame/move() 
