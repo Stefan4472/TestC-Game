@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 #include <SDL2/SDL.h>
+#include "texture_atlas.h"
 #include "item.h"
 
 // an inventory can store and keep track of Items
@@ -18,5 +19,7 @@ class Inventory
 	public:
 		// attempts to add an item to inventory. Returns false if inventory is full
 		bool addItem(Item* item);
+		// draws inventory to given surface
+		void drawTo(SDL_Surface* screenSurface, TextureAtlas* textureAtlas);
 };
 #endif

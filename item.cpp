@@ -25,5 +25,5 @@ void Item::drawToMap(SDL_Surface* screenSurface, int offsetX, int offsetY)
 
 void Item::drawToInventory(SDL_Surface* screenSurface, SDL_Rect dest)
 {
-	
+	textureAtlas->draw(screenSurface, textureId, 0, 0);
 }

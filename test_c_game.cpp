@@ -286,6 +286,11 @@ int main( int argc, char* args[] )
 			}
 		}
 		
+		if (invWindow->isActive()) // currently work-around to draw inventory
+		{
+			playerSprite.inventory.drawTo(gScreenSurface, &textureAtlas);	
+		}
+		
 		// calculate and render frame rate text. Draw to top-left of screen
 		if (ticks_since_last_frame > 0) 
 		{

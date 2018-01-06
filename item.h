@@ -10,6 +10,10 @@
 class Item
 {
 	protected:
+		// name of item
+		char* name;
+		// item description
+		char* description;
 		// id for sprite in texture_atlas.h
 		int textureId;
 		// pointer to TextureAtlas used for drawing

@@ -41,10 +41,16 @@ enum Textures
 	PLAYER_MVUP,
 	PLAYER_MVLEFT,
 	PLAYER_MVRIGHT,
-	OBJECT_PISTOL_1
+	OBJECT_PISTOL_1,
+	BREAD_LOAF,
+	CHICKEN_LEG,
+	BEER_MUG,
+	SWORD_1,
+	POTION_GREEN,
+	SCROLL_1
 };
 
-const SDL_Rect textureRegions[24] = 
+const SDL_Rect textureRegions[30] = 
 {
 	SDL_Rect { 0, 0, 0, 0 }, // todo: don't allow texture zero to be called, or give some hint it's null
 	SDL_Rect { 0, 0, 32, 32 },
@@ -69,7 +75,13 @@ const SDL_Rect textureRegions[24] =
 	SDL_Rect { 416, 258, 197, 59 },
 	SDL_Rect { 416, 330, 197, 59 },
 	SDL_Rect { 416, 408, 197, 59 },
-	SDL_Rect { 284, 0, 26, 19 }
+	SDL_Rect { 284, 0, 26, 19 },
+	SDL_Rect { 284, 21, 19, 15 },
+	SDL_Rect { 284, 38, 25, 14 }, 
+	SDL_Rect { 284, 53, 16, 21 },
+	SDL_Rect { 284, 76, 32, 32 },
+	SDL_Rect { 284, 108, 32, 32 },
+	SDL_Rect { 284, 141, 32, 32 }
 };
 
 class TextureAtlas 
