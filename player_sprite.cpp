@@ -26,10 +26,8 @@ PlayerSprite::PlayerSprite(float xCoord, float yCoord, TextureAtlas* textureAtla
 
 bool PlayerSprite::handleKeyEvent(SDL_Event e) 
 {
-	//printf("PlayerSprite attempting to handle KeyEvent\n");
-	
 	// player pressed a key
-	if (e.type == SDL_KEYDOWN) 
+	if (e.type == SDL_KEYDOWN)  // todo: E: inventory, R reload, F action, Q drop
 	{
 		switch( e.key.keysym.sym )
 		{ 
@@ -59,26 +57,24 @@ bool PlayerSprite::handleKeyEvent(SDL_Event e)
 				}
 				return true;
 
+			// cycle in-hand inventory item forward
+			case SDLK_TAB:
+				inventory->cycleInHandFwd();
+				return true;
+				
 			default:
 				return false;
 		}
 	}
 	// player released a key
-	else
+	else if (e.type == SDL_KEYUP)
 	{
-		switch (e.key.keysym.sym) // todo: E: inventory, R reload, F action, Q drop
+		switch (e.key.keysym.sym) 
 		{
 			case SDLK_RIGHT: // todo: support bi-directionality
-				//changeDir(-MOVEMENT_RIGHT);
-				
 			case SDLK_UP:
-				//changeDir(-MOVEMENT_UP);
-				
 			case SDLK_LEFT:
-				//changeDir(-MOVEMENT_LEFT);
-				
 			case SDLK_DOWN:
-				//changeDir(-MOVEMENT_DOWN);
 				changeDir(MOVEMENT_NONE);
 				return true;
 
@@ -90,7 +86,21 @@ bool PlayerSprite::handleKeyEvent(SDL_Event e)
 			default:
 				return false;
 		}
-	} 
+	}
+	// player rolled mouse wheel
+	else if (e.type == SDL_MOUSEWHEEL)
+	{
+		// user scrolled up: cycle in-hand inventory item forward
+		if (e.wheel.y == 1)
+		{
+			inventory->cycleInHandFwd();
+		}
+		// user scrolled down: cycle in-hand inventory item backward
+		else 
+		{
+			inventory->cycleInHandBck();
+		}
+	}
 }
 
 void PlayerSprite::move(int ms) {

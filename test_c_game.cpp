@@ -170,8 +170,10 @@ int main( int argc, char* args[] )
 	// window showing quit menu
 	Window* quitWindow = new PauseDialog(SDL_Rect{100, 100, 300, 300}, SDLK_e, SCREEN_WIDTH, SCREEN_HEIGHT, font, textColor, backgroundColor);
 	
+	// displays name of item in-hand, if any
+	SDL_Surface* rendered_inhand_name = NULL;
 	// displays frame-rate in top-left corner
-	SDL_Surface* rendered_fps;
+	SDL_Surface* rendered_fps = NULL;
 	// string used to show frame rate 
 	std::stringstream fps_string;
 	
@@ -291,15 +293,20 @@ int main( int argc, char* args[] )
 		{
 			playerSprite.inventory->drawTo(gScreenSurface, &textureAtlas);	
 		}
-		
+		// draw name of in-hand item to screen, if any
+		if (playerSprite.inventory->getInHand()) // TODO: ONLY RENDER WHEN CHANGE OCCURS
+		{
+			rendered_inhand_name = TTF_RenderText_Solid(font, playerSprite.inventory->getInHand()->getName(), textColor);
+			SDL_BlitSurface(rendered_inhand_name, NULL, gScreenSurface, NULL);
+		}
 		// calculate and render frame rate text. Draw to top-left of screen
 		if (ticks_since_last_frame > 0) 
 		{
 			float fps = 1000 / ticks_since_last_frame;
 			fps_string.str(""); 
 			fps_string << fps; 
-			rendered_fps = TTF_RenderText_Solid(font, fps_string.str().c_str(), textColor);
-			SDL_BlitSurface(rendered_fps, NULL, gScreenSurface, NULL);
+			//rendered_fps = TTF_RenderText_Solid(font, fps_string.str().c_str(), textColor);
+			//SDL_BlitSurface(rendered_fps, NULL, gScreenSurface, NULL);
 		}
 		
 		// draw changes to window
