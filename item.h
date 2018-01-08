@@ -3,7 +3,44 @@
 
 #include <stdio.h>
 #include <SDL2/SDL.h>
+#include <string>
 #include "texture_atlas.h"
+
+// types of Items in the game. These are used as keys to retrieve name and description from the const arrays
+enum ItemType
+{
+	ITEM_BREAD_LOAF,
+	ITEM_CHICKEN_LEG,
+	ITEM_BEER_MUG,
+	ITEM_GREEN_POTION,
+	ITEM_SCROLL,
+	ITEM_SWORD,
+	ITEM_PISTOL
+};
+
+// in-game item names, mapped by ItemType id
+const std::string ITEM_NAMES[7] = 
+{
+	"Bread Loaf",
+	"Chicken Leg",
+	"Beer Mug",
+	"Green Potion",
+	"Scroll",
+	"Sword",
+	"Pistol"
+};
+
+// item descriptions, mapped by ItemType id
+const std::string ITEM_DESCRIPTIONS[7] = 
+{
+	"A Loaf of Bread",
+	"Chicken Leg. Very tasty",
+	"A big mug o' beer",
+	"Not sure what it does, but it's green",
+	"Some weird crinkled piece of paper with writing on it",
+	"Sharp Steel",
+	"Fancy-looking pistol. Bang bang!"
+};	
 
 // an item is the base class for anything that can be picked up or kept in inventory.
 // it has a sprite, a widget (for display in inventory), a hitbox, and a description

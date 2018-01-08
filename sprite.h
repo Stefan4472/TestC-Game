@@ -37,7 +37,7 @@ class Sprite
 		// area on map this sprite can be hit
 		SDL_Rect hitbox;
 		// objects sprite is carrying
-		Inventory inventory;
+		Inventory* inventory;
 		// direction currently moving in
 		int movementDir = MOVEMENT_NONE;
 		// sets coordinates to intended movement, given number of milliseconds since last frame

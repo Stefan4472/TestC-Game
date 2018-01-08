@@ -2,7 +2,7 @@
 
 CivilianSprite::CivilianSprite()
 {
-	
+	inventory = new Inventory(5);	
 }
 
 CivilianSprite::CivilianSprite(float xCoord, float yCoord, Sprite* playerSprite, TextureAtlas* textureAtlas)
@@ -32,6 +32,8 @@ void CivilianSprite::init(float xCoord, float yCoord, Sprite* playerSprite, Text
 	mv_right_anim.init(textureAtlas, CIVILIAN_MVRIGHT, 3, 100);
 	
 	current_anim = &idle_anim;
+	
+	inventory = new Inventory(5);	
 }
 
 void CivilianSprite::update(int ms) {

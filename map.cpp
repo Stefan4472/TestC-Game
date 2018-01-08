@@ -85,7 +85,7 @@ void Map::handlePlayerInteract(PlayerSprite* playerSprite)
 			//items[i]->handleInteract(playerSprite); 
 			
 			// add item to inventory
-			playerSprite->inventory.addItem(items[i]);
+			playerSprite->inventory->addItem(items[i]);
 			// remove item from map TODO: USE LINKED LIST
 			items.erase(items.begin() + i);
 			return;

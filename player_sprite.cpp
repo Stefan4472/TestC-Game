@@ -19,6 +19,9 @@ PlayerSprite::PlayerSprite(float xCoord, float yCoord, TextureAtlas* textureAtla
 	mv_right_anim.init(textureAtlas, PLAYER_MVRIGHT, 4, 100);
 	
 	current_anim = &idle_anim;
+	
+	// create inventory with capacity 30
+	inventory = new Inventory(30);
 }
 
 bool PlayerSprite::handleKeyEvent(SDL_Event e) 
