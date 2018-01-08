@@ -49,6 +49,22 @@ Item* Inventory::cycleInHandBck()
 	}
 }
 
+Item* Inventory::removeInHand()
+{
+	if (inHandIndex == -1)
+	{
+		return NULL;	
+	} 
+	else
+	{
+		Item* in_hand = items[inHandIndex];
+		items.erase(items.begin() + inHandIndex);
+		printf("Removed %s from Inventory\n", in_hand->getName());
+		cycleInHandFwd();
+		return in_hand;
+	}
+}
+
 void Inventory::drawTo(SDL_Surface* screenSurface, TextureAtlas* textureAtlas)
 {
 	for (int i = 0; i < items.size(); i++) 

@@ -75,6 +75,8 @@ class Item
 		SDL_Rect hitbox = {0, 0, 0, 0};
 		// returns name of the item
 		const char* getName();
+		// sets top-left of item position
+		void setPosition(float x, float y);
 		// handles given sprite interacting with the object on the ground -- removed due to forward declaration errors
 		//virtual void handleInteract(Sprite* sprite);
 		virtual void drawToMap(SDL_Surface* screenSurface, int offsetX, int offsetY);

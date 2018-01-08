@@ -20,6 +20,12 @@ const char* Item::getName()
 	return name.c_str();	
 }
 
+void Item::setPosition(float x, float y)
+{
+	hitbox.x = x;
+	hitbox.y = y;
+}
+
 void Item::drawToMap(SDL_Surface* screenSurface, int offsetX, int offsetY)
 {
 	textureAtlas->draw(screenSurface, textureId, hitbox.x - offsetX, hitbox.y - offsetY);

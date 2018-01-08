@@ -62,6 +62,12 @@ bool PlayerSprite::handleKeyEvent(SDL_Event e)
 				inventory->cycleInHandFwd();
 				return true;
 				
+			// drops item in-hand
+			case SDLK_q:
+				drop = inventory->removeInHand();
+				drop->setPosition(x, y);
+				return true;
+				
 			default:
 				return false;
 		}

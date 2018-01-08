@@ -57,6 +57,12 @@ void Map::handlePlayer(PlayerSprite* playerSprite)
 		playerSprite->interactHandled = true;
 		handlePlayerInteract(playerSprite); // TODO: DIRECTIONAL INTERACTION
 	}
+	// "pick up" any drops, adding them as Items to the map
+	if (playerSprite->drop)
+	{
+		items.push_back(playerSprite->drop);
+		playerSprite->drop = NULL;
+	}
 }
 
 void Map::handlePlayerInteract(PlayerSprite* playerSprite)

@@ -38,6 +38,8 @@ class Sprite
 		SDL_Rect hitbox;
 		// objects sprite is carrying
 		Inventory* inventory;
+		// Item sprite wants to drop. Should be picked up by the map.
+		Item* drop = NULL;
 		// direction currently moving in
 		int movementDir = MOVEMENT_NONE;
 		// sets coordinates to intended movement, given number of milliseconds since last frame

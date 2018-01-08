@@ -241,7 +241,6 @@ int main( int argc, char* args[] )
 
 					// show exit menu
 					case SDLK_ESCAPE:
-					case SDLK_q: 
 						quit = true;
 						quitWindow->setActive(true);
 						currWindow = quitWindow;

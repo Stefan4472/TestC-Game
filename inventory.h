@@ -37,6 +37,8 @@ class Inventory
 		// sets in hand item to the preceeding one in inventory, returns pointer to item now in hand.
 		// doesn't do anything if vector has only 1 element
 		Item* cycleInHandBck();
+		// removes and returns in-hand item, if it exists. Automatically cycles forward
+		Item* removeInHand();
 		// opens a Window with inventory displayed
 		Window* getWindow();
 };
