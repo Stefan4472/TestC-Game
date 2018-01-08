@@ -23,7 +23,8 @@ void Map::init(Sprite* playerSprite, TextureAtlas* textureAtlas) {
 	civilian.init(200.0f, 200.0f, playerSprite, textureAtlas);
 	addSprite(new CivilianSprite(100.0f, 100.0f, playerSprite, textureAtlas));
 	
-	addItem(new Item(textureAtlas, OBJECT_PISTOL_1, 100, 200));
+	addItem(new BreadLoaf(textureAtlas, 100, 200));
+	addItem(new BeerMug(textureAtlas, 132, 200));
 }
 
 void Map::update(int ms) 

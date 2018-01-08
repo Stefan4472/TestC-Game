@@ -18,6 +18,18 @@ enum ItemType
 	ITEM_PISTOL
 };
 
+// TextureAtlas image ids, mapped by ItemType id
+const int ITEM_IMAGES[7] =
+{
+	BREAD_LOAF,
+	CHICKEN_LEG,
+	BEER_MUG,
+	POTION_GREEN,
+	SCROLL_1,
+	SWORD_1,
+	OBJECT_PISTOL_1
+};
+
 // in-game item names, mapped by ItemType id
 const std::string ITEM_NAMES[7] = 
 {
@@ -47,19 +59,22 @@ const std::string ITEM_DESCRIPTIONS[7] =
 class Item
 {
 	protected:
-		// name of item
-		char* name;
-		// item description
-		char* description;
+		// ItemType id
+		int itemType;
 		// id for sprite in texture_atlas.h
 		int textureId;
+		std::string name;
+		std::string description;
 		// pointer to TextureAtlas used for drawing
 		TextureAtlas* textureAtlas;
 		
 	public: // todo: make base class
+	
+		Item(TextureAtlas* textureAtlas, int itemType);
 		// defines position of Item on the map
 		SDL_Rect hitbox = {0, 0, 0, 0};
-		Item(TextureAtlas* textureAtlas, int textureId, float x, float y);
+		// returns name of the item
+		const char* getName();
 		// handles given sprite interacting with the object on the ground -- removed due to forward declaration errors
 		//virtual void handleInteract(Sprite* sprite);
 		virtual void drawToMap(SDL_Surface* screenSurface, int offsetX, int offsetY);

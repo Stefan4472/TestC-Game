@@ -164,7 +164,7 @@ int main( int argc, char* args[] )
 	// pointer to current Window active on screen
 	Window* currWindow = NULL;
 	// window showing player or sprite inventory
-	Window* invWindow = NULL;
+	Window* invWindow = new PauseDialog(SDL_Rect{100, 100, 300, 300}, SDLK_e, SCREEN_WIDTH, SCREEN_HEIGHT, font, textColor, backgroundColor);;
 	// window showing pause menu
 	Window* pauseWindow = new PauseDialog(SDL_Rect{100, 100, 300, 300}, SDLK_e, SCREEN_WIDTH, SCREEN_HEIGHT, font, textColor, backgroundColor);
 	// window showing quit menu
@@ -224,7 +224,7 @@ int main( int argc, char* args[] )
 				{ 
 					// show player's inventory in window
 					case SDLK_e: 
-						invWindow = playerSprite.inventory->getWindow();
+						//invWindow = playerSprite.inventory->getWindow();
 						invWindow->setActive(true);
 						currWindow = invWindow;
 						break;

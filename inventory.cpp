@@ -7,7 +7,7 @@ Inventory::Inventory(int capacity)
 
 bool Inventory::addItem(Item* item)
 {
-	printf("Adding Item to Inventory...\n");
+	printf("Adding %s to Inventory...\n", item->getName());
 	if (items.size() == capacity)
 	{
 		printf("Inventory full! Not today\n");
