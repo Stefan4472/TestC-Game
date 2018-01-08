@@ -103,3 +103,22 @@ bool FollowAction::apply(Sprite* sprite, int ms)
 		nextSample += sampleRate;
 	}
 }
+
+HealthRegenAction::HealthRegenAction(int amount, int duration)
+{
+	amountPerMs = amount / duration;
+}
+
+bool HealthRegenAction::apply(Sprite* sprite, int ms)
+{
+	if (elapsedTime + ms > duration)
+	{
+		sprite->addHealth((totalDuration - elapsedTime) * amountPerMs); // TODO: DOUBLE CHECK
+	} 
+	else 
+	{
+		sprite->addHealth(ms * amountPerMs);	
+	}
+	elapsedTime += ms;
+}
+

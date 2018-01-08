@@ -59,3 +59,19 @@ void Sprite::changeDir(int newDir)
 void Sprite::update(int ms) {
 	(*current_anim).passTime(ms);
 }
+
+void Sprite::addHealth(float amount)
+{
+	currHp += amount;	
+	// norm to fullHp
+	currHp = currHp > fullHp ? fullHp : currHp;
+	printf("Sprite received %d health to hit %d hp\n", amount, currHp);
+}
+
+void Sprite::loseHealth(float amount)
+{
+	currHp -= amount;
+	// norm to zero
+	currHp = currHp < 0 ? 0 : currHp;
+	printf("Sprite lost %d health to hit %d hp\n", amount, currHp);
+}

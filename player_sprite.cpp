@@ -22,6 +22,9 @@ PlayerSprite::PlayerSprite(float xCoord, float yCoord, TextureAtlas* textureAtla
 	
 	// create inventory with capacity 30
 	inventory = new Inventory(30);
+	
+	fullHp = 100;
+	currHp = 100;
 }
 
 bool PlayerSprite::handleKeyEvent(SDL_Event e) 

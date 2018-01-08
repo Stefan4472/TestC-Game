@@ -8,6 +8,11 @@ BreadLoaf::BreadLoaf(TextureAtlas* textureAtlas, float x, float y) : Item(textur
 	hitbox.h = textureAtlas->getHeight(textureId);
 }
 
+/*Action* BreadLoaf::use()
+{
+	return new HealthRegenAction(15, 100);
+}*/
+
 BeerMug::BeerMug(TextureAtlas* textureAtlas, float x, float y) : Item(textureAtlas, ITEM_BEER_MUG)
 {
 	hitbox.x = x;
@@ -15,3 +20,8 @@ BeerMug::BeerMug(TextureAtlas* textureAtlas, float x, float y) : Item(textureAtl
 	hitbox.w = textureAtlas->getWidth(textureId);
 	hitbox.h = textureAtlas->getHeight(textureId);
 }
+
+/*Action* BeerMug::use()
+{
+	return new HealthRegenAction(10, 1);	
+}*/

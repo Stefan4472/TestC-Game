@@ -34,6 +34,9 @@ void CivilianSprite::init(float xCoord, float yCoord, Sprite* playerSprite, Text
 	current_anim = &idle_anim;
 	
 	inventory = new Inventory(5);	
+	
+	fullHp = 30;
+	currHp = 30;
 }
 
 void CivilianSprite::update(int ms) {

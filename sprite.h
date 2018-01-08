@@ -33,11 +33,13 @@ class Sprite
 	
 	public:
 		// virtual coordinates
-		float x, y;
+		float x = -1, y = -1;
+		// hitpoints the sprite has at full health, and currently
+		float fullHp = -1, currHp = -1;
 		// area on map this sprite can be hit
 		SDL_Rect hitbox;
 		// objects sprite is carrying
-		Inventory* inventory;
+		Inventory* inventory = NULL; 
 		// Item sprite wants to drop. Should be picked up by the map.
 		Item* drop = NULL;
 		// direction currently moving in
@@ -48,8 +50,12 @@ class Sprite
 		virtual void changeDir(int newDir);
 		// finalizes movement and any other updates to the sprite's state
 		virtual void update(int ms);
+		// adds given amount to sprite's currHp
+		void addHealth(float amount);
+		// subtracts given amount from sprite's currHp
+		void loseHealth(float amount);
 		// draws sprite to the given surface/screen. Subtracting offsets from coordinates results in on-canvas coordinate to draw to
-		virtual void drawTo(SDL_Surface* screenSurface, int offsetX, int offsetY)=0;
+		virtual void drawTo(SDL_Surface* screenSurface, int offsetX, int offsetY) = 0;
 		
 };
 

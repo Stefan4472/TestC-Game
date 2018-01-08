@@ -18,8 +18,8 @@ class Action
 		// applies the given action to the Sprite over number of milliseconds
 		// returns false once the action is completed
 		virtual bool apply(Sprite* sprite, int ms)=0; 
-		// resets the state of the Action, re-initializing it
-		virtual void reset();
+		// resets the state of the Action, re-initializing it 
+		virtual void reset(); // TODO: NOT SURE IF THIS IS A GOOD IDEA
 };
 
 // action where sprite stands there, unmoving
@@ -80,6 +80,17 @@ class WalkToAction
 class RunAwayAction
 {
 
+};
+
+// sprite regains health over a specified amount of time
+class HealthRegenAction : public Action
+{
+	// amount of health to regen per ms (calculated in constructor)
+	float amountPerMs;
+
+	public:
+		HealthRegenAction(int amount, int duration);
+		bool apply(Sprite* sprite, int ms);
 };
 
 #endif
