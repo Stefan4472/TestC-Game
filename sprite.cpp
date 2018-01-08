@@ -65,7 +65,7 @@ void Sprite::addHealth(float amount)
 	currHp += amount;	
 	// norm to fullHp
 	currHp = currHp > fullHp ? fullHp : currHp;
-	printf("Sprite received %d health to hit %d hp\n", amount, currHp);
+	printf("Sprite received %f health to hit %f hp\n", amount, currHp);
 }
 
 void Sprite::loseHealth(float amount)

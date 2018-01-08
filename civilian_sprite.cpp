@@ -1,23 +1,12 @@
 #include "civilian_sprite.h"
 
-CivilianSprite::CivilianSprite()
-{
-	inventory = new Inventory(5);	
-}
-
 CivilianSprite::CivilianSprite(float xCoord, float yCoord, Sprite* playerSprite, TextureAtlas* textureAtlas)
 {
-	init(xCoord, yCoord, playerSprite, textureAtlas);
-}
-
-void CivilianSprite::init(float xCoord, float yCoord, Sprite* playerSprite, TextureAtlas* textureAtlas) {
 	printf("Creating civilian sprite at %f, %f\n", xCoord, yCoord);
 	
 	x = xCoord;
 	y = yCoord;
 	this->playerSprite = playerSprite;
-	//defaultAction = new FollowAction(10, playerSprite, 10);
-	defaultAction = new IdleAction(ACTION_LOOPING);
 	speedPerMs = 0.1f;
 	// note: this depends on the image of the sprite, and will need to be adjusted at times. Also: hitboxes corresponding to frames of spritesheets
 	hitboxOffsetX = 8;
@@ -37,11 +26,13 @@ void CivilianSprite::init(float xCoord, float yCoord, Sprite* playerSprite, Text
 	
 	fullHp = 30;
 	currHp = 30;
+
+	currAction = getInitialAction();
 }
 
 void CivilianSprite::update(int ms) {
 	// apply current action 
-	defaultAction->apply(this, ms);
+	currAction->apply(this, ms);
 	(*current_anim).passTime(ms);
 }
 

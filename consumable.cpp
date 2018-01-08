@@ -23,5 +23,5 @@ BeerMug::BeerMug(TextureAtlas* textureAtlas, float x, float y) : Item(textureAtl
 
 Action* BeerMug::use()
 {
-	return new HealthRegenAction(10, 1);	
+	return new HealthRegenAction(1000, 1);	
 }

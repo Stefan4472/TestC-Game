@@ -18,9 +18,7 @@ void Map::init(Sprite* playerSprite, TextureAtlas* textureAtlas) {
 			}
 		}
 	}
-	//printf("%d\n", civilian.x);
-	//civilian.hitbox;
-	civilian.init(200.0f, 200.0f, playerSprite, textureAtlas);
+	addSprite(new CivilianSprite(200.0f, 200.0f, playerSprite, textureAtlas));
 	addSprite(new CivilianSprite(100.0f, 100.0f, playerSprite, textureAtlas));
 	
 	addItem(new BreadLoaf(textureAtlas, 100, 200));
@@ -29,9 +27,6 @@ void Map::init(Sprite* playerSprite, TextureAtlas* textureAtlas) {
 
 void Map::update(int ms) 
 {
-	civilian.move(ms);
-	civilian.update(ms);
-	
 	for (int i = 0; i < sprites.size(); i++) 
 	{
 		sprites.at(i)->move(ms);
@@ -226,7 +221,6 @@ void Map::drawObjectsTo(SDL_Surface* screenSurface)  // todo: don't' redo calcul
 
 void Map::drawSpritesTo(SDL_Surface* screenSurface)
 {
-	civilian.drawTo(screenSurface, viewOffsetX, viewOffsetY);	
 	for (int i = 0; i < sprites.size(); i++) 
 	{
 		sprites[i]->drawTo(screenSurface, viewOffsetX, viewOffsetY);

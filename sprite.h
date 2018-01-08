@@ -6,6 +6,8 @@
 #include "item.h"
 #include "inventory.h"
 
+class Action;
+
 // Sprite base class
 
 enum MOVEMENT {
@@ -30,6 +32,8 @@ class Sprite
 		int hitboxOffsetX, hitboxOffsetY;
 		// default movement speed
 		float speedPerMs = 0;
+		// current action controlling the sprite
+		Action* currAction = NULL;
 	
 	public:
 		// virtual coordinates

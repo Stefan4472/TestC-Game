@@ -1,9 +1,13 @@
-#include <cmath>
 #include "action.h"
 
 void Action::reset()
 {
 	elapsedTime = 0;
+}
+
+Action::~Action()
+{
+	printf("Deleting Action\n");	
 }
 
 IdleAction::IdleAction(int ms)
@@ -64,7 +68,7 @@ void FollowAction::setTarget(Sprite* target)
 	this->target = target;
 }
 
-bool FollowAction::apply(Sprite* sprite, int ms)
+bool FollowAction::apply(Sprite* sprite, int ms) // todo: need to return false if completed
 {
 	elapsedTime += ms;
 	// only update if it's time to take another sample
@@ -121,5 +125,6 @@ bool HealthRegenAction::apply(Sprite* sprite, int ms)
 		sprite->addHealth(ms * amountPerMs);	
 	}
 	elapsedTime += ms;
+	return elapsedTime < duration;
 }
 

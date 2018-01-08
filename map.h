@@ -59,8 +59,6 @@ class Map
 	// source and destination rects 
 	SDL_Rect src = {0, 0, TILE_WIDTH, TILE_HEIGHT}, dest = {0, 0, TILE_WIDTH, TILE_HEIGHT};
 	
-	CivilianSprite civilian;
-	
 	// pointer to TextureAtlas used for drawing images
 	TextureAtlas* textureAtlas;
 	

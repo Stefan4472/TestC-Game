@@ -65,7 +65,7 @@ bool PlayerSprite::handleKeyEvent(SDL_Event e)
 				Item* in_hand = inventory->getInHand();
 				if (in_hand)
 				{
-					in_hand->use();	
+					currAction = in_hand->use();	
 				}
 				return true;
 			}
@@ -192,6 +192,11 @@ void PlayerSprite::changeDir(int newDir) {
 
 void PlayerSprite::update(int ms) {
 	(*current_anim).passTime(ms);
+	if (currAction && !currAction->apply(this, ms)) // todo: should Actions be called from the Map/GameDriver?
+	{
+		delete(currAction);	
+		currAction = NULL;
+	}
 }
 
 void PlayerSprite::drawTo(SDL_Surface* screenSurface, int offsetX, int offsetY) {
