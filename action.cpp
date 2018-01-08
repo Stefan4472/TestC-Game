@@ -107,13 +107,14 @@ bool FollowAction::apply(Sprite* sprite, int ms)
 HealthRegenAction::HealthRegenAction(int amount, int duration)
 {
 	amountPerMs = amount / duration;
+	printf("Created HealthRegenAction\n");
 }
 
 bool HealthRegenAction::apply(Sprite* sprite, int ms)
 {
 	if (elapsedTime + ms > duration)
 	{
-		sprite->addHealth((totalDuration - elapsedTime) * amountPerMs); // TODO: DOUBLE CHECK
+		sprite->addHealth((duration - elapsedTime) * amountPerMs); // TODO: DOUBLE CHECK
 	} 
 	else 
 	{

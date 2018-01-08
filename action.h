@@ -2,7 +2,8 @@
 #define SPRITE_ACTION_H
 
 #include "game_utils.h"
-#include "sprite.h"
+
+class Sprite;
 
 // constant indicating action should loop. It will only change if the sprite is interacted with in some way that breaks the current action.
 const int ACTION_LOOPING = -1;

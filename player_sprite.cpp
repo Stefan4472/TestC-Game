@@ -60,6 +60,16 @@ bool PlayerSprite::handleKeyEvent(SDL_Event e)
 				}
 				return true;
 
+			// use in-hand inventory item
+			case SDLK_SPACE: {
+				Item* in_hand = inventory->getInHand();
+				if (in_hand)
+				{
+					in_hand->use();	
+				}
+				return true;
+			}
+				
 			// cycle in-hand inventory item forward
 			case SDLK_TAB:
 				inventory->cycleInHandFwd();

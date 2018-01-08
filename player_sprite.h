@@ -5,6 +5,7 @@
 #include <SDL2/SDL.h>
 #include "texture_atlas.h"
 #include "spritesheet.h"
+#include "action.h"
 #include "sprite.h"
 
 // pixels moved in x/y per millisecond

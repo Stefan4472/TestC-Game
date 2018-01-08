@@ -293,7 +293,7 @@ int main( int argc, char* args[] )
 			playerSprite.inventory->drawTo(gScreenSurface, &textureAtlas);	
 		}
 		// draw name of in-hand item to screen, if any
-		if (playerSprite.inventory->getInHand()) // TODO: ONLY RENDER WHEN CHANGE OCCURS
+		if (playerSprite.inventory->getInHand()) // TODO: ONLY RENDER WHEN CHANGE OCCURS. Use Item.drawAsInHand()
 		{
 			rendered_inhand_name = TTF_RenderText_Solid(font, playerSprite.inventory->getInHand()->getName(), textColor);
 			SDL_BlitSurface(rendered_inhand_name, NULL, gScreenSurface, NULL);
