@@ -16,14 +16,15 @@ class Weapon : public Item
 	
 	public:
 		Weapon(int itemType, float x, float y, TextureAtlas* textureAtlas);
-		void use();
+		void use(SDL_Rect position);
 };
 
 
-/*class Sword : public Item
+class Sword : public Item
 {
 	public:
 		Sword(TextureAtlas* textureAtlas, float x, float y);
-		Action* use();
-};*/
+		void use(SDL_Rect position);
+		Attack* getAttack();
+};
 #endif

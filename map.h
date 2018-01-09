@@ -6,7 +6,9 @@
 #include <vector>
 #include "texture_atlas.h"
 #include "item.h"
+#include "attack.h"
 #include "consumable.h"
+#include "weapon.h"
 #include "civilian_sprite.h"
 #include "player_sprite.h"
 #include "trigger.h"

@@ -23,7 +23,7 @@ void Map::init(Sprite* playerSprite, TextureAtlas* textureAtlas) {
 	
 	addItem(new Consumable(ITEM_BREAD_LOAF, 100, 200, textureAtlas));
 	addItem(new Consumable(ITEM_BEER_MUG, 132, 200, textureAtlas));
-	//addItem(new Sword(textureAtlas, 196, 200));
+	addItem(new Sword(textureAtlas, 164, 200));
 }
 
 void Map::update(int ms) 
@@ -60,7 +60,24 @@ void Map::handlePlayer(PlayerSprite* playerSprite)
 		printf("Collected Drop %s from Player\n", playerSprite->drops.back()->getName());
 		playerSprite->drops.pop_back();
 	}
-	
+	// check sprite's attacks against other sprite hitboxes
+	SDL_Rect attack_pos;
+	for (std::list<Attack*>::iterator it = playerSprite->attacks.begin(); it != playerSprite->attacks.end(); it++)
+	{
+		printf("Map: Found PlayerSprite attack with value %d\n", (*it)->num);
+		attack_pos = (*it)->position;
+		// check against other sprites
+		for (int i = 0; i < sprites.size(); i++)
+		{
+			printf("Checking Attack against Sprite\n");
+			if (checkCollision(attack_pos, sprites[i]->hitbox))
+			{
+				printf("Collision!! Hit a sprite!\n");
+			}
+		}
+	}
+	// clear attacks TODO: SPRITE SHOULD HANDLE THIS IN UPDATE()
+	playerSprite->attacks.clear();
 }
 
 void Map::handlePlayerInteract(PlayerSprite* playerSprite)

@@ -24,7 +24,7 @@ class Consumable : public Item
 	
 	public:
 		Consumable(int itemType, float x, float y, TextureAtlas* textureAtlas);
-		void use();
+		void use(SDL_Rect position);
 };
 
 #endif

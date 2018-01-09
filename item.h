@@ -93,7 +93,8 @@ class Item
 		// sets top-left of item position
 		void setPosition(float x, float y);
 		// called when the Item is used. Isn't required to do anything. May trigger change of state.
-		virtual void use() = 0;
+		// takes sprite's position on Map
+		virtual void use(SDL_Rect position) = 0;
 		// returns Action created when this sprite is used. Default NULL
 		virtual Action* getAction();
 		// returns Buff created when this sprite is used. Default NULL

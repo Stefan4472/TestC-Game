@@ -8,12 +8,12 @@ Weapon::Weapon(int itemType, float x, float y, TextureAtlas* textureAtlas) : Ite
 	hitbox.h = textureAtlas->getHeight(textureId);
 }
 
-void Weapon::use()
+void Weapon::use(SDL_Rect position)
 {
 	//return new Attack(10);
 }
 
-/*Sword::Sword(TextureAtlas* textureAtlas, float x, float y) : Item(textureAtlas, ITEM_SWORD)
+Sword::Sword(TextureAtlas* textureAtlas, float x, float y) : Item(textureAtlas, ITEM_SWORD)
 {
 	hitbox.x = x;
 	hitbox.y = y;
@@ -21,8 +21,15 @@ void Weapon::use()
 	hitbox.h = textureAtlas->getHeight(textureId);
 }
 
-Action* Sword::use()
+void Sword::use(SDL_Rect position)
 {
-	// place holder
-	return new HealthRegenAction(1, 1);
-}*/
+	hitbox.x = position.x;
+	hitbox.y = position.y;
+	hitbox.w = position.w;
+	hitbox.h = position.h;
+}
+
+Attack* Sword::getAttack()
+{
+	return new Attack(10, hitbox);
+}

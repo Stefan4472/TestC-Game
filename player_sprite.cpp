@@ -62,10 +62,15 @@ bool PlayerSprite::handleKeyEvent(SDL_Event e)
 
 			// use in-hand inventory item
 			case SDLK_SPACE: {
-				inventory->useInHand();
+				inventory->useInHand(hitbox);
 				Action* action = inventory->getAction();
 				Action* buff = inventory->getBuff();
 				Attack* attack = inventory->getAttack();
+				if (attack)
+				{
+					printf("Adding attack\n");
+					attacks.push_back(attack);	
+				}
 				return true;
 			}
 				

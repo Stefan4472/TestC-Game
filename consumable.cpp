@@ -27,7 +27,7 @@ Consumable::Consumable(int itemType, float x, float y, TextureAtlas* textureAtla
 	}
 }
 
-void Consumable::use()
+void Consumable::use(SDL_Rect position)
 {
 	//return new HealthRegenAction(healValue, 10);
 	destroy = true;

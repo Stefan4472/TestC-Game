@@ -28,13 +28,13 @@ Item* Inventory::getInHand()
 	return items.size() ? items[inHandIndex] : NULL;
 }
 
-void Inventory::useInHand()
+void Inventory::useInHand(SDL_Rect position)
 {
 	Item* in_hand = getInHand();
 	if (in_hand)
 	{
 		printf("Inventory: Calling use of in_hand\n");
-		in_hand->use();
+		in_hand->use(position);
 		// collect results
 		resultingAction = in_hand->getAction();
 		resultingBuff = in_hand->getBuff();
