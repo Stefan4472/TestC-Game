@@ -65,7 +65,8 @@ bool PlayerSprite::handleKeyEvent(SDL_Event e)
 				Item* in_hand = inventory->getInHand();
 				if (in_hand)
 				{
-					currAction = in_hand->use();	
+					currAction = in_hand->use();
+					trigger = new Trigger(0);
 				}
 				return true;
 			}
@@ -76,10 +77,12 @@ bool PlayerSprite::handleKeyEvent(SDL_Event e)
 				return true;
 				
 			// drops item in-hand
-			case SDLK_q:
-				drop = inventory->removeInHand();
+			case SDLK_q: {
+				Item* drop = inventory->removeInHand();
 				drop->setPosition(x, y);
+				drops.push_back(drop);
 				return true;
+			}
 				
 			default:
 				return false;

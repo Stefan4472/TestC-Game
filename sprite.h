@@ -2,9 +2,11 @@
 #define SPRITE_H
 
 #include <SDL2/SDL.h>
+#include <list>
 #include "spritesheet.h"
 #include "item.h"
 #include "inventory.h"
+#include "trigger.h"
 
 class Action;
 
@@ -44,14 +46,20 @@ class Sprite
 		SDL_Rect hitbox;
 		// objects sprite is carrying
 		Inventory* inventory = NULL; 
-		// Item sprite wants to drop. Should be picked up by the map.
-		Item* drop = NULL;
+		// list of Items sprite wants to drop. Meant to be picked up by the Map/Gamedriver
+		std::list<Item*> drops;
+		// list of triggers the sprite has created
+		std::list<Trigger*> triggers;
+		// current workaround to not understanding the list container
+		Trigger* trigger = NULL;
 		// direction currently moving in
 		int movementDir = MOVEMENT_NONE;
 		// sets coordinates to intended movement, given number of milliseconds since last frame
 		virtual void move(int ms);
 		// changes to given movement direction
 		virtual void changeDir(int newDir);
+		// handles a trigger (event a sprite is made aware of)
+		virtual void handleTrigger(Trigger* trigger);
 		// finalizes movement and any other updates to the sprite's state
 		virtual void update(int ms);
 		// adds given amount to sprite's currHp

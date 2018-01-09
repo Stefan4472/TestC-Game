@@ -56,6 +56,11 @@ void Sprite::changeDir(int newDir)
 	}
 }
 
+void Sprite::handleTrigger(Trigger* trigger)
+{
+	printf("Sprite baseclass received trigger %d\n", trigger->triggerType);	
+}
+
 void Sprite::update(int ms) {
 	(*current_anim).passTime(ms);
 }

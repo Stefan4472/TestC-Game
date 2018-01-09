@@ -4,11 +4,13 @@
 #include <stdio.h>
 #include <SDL2/SDL.h>
 #include <vector>
+#include "stack_list.h"
 #include "texture_atlas.h"
 #include "item.h"
 #include "consumable.h"
 #include "civilian_sprite.h"
 #include "player_sprite.h"
+#include "trigger.h"
 
 // screen dimension constants: todo: read from a universal file
 const int SCREEN_WIDTH = 640;
@@ -67,6 +69,9 @@ class Map
 	
 	// items generated and managed by map
 	std::vector<Item*> items;
+	
+	// triggers created by sprites that may affect other sprites
+	std::vector<Trigger*> triggers;
 	
 	// handles player request to interact with the map
 	void handlePlayerInteract(PlayerSprite* playerSprite);

@@ -23,5 +23,19 @@ BeerMug::BeerMug(TextureAtlas* textureAtlas, float x, float y) : Item(textureAtl
 
 Action* BeerMug::use()
 {
-	return new HealthRegenAction(1000, 1);	
+	return new HealthRegenAction(10, 1000);	
+}
+
+Sword::Sword(TextureAtlas* textureAtlas, float x, float y) : Item(textureAtlas, ITEM_SWORD)
+{
+	hitbox.x = x;
+	hitbox.y = y;
+	hitbox.w = textureAtlas->getWidth(textureId);
+	hitbox.h = textureAtlas->getHeight(textureId);
+}
+
+Action* Sword::use()
+{
+	// place holder
+	return new HealthRegenAction(1, 1);
 }

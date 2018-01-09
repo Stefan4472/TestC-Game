@@ -25,4 +25,12 @@ class BeerMug : public Item
 		BeerMug(TextureAtlas* textureAtlas, float x, float y);
 		Action* use();
 };
+
+// todo: move to a different file, or rename this one
+class Sword : public Item
+{
+	public:
+		Sword(TextureAtlas* textureAtlas, float x, float y);
+		Action* use();
+};
 #endif

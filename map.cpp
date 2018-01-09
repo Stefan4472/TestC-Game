@@ -23,6 +23,7 @@ void Map::init(Sprite* playerSprite, TextureAtlas* textureAtlas) {
 	
 	addItem(new BreadLoaf(textureAtlas, 100, 200));
 	addItem(new BeerMug(textureAtlas, 132, 200));
+	addItem(new Sword(textureAtlas, 196, 200));
 }
 
 void Map::update(int ms) 
@@ -53,11 +54,18 @@ void Map::handlePlayer(PlayerSprite* playerSprite)
 		handlePlayerInteract(playerSprite); // TODO: DIRECTIONAL INTERACTION
 	}
 	// "pick up" any drops, adding them as Items to the map
-	if (playerSprite->drop)
+	while (!playerSprite->drops.empty()) // TODO: LINKED LIST IMPLEMENTATION
 	{
-		items.push_back(playerSprite->drop);
-		playerSprite->drop = NULL;
+		//items.push_back(playerSprite->drops.back());
+		//playerSprite->drops.erase(playerSprite->drops.end());
 	}
+	// add any of the sprite's created triggers to the map
+	/*if (playerSprite->trigger)
+	{
+		triggers.push_back(playerSprite->trigger);
+		playerSprite->trigger = NULL;
+		printf("Found trigger with type %d\n", playerSprite->trigger.triggerType);
+	}*/
 }
 
 void Map::handlePlayerInteract(PlayerSprite* playerSprite)

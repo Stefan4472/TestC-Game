@@ -3,7 +3,7 @@
 #and may not be redistributed without written permission.
 
 #OBJS specifies which files to compile as part of the project
-OBJS = game_utils.cpp texture_atlas.cpp gui_widget.cpp gui_button.cpp gui_window.cpp pause_dialog.cpp spritesheet.cpp item.cpp consumable.cpp inventory.cpp action.cpp trigger.cpp action_set.cpp sprite.cpp player_sprite.cpp civilian_sprite.cpp map.cpp test_c_game.cpp 
+OBJS = game_utils.cpp stack_list.cpp texture_atlas.cpp gui_widget.cpp gui_button.cpp gui_window.cpp pause_dialog.cpp spritesheet.cpp item.cpp consumable.cpp inventory.cpp action.cpp trigger.cpp action_set.cpp sprite.cpp player_sprite.cpp civilian_sprite.cpp map.cpp test_c_game.cpp 
 
 #CC specifies which compiler we're using
 CC = g++
