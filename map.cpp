@@ -23,7 +23,7 @@ void Map::init(Sprite* playerSprite, TextureAtlas* textureAtlas) {
 	
 	addItem(new Consumable(ITEM_BREAD_LOAF, 100, 200, textureAtlas));
 	addItem(new Consumable(ITEM_BEER_MUG, 132, 200, textureAtlas));
-	addItem(new Sword(textureAtlas, 196, 200));
+	//addItem(new Sword(textureAtlas, 196, 200));
 }
 
 void Map::update(int ms) 
@@ -56,8 +56,9 @@ void Map::handlePlayer(PlayerSprite* playerSprite)
 	// "pick up" any drops, adding them as Items to the map
 	while (!playerSprite->drops.empty()) // TODO: LINKED LIST IMPLEMENTATION
 	{
-		//items.push_back(playerSprite->drops.back());
-		//playerSprite->drops.erase(playerSprite->drops.end());
+		items.push_back(playerSprite->drops.back());
+		printf("Collected Drop %s from Player\n", playerSprite->drops.back()->getName());
+		playerSprite->drops.pop_back();
 	}
 	
 }

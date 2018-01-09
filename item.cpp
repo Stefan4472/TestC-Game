@@ -1,6 +1,6 @@
 #include "item.h"
 
-Item::Item(TextureAtlas* textureAtlas, int itemType)
+void Item::init(TextureAtlas* textureAtlas, int itemType)
 {
 	this->textureAtlas = textureAtlas;
 	this->textureId = ITEM_IMAGES[itemType];
@@ -8,12 +8,21 @@ Item::Item(TextureAtlas* textureAtlas, int itemType)
 	name = ITEM_NAMES[itemType];
 	description = ITEM_NAMES[itemType];
 }
-/*void Item::handleInteract(Sprite* sprite)
+
+Item::Item(TextureAtlas* textureAtlas, int itemType)
 {
-	// default: put item in sprite's inventory
-	printf("Item handling interact with Sprite\n");
-	sprite->inventory->addItem(this);
-}*/
+	init(textureAtlas, itemType);
+}
+
+Item::Item(TextureAtlas* textureAtlas, int itemType, float x, float y)
+{	
+	init(textureAtlas, itemType);
+	
+	hitbox.x = x;
+	hitbox.y = y;
+	hitbox.w = textureAtlas->getWidth(textureId);
+	hitbox.h = textureAtlas->getHeight(textureId);
+}
 
 const char* Item::getName() 
 {
@@ -24,6 +33,21 @@ void Item::setPosition(float x, float y)
 {
 	hitbox.x = x;
 	hitbox.y = y;
+}
+
+Action* Item::getAction()
+{
+	return NULL;
+}
+
+Action* Item::getBuff()
+{
+	return NULL;
+}
+
+Attack* Item::getAttack()
+{
+	return NULL;
 }
 
 void Item::drawToMap(SDL_Surface* screenSurface, int offsetX, int offsetY)

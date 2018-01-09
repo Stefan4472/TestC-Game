@@ -9,10 +9,16 @@
 #include "gui_button.h"
 #include "item.h"
 
-// An inventory stores and keeps track of Items a Sprite has and can use.
+// An inventory manages the Items a Sprite has and can use. It also manages the usage and effects of
+// those items.
 // Items are stored as pointers in a vector, so memory deallocation should not be done to live items.
 // An inventory has an Item "in-hand", which can be used at any time. Items are referred to by
 // their index in the vector.
+// The Inventory stores the Actins, Buffs, and Attacks created by using the item in hand. These must
+// be managed properly, as they will be overridden once the next item is used. They are accessed via
+// the getAction(), getBuff(), and getAttack() methods.
+// Example usage: Call inventory->useInHand(), then store inventory->getAction(), getBuff(), getAttack().
+// Store those which are non-null.
 class Inventory
 {
 	// number of items that'll fit in the inventory

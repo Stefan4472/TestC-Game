@@ -5,7 +5,7 @@
 #include <SDL2/SDL.h>
 #include <string>
 #include "texture_atlas.h"
-//#include "action.h"
+#include "attack.h"
 class Action;
 
 // Items in the game. These are used as keys to retrieve name and description from the const arrays
@@ -20,14 +20,6 @@ enum ItemType
 	ITEM_PISTOL
 };
 
-/*// Classes of items
-enum ItemType
-{
-	ITEMTYPE_CONSUMABLE,
-	ITEMTYPE_WEAPON,
-	ITEMTYPE_NON_CONSUMABLE
-};*/
-
 // TextureAtlas image ids, mapped by ItemType id
 const int ITEM_IMAGES[7] =
 {
@@ -40,7 +32,7 @@ const int ITEM_IMAGES[7] =
 	OBJECT_PISTOL_1
 };
 
-// in-game item names, mapped by ItemType id
+// In-game item names, mapped by ItemType id
 const std::string ITEM_NAMES[7] = 
 {
 	"Bread Loaf",
@@ -52,7 +44,7 @@ const std::string ITEM_NAMES[7] =
 	"Pistol"
 };
 
-// item descriptions, mapped by ItemType id
+// Item descriptions, mapped by ItemType id
 const std::string ITEM_DESCRIPTIONS[7] = 
 {
 	"A Loaf of Bread",
@@ -64,33 +56,55 @@ const std::string ITEM_DESCRIPTIONS[7] =
 	"Fancy-looking pistol. Bang bang!"
 };	
 
-// an item is the base class for anything that can be picked up or kept in inventory.
-// it has a sprite, a widget (for display in inventory), a hitbox, and a description
+// An item is the base class for anything that can be picked up or kept in inventory.
+// An item must implement a use() method, and can override getAction(), getBuff(), and
+// getAttack() if using the Item creates those effects. TODO: REQUIREMENTS (ITEMTYPE IDS)
+// Once used, at Item will be deleted iff the item's destroy = True.
+// An Item can be displayed in the Game as a Drop, in the Inventory as a widget, and on 
+// the screen as part of a HUD that gives information about itself. 
 class Item
 {
+	private:
+		void init(TextureAtlas* textureAtlas, int itemType);
+		
 	protected:
 		// ItemType id
 		int itemType;
 		// id for sprite in texture_atlas.h
 		int textureId;
+		// name and descripion of the item
 		std::string name;
 		std::string description;
 		// pointer to TextureAtlas used for drawing
-		TextureAtlas* textureAtlas;
-		
-	public: // todo: make base class
+		TextureAtlas* textureAtlas = NULL;
+		// whether item should be destroyed (removed from inventory and deleted)
+		bool destroy = false;
 	
-		Item(TextureAtlas* textureAtlas, int itemType);
+	public: 
 		// defines position of Item on the map
 		SDL_Rect hitbox = {0, 0, 0, 0};
+		// sets textureAtlas and image, name, and description based on ItemType
+		Item(TextureAtlas* textureAtlas, int itemType);
+		// same as above but sets position to the top-left coordinates, with width/height 
+		// the same as the textureId's dimensions
+		Item(TextureAtlas* textureAtlas, int itemType, float x, float y);
 		// returns name of the item
 		const char* getName();
 		// sets top-left of item position
 		void setPosition(float x, float y);
+		// called when the Item is used. Isn't required to do anything. May trigger change of state.
+		virtual void use() = 0;
+		// returns Action created when this sprite is used. Default NULL
+		virtual Action* getAction();
+		// returns Buff created when this sprite is used. Default NULL
+		virtual Action* getBuff();
+		// returns Attack created when this sprite is used. Default NULL
+		virtual Attack* getAttack();
 		// handles given sprite interacting with the object on the ground -- removed due to forward declaration errors
 		//virtual void handleInteract(Sprite* sprite);
 		virtual void drawToMap(SDL_Surface* screenSurface, int offsetX, int offsetY);
 		virtual void drawToInventory(SDL_Surface* screenSurface, SDL_Rect dest);
+		// TODO: virtual void drawToHUD()
 };
 
 #endif

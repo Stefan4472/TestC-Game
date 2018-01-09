@@ -16,7 +16,14 @@ class Weapon : public Item
 	
 	public:
 		Weapon(int itemType, float x, float y, TextureAtlas* textureAtlas);
-		// returns Attack created by using the Weapon
-		Attack* use();
+		void use();
 };
+
+
+/*class Sword : public Item
+{
+	public:
+		Sword(TextureAtlas* textureAtlas, float x, float y);
+		Action* use();
+};*/
 #endif

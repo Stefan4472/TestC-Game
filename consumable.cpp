@@ -27,21 +27,8 @@ Consumable::Consumable(int itemType, float x, float y, TextureAtlas* textureAtla
 	}
 }
 
-Action* Consumable::consume()
+void Consumable::use()
 {
-	return new HealthRegenAction(healValue, 10);
-}
-
-Sword::Sword(TextureAtlas* textureAtlas, float x, float y) : Item(textureAtlas, ITEM_SWORD)
-{
-	hitbox.x = x;
-	hitbox.y = y;
-	hitbox.w = textureAtlas->getWidth(textureId);
-	hitbox.h = textureAtlas->getHeight(textureId);
-}
-
-Action* Sword::use()
-{
-	// place holder
-	return new HealthRegenAction(1, 1);
+	//return new HealthRegenAction(healValue, 10);
+	destroy = true;
 }

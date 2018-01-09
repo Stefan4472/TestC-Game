@@ -37,6 +37,10 @@ class Sprite
 		float speedPerMs = 0;
 		// current action controlling the sprite
 		Action* currAction = NULL;
+		// list of buffs currently affecting player
+		std::list<Action*> buffs;
+		
+		// TODO: LIST (or hashmap) OF FRIENDLY SPRITES, LIST OF ENEMY SPRITES. LINE OF SIGHT HITBOX. 	
 	
 	public:
 		// virtual coordinates
@@ -52,7 +56,7 @@ class Sprite
 		// list of Items sprite wants to drop. Meant to be picked up by the Map/Gamedriver
 		std::list<Item*> drops;
 		// list of Attacks sprite wants to carry out. Meant to be picked up by the Map/Gamedriver
-		std::list<Attack*> attack;
+		std::list<Attack*> attacks;
 		// list of SoundIds the sprite has requested. Meant to be picked up by the Map/Gamedriver
 		std::list<int> sounds;
 		// direction currently moving in

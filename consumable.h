@@ -24,15 +24,7 @@ class Consumable : public Item
 	
 	public:
 		Consumable(int itemType, float x, float y, TextureAtlas* textureAtlas);
-		// returns buff action received for consuming the item
-		Action* consume();
+		void use();
 };
 
-// todo: move to a different file, or rename this one
-class Sword : public Item
-{
-	public:
-		Sword(TextureAtlas* textureAtlas, float x, float y);
-		Action* use();
-};
 #endif
