@@ -5,25 +5,27 @@
 #include "texture_atlas.h"
 #include "item.h"
 #include "action.h"
-// a consumable is a type of Item that, when used, ceases to exist, but gives the consuming sprite certain effects.
 
-/*class Consumable : public Item
+// A consumable is a type of Item that, when used, gives the consuming sprite a buff (via an Action*) and ceases to exist.
+// The only differences between consumables being their buffs, a Consumable is defined by the Item is represents. It may 
+// be of type ITEM_BREAD_LOAF, ITEM_CHICKEN_LEG, ITEM_BEER_MUG, OR ITEM_GREEN_POTION. Other definitions may cause Segfaults or undefined 
+// behavior.
+
+// HP healed by each item when consumed
+const static int BREAD_HEALING = 10;
+const static int CHICKENLEG_HEALING = 35;
+const static int BEERMUG_HEALING = 15;
+const static int GREENPOTION_HEALING = 60;
+
+class Consumable : public Item
 {
+	// amount healed
+	int healValue = 0;
 	
-};*/
-
-class BreadLoaf : public Item
-{
 	public:
-		BreadLoaf(TextureAtlas* textureAtlas, float x, float y);
-		Action* use();
-};
-
-class BeerMug : public Item
-{
-	public:
-		BeerMug(TextureAtlas* textureAtlas, float x, float y);
-		Action* use();
+		Consumable(int itemType, float x, float y, TextureAtlas* textureAtlas);
+		// returns buff action received for consuming the item
+		Action* consume();
 };
 
 // todo: move to a different file, or rename this one

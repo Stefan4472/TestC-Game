@@ -4,7 +4,6 @@
 #include <stdio.h>
 #include <SDL2/SDL.h>
 #include <vector>
-#include "stack_list.h"
 #include "texture_atlas.h"
 #include "item.h"
 #include "consumable.h"
@@ -71,8 +70,8 @@ class Map
 	std::vector<Item*> items;
 	
 	// triggers created by sprites that may affect other sprites
-	//std::vector<Trigger*> triggers;
-	StackList<Trigger*> triggers;
+	std::vector<Trigger*> triggers;
+	
 	// handles player request to interact with the map
 	void handlePlayerInteract(PlayerSprite* playerSprite);
 	

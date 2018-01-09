@@ -43,7 +43,6 @@ bool WanderAction::apply(Sprite* sprite, int ms)
 	// time to change states
 	if (elapsedTime >= nextChange)
 	{
-		printf("State change!\n");
 		// schedule time for next state change
 		nextChange = elapsedTime + (currMovement == MOVEMENT_NONE ? wanderInterval : idleInterval);
 		// set movement to random direction if it was previously NONE, else stop movement

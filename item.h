@@ -8,7 +8,7 @@
 //#include "action.h"
 class Action;
 
-// types of Items in the game. These are used as keys to retrieve name and description from the const arrays
+// Items in the game. These are used as keys to retrieve name and description from the const arrays
 enum ItemType
 {
 	ITEM_BREAD_LOAF,
@@ -19,6 +19,14 @@ enum ItemType
 	ITEM_SWORD,
 	ITEM_PISTOL
 };
+
+/*// Classes of items
+enum ItemType
+{
+	ITEMTYPE_CONSUMABLE,
+	ITEMTYPE_WEAPON,
+	ITEMTYPE_NON_CONSUMABLE
+};*/
 
 // TextureAtlas image ids, mapped by ItemType id
 const int ITEM_IMAGES[7] =
@@ -79,14 +87,10 @@ class Item
 		const char* getName();
 		// sets top-left of item position
 		void setPosition(float x, float y);
-		// uses the item, returning an action that will apply the effects to the using Sprite
-		//virtual Action* use() = 0;
-		virtual Action* use() = 0;
 		// handles given sprite interacting with the object on the ground -- removed due to forward declaration errors
 		//virtual void handleInteract(Sprite* sprite);
 		virtual void drawToMap(SDL_Surface* screenSurface, int offsetX, int offsetY);
 		virtual void drawToInventory(SDL_Surface* screenSurface, SDL_Rect dest);
-		//virtual void use() = 0;
 };
 
 #endif

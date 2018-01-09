@@ -21,8 +21,8 @@ void Map::init(Sprite* playerSprite, TextureAtlas* textureAtlas) {
 	addSprite(new CivilianSprite(200.0f, 200.0f, playerSprite, textureAtlas));
 	addSprite(new CivilianSprite(100.0f, 100.0f, playerSprite, textureAtlas));
 	
-	addItem(new BreadLoaf(textureAtlas, 100, 200));
-	addItem(new BeerMug(textureAtlas, 132, 200));
+	addItem(new Consumable(ITEM_BREAD_LOAF, 100, 200, textureAtlas));
+	addItem(new Consumable(ITEM_BEER_MUG, 132, 200, textureAtlas));
 	addItem(new Sword(textureAtlas, 196, 200));
 }
 
@@ -62,7 +62,7 @@ void Map::handlePlayer(PlayerSprite* playerSprite)
 	// add any of the sprite's created triggers to the map
 	if (playerSprite->trigger)
 	{
-		triggers.push(playerSprite->trigger);
+		//triggers.push(playerSprite->trigger);
 		//triggers.push_back(playerSprite->trigger);
 		//playerSprite->trigger = NULL;
 		printf("Found trigger with type %d\n", playerSprite->trigger->triggerType);

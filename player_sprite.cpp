@@ -65,8 +65,8 @@ bool PlayerSprite::handleKeyEvent(SDL_Event e)
 				Item* in_hand = inventory->getInHand();
 				if (in_hand)
 				{
-					currAction = in_hand->use();
-					trigger = new Trigger(0);
+					//currAction = in_hand->use();
+					//trigger = new Trigger(0);
 				}
 				return true;
 			}
