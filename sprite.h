@@ -7,6 +7,7 @@
 #include "item.h"
 #include "inventory.h"
 #include "trigger.h"
+#include "attack.h"
 
 class Action;
 
@@ -44,14 +45,16 @@ class Sprite
 		float fullHp = -1, currHp = -1;
 		// area on map this sprite can be hit
 		SDL_Rect hitbox;
-		// objects sprite is carrying
+		// area on map this sprite can "see"
+		SDL_Rect lineOfSight;
+		// sprite's inventory
 		Inventory* inventory = NULL; 
 		// list of Items sprite wants to drop. Meant to be picked up by the Map/Gamedriver
 		std::list<Item*> drops;
-		// list of triggers the sprite has created
-		std::list<Trigger*> triggers;
-		// current workaround to not understanding the list container
-		Trigger* trigger = NULL;
+		// list of Attacks sprite wants to carry out. Meant to be picked up by the Map/Gamedriver
+		std::list<Attack*> attack;
+		// list of SoundIds the sprite has requested. Meant to be picked up by the Map/Gamedriver
+		std::list<int> sounds;
 		// direction currently moving in
 		int movementDir = MOVEMENT_NONE;
 		// sets coordinates to intended movement, given number of milliseconds since last frame

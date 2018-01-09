@@ -59,15 +59,7 @@ void Map::handlePlayer(PlayerSprite* playerSprite)
 		//items.push_back(playerSprite->drops.back());
 		//playerSprite->drops.erase(playerSprite->drops.end());
 	}
-	// add any of the sprite's created triggers to the map
-	if (playerSprite->trigger)
-	{
-		//triggers.push(playerSprite->trigger);
-		//triggers.push_back(playerSprite->trigger);
-		//playerSprite->trigger = NULL;
-		printf("Found trigger with type %d\n", playerSprite->trigger->triggerType);
-		playerSprite->trigger = NULL;
-	}
+	
 }
 
 void Map::handlePlayerInteract(PlayerSprite* playerSprite)
