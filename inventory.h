@@ -27,6 +27,10 @@ class Inventory
 	std::vector<Item*> items;
 	// index of Item that's currently in hand
 	int inHandIndex = -1;
+	// stored Action, Buff, and Attack (if any) from last-used Item
+	Action* resultingAction = NULL;
+	Action* resultingBuff = NULL;
+	Attack* resultingAttack = NULL;
 	
 	public:
 		// creates enough space for the given number of items
@@ -37,6 +41,13 @@ class Inventory
 		void drawTo(SDL_Surface* screenSurface, TextureAtlas* textureAtlas);
 		// returns pointer to the Item that's currently in hand. Null if empty TODO: MAKE NON-NULL?
 		Item* getInHand();
+		// handles all logic for using whatever item is currently in hand. Should be followed up with
+		// getAction(), getBuff(), and getAttack(), one or more of which may be NULL.
+		void useInHand();
+		// retrieve *AND CONSUME* Action, Buff, and/or Attack that may have been created by last-used item. 
+		Action* getAction();
+		Action* getBuff();
+		Attack* getAttack();
 		// sets in hand item to the proceeding one in inventory, returns pointer to item now in hand.
 		// doesn't do anything if vector has only 1 element
 		Item* cycleInHandFwd();

@@ -28,6 +28,48 @@ Item* Inventory::getInHand()
 	return items.size() ? items[inHandIndex] : NULL;
 }
 
+void Inventory::useInHand()
+{
+	Item* in_hand = getInHand();
+	if (in_hand)
+	{
+		printf("Inventory: Calling use of in_hand\n");
+		in_hand->use();
+		// collect results
+		resultingAction = in_hand->getAction();
+		resultingBuff = in_hand->getBuff();
+		resultingAttack = in_hand->getAttack();
+		// destroy item if requested
+		if (in_hand->destroy)
+		{
+			printf("Inventory: In-hand item requested to be destroyed\n");
+			removeInHand();
+			delete in_hand;
+		}
+	}
+}
+
+Action* Inventory::getAction()
+{
+	Action* action = resultingAction;
+	resultingAction = NULL;
+	return action;
+}
+
+Action* Inventory::getBuff()
+{
+	Action* buff = resultingBuff;
+	resultingBuff = NULL;
+	return buff;
+}
+
+Attack* Inventory::getAttack()
+{
+	Attack* attack = resultingAttack;
+	resultingAttack = NULL;
+	return attack;
+}
+
 Item* Inventory::cycleInHandFwd()
 {
 	// cycle inHandIndex one to the right, if there are items in inventory

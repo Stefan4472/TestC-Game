@@ -77,12 +77,12 @@ class Item
 		std::string description;
 		// pointer to TextureAtlas used for drawing
 		TextureAtlas* textureAtlas = NULL;
-		// whether item should be destroyed (removed from inventory and deleted)
-		bool destroy = false;
 	
 	public: 
 		// defines position of Item on the map
 		SDL_Rect hitbox = {0, 0, 0, 0};
+		// whether item should be destroyed (removed from inventory and deleted)
+		bool destroy = false;
 		// sets textureAtlas and image, name, and description based on ItemType
 		Item(TextureAtlas* textureAtlas, int itemType);
 		// same as above but sets position to the top-left coordinates, with width/height 

@@ -62,12 +62,10 @@ bool PlayerSprite::handleKeyEvent(SDL_Event e)
 
 			// use in-hand inventory item
 			case SDLK_SPACE: {
-				Item* in_hand = inventory->getInHand();
-				if (in_hand)
-				{
-					//currAction = in_hand->use();
-					//trigger = new Trigger(0);
-				}
+				inventory->useInHand();
+				Action* action = inventory->getAction();
+				Action* buff = inventory->getBuff();
+				Attack* attack = inventory->getAttack();
 				return true;
 			}
 				
