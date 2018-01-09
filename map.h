@@ -71,8 +71,8 @@ class Map
 	std::vector<Item*> items;
 	
 	// triggers created by sprites that may affect other sprites
-	std::vector<Trigger*> triggers;
-	
+	//std::vector<Trigger*> triggers;
+	StackList<Trigger*> triggers;
 	// handles player request to interact with the map
 	void handlePlayerInteract(PlayerSprite* playerSprite);
 	

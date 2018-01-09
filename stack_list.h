@@ -1,6 +1,9 @@
 #ifndef CUSTOM_STACK_H
 #define CUSTOM_STACK_H
 
+#include <stdio.h>
+class Trigger;
+
 // simple stack implementation backed by an array
 
 template <class T>
@@ -29,4 +32,5 @@ class StackList {
 		// destroy the stack
 		//~StackList();
 };
+
 #endif

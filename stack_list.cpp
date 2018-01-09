@@ -11,10 +11,11 @@ StackList<T>::StackList(int size)
 template <class T>
 void StackList<T>::push(T elem)
 {
+	printf("Pushing to StackList\n");
 	if (numElements == capacity)
 	{
 		// allocate twice as much space
-		T larger_list = new T[2 * capacity];
+		T* larger_list = new T[2 * capacity];
 		// TODO: USE MEMCOPY
 		for (int i = 0; i < capacity; i++)
 		{
@@ -26,12 +27,13 @@ void StackList<T>::push(T elem)
 	}
 	elements[numElements] = elem;
 	numElements++;
+	printf("Capacity %d with %d elements\n", capacity, numElements);
 }
 
 template <class T>
 T StackList<T>::pop()
 {
-	size--;
+	numElements--;
 	return elements[numElements];
 }
 
@@ -71,3 +73,6 @@ StackList<T>::~StackList<T>()
 	delete[] elements;	
 	elements = 0;
 }*/
+
+template class StackList<int>;
+template class StackList<Trigger*>;

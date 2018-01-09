@@ -4,7 +4,6 @@
 #include <stdio.h>
 #include <string>
 #include <sstream>
-#include "stack_list.h"
 #include "texture_atlas.h"
 #include "gui_window.h"
 #include "pause_dialog.h"
