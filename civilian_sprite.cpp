@@ -9,10 +9,10 @@ CivilianSprite::CivilianSprite(float xCoord, float yCoord, Sprite* playerSprite,
 	this->playerSprite = playerSprite;
 	speedPerMs = 0.1f;
 	// note: this depends on the image of the sprite, and will need to be adjusted at times. Also: hitboxes corresponding to frames of spritesheets
-	hitboxOffsetX = 8;
-	hitboxOffsetY = 4;
-	hitbox.w = 30;
-	hitbox.h = 44;
+	hitboxOffsetX = 7;
+	hitboxOffsetY = 25;
+	hitbox.w = 20;
+	hitbox.h = 6;
 	
 	idle_anim.init(textureAtlas, CIVILIAN_IDLE, 1, 100);
 	mv_up_anim.init(textureAtlas, CIVILIAN_MVUP, 3, 100);

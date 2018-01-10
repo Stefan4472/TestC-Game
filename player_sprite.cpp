@@ -7,10 +7,10 @@ PlayerSprite::PlayerSprite(float xCoord, float yCoord, TextureAtlas* textureAtla
 	y = yCoord;
 
 	// note: this depends on the image of the sprite, and will need to be adjusted at times. Also: hitboxes corresponding to frames of spritesheets
-	hitboxOffsetX = 8;
-	hitboxOffsetY = 4;
-	hitbox.w = 30;
-	hitbox.h = 44;
+	hitboxOffsetX = 10;
+	hitboxOffsetY = 44;
+	hitbox.w = 32;
+	hitbox.h = 13;
 	
 	idle_anim.init(textureAtlas, PLAYER_IDLE, 1, 100);
 	mv_up_anim.init(textureAtlas, PLAYER_MVUP, 4, 100);
@@ -64,7 +64,17 @@ bool PlayerSprite::handleKeyEvent(SDL_Event e)
 			case SDLK_SPACE: {
 				inventory->useInHand(hitbox);
 				Action* action = inventory->getAction();
+				if (action)
+				{
+					printf("Received action\n");
+					// todo: add action
+				}
 				Action* buff = inventory->getBuff();
+				if (buff)
+				{
+					printf("Received buff\n");
+					buffs.push_back(buff);
+				}
 				Attack* attack = inventory->getAttack();
 				if (attack)
 				{

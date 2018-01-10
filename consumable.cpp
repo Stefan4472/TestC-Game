@@ -32,3 +32,8 @@ void Consumable::use(SDL_Rect position)
 	//return new HealthRegenAction(healValue, 10);
 	destroy = true;
 }
+
+Action* Consumable::getBuff()
+{
+	return new HealthRegenAction(healValue, healValue * 100);	
+}

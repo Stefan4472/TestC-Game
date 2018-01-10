@@ -25,6 +25,8 @@ class Consumable : public Item
 	public:
 		Consumable(int itemType, float x, float y, TextureAtlas* textureAtlas);
 		void use(SDL_Rect position);
+		// returns buff created by using the Item
+		Action* getBuff();
 };
 
 #endif

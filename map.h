@@ -77,6 +77,13 @@ class Map
 	// handles player request to interact with the map
 	void handlePlayerInteract(PlayerSprite* playerSprite);
 	
+	// returns whether the given region of map is a valid position for a sprite to be.
+	// In order to be valid, all four corners must be on walkable tiles.
+	bool isValidPosition(SDL_Rect position); // TODO: USAGE OF 4 CALLS TO isWalkable() MAY INTRODUCE OVERHEAD. THIS WILL FOR EACH SPRITE, EACH FRAME
+	
+	// returns whether the given point is on a "walkable" tile
+	bool isWalkable(int x, int y);
+	
 	public:
 		// offsets on x and y that graphics should be drawn to to convert virtual to canvas coordinates
 		int viewOffsetX, viewOffsetY;

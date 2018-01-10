@@ -44,7 +44,6 @@ class PlayerSprite: public Sprite
 		// returns coordinates of where sprite's feet are. Used to determine the tile the sprite is standing on/moving to
 		SDL_Point getPosition();
 		~PlayerSprite();
-		
-		void changeDir(int newDir);
+		void changeDir(int newDir); // todo: clean up, currently the same as Sprite method
 };
 #endif

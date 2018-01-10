@@ -8,15 +8,16 @@ void Map::init(Sprite* playerSprite, TextureAtlas* textureAtlas) {
 	{
 		for (int j = 0; j < mapCols; j++) 
 		{
-			if (mapTiles[i][j] == TILE_WATER || objectTiles[i][j] != TEXTURE_NONE)
+			if (mapTiles[i][j] != TILE_WATER && objectTiles[i][j] == TEXTURE_NONE)
 			{
-				walkableTiles[i][j] = false;
+				walkableTiles[i][j] = true;
 			} 
 			else 
 			{
-				walkableTiles[i][j] = true;
+				walkableTiles[i][j] = false;
 			}
 		}
+		
 	}
 	addSprite(new CivilianSprite(200.0f, 200.0f, playerSprite, textureAtlas));
 	addSprite(new CivilianSprite(100.0f, 100.0f, playerSprite, textureAtlas));
@@ -37,12 +38,8 @@ void Map::update(int ms)
 
 void Map::handlePlayer(PlayerSprite* playerSprite) 
 {
-	// determine tile player is standing in   todo: this is actually pretty bad. Use hitbox to check against all tiles intersected
-	//int tile_r = (*playerSprite).getPosY() / TILE_HEIGHT;
-	//int tile_c = (*playerSprite).getPosX() / TILE_WIDTH;
-	SDL_Point player_pos = playerSprite->getPosition();
-	
-	if (!walkableTiles[player_pos.y / TILE_HEIGHT][player_pos.x / TILE_WIDTH])
+	// the player is on a valid space only if all corners of the hitbox are on "walkable" coordinates
+	if (!isValidPosition(playerSprite->hitbox) )
 	{
 		printf("Collision\n");
 		playerSprite->moveBack();
@@ -113,6 +110,19 @@ void Map::handlePlayerInteract(PlayerSprite* playerSprite)
 			return;
 		}
 	}
+}
+
+bool Map::isValidPosition(SDL_Rect position)
+{
+	return isWalkable(position.x, position.y) &&
+		   isWalkable(position.x, position.y + position.h) &&
+		   isWalkable(position.x + position.w, position.y) &&
+		   isWalkable(position.x + position.w, position.y + position.h);
+}
+
+bool Map::isWalkable(int x, int y)
+{
+	return walkableTiles[y / TILE_HEIGHT][x / TILE_WIDTH];
 }
 
 void Map::addSprite(Sprite* sprite)
