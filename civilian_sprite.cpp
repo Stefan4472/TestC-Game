@@ -28,6 +28,8 @@ CivilianSprite::CivilianSprite(float xCoord, float yCoord, Sprite* playerSprite,
 	currHp = 30;
 
 	currAction = getInitialAction();
+	
+	// TODO: KNOW WHICH DIRECTION SPRITE IS INITIALLY FACING. DEFAULTS TO DOWN
 }
 
 void CivilianSprite::update(int ms) {
@@ -36,6 +38,27 @@ void CivilianSprite::update(int ms) {
 	(*current_anim).passTime(ms);
 }
 
+SDL_Point CivilianSprite::getRightHandPosition()
+{
+	switch (facingDir) 
+	{	
+		case DIRECTION_RIGHT:
+			return SDL_Point { x + 16, y + 30 };
+
+		case DIRECTION_UP:
+			return SDL_Point { x + 26, y + 26 };
+
+		case DIRECTION_DOWN:
+			return SDL_Point { x + 3, y + 26 };
+
+		case DIRECTION_LEFT:
+			return SDL_Point { x + 17, y + 30 };
+
+		default:
+			printf("Weird!! Don't know which animation to show!\n");
+			break;
+	}
+}
 void CivilianSprite::drawTo(SDL_Surface* screenSurface, int offsetX, int offsetY) {
 	// draw current animatino frame to screen
 	(*current_anim).drawTo(screenSurface, x - offsetX, y - offsetY);

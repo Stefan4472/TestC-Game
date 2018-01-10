@@ -20,7 +20,7 @@ bool IdleAction::apply(Sprite* sprite, int ms)
 {
 	elapsedTime += ms;
 	// set to no movement
-	sprite->movementDir = MOVEMENT_NONE;
+	sprite->movementDir = DIRECTION_NONE;
 	
 	return duration != ACTION_LOOPING && elapsedTime >= duration;
 }
@@ -44,9 +44,9 @@ bool WanderAction::apply(Sprite* sprite, int ms)
 	if (elapsedTime >= nextChange)
 	{
 		// schedule time for next state change
-		nextChange = elapsedTime + (currMovement == MOVEMENT_NONE ? wanderInterval : idleInterval);
+		nextChange = elapsedTime + (currMovement == DIRECTION_NONE ? wanderInterval : idleInterval);
 		// set movement to random direction if it was previously NONE, else stop movement
-		currMovement = (currMovement == MOVEMENT_NONE ? rand() % 4 : MOVEMENT_NONE);
+		currMovement = (currMovement == DIRECTION_NONE ? rand() % 4 : DIRECTION_NONE);
 		sprite->changeDir(currMovement);
 	}
 	sprite->move(ms);
@@ -73,29 +73,29 @@ bool FollowAction::apply(Sprite* sprite, int ms) // todo: need to return false i
 	// only update if it's time to take another sample
 	if (elapsedTime > nextSample) 
 	{
-		int dir = MOVEMENT_NONE;
+		int dir = DIRECTION_NONE;
 		int dx = target->x - sprite->x, dy = target->y - sprite->y;
 		
 		// figure out which direction sprite needs to move 
 		if (distSquared(sprite, target) < 100.0f)
 		{
-			dir = MOVEMENT_NONE;
+			dir = DIRECTION_NONE;
 		} 
 		else if (dx > 5)
 		{
-			dir = MOVEMENT_RIGHT;
+			dir = DIRECTION_RIGHT;
 		} 
 		else if (dx < -5)
 		{
-			dir = MOVEMENT_LEFT;
+			dir = DIRECTION_LEFT;
 		}
 		else if (dy > 5)
 		{
-			dir = MOVEMENT_DOWN;
+			dir = DIRECTION_DOWN;
 		}
 		else if (dy < -5)
 		{
-			dir = MOVEMENT_UP;
+			dir = DIRECTION_UP;
 		}
 		
 		// change direction if not correct

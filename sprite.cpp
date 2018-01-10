@@ -2,15 +2,15 @@
 
 void Sprite::move(int ms)
 {
-	if (movementDir == MOVEMENT_RIGHT) {
+	if (movementDir == DIRECTION_RIGHT) {
 		x += ms * speedPerMs;
-	} else if (movementDir == MOVEMENT_LEFT) {
+	} else if (movementDir == DIRECTION_LEFT) {
 		x -= ms * speedPerMs;
 	}
 
-	if (movementDir == MOVEMENT_UP) {
+	if (movementDir == DIRECTION_UP) {
 		y -= ms * speedPerMs;
-	} else if (movementDir == MOVEMENT_DOWN) {
+	} else if (movementDir == DIRECTION_DOWN) {
 		y += ms * speedPerMs;
 	}	
 	hitbox.x = x + hitboxOffsetX;
@@ -31,29 +31,33 @@ void Sprite::changeDir(int newDir)
 		{	
 			// no movement: simply pause animation that was playing. This way, the sprite remains
 			// facing the same direction
-			case MOVEMENT_NONE:
+			case DIRECTION_NONE:
 				//current_anim = &idle_anim;
 				current_anim->pause();
 				break;
 
-			case MOVEMENT_RIGHT:
+			case DIRECTION_RIGHT:
 				current_anim = &mv_right_anim;
 				current_anim->play();
+				facingDir = DIRECTION_RIGHT;
 				break;
 
-			case MOVEMENT_UP:
+			case DIRECTION_UP:
 				current_anim = &mv_up_anim;
 				current_anim->play();
+				facingDir = DIRECTION_UP;
 				break;
 
-			case MOVEMENT_DOWN:
+			case DIRECTION_DOWN:
 				current_anim = &mv_down_anim;
 				current_anim->play();
+				facingDir = DIRECTION_DOWN;
 				break;
 
-			case MOVEMENT_LEFT:
+			case DIRECTION_LEFT:
 				current_anim = &mv_left_anim;
 				current_anim->play();
+				facingDir = DIRECTION_LEFT;
 				break;
 
 			default:

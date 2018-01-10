@@ -42,7 +42,7 @@ void Map::handlePlayer(PlayerSprite* playerSprite)
 	if (!isValidPosition(playerSprite->hitbox) )
 	{
 		printf("Collision\n");
-		playerSprite->moveBack();
+		playerSprite->moveBack(); // TODO: IT MAY BE NECESSARY TO HAVE AN EXTRA, SEPARATE HITBOX FOR THE SPRITE'S FEET.
 	}
 	// handle playerSprite wanting to interact: delegate to handlePlayerInteract()
 	if (playerSprite->interactPressed && !playerSprite->interactHandled)

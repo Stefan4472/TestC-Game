@@ -13,16 +13,16 @@ class Action;
 
 // Sprite base class
 
-enum MOVEMENT {
-	MOVEMENT_UP,
-	//MOVEMENT_UP_RIGHT,
-	MOVEMENT_RIGHT, 
-	//MOVEMENT_DOWN_RIGHT,
-	MOVEMENT_DOWN,
-	//MOVEMENT_DOWN_LEFT,
-	MOVEMENT_LEFT,
-	//MOVEMENT_UP_LEFT,
-	MOVEMENT_NONE
+enum DIRECTION { 
+	DIRECTION_UP,
+	//DIRECTION_UP_RIGHT,
+	DIRECTION_RIGHT, 
+	//DIRECTION_DOWN_RIGHT,
+	DIRECTION_DOWN,
+	//DIRECTION_DOWN_LEFT,
+	DIRECTION_LEFT,
+	//DIRECTION_UP_LEFT,
+	DIRECTION_NONE
 };
 
 class Sprite
@@ -33,14 +33,14 @@ class Sprite
 		Spritesheet *current_anim = NULL;
 		// offset of start of hitbox, from sprite's x and y (x + hitboxOffsetX = hitbox.x)
 		int hitboxOffsetX, hitboxOffsetY;
-		// default movement speed
+		// default DIRECTION speed
 		float speedPerMs = 0;
 		// current action controlling the sprite
 		Action* currAction = NULL;
 		// list of buffs currently affecting player
 		std::list<Action*> buffs;
 		
-		// TODO: LIST (or hashmap) OF FRIENDLY SPRITES, LIST OF ENEMY SPRITES. LINE OF SIGHT HITBOX. 	
+		// TODO: LIST (or hashmap) OF FRIENDLY SPRITES, LIST OF ENEMY SPRITES. LINE OF SIGHT HITBOX. MAP_POSITION HITBOX?
 	
 	public:
 		// virtual coordinates
@@ -60,14 +60,18 @@ class Sprite
 		// list of SoundIds the sprite has requested. Meant to be picked up by the Map/Gamedriver
 		std::list<int> sounds;
 		// direction currently moving in
-		int movementDir = MOVEMENT_NONE;
-		// sets coordinates to intended movement, given number of milliseconds since last frame
+		int movementDir = DIRECTION_NONE;
+		// direction currently facing
+		int facingDir = DIRECTION_DOWN;
+		// get coordinates of sprite's right hand
+		virtual SDL_Point getRightHandPosition() = 0;
+		// sets coordinates to intended DIRECTION, given number of milliseconds since last frame
 		virtual void move(int ms);
-		// changes to given movement direction
+		// changes to given DIRECTION direction
 		virtual void changeDir(int newDir);
 		// handles a trigger (event a sprite is made aware of)
 		virtual void handleTrigger(Trigger* trigger);
-		// finalizes movement and any other updates to the sprite's state
+		// finalizes DIRECTION and any other updates to the sprite's state
 		virtual void update(int ms);
 		// adds given amount to sprite's currHp
 		void addHealth(float amount);

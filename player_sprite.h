@@ -17,7 +17,7 @@ class PlayerSprite: public Sprite
 	// coordinates at last frame--used for backtracking
 	float lastX, lastY;
 	// direction moving in currently
-	int movementDir = MOVEMENT_NONE; // todo: accomodate bidirectionality
+	int movementDir = DIRECTION_NONE; // todo: accomodate bidirectionality
 	// default constructor: will be initialized in the PlayerSprite constructor
 	Spritesheet idle_anim, mv_up_anim, mv_down_anim, mv_right_anim, mv_left_anim;
 	// pointer to animatino that's currently playing
@@ -33,6 +33,8 @@ class PlayerSprite: public Sprite
 		void moveBack();
 		// finalizes movement and any other updates to the sprite's state
 		void update(int ms);
+		// return coordinates of right hand
+		SDL_Point getRightHandPosition();
 		// draws sprite to the given surface/screen. Subtracting offsets from coordinates results in on-canvas coordinate to draw to
 		void drawTo(SDL_Surface* screenSurface, int offsetX, int offsetY);
 		// given KeyEvent from user, sees whether it is relevant and consumes it. Returns true if it was consumed.
@@ -41,8 +43,6 @@ class PlayerSprite: public Sprite
 		bool interactPressed = false;
 		// whether the player has pressed key for interaction, and has been handled 
 		bool interactHandled = false;
-		// returns coordinates of where sprite's feet are. Used to determine the tile the sprite is standing on/moving to
-		SDL_Point getPosition();
 		~PlayerSprite();
 		void changeDir(int newDir); // todo: clean up, currently the same as Sprite method
 };

@@ -44,7 +44,7 @@ class Inventory
 		// handles all logic for using whatever item is currently in hand. Should be followed up with
 		// getAction(), getBuff(), and getAttack(), one or more of which may be NULL. Takes the sprite's
 		// current position.
-		void useInHand(SDL_Rect position); // TODO: ALSO NEED DIRECTION
+		void useInHand(SDL_Rect position); // TODO: USE RIGHT-HAND POSITION + DIRECTION
 		// retrieve *AND CONSUME* Action, Buff, and/or Attack that may have been created by last-used item. 
 		Action* getAction();
 		Action* getBuff();

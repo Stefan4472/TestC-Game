@@ -18,6 +18,8 @@ class CivilianSprite:public Sprite
 		CivilianSprite(float xCoord, float yCoord, Sprite* playerSprite, TextureAtlas* textureAtlas);
 		// finalizes movement and any other updates to the sprite's state
 		void update(int ms);
+		// return coordinates of right hand
+		SDL_Point getRightHandPosition();
 		// draws sprite to the given surface/screen. Subtracting offsets from coordinates results in on-canvas coordinate to draw to
 		void drawTo(SDL_Surface* screenSurface, int offsetX, int offsetY);
 		

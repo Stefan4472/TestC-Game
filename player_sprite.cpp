@@ -35,19 +35,19 @@ bool PlayerSprite::handleKeyEvent(SDL_Event e)
 		switch( e.key.keysym.sym )
 		{ 
 			case SDLK_RIGHT:
-				changeDir(MOVEMENT_RIGHT);
+				changeDir(DIRECTION_RIGHT);
 				return true;					
 
 			case SDLK_UP:
-				changeDir(MOVEMENT_UP);
+				changeDir(DIRECTION_UP);
 				return true;
 
 			case SDLK_LEFT:
-				changeDir(MOVEMENT_LEFT);
+				changeDir(DIRECTION_LEFT);
 				return true;
 
 			case SDLK_DOWN:
-				changeDir(MOVEMENT_DOWN);
+				changeDir(DIRECTION_DOWN);
 				return true;
 				
 			// interact key
@@ -110,7 +110,7 @@ bool PlayerSprite::handleKeyEvent(SDL_Event e)
 			case SDLK_UP:
 			case SDLK_LEFT:
 			case SDLK_DOWN:
-				changeDir(MOVEMENT_NONE);
+				changeDir(DIRECTION_NONE);
 				return true;
 
 			case SDLK_f:
@@ -143,15 +143,15 @@ void PlayerSprite::move(int ms) {
 	lastX = x;
 	lastY = y;
 	
-	if (movementDir == MOVEMENT_RIGHT) {
+	if (movementDir == DIRECTION_RIGHT) {
 		x += ms * PX_PER_MS;
-	} else if (movementDir == MOVEMENT_LEFT) {
+	} else if (movementDir == DIRECTION_LEFT) {
 		x -= ms * PX_PER_MS;
 	}
 
-	if (movementDir == MOVEMENT_UP) {
+	if (movementDir == DIRECTION_UP) {
 		y -= ms * PX_PER_MS;
-	} else if (movementDir == MOVEMENT_DOWN) {
+	} else if (movementDir == DIRECTION_DOWN) {
 		y += ms * PX_PER_MS;
 	}	
 	hitbox.x = x + hitboxOffsetX;
@@ -181,35 +181,61 @@ void PlayerSprite::changeDir(int newDir) {
 		{	
 			// no movement: simply pause animation that was playing. This way, the sprite remains
 			// facing the same direction
-			case MOVEMENT_NONE:
+			case DIRECTION_NONE:
 				//current_anim = &idle_anim;
 				current_anim->pause();
 				break;
 
-			case MOVEMENT_RIGHT:
+			case DIRECTION_RIGHT:
 				current_anim = &mv_right_anim;
 				current_anim->play();
+				facingDir = DIRECTION_RIGHT;
 				break;
 
-			case MOVEMENT_UP:
+			case DIRECTION_UP:
 				current_anim = &mv_up_anim;
 				current_anim->play();
+				facingDir = DIRECTION_UP;
 				break;
 
-			case MOVEMENT_DOWN:
+			case DIRECTION_DOWN:
 				current_anim = &mv_down_anim;
 				current_anim->play();
+				facingDir = DIRECTION_DOWN;
 				break;
 
-			case MOVEMENT_LEFT:
+			case DIRECTION_LEFT:
 				current_anim = &mv_left_anim;
 				current_anim->play();
+				facingDir = DIRECTION_LEFT;
 				break;
 
 			default:
 				printf("Weird!! Don't know which animation to show!\n");
 				break;
 		}
+	}
+}
+
+SDL_Point PlayerSprite::getRightHandPosition()
+{
+	switch (facingDir) 
+	{	
+		case DIRECTION_RIGHT:
+			return SDL_Point { x + 24, y + 44 };
+
+		case DIRECTION_UP:
+			return SDL_Point { x + 42, y + 41 };
+
+		case DIRECTION_DOWN:
+			return SDL_Point { x + 13, y + 40 };
+
+		case DIRECTION_LEFT:
+			return SDL_Point { x + 19, y + 41 };
+
+		default:
+			printf("Weird!! Don't know which animation to show!\n");
+			break;
 	}
 }
 
@@ -225,31 +251,6 @@ void PlayerSprite::update(int ms) {
 void PlayerSprite::drawTo(SDL_Surface* screenSurface, int offsetX, int offsetY) {
 	// draw current animation frame to screen
 	(*current_anim).drawTo(screenSurface, x - offsetX, y - offsetY);
-}
-
-SDL_Point PlayerSprite::getPosition() 
-{
-	switch (movementDir) 
-	{
-		case MOVEMENT_NONE:
-			return SDL_Point {(int) x + current_anim->frameWidth / 2, (int) y + current_anim->frameHeight };
-			
-		case MOVEMENT_UP:
-			return SDL_Point {(int) x + current_anim->frameWidth / 2, (int) y + (int) (current_anim->frameHeight * 0.7f) };
-			
-		case MOVEMENT_DOWN:
-			return SDL_Point {(int) x + current_anim->frameWidth / 2, (int) y + current_anim->frameHeight };
-		
-		case MOVEMENT_LEFT:
-			return SDL_Point {(int) x, (int) y + current_anim->frameHeight };
-
-		case MOVEMENT_RIGHT:
-			return SDL_Point {(int) x + current_anim->frameWidth, (int) y + current_anim->frameHeight };
-		
-		default:
-			printf("This shouldn't happen");
-			return SDL_Point {-1, -1 };
-	}
 }
 
 PlayerSprite::~PlayerSprite() 
