@@ -29,24 +29,31 @@ void Sprite::changeDir(int newDir)
 		
 		switch (movementDir) 
 		{	
+			// no movement: simply pause animation that was playing. This way, the sprite remains
+			// facing the same direction
 			case MOVEMENT_NONE:
-				current_anim = &idle_anim;
+				//current_anim = &idle_anim;
+				current_anim->pause();
 				break;
 
 			case MOVEMENT_RIGHT:
 				current_anim = &mv_right_anim;
+				current_anim->play();
 				break;
 
 			case MOVEMENT_UP:
 				current_anim = &mv_up_anim;
+				current_anim->play();
 				break;
 
 			case MOVEMENT_DOWN:
 				current_anim = &mv_down_anim;
+				current_anim->play();
 				break;
 
 			case MOVEMENT_LEFT:
 				current_anim = &mv_left_anim;
+				current_anim->play();
 				break;
 
 			default:

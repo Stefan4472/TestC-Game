@@ -45,9 +45,6 @@ class PlayerSprite: public Sprite
 		SDL_Point getPosition();
 		~PlayerSprite();
 		
-	private:
-		// changes movement direction todo: given the Movement constant that has been added/removed from input.
-		// positive input = player intends to go in that direction. negative input = player released key going in direction
 		void changeDir(int newDir);
 };
 #endif

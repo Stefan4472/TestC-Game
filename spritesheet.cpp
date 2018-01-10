@@ -1,6 +1,7 @@
 #include "spritesheet.h"
 
-void Spritesheet::init(TextureAtlas* textureAtlas, int sheetImageId, int numFrames, int frameDuration) {
+void Spritesheet::init(TextureAtlas* textureAtlas, int sheetImageId, int numFrames, int frameDuration) 
+{
 	printf("Creating Spritesheet with %d frames, %d ms per frame\n", numFrames, frameDuration);
 	this->textureAtlas = textureAtlas;
 	this->sheetImageId = sheetImageId;
@@ -24,23 +25,40 @@ void Spritesheet::init(TextureAtlas* textureAtlas, int sheetImageId, int numFram
 	printf("Spritesheet has %d frames, each of width %dpx and height %dpx\n", this->numFrames, frameWidth, frameHeight);
 }
 
-void Spritesheet::reset() {
+void Spritesheet::pause()
+{
+	paused = true;
+}
+
+void Spritesheet::play()
+{
+	paused = false;
+}
+
+void Spritesheet::reset() 
+{
 	frameCounter = 0;
 	msLeftThisFrame = msPerFrame;
+	paused = false;
 }
 
-void Spritesheet::passTime(int ms) {
-	// more time passed than is left for the frame--show next frame
-	while (ms > msLeftThisFrame) 
+void Spritesheet::passTime(int ms) 
+{
+	if (!paused)
 	{
-		ms -= msLeftThisFrame;
-		frameCounter = (frameCounter + 1) % numFrames;
-		msLeftThisFrame = msPerFrame;
+		// more time passed than is left for the frame--show next frame
+		while (ms > msLeftThisFrame) 
+		{
+			ms -= msLeftThisFrame;
+			frameCounter = (frameCounter + 1) % numFrames;
+			msLeftThisFrame = msPerFrame;
+		}
+		msLeftThisFrame -= ms;
 	}
-	msLeftThisFrame -= ms;
 }
 
-void Spritesheet::drawTo(SDL_Surface* screenSurface, float x, float y) {
+void Spritesheet::drawTo(SDL_Surface* screenSurface, float x, float y) 
+{
 	src.x = frameWidth * frameCounter;
 	dest.x = x;
 	dest.y = y;
