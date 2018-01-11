@@ -3,6 +3,7 @@
 
 #include <SDL2/SDL.h>
 #include <list>
+#include "constants.h"
 #include "spritesheet.h"
 #include "item.h"
 #include "inventory.h"
@@ -12,18 +13,6 @@
 class Action;
 
 // Sprite base class
-
-enum DIRECTION { 
-	DIRECTION_UP,
-	//DIRECTION_UP_RIGHT,
-	DIRECTION_RIGHT, 
-	//DIRECTION_DOWN_RIGHT,
-	DIRECTION_DOWN,
-	//DIRECTION_DOWN_LEFT,
-	DIRECTION_LEFT,
-	//DIRECTION_UP_LEFT,
-	DIRECTION_NONE
-};
 
 class Sprite
 {

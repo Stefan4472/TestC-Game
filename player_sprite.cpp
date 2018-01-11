@@ -62,7 +62,7 @@ bool PlayerSprite::handleKeyEvent(SDL_Event e)
 
 			// use in-hand inventory item
 			case SDLK_SPACE: {
-				inventory->useInHand(hitbox);
+				inventory->useInHand(getRightHandPosition(), facingDir);
 				Action* action = inventory->getAction();
 				if (action)
 				{

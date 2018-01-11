@@ -1,0 +1,18 @@
+#ifndef PUBLIC_CONSTANTS_H
+#define PUBLIC_CONSTANTS_H
+
+// Defines certain constants used in a lot of different classes/files.
+
+enum DIRECTION { 
+	DIRECTION_UP,
+	//DIRECTION_UP_RIGHT,
+	DIRECTION_RIGHT, 
+	//DIRECTION_DOWN_RIGHT,
+	DIRECTION_DOWN,
+	//DIRECTION_DOWN_LEFT,
+	DIRECTION_LEFT,
+	//DIRECTION_UP_LEFT,
+	DIRECTION_NONE
+};
+
+#endif

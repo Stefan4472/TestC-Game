@@ -16,7 +16,7 @@ class Weapon : public Item
 	
 	public:
 		Weapon(int itemType, float x, float y, TextureAtlas* textureAtlas);
-		void use(SDL_Rect position);
+		void use(SDL_Point handPos, int useDir);
 };
 
 
@@ -24,7 +24,7 @@ class Sword : public Item
 {
 	public:
 		Sword(TextureAtlas* textureAtlas, float x, float y);
-		void use(SDL_Rect position);
+		void use(SDL_Point handPos, int useDir);
 		Attack* getAttack();
 };
 #endif

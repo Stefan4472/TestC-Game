@@ -84,7 +84,7 @@ void Map::handlePlayerInteract(PlayerSprite* playerSprite)
 	
 	// TODO: INTERACTIBLE TILES
 	
-	SDL_Rect player_hitbox = playerSprite->hitbox;
+	SDL_Rect player_hitbox = playerSprite->hitbox; // TODO: PLAYERSPRITE INTERACT_POSITION
 	
 	for (int i = 0; i < sprites.size(); i++) 
 	{
@@ -120,7 +120,7 @@ bool Map::isValidPosition(SDL_Rect position)
 		   isWalkable(position.x + position.w, position.y + position.h);
 }
 
-bool Map::isWalkable(int x, int y)
+bool Map::isWalkable(int x, int y) // todo: check x >= 0 && y >= 0 && x <= SCREEN_WIDTH && y <= SCREEN_HEIGHT ??
 {
 	return walkableTiles[y / TILE_HEIGHT][x / TILE_WIDTH];
 }
