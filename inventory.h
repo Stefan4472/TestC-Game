@@ -20,6 +20,15 @@
 // the getAction(), getBuff(), and getAttack() methods.
 // Example usage: Call inventory->useInHand(), then store inventory->getAction(), getBuff(), getAttack().
 // Store those which are non-null.
+
+// An InventoryListener is an interface that allows callbacks from an Inventory. The implementing object 
+// must register itself via setInventoryListener().
+class InventoryListener
+{
+	public:
+		virtual void onInHandItemChanged(Item* newItem) = 0;
+};
+
 class Inventory
 {
 	// number of items that'll fit in the inventory
@@ -32,6 +41,8 @@ class Inventory
 	Action* resultingAction = NULL;
 	Action* resultingBuff = NULL;
 	Attack* resultingAttack = NULL;
+	// pointer to listener, if any
+	InventoryListener* inventoryListener = NULL;
 	
 	public:
 		// creates enough space for the given number of items
@@ -50,14 +61,14 @@ class Inventory
 		Action* getAction();
 		Action* getBuff();
 		Attack* getAttack();
-		// sets in hand item to the proceeding one in inventory, returns pointer to item now in hand.
-		// doesn't do anything if vector has only 1 element
-		Item* cycleInHandFwd();
-		// sets in hand item to the preceeding one in inventory, returns pointer to item now in hand.
-		// doesn't do anything if vector has only 1 element
-		Item* cycleInHandBck();
+		// sets in hand item to the proceeding one in inventory. Doesn't do anything if vector has only 1 element
+		void cycleInHandFwd();
+		// sets in hand item to the preceeding one in inventory. Doesn't do anything if vector has only 1 element
+		void cycleInHandBck();
 		// removes and returns in-hand item, if it exists. Automatically cycles forward
 		Item* removeInHand();
+		// sets listener function for in-hand item change
+		void setInventoryListener(InventoryListener* listener);
 		// opens a Window with inventory displayed
 		Window* getWindow();
 };

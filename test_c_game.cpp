@@ -164,7 +164,7 @@ int main( int argc, char* args[] )
 	printf("Loaded Media\n");
 	TextureAtlas textureAtlas = TextureAtlas(texture_atlas_img);
 	printf("Loaded Texture Atlas\n");
-	PlayerSprite playerSprite = PlayerSprite(100.0f, 140.0f, &textureAtlas);
+	PlayerSprite playerSprite = PlayerSprite(100.0f, 140.0f, &textureAtlas, gRenderer, font);
 	printf("Created player sprite\n");
 	Map map;
 	map.init(&playerSprite, &textureAtlas);
@@ -283,7 +283,7 @@ int main( int argc, char* args[] )
 		map.drawSpritesTo(gRenderer);
 		
 		// draw heads-up-display
-		//playerSprite.drawHUD(gRenderer);
+		playerSprite.drawHUD(gRenderer);
 		
 		// handle current window: draw if active, set to NULL if inactive
 		if (currWindow)

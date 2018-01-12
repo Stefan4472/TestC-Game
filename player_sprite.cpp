@@ -1,10 +1,12 @@
 #include "player_sprite.h"
 
-PlayerSprite::PlayerSprite(float xCoord, float yCoord, TextureAtlas* textureAtlas) {
+PlayerSprite::PlayerSprite(float xCoord, float yCoord, TextureAtlas* textureAtlas, SDL_Renderer* renderer, TTF_Font* HUDFont) {
 	printf("Creating sprite at %f, %f\n", xCoord, yCoord);
 	
 	x = xCoord;
 	y = yCoord;
+	
+	this->renderer = renderer;
 
 	// note: this depends on the image of the sprite, and will need to be adjusted at times. Also: hitboxes corresponding to frames of spritesheets
 	hitboxOffsetX = 10;
@@ -25,6 +27,15 @@ PlayerSprite::PlayerSprite(float xCoord, float yCoord, TextureAtlas* textureAtla
 	
 	fullHp = 100;
 	currHp = 100;
+	
+	headsUpDisplay = new PlayerHUD(renderer, HUDFont, NULL, currHp, fullHp);
+	inventory->setInventoryListener(this);
+}
+
+void PlayerSprite::onInHandItemChanged(Item* newItem)
+{
+	printf("Received callback\n");	
+	headsUpDisplay->updateItem(renderer, newItem);
 }
 
 bool PlayerSprite::handleKeyEvent(SDL_Event e) 
@@ -84,9 +95,9 @@ bool PlayerSprite::handleKeyEvent(SDL_Event e)
 				return true;
 			}
 				
-			// cycle in-hand inventory item forward
+			// cycle in-hand inventory item forward and update HUD
 			case SDLK_TAB:
-				inventory->cycleInHandFwd();
+				inventory->cycleInHandFwd(); // TODO: NEED A LISTENER FOR INVENTORY IN-HAND CHANGES
 				return true;
 				
 			// drops item in-hand
@@ -129,6 +140,7 @@ bool PlayerSprite::handleKeyEvent(SDL_Event e)
 		if (e.wheel.y == 1)
 		{
 			inventory->cycleInHandFwd();
+			
 		}
 		// user scrolled down: cycle in-hand inventory item backward
 		else 
@@ -248,19 +260,31 @@ void PlayerSprite::update(int ms) {
 	}
 }
 
+/*void PlayerSprite::onInHandChanged()
+{
+	printf("Detected Changed to in-hand item\n");
+}*/
+
 void PlayerSprite::drawTo(SDL_Renderer* renderer, int offsetX, int offsetY) {
 	// draw current animation frame to screen
 	(*current_anim).drawTo(renderer, x - offsetX, y - offsetY);
+	
+	// draw in-hand item (if any)
+	Item* in_hand = inventory->getInHand();
+	if (in_hand)
+	{
+		SDL_Point hand_location = getRightHandPosition();
+		in_hand->drawTo(renderer, (int) (hand_location.x - offsetX), (int) (hand_location.y - offsetY));
+	}
 }
 
 void PlayerSprite::drawHUD(SDL_Renderer* renderer)
 {
-	SDL_SetRenderDrawColor(renderer, 0, 255, 0, SDL_ALPHA_OPAQUE);
-	SDL_RenderFillRect(renderer, &hitbox);
+	headsUpDisplay->drawTo(renderer);
 }
 
 
 PlayerSprite::~PlayerSprite() 
 {
-
+	renderer = NULL;
 }

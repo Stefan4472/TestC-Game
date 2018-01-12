@@ -43,6 +43,7 @@ class Sprite
 		SDL_Rect hitbox;
 		// area on map this sprite can "see"
 		SDL_Rect lineOfSight;
+		
 		// sprite's inventory
 		Inventory* inventory = NULL; 
 		// list of Items sprite wants to drop. Meant to be picked up by the Map/Gamedriver
@@ -51,10 +52,17 @@ class Sprite
 		std::list<Attack*> attacks;
 		// list of SoundIds the sprite has requested. Meant to be picked up by the Map/Gamedriver
 		std::list<int> sounds;
+		
 		// direction currently moving in
 		int movementDir = DIRECTION_NONE;
 		// direction currently facing
 		int facingDir = DIRECTION_DOWN;
+		
+		// called when the sprite's in-hand item changes. Listener function
+		virtual void onInHandChanged(int id); // TODO: PUT THIS IN SPRITE CLASS
+		// called when the sprite's health changes
+		virtual void onHealthChanged();
+		
 		// get coordinates of sprite's right hand
 		virtual SDL_Point getRightHandPosition() = 0;
 		// sets coordinates to intended DIRECTION, given number of milliseconds since last frame

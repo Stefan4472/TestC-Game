@@ -19,6 +19,12 @@ bool Inventory::addItem(Item* item)
 	if (items.size() == 1)
 	{
 		inHandIndex = 0;	
+		
+		// notify listener
+		if (inventoryListener)
+		{
+			inventoryListener->onInHandItemChanged(items[0]);	
+		}
 	}
 	return true;
 }
@@ -70,24 +76,33 @@ Attack* Inventory::getAttack()
 	return attack;
 }
 
-Item* Inventory::cycleInHandFwd()
+void Inventory::cycleInHandFwd()
 {
-	// cycle inHandIndex one to the right, if there are items in inventory
-	inHandIndex = items.size() ? (inHandIndex + 1) % items.size() : -1;
-	return items.size() ? items[inHandIndex] : NULL; 	
+	// cycle to the right, if more than one item in inventory
+	if (items.size() > 1)
+	{
+		inHandIndex = (inHandIndex + 1) % items.size();
+
+		// notify listener
+		if (inventoryListener)
+		{
+			inventoryListener->onInHandItemChanged(items[inHandIndex]);	
+		}
+	}
 }
 
-Item* Inventory::cycleInHandBck()
+void Inventory::cycleInHandBck()
 {
-	if (inHandIndex == -1 )
+	// cycle to the left, if more than one item in inventory
+	if (items.size() > 1)
 	{
-		return NULL;	
-	}
-	else 
-	{
-		// cycle inHandIndex one to the left
 		inHandIndex = inHandIndex ? inHandIndex - 1 : items.size() - 1; 
-		return items[inHandIndex];
+		
+		// notify listener
+		if (inventoryListener && items.size())
+		{
+			inventoryListener->onInHandItemChanged(items[inHandIndex]);	
+		} 	
 	}
 }
 
@@ -103,8 +118,19 @@ Item* Inventory::removeInHand()
 		items.erase(items.begin() + inHandIndex);
 		printf("Removed %s from Inventory\n", in_hand->getName());
 		cycleInHandFwd();
+		
+		// handle special case: dropped last item. Notify listener 
+		if (inventoryListener && items.size() == 0)
+		{
+			inventoryListener->onInHandItemChanged(items[inHandIndex]);	
+		}
 		return in_hand;
 	}
+}
+
+void Inventory::setInventoryListener(InventoryListener* listener)
+{
+	inventoryListener = listener;
 }
 
 void Inventory::drawTo(SDL_Renderer* renderer, TextureAtlas* textureAtlas)

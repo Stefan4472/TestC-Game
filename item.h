@@ -102,8 +102,9 @@ class Item
 		virtual Action* getBuff();
 		// returns Attack created when this sprite is used. Default NULL
 		virtual Attack* getAttack();
-		// handles given sprite interacting with the object on the ground -- removed due to forward declaration errors
-		//virtual void handleInteract(Sprite* sprite);
+		// draws item to given coordinate on renderer
+		virtual void drawTo(SDL_Renderer* renderer, int x, int y);
+		// draws item to map using its own coordinates, and the given offsets
 		virtual void drawToMap(SDL_Renderer* renderer, int offsetX, int offsetY);
 		virtual void drawToInventory(SDL_Renderer* renderer, SDL_Rect dest);
 		// TODO: virtual void drawToHUD()

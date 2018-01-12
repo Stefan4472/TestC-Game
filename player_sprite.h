@@ -5,6 +5,7 @@
 #include <SDL2/SDL.h>
 #include "texture_atlas.h"
 #include "spritesheet.h"
+#include "player_hud.h"
 #include "action.h"
 #include "sprite.h"
 
@@ -12,7 +13,7 @@
 const float PX_PER_MS = 0.25f;
 
 // updating: handle input events in queue, call move(), check collisions, handle any collisions, update, draw
-class PlayerSprite: public Sprite
+class PlayerSprite: public InventoryListener, public Sprite
 {
 	// coordinates at last frame--used for backtracking
 	float lastX, lastY;
@@ -24,9 +25,16 @@ class PlayerSprite: public Sprite
 	Spritesheet *current_anim = NULL;
 	// offset of start of hitbox, from sprite's x and y (x + hitboxOffsetX = hitbox.x)
 	int hitboxOffsetX, hitboxOffsetY;
+	// renderer 
+	SDL_Renderer* renderer = NULL;
+	// heads-up-display for the sprite
+	PlayerHUD* headsUpDisplay = NULL;
+	
+	// called when in-hand item changes: updates HUD
+	void onInHandItemChanged(Item* newItem);
 	
 	public:
-		PlayerSprite(float xCoord, float yCoord, TextureAtlas* textureAtlas); // todo: use initialization list (?)
+		PlayerSprite(float xCoord, float yCoord, TextureAtlas* textureAtlas, SDL_Renderer* renderer, TTF_Font* HUDFont); // todo: use initialization list (?)
 		// sets coordinates to intended movement, given number of milliseconds since last frame
 		void move(int ms);
 		// moves sprite back to where it was the previous frame/move() 

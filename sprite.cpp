@@ -1,5 +1,15 @@
 #include "sprite.h"
 
+void Sprite::onInHandChanged(int id)
+{
+	printf("Sprite: on hand changed to %d\n", id);
+}
+
+void Sprite::onHealthChanged()
+{
+	printf("Sprite received onHealthChanged");
+}
+			
 void Sprite::move(int ms)
 {
 	if (movementDir == DIRECTION_RIGHT) {

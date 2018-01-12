@@ -50,6 +50,11 @@ Attack* Item::getAttack()
 	return NULL;
 }
 
+void Item::drawTo(SDL_Renderer* renderer, int x, int y)
+{
+	textureAtlas->draw(renderer, textureId, x, y);	
+}
+
 void Item::drawToMap(SDL_Renderer* renderer, int offsetX, int offsetY)
 {
 	textureAtlas->draw(renderer, textureId, hitbox.x - offsetX, hitbox.y - offsetY);
