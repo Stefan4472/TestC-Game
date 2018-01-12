@@ -104,8 +104,8 @@ class Item
 		virtual Attack* getAttack();
 		// handles given sprite interacting with the object on the ground -- removed due to forward declaration errors
 		//virtual void handleInteract(Sprite* sprite);
-		virtual void drawToMap(SDL_Surface* screenSurface, int offsetX, int offsetY);
-		virtual void drawToInventory(SDL_Surface* screenSurface, SDL_Rect dest);
+		virtual void drawToMap(SDL_Renderer* renderer, int offsetX, int offsetY);
+		virtual void drawToInventory(SDL_Renderer* renderer, SDL_Rect dest);
 		// TODO: virtual void drawToHUD()
 };
 

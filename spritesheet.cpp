@@ -57,11 +57,11 @@ void Spritesheet::passTime(int ms)
 	}
 }
 
-void Spritesheet::drawTo(SDL_Surface* screenSurface, float x, float y) 
+void Spritesheet::drawTo(SDL_Renderer* renderer, float x, float y) 
 {
 	src.x = frameWidth * frameCounter;
 	dest.x = x;
 	dest.y = y;
-	textureAtlas->drawSubimg( screenSurface, sheetImageId, src, x, y );
-	//SDL_BlitSurface( sheet, &src, screenSurface, &dest );
+	textureAtlas->drawSubimg( renderer, sheetImageId, src, x, y );
+	//SDL_BlitSurface( sheet, &src, renderer, &dest );
 }

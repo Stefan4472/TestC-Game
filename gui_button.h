@@ -25,7 +25,7 @@ class Button: public Widget
 		// gives the widget focus
 		void giveFocus();
 		// draws widget in position to given surface
-		void drawTo(SDL_Surface* screenSurface);
+		void drawTo(SDL_Surface* renderer);
 
 };
 

@@ -1,21 +1,21 @@
 #include "texture_atlas.h"
 
-TextureAtlas::TextureAtlas(SDL_Surface* atlas)
+TextureAtlas::TextureAtlas(SDL_Texture* atlas)
 {
 	this->atlas = atlas;
 }
 
-void TextureAtlas::draw(SDL_Surface* screenSurface, int textureId, float x, float y)
+void TextureAtlas::draw(SDL_Renderer* renderer, int textureId, float x, float y)
 {
 	dest.x = x;
 	dest.y = y;
 	dest.w = textureRegions[textureId].w;
 	dest.h = textureRegions[textureId].h;
 	// draw from atlas 
-	SDL_BlitSurface( atlas, &textureRegions[textureId], screenSurface, &dest );
+	SDL_RenderCopy(renderer, atlas, &textureRegions[textureId], &dest);
 }
 
-void TextureAtlas::drawSubimg(SDL_Surface* screenSurface, int textureId, SDL_Rect src, float x, float y)
+void TextureAtlas::drawSubimg(SDL_Renderer* renderer, int textureId, SDL_Rect src, float x, float y)
 {
 	// adjust source coordinates to get coordinate in full atlas
 	src.x = src.x + textureRegions[textureId].x;
@@ -24,7 +24,7 @@ void TextureAtlas::drawSubimg(SDL_Surface* screenSurface, int textureId, SDL_Rec
 	dest.y = y;
 	dest.w = src.w;
 	dest.h = src.h;
-	SDL_BlitSurface( atlas, &src, screenSurface, &dest) ;
+	SDL_RenderCopy(renderer, atlas, &src, &dest);
 }
 
 int TextureAtlas::getWidth(int textureId) 

@@ -67,7 +67,7 @@ class Sprite
 		// subtracts given amount from sprite's currHp
 		void loseHealth(float amount);
 		// draws sprite to the given surface/screen. Subtracting offsets from coordinates results in on-canvas coordinate to draw to
-		virtual void drawTo(SDL_Surface* screenSurface, int offsetX, int offsetY) = 0;
+		virtual void drawTo(SDL_Renderer* renderer, int offsetX, int offsetY) = 0;
 		
 };
 

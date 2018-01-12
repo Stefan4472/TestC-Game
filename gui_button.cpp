@@ -23,16 +23,16 @@ void Button::giveFocus()
 	focused = true;
 }
 
-void Button::drawTo(SDL_Surface* screenSurface)
+void Button::drawTo(SDL_Surface* renderer)
 {
 	if (focused)
 	{
-		SDL_FillRect(screenSurface, &position, SDL_MapRGB(screenSurface->format, 0x00, 0x00, 0x00));
-		SDL_BlitSurface(renderedText, NULL, screenSurface, &position);
+		SDL_FillRect(renderer, &position, SDL_MapRGB(renderer->format, 0x00, 0x00, 0x00));
+		SDL_BlitSurface(renderedText, NULL, renderer, &position);
 	}
 	else 
 	{
-		SDL_FillRect(screenSurface, &position, SDL_MapRGB(screenSurface->format, 0xFF, 0xFF, 0xFF));	
-		SDL_BlitSurface(renderedText, NULL, screenSurface, &position);
+		SDL_FillRect(renderer, &position, SDL_MapRGB(renderer->format, 0xFF, 0xFF, 0xFF));	
+		SDL_BlitSurface(renderedText, NULL, renderer, &position);
 	}
 }

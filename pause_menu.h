@@ -38,7 +38,7 @@ class PauseWindow : public Window
 		// attempts to handle given KeyEvent. Returns false if it was not handled
 		bool handleKeyEvent(SDL_Event e);
 		// draws this window to the given surface
-		void drawTo(SDL_Surface* screenSurface);
+		void drawTo(SDL_Surface* renderer);
 }
 
 #endif

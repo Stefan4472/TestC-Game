@@ -86,16 +86,16 @@ const SDL_Rect textureRegions[30] =
 
 class TextureAtlas 
 {
-	SDL_Surface* atlas;
+	SDL_Texture* atlas;
 	SDL_Rect src, dest;
 	
 	public:
 		// init with full atlas image
-		TextureAtlas(SDL_Surface* atlas);
+		TextureAtlas(SDL_Texture* atlas);
 		// draws image given by textureId to given SDL_Surface at x,y 
-		void draw(SDL_Surface* screenSurface, int textureId, float x, float y);
-		// draws subimage defined by src from specified image to coordinates x,y on screenSurface
-		void drawSubimg(SDL_Surface* screenSurface, int textureId, SDL_Rect src, float x, float y);
+		void draw(SDL_Renderer* renderer, int textureId, float x, float y);
+		// draws subimage defined by src from specified image to coordinates x,y on renderer
+		void drawSubimg(SDL_Renderer* renderer, int textureId, SDL_Rect src, float x, float y);
 		// returns width (px) of specified Texture image
 		int getWidth(int textureId);
 		// returns height (px) of specified Texture image

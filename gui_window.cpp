@@ -61,17 +61,17 @@ bool Window::handleInputEvent(SDL_Event e)
 	return false;	
 }
 
-void Window::drawTo(SDL_Surface* screenSurface)
+void Window::drawTo(SDL_Surface* renderer)
 {
 	if (active) 
 	{
 		// draw window background
-		SDL_FillRect(screenSurface, &position, SDL_MapRGB(screenSurface->format, 0x47, 0x5C, 0x8D));
+		SDL_FillRect(renderer, &position, SDL_MapRGB(renderer->format, 0x47, 0x5C, 0x8D));
 
 		
 		for (int i = 0; i < widgets.size(); i++)
 		{
-			widgets[i]->drawTo(screenSurface);
+			widgets[i]->drawTo(renderer);
 		} 
 	}
 }

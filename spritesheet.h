@@ -39,8 +39,8 @@ class Spritesheet
 		void reset();
 		// increments duration by given number of milliseconds
 		void passTime(int ms);
-		// draws current frame to given SDL_Surface
-		void drawTo(SDL_Surface* screenSurface, float x, float y);
+		// draws current frame to given renderer
+		void drawTo(SDL_Renderer* renderer, float x, float y);
 };
 
 #endif

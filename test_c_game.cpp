@@ -23,17 +23,15 @@ bool loadMedia();
 //Frees media and shuts down SDL
 void close();
 
-//Loads individual image
-SDL_Surface* loadSurface( std::string path );
+// loads individual image and creates a texture out of it
+SDL_Texture* loadTexture( std::string path );
 
 //The window we'll be rendering to
 SDL_Window* gWindow = NULL;
 	
-//The surface contained by the window
-SDL_Surface* gScreenSurface = NULL;
-
-// renderer for the window surface 
+// renderer for the window
 SDL_Renderer* gRenderer = NULL;
+
 // colors used in GUI
 SDL_Color textColor = {255, 255, 255}, backgroundColor = {0, 0, 0};
 
@@ -41,7 +39,7 @@ SDL_Color textColor = {255, 255, 255}, backgroundColor = {0, 0, 0};
 TTF_Font *font = NULL;
 
 // loaded texture atlas
-SDL_Surface *texture_atlas_img = NULL;
+SDL_Texture *texture_atlas_img = NULL;
 
 bool init()
 {
@@ -65,8 +63,17 @@ bool init()
 		printf( "Window could not be created! SDL Error: %s\n", SDL_GetError() );
 		return false;
 	}
-	//Get window surface
-	gScreenSurface = SDL_GetWindowSurface( gWindow );
+	
+	// create renderer for window todo: figure out what the issue is (causes segfault)
+	gRenderer = SDL_CreateRenderer( gWindow, -1, SDL_RENDERER_ACCELERATED );
+	if( gRenderer == NULL )
+	{
+		printf( "Renderer could not be created! SDL Error: %s\n", SDL_GetError() );
+		return false;
+	}
+		
+	// initialize renderer color
+	SDL_SetRenderDrawColor( gRenderer, 0x00, 0x00, 0x00, 0x00 );
 	
 	// initialize fonts
 	if( TTF_Init() == -1 )
@@ -75,18 +82,7 @@ bool init()
 		return false;
 	}
 	
-	// create renderer for window todo: figure out what the issue is (causes segfault)
-	/*gRenderer = SDL_CreateRenderer( gWindow, -1, SDL_RENDERER_ACCELERATED );
-	if( gRenderer == NULL )
-	{
-		printf( "Renderer could not be created! SDL Error: %s\n", SDL_GetError() );
-		return false;
-	}
-		
-	//Initialize renderer color
-	SDL_SetRenderDrawColor( gRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
-	*/
-	//Initialize PNG loading
+	// initialize PNG loading
 	int imgFlags = IMG_INIT_PNG;
 	if( !( IMG_Init( imgFlags ) & imgFlags ) )
 	{
@@ -98,11 +94,12 @@ bool init()
 
 bool loadMedia()
 {
-	//Loading success flag
-	bool success = true;
-	
-	texture_atlas_img = loadSurface("graphics/texture_atlas.png");
-	
+	texture_atlas_img = loadTexture("graphics/texture_atlas.png");
+	if (texture_atlas_img == NULL)
+	{
+		printf("Failed to load texture image!\n");
+		return false;	
+	}
 	// open the font
 	font = TTF_OpenFont( "fonts/AdventPro-Light.ttf", 28 );
 	if(font == NULL)
@@ -110,23 +107,24 @@ bool loadMedia()
 		printf( "Failed to load lazy font! SDL_ttf Error: %s\n", TTF_GetError() );
 		return false;
 	}
-	return success;
+	return true;
 }
 
 void close()
 {
-	SDL_FreeSurface(texture_atlas_img);
+	SDL_DestroyTexture(texture_atlas_img);
+	texture_atlas_img = NULL;
 	
 	TTF_CloseFont(font);
 	font = NULL;
-
-	// destroy window
-	SDL_DestroyWindow( gWindow );
-	gWindow = NULL;
 	
 	// destroy renderer
 	SDL_DestroyRenderer( gRenderer );
 	gRenderer = NULL;
+	
+	// destroy window
+	SDL_DestroyWindow( gWindow );
+	gWindow = NULL;
 
 	// quit SDL subsystems
 	TTF_Quit();
@@ -134,16 +132,26 @@ void close()
 	SDL_Quit();
 }
 
-SDL_Surface* loadSurface( std::string path )
+SDL_Texture* loadTexture( std::string path )
 {
-	//Load image at specified path
+	// load image at specified path
 	SDL_Surface* loadedSurface = IMG_Load( path.c_str() );
 	if( loadedSurface == NULL )
 	{
 		printf( "Unable to load image %s! SDL Error: %s\n", path.c_str(), SDL_GetError() );
+		return NULL;
 	}
 	
-	return loadedSurface;
+	SDL_Texture* new_texture = SDL_CreateTextureFromSurface(gRenderer, loadedSurface);
+	if (new_texture == NULL)
+	{
+		printf("Unable to create texture from %s! SDL Error: %s\n", path.c_str());	
+	}
+	
+	// free loaded surface (no longer necessary)
+	SDL_FreeSurface(loadedSurface);
+	
+	return new_texture;
 }
 
 
@@ -265,21 +273,21 @@ int main( int argc, char* args[] )
 		// center map on playerSprite and draw
 		map.centerTo(playerSprite.hitbox);
 		
-		map.drawTerrainTo(gScreenSurface);
+		map.drawTerrainTo(gRenderer);
 		
 		//printf("Drawing sprite\n");
 		
-		playerSprite.drawTo(gScreenSurface, map.viewOffsetX, map.viewOffsetY);
+		playerSprite.drawTo(gRenderer, map.viewOffsetX, map.viewOffsetY);
 		
-		map.drawObjectsTo(gScreenSurface);
-		map.drawSpritesTo(gScreenSurface);
+		map.drawObjectsTo(gRenderer);
+		map.drawSpritesTo(gRenderer);
 		
 		// handle current window: draw if active, set to NULL if inactive
 		if (currWindow)
 		{
 			if (currWindow->isActive())
 			{
-				currWindow->drawTo(gScreenSurface);
+				//currWindow->drawTo(gRenderer);
 			}
 			else
 			{
@@ -290,13 +298,13 @@ int main( int argc, char* args[] )
 		
 		if (invWindow->isActive()) // currently work-around to draw inventory
 		{
-			playerSprite.inventory->drawTo(gScreenSurface, &textureAtlas);	
+			playerSprite.inventory->drawTo(gRenderer, &textureAtlas);	
 		}
 		// draw name of in-hand item to screen, if any
 		if (playerSprite.inventory->getInHand()) // TODO: ONLY RENDER WHEN CHANGE OCCURS. Use Item.drawAsInHand()
 		{
 			rendered_inhand_name = TTF_RenderText_Solid(font, playerSprite.inventory->getInHand()->getName(), textColor);
-			SDL_BlitSurface(rendered_inhand_name, NULL, gScreenSurface, NULL);
+			//SDL_BlitSurface(rendered_inhand_name, NULL, gScreenSurface, NULL);
 		}
 		// calculate and render frame rate text. Draw to top-left of screen
 		if (ticks_since_last_frame > 0) 
@@ -308,8 +316,9 @@ int main( int argc, char* args[] )
 			//SDL_BlitSurface(rendered_fps, NULL, gScreenSurface, NULL);
 		}
 		
-		// draw changes to window
-		SDL_UpdateWindowSurface( gWindow );
+		//SDL_RenderClear(gRenderer);
+		// update screen
+		SDL_RenderPresent(gRenderer);
 		
 		//printf("Finished\n");
 		// update last_frame_ticks

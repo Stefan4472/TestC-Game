@@ -152,7 +152,7 @@ void Map::centerTo(SDL_Rect newCenter)
 	//viewOffsetY = (viewOffsetY ? viewOffsetY : 0);
 }
 
-void Map::drawTerrainTo(SDL_Surface* screenSurface) 
+void Map::drawTerrainTo(SDL_Renderer* renderer) 
 {
 	//printf("Centered on %d %d %d %d\n", center.x, center.y, center.w, center.h);
 	// virtual coordinates for top-left of view 
@@ -177,6 +177,9 @@ void Map::drawTerrainTo(SDL_Surface* screenSurface)
 	
 	//printf("Finished Calculations\n");
 	
+	// set color to black
+	SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
+
 	// render tiles to canvas, using offsets to get physical coordinates
 	for (int i = 0; i < tiles_tall; i++) 
 	{
@@ -190,18 +193,18 @@ void Map::drawTerrainTo(SDL_Surface* screenSurface)
 			// out of range: draw black
 			if (start_tile_y + i < 0 || start_tile_x + j < 0 || start_tile_y + i >= mapRows || start_tile_x + j >= mapCols) 
 			{
-				SDL_FillRect( screenSurface, &dest, SDL_MapRGB( screenSurface->format, 0x00, 0x00, 0x00 ) );
+				SDL_RenderFillRect( renderer, &dest );
 			}
 			else 
 			{
-				textureAtlas->draw(screenSurface, mapTiles[start_tile_y + i][start_tile_x + j], dest.x, dest.y);
-				//SDL_BlitSurface( tileImgs[ mapTiles[start_tile_y + i][start_tile_x + j] ], &src, screenSurface, &dest );
+				textureAtlas->draw(renderer, mapTiles[start_tile_y + i][start_tile_x + j], dest.x, dest.y);
+				//SDL_BlitSurface( tileImgs[ mapTiles[start_tile_y + i][start_tile_x + j] ], &src, renderer, &dest );
 			}
 		}
 	}
 }
 
-void Map::drawObjectsTo(SDL_Surface* screenSurface)  // todo: don't' redo calculations. ALSO: draw everything above player tile, then player, then everything at and below
+void Map::drawObjectsTo(SDL_Renderer* renderer)  // todo: don't' redo calculations. ALSO: draw everything above player tile, then player, then everything at and below
 {
 	// virtual coordinates for top-left of view 
 	int top_left_x = center.x - (SCREEN_WIDTH - center.w) / 2;
@@ -238,22 +241,22 @@ void Map::drawObjectsTo(SDL_Surface* screenSurface)  // todo: don't' redo calcul
 				// draw so image is centered, with bottom on tile
 				dest.y = i * TILE_HEIGHT - offset_y - textureAtlas->getHeight(objectTiles[tile_row][tile_col]) + TILE_HEIGHT; 
 				dest.x = j * TILE_WIDTH - offset_x - (textureAtlas->getWidth(objectTiles[tile_row][tile_col]) - TILE_WIDTH) / 2;
-				textureAtlas->draw(screenSurface, objectTiles[start_tile_y + i][start_tile_x + j], dest.x, dest.y);
+				textureAtlas->draw(renderer, objectTiles[start_tile_y + i][start_tile_x + j], dest.x, dest.y);
 			}
 		 }
 	}
 	
 	for (int i = 0; i < items.size(); i++) 
 	{
-		items[i]->drawToMap(screenSurface, top_left_x, top_left_y);	
+		items[i]->drawToMap(renderer, top_left_x, top_left_y);	
 	}
 }
 
-void Map::drawSpritesTo(SDL_Surface* screenSurface)
+void Map::drawSpritesTo(SDL_Renderer* renderer)
 {
 	for (int i = 0; i < sprites.size(); i++) 
 	{
-		sprites[i]->drawTo(screenSurface, viewOffsetX, viewOffsetY);
+		sprites[i]->drawTo(renderer, viewOffsetX, viewOffsetY);
 	}
 }
 

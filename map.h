@@ -100,11 +100,11 @@ class Map
 		// center background to given rect, updating viewOffsetX and viewOffsetY to match
 		void centerTo(SDL_Rect newCenter);
 		// draws tiled terrain to the given surface/screen. Use center() to center the background to a virtual rectangle
-		void drawTerrainTo(SDL_Surface* screenSurface);
+		void drawTerrainTo(SDL_Renderer* renderer);
 		// draws objects to the surface/screen
-		void drawObjectsTo(SDL_Surface* screenSurface);
+		void drawObjectsTo(SDL_Renderer* renderer);
 		// draws sprites to the surface/screen
-		void drawSpritesTo(SDL_Surface* screenSurface);
+		void drawSpritesTo(SDL_Renderer* renderer);
 		// returns whether the two rectangles have any intersection
 		bool checkCollision(SDL_Rect a, SDL_Rect b);
 

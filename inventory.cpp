@@ -107,11 +107,11 @@ Item* Inventory::removeInHand()
 	}
 }
 
-void Inventory::drawTo(SDL_Surface* screenSurface, TextureAtlas* textureAtlas)
+void Inventory::drawTo(SDL_Renderer* renderer, TextureAtlas* textureAtlas)
 {
 	for (int i = 0; i < items.size(); i++) 
 	{
-		items[i]->drawToInventory(screenSurface, SDL_Rect{0, 0, 0, 0});
+		items[i]->drawToInventory(renderer, SDL_Rect{0, 0, 0, 0});
 	}
 }
 

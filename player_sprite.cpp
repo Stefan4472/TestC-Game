@@ -248,9 +248,9 @@ void PlayerSprite::update(int ms) {
 	}
 }
 
-void PlayerSprite::drawTo(SDL_Surface* screenSurface, int offsetX, int offsetY) {
+void PlayerSprite::drawTo(SDL_Renderer* renderer, int offsetX, int offsetY) {
 	// draw current animation frame to screen
-	(*current_anim).drawTo(screenSurface, x - offsetX, y - offsetY);
+	(*current_anim).drawTo(renderer, x - offsetX, y - offsetY);
 }
 
 PlayerSprite::~PlayerSprite() 

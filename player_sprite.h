@@ -36,7 +36,7 @@ class PlayerSprite: public Sprite
 		// return coordinates of right hand
 		SDL_Point getRightHandPosition();
 		// draws sprite to the given surface/screen. Subtracting offsets from coordinates results in on-canvas coordinate to draw to
-		void drawTo(SDL_Surface* screenSurface, int offsetX, int offsetY);
+		void drawTo(SDL_Renderer* renderer, int offsetX, int offsetY);
 		// given KeyEvent from user, sees whether it is relevant and consumes it. Returns true if it was consumed.
 		bool handleKeyEvent(SDL_Event e);
 		// whether key for interact has been pressed

@@ -36,7 +36,7 @@ class Window
 		// handles gui events, e.g. button clicks
 		virtual bool handleGUIEvent(Widget* target) = 0;
 		// draws this window to the given surface
-		void drawTo(SDL_Surface* screenSurface);
+		void drawTo(SDL_Surface* renderer);
 		// free all widgets and window
 		~Window();
 };

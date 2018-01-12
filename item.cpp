@@ -50,12 +50,12 @@ Attack* Item::getAttack()
 	return NULL;
 }
 
-void Item::drawToMap(SDL_Surface* screenSurface, int offsetX, int offsetY)
+void Item::drawToMap(SDL_Renderer* renderer, int offsetX, int offsetY)
 {
-	textureAtlas->draw(screenSurface, textureId, hitbox.x - offsetX, hitbox.y - offsetY);
+	textureAtlas->draw(renderer, textureId, hitbox.x - offsetX, hitbox.y - offsetY);
 }
 
-void Item::drawToInventory(SDL_Surface* screenSurface, SDL_Rect dest)
+void Item::drawToInventory(SDL_Renderer* renderer, SDL_Rect dest)
 {
-	textureAtlas->draw(screenSurface, textureId, 0, 0);
+	textureAtlas->draw(renderer, textureId, 0, 0);
 }

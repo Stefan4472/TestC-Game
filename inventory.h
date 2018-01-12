@@ -39,7 +39,7 @@ class Inventory
 		// attempts to add an item to inventory. Returns false if inventory is full
 		bool addItem(Item* item);
 		// draws inventory to given surface
-		void drawTo(SDL_Surface* screenSurface, TextureAtlas* textureAtlas);
+		void drawTo(SDL_Renderer* renderer, TextureAtlas* textureAtlas);
 		// returns pointer to the Item that's currently in hand. Null if empty TODO: MAKE NON-NULL?
 		Item* getInHand();
 		// handles all logic for using whatever item is currently in hand. Should be followed up with
