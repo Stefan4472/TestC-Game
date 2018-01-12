@@ -9,6 +9,7 @@
 #include "inventory.h"
 #include "trigger.h"
 #include "attack.h"
+#include "healthbar.h"
 
 class Action;
 
@@ -26,6 +27,8 @@ class Sprite
 		float speedPerMs = 0;
 		// current action controlling the sprite
 		Action* currAction = NULL;
+		// healthbar, which may be drawn over the sprite
+		SpriteHealthBar* healthbar;
 		// list of buffs currently affecting player
 		std::list<Action*> buffs;
 		

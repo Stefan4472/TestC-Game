@@ -282,6 +282,9 @@ int main( int argc, char* args[] )
 		map.drawObjectsTo(gRenderer);
 		map.drawSpritesTo(gRenderer);
 		
+		// draw heads-up-display
+		//playerSprite.drawHUD(gRenderer);
+		
 		// handle current window: draw if active, set to NULL if inactive
 		if (currWindow)
 		{

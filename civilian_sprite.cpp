@@ -26,9 +26,10 @@ CivilianSprite::CivilianSprite(float xCoord, float yCoord, Sprite* playerSprite,
 	
 	fullHp = 30;
 	currHp = 30;
+	healthbar = new SpriteHealthBar(32, currHp,fullHp);
 
 	currAction = getInitialAction();
-	
+		
 	// TODO: KNOW WHICH DIRECTION SPRITE IS INITIALLY FACING. DEFAULTS TO DOWN
 }
 
@@ -61,5 +62,7 @@ SDL_Point CivilianSprite::getRightHandPosition()
 }
 void CivilianSprite::drawTo(SDL_Renderer* renderer, int offsetX, int offsetY) {
 	// draw current animatino frame to screen
-	(*current_anim).drawTo(renderer, x - offsetX, y - offsetY);
+	current_anim->drawTo(renderer, x - offsetX, y - offsetY);
+	// draw healthbar
+	healthbar->drawTo(renderer, x - offsetX, y - offsetY);
 }

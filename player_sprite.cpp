@@ -29,7 +29,7 @@ PlayerSprite::PlayerSprite(float xCoord, float yCoord, TextureAtlas* textureAtla
 
 bool PlayerSprite::handleKeyEvent(SDL_Event e) 
 {
-	// player pressed a key
+	// player pressed a key TODO: IGNORE REPEATED SIGNALS
 	if (e.type == SDL_KEYDOWN)  // todo: E: inventory, R reload, F action, Q drop
 	{
 		switch( e.key.keysym.sym )
@@ -252,6 +252,13 @@ void PlayerSprite::drawTo(SDL_Renderer* renderer, int offsetX, int offsetY) {
 	// draw current animation frame to screen
 	(*current_anim).drawTo(renderer, x - offsetX, y - offsetY);
 }
+
+void PlayerSprite::drawHUD(SDL_Renderer* renderer)
+{
+	SDL_SetRenderDrawColor(renderer, 0, 255, 0, SDL_ALPHA_OPAQUE);
+	SDL_RenderFillRect(renderer, &hitbox);
+}
+
 
 PlayerSprite::~PlayerSprite() 
 {
