@@ -16,15 +16,21 @@ class Weapon : public Item
 	
 	public:
 		Weapon(int itemType, float x, float y, TextureAtlas* textureAtlas);
-		void use(SDL_Point handPos, int useDir);
+		void use(Sprite* actor, SDL_Point handPos, int useDir);
 };
 
 
 class Sword : public Item
 {
+	int swingDirection = 0;
+	// sprite using the sword
+	Sprite* actor = NULL;
+	// damage done by the sword
+	int damage = 10;
+	
 	public:
 		Sword(TextureAtlas* textureAtlas, float x, float y);
-		void use(SDL_Point handPos, int useDir);
+		void use(Sprite* actor, SDL_Point handPos, int useDir);
 		Attack* getAttack();
 };
 #endif

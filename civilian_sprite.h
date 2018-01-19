@@ -13,6 +13,8 @@ class CivilianSprite:public Sprite
 {
 	// pointer to player
 	Sprite* playerSprite;
+	// number of frames that healthbar should be shown (0 = don't show)
+	int numHealthbarFrames = 0;
 	
 	public:
 		CivilianSprite(float xCoord, float yCoord, Sprite* playerSprite, TextureAtlas* textureAtlas);
@@ -22,6 +24,8 @@ class CivilianSprite:public Sprite
 		SDL_Point getRightHandPosition();
 		// called by map when sprite is hit by an attack
 		void handleAttacked(Attack* attack);
+		// shows the healthbar for a given number of frames
+		void showHealthbar();
 		// draws sprite to the given surface/screen. Subtracting offsets from coordinates results in on-canvas coordinate to draw to
 		void drawTo(SDL_Renderer* renderer, int offsetX, int offsetY);
 		

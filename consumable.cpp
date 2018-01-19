@@ -27,7 +27,7 @@ Consumable::Consumable(int itemType, float x, float y, TextureAtlas* textureAtla
 	}
 }
 
-void Consumable::use(SDL_Point handPos, int useDir)
+void Consumable::use(Sprite* actor, SDL_Point handPos, int useDir)
 {
 	//return new HealthRegenAction(healValue, 10);
 	destroy = true;

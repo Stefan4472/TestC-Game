@@ -1,7 +1,8 @@
 #include "inventory.h"
 
-Inventory::Inventory(int capacity)
+Inventory::Inventory(Sprite* owner, int capacity)
 {
+	this->owner = owner;
 	this->capacity = capacity;
 }
 
@@ -40,7 +41,7 @@ void Inventory::useInHand(SDL_Point handPos, int useDir)
 	if (in_hand)
 	{
 		printf("Inventory: Calling use of in_hand\n");
-		in_hand->use(handPos, useDir);
+		in_hand->use(owner, handPos, useDir);
 		// collect results
 		resultingAction = in_hand->getAction();
 		resultingBuff = in_hand->getBuff();

@@ -22,7 +22,7 @@ bool IdleAction::apply(Sprite* sprite, int ms)
 	// set to no movement
 	sprite->movementDir = DIRECTION_NONE;
 	
-	return duration != ACTION_LOOPING && elapsedTime >= duration;
+	return duration == ACTION_LOOPING || elapsedTime < duration;
 }
 
 WanderAction::WanderAction(int ms, int randomSeed, int idleInterval, int wanderInterval)
@@ -134,6 +134,7 @@ KnockbackAction::KnockbackAction(int direction)
 	
 bool KnockbackAction::apply(Sprite* sprite, int ms)
 {
+	numApplies++;
 	// todo: apply over time and use method calls (don't just mess with coordinates)
 	switch (direction)  
 	{	
@@ -153,5 +154,5 @@ bool KnockbackAction::apply(Sprite* sprite, int ms)
 			sprite->y += 32;
 			break;
 	}
-	return false;
+	return numApplies < 3;
 }

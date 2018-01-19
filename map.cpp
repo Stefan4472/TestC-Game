@@ -61,7 +61,7 @@ void Map::handlePlayer(PlayerSprite* playerSprite)
 	SDL_Rect attack_pos;
 	for (std::list<Attack*>::iterator it = playerSprite->attacks.begin(); it != playerSprite->attacks.end(); it++)
 	{
-		printf("Map: Found PlayerSprite attack with value %d\n", (*it)->num);
+		printf("Map: Found PlayerSprite attack\n");
 		attack_pos = (*it)->position;
 		// check against other sprites
 		for (int i = 0; i < sprites.size(); i++)

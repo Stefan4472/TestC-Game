@@ -8,7 +8,7 @@ Weapon::Weapon(int itemType, float x, float y, TextureAtlas* textureAtlas) : Ite
 	hitbox.h = textureAtlas->getHeight(textureId);
 }
 
-void Weapon::use(SDL_Point handPos, int useDir)
+void Weapon::use(Sprite* actor, SDL_Point handPos, int useDir)
 {
 	//return new Attack(10);
 }
@@ -21,8 +21,10 @@ Sword::Sword(TextureAtlas* textureAtlas, float x, float y) : Item(textureAtlas, 
 	hitbox.h = textureAtlas->getHeight(textureId);
 }
 
-void Sword::use(SDL_Point handPos, int useDir)
+void Sword::use(Sprite* actor, SDL_Point handPos, int useDir)
 {
+	this->actor = actor;
+	swingDirection = useDir;
 	// set hitbox pased on handPosition and direction
 	switch (useDir)
 	{
@@ -50,5 +52,5 @@ void Sword::use(SDL_Point handPos, int useDir)
 
 Attack* Sword::getAttack()
 {
-	return new Attack(10, hitbox);
+	return new Attack(swingDirection, hitbox, actor, this, damage);
 }

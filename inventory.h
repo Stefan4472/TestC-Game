@@ -10,6 +10,8 @@
 #include "gui_button.h"
 #include "item.h"
 
+class Sprite;
+
 // An inventory manages the Items a Sprite has and can use. It also manages the usage and effects of
 // those items.
 // Items are stored as pointers in a vector, so memory deallocation should not be done to live items.
@@ -31,6 +33,8 @@ class InventoryListener
 
 class Inventory
 {
+	// sprite to which this Inventory belongs
+	Sprite* owner;
 	// number of items that'll fit in the inventory
 	int capacity = 10;
 	// vector of pointers to items in storage
@@ -45,8 +49,8 @@ class Inventory
 	InventoryListener* inventoryListener = NULL;
 	
 	public:
-		// creates enough space for the given number of items
-		Inventory(int capacity);
+		// creates enough space for the given number of items. Item uses are attributed to given owner
+		Inventory(Sprite* owner, int capacity);
 		// attempts to add an item to inventory. Returns false if inventory is full
 		bool addItem(Item* item);
 		// draws inventory to given surface

@@ -119,6 +119,8 @@ class KnockbackAction : public Action
 
 	// direction of knockback
 	int direction;
+	// number of times apply has been called
+	int numApplies = 0;
 	
 	public:
 		KnockbackAction(int direction);

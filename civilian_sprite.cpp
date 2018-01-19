@@ -22,7 +22,7 @@ CivilianSprite::CivilianSprite(float xCoord, float yCoord, Sprite* playerSprite,
 	
 	current_anim = &idle_anim;
 	
-	inventory = new Inventory(5);	
+	inventory = new Inventory(this, 5);	
 	
 	fullHp = 30;
 	currHp = 30;
@@ -35,11 +35,17 @@ CivilianSprite::CivilianSprite(float xCoord, float yCoord, Sprite* playerSprite,
 
 void CivilianSprite::update(int ms) {
 	// apply current action 
-	currAction->apply(this, ms);
+	if (!currAction->apply(this, ms))
+	{
+		printf("CivilianSprite %d starting new action\n", this);
+		// current action is over: free and create new idle action TODO: MORE SOPHISTICATED DECISION PROCESS
+		delete currAction;
+		currAction = new IdleAction(ACTION_LOOPING);
+	}
 	(*current_anim).passTime(ms);
 }
 
-SDL_Point CivilianSprite::getRightHandPosition()
+SDL_Point CivilianSprite::getRightHandPosition() // todo: standardize for all sprites
 {
 	switch (facingDir) 
 	{	
@@ -63,12 +69,29 @@ SDL_Point CivilianSprite::getRightHandPosition()
 
 void CivilianSprite::handleAttacked(Attack* attack)
 {
-	printf("Civilian Attacked!!\n");	
+	printf("Civilian Attacked!!\n");
+	
+	// replace current action with knockback in the direction of the attack
+	delete currAction;
+	currAction = new KnockbackAction(attack->dir);
+	
+	loseHealth(attack->damage);
+	healthbar->changeHealth(-attack->damage);
+	showHealthbar();
+}
+
+void CivilianSprite::showHealthbar() 
+{
+	numHealthbarFrames += 200;	
 }
 
 void CivilianSprite::drawTo(SDL_Renderer* renderer, int offsetX, int offsetY) {
 	// draw current animatino frame to screen
 	current_anim->drawTo(renderer, x - offsetX, y - offsetY);
-	// draw healthbar
-	healthbar->drawTo(renderer, x - offsetX, y - offsetY);
+	// draw healthbar, if visible
+	if (numHealthbarFrames)
+	{
+		healthbar->drawTo(renderer, x - offsetX, y - offsetY);
+		numHealthbarFrames--;
+	}
 }
