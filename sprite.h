@@ -49,6 +49,7 @@ class Sprite
 		// list of Items sprite wants to drop. Meant to be picked up by the Map/Gamedriver
 		std::list<Item*> drops;
 		// list of Attacks sprite wants to carry out. Meant to be picked up by the Map/Gamedriver
+		// a sprite may have multiple attacks progressing, e.g. if several bullets have been fired
 		std::list<Attack*> attacks;
 		// list of SoundIds the sprite has requested. Meant to be picked up by the Map/Gamedriver
 		std::list<int> sounds;

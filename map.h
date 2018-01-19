@@ -7,6 +7,7 @@
 #include <vector>
 #include "texture_atlas.h"
 #include "sound_atlas.h"
+#include "sound.h"
 #include "item.h"
 #include "attack.h"
 #include "consumable.h"
