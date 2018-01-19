@@ -61,6 +61,11 @@ SDL_Point CivilianSprite::getRightHandPosition()
 	}
 }
 
+void CivilianSprite::handleAttacked(Attack* attack)
+{
+	printf("Civilian Attacked!!\n");	
+}
+
 void CivilianSprite::drawTo(SDL_Renderer* renderer, int offsetX, int offsetY) {
 	// draw current animatino frame to screen
 	current_anim->drawTo(renderer, x - offsetX, y - offsetY);

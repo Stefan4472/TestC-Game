@@ -20,6 +20,8 @@ class CivilianSprite:public Sprite
 		void update(int ms);
 		// return coordinates of right hand
 		SDL_Point getRightHandPosition();
+		// called by map when sprite is hit by an attack
+		void handleAttacked(Attack* attack);
 		// draws sprite to the given surface/screen. Subtracting offsets from coordinates results in on-canvas coordinate to draw to
 		void drawTo(SDL_Renderer* renderer, int offsetX, int offsetY);
 		

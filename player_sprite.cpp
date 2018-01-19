@@ -251,6 +251,11 @@ SDL_Point PlayerSprite::getRightHandPosition()
 	}
 }
 
+void PlayerSprite::handleAttacked(Attack* attack) 
+{
+	printf("Player Attacked\n");
+}
+
 void PlayerSprite::update(int ms) {
 	(*current_anim).passTime(ms);
 	if (currAction && !currAction->apply(this, ms)) // todo: should Actions be called from the Map/GameDriver?

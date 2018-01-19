@@ -70,6 +70,7 @@ void Map::handlePlayer(PlayerSprite* playerSprite)
 			if (checkCollision(attack_pos, sprites[i]->hitbox))
 			{
 				printf("Collision!! Hit a sprite!\n");
+				sprites[i]->handleAttacked(*it);
 			}
 		}
 	}
@@ -258,6 +259,18 @@ void Map::drawSpritesTo(SDL_Renderer* renderer)
 	{
 		sprites[i]->drawTo(renderer, viewOffsetX, viewOffsetY);
 	}
+	// draw hitboxes in red
+	SDL_SetRenderDrawColor(renderer, 255, 0, 0, SDL_ALPHA_OPAQUE);
+	for (int i = 0; i < sprites.size(); i++) 
+	{
+		SDL_RenderDrawRect(renderer, &sprites[i]->hitbox);
+	}
+	// draw attack hitboxes in blu
+	/*SDL_SetRenderDrawColor(renderer, 0, 0, 255, SDL_ALPHA_OPAQUE);
+	for (int i = 0; i < playerSprite-attacks.size(); i++) 
+	{
+		SDL_RenderDrawRect(renderer, &attacks[i]->position);	
+	}*/
 }
 
 bool Map::checkCollision(SDL_Rect a, SDL_Rect b)

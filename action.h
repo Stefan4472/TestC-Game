@@ -3,6 +3,7 @@
 
 #include <cmath>
 #include "game_utils.h"
+#include "constants.h"
 
 class Sprite;
 
@@ -112,4 +113,15 @@ class HealthRegenAction : public Action
 		bool apply(Sprite* sprite, int ms);
 };
 
+// sprite is knocked in the given direction
+class KnockbackAction : public Action 
+{
+
+	// direction of knockback
+	int direction;
+	
+	public:
+		KnockbackAction(int direction);
+		bool apply(Sprite* sprite, int ms);
+};
 #endif

@@ -71,6 +71,12 @@ class Sprite
 		virtual void changeDir(int newDir);
 		// handles a trigger (event a sprite is made aware of)
 		virtual void handleTrigger(Trigger* trigger);
+		
+		// responds to sprite being attacked
+		virtual void handleAttacked(Attack* attack) = 0;
+		// handles sprite hearing a sound (TODO)
+		// handles sprite seeing another sprite (TODO)
+		
 		// finalizes DIRECTION and any other updates to the sprite's state
 		virtual void update(int ms);
 		// adds given amount to sprite's currHp
