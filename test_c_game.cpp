@@ -213,6 +213,7 @@ int main( int argc, char* args[] )
 	//While application is running
 	while( !quit )
 	{
+		Mix_PlayChannel( -1, soundAtlas.getSound(SOUND_2), 0 );
 		frames++;
 		// calculate number of milliseconds since last frame was rendered 
 		curr_time = SDL_GetTicks();
