@@ -1,7 +1,8 @@
 #include "map.h"
 
-void Map::init(Sprite* playerSprite, TextureAtlas* textureAtlas) {
+void Map::init(Sprite* playerSprite, TextureAtlas* textureAtlas, SoundAtlas* soundAtlas) {
 	this->textureAtlas = textureAtlas;
+	this->soundAtlas = soundAtlas;
 	
 	// figure out which tiles are walkable
 	for (int i = 0; i < mapRows; i++) 
@@ -33,6 +34,14 @@ void Map::update(int ms)
 	{
 		sprites.at(i)->move(ms);
 		sprites.at(i)->update(ms);
+		
+		// play requested sounds and clear list
+		while(!sprites.at(i)->sounds.empty())
+		{
+			printf("Playing Sound %d from Sprite %d\n", sprites.at(i)->sounds.back(), sprites.at(i));
+			Mix_PlayChannel( -1, soundAtlas->getSound(sprites.at(i)->sounds.back()), 0 ); // TODO: SEEMS INEFFICIENT 
+			sprites.at(i)->sounds.pop_back();
+		}
 	}
 }
 

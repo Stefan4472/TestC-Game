@@ -75,9 +75,13 @@ void CivilianSprite::handleAttacked(Attack* attack)
 	delete currAction;
 	currAction = new KnockbackAction(attack->dir);
 	
+	// handle loss of hp and show healthbar
 	loseHealth(attack->damage);
 	healthbar->changeHealth(-attack->damage);
 	showHealthbar();
+	
+	// add sound
+	sounds.push_back(SOUND_2);
 }
 
 void CivilianSprite::showHealthbar() 

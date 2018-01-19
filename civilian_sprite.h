@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <SDL2/SDL.h>
 #include "texture_atlas.h"
+#include "sound_atlas.h"
 #include "spritesheet.h"
 #include "sprite.h"
 #include "action.h"

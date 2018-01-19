@@ -36,6 +36,8 @@ int SpriteHealthBar::getGreen(float hpRatio)
 void SpriteHealthBar::changeHealth(int amount)
 {
 	currHp += amount;
+	// floor at zero
+	currHp = currHp < 0 ? 0 : currHp;
 	hpRatio = (float) currHp / fullHp;
 	
 	fillRect.w = (int) outlineRect.w * hpRatio;

@@ -5,6 +5,7 @@
 #include <string>
 #include <sstream>
 #include "texture_atlas.h"
+#include "sound_atlas.h"
 #include "gui_window.h"
 #include "pause_dialog.h"
 #include "player_sprite.h"
@@ -44,7 +45,7 @@ SDL_Texture *texture_atlas_img = NULL;
 bool init()
 {
 	//Initialize SDL
-	if( SDL_Init( SDL_INIT_VIDEO ) < 0 )
+	if( SDL_Init( SDL_INIT_VIDEO | SDL_INIT_AUDIO ) < 0 )
 	{
 		printf( "SDL could not initialize! SDL Error: %s\n", SDL_GetError() );
 		return false;
@@ -64,7 +65,7 @@ bool init()
 		return false;
 	}
 	
-	// create renderer for window todo: figure out what the issue is (causes segfault)
+	// create renderer for window 
 	gRenderer = SDL_CreateRenderer( gWindow, -1, SDL_RENDERER_ACCELERATED );
 	if( gRenderer == NULL )
 	{
@@ -79,6 +80,13 @@ bool init()
 	if( TTF_Init() == -1 )
 	{
 		printf( "SDL_ttf could not initialize! SDL_ttf Error: %s\n", TTF_GetError() );
+		return false;
+	}
+	
+	 // initialize sound mixer
+	if( Mix_OpenAudio( 44100, MIX_DEFAULT_FORMAT, 2, 2048 ) < 0 )
+	{
+		printf( "SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError() );
 		return false;
 	}
 	
@@ -107,6 +115,7 @@ bool loadMedia()
 		printf( "Failed to load lazy font! SDL_ttf Error: %s\n", TTF_GetError() );
 		return false;
 	}
+	
 	return true;
 }
 
@@ -164,10 +173,12 @@ int main( int argc, char* args[] )
 	printf("Loaded Media\n");
 	TextureAtlas textureAtlas = TextureAtlas(texture_atlas_img);
 	printf("Loaded Texture Atlas\n");
+	SoundAtlas soundAtlas = SoundAtlas();
+	printf("Loaded Sound Atlas\n");
 	PlayerSprite playerSprite = PlayerSprite(100.0f, 140.0f, &textureAtlas, gRenderer, font);
 	printf("Created player sprite\n");
 	Map map;
-	map.init(&playerSprite, &textureAtlas);
+	map.init(&playerSprite, &textureAtlas, &soundAtlas);
 	printf("Created map\n");
 	// pointer to current Window active on screen
 	Window* currWindow = NULL;

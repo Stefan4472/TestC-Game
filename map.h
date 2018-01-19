@@ -3,8 +3,10 @@
 
 #include <stdio.h>
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_mixer.h>
 #include <vector>
 #include "texture_atlas.h"
+#include "sound_atlas.h"
 #include "item.h"
 #include "attack.h"
 #include "consumable.h"
@@ -63,7 +65,10 @@ class Map
 	SDL_Rect src = {0, 0, TILE_WIDTH, TILE_HEIGHT}, dest = {0, 0, TILE_WIDTH, TILE_HEIGHT};
 	
 	// pointer to TextureAtlas used for drawing images
-	TextureAtlas* textureAtlas;
+	TextureAtlas* textureAtlas = NULL;
+	
+	// pointer to SoundAtlas used to play sounds
+	SoundAtlas* soundAtlas = NULL;
 	
 	// sprites generated and managed by map
 	std::vector<Sprite*> sprites;
@@ -88,7 +93,7 @@ class Map
 		// offsets on x and y that graphics should be drawn to to convert virtual to canvas coordinates
 		int viewOffsetX, viewOffsetY;
 		// init tile images
-		void init(Sprite* playerSprite, TextureAtlas* textureAtlas);
+		void init(Sprite* playerSprite, TextureAtlas* textureAtlas, SoundAtlas* soundAtlas);
 		// advances state by given number of milliseconds
 		void update(int ms);
 	  	// handles playerSprite on the map. Checks for interactions and calles collision handler if necessary
