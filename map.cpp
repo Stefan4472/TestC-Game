@@ -30,12 +30,77 @@ void Map::init(Sprite* playerSprite, TextureAtlas* textureAtlas, SoundAtlas* sou
 
 void Map::update(int ms) 
 {
-	for (int i = 0; i < sprites.size(); i++) 
+	// temporarily push player sprite to sprite list
+	sprites.push_back(playerSprite);
+	
+	// check sprite's attacks against other sprite hitboxes
+	for (int i = 0; i < sprites.size(); i++) // TODO: USE CONSTANT FOR SIZE
 	{
-		sprites.at(i)->move(ms);
-		sprites.at(i)->update(ms);
+		SDL_Rect attack_pos;
+		for (std::list<Attack*>::iterator it = sprites[i]->attacks.begin(); it != sprites[i]->attacks.end(); it++) // TODO: SPRITE ONLY CARRIES OUT ONE ATTACK AT A TIME??
+		{
+			printf("Map: Found attack\n");
+			attack_pos = (*it)->position;
+			// check against other sprites
+			for (int j = 0; j < sprites.size(); j++)
+			{
+				printf("Checking Attack against Sprite\n");
+				if (i != j && checkCollision(attack_pos, sprites[i]->hitbox))
+				{
+					printf("Collision!! Hit a sprite!\n");
+					sprites[i]->handleAttacked(*it);
+				}
+			}
+		}
+		// TODO: CHECK DISTANCE TO SOUNDS
 		
-		// play requested sounds and clear list
+		// check sprite's line of sight against other sprites
+		for (int j = i + 1; j < sprites.size(); j++) 
+		{
+			// TODO
+		}
+	}
+	
+	// no other triggers will be checked this frame
+	// update and move each sprite
+	for (int i = 0; i < sprites.size(); i++)
+	{
+		sprites[i]->move(ms);
+		sprites[i]->update(ms);
+	}
+	
+	// check that sprite is in a valid position and not colliding with any others
+	for (int i = 0; i < sprites.size(); i++)
+	{
+		if (!isValidPosition(sprites[i]->hitbox) )
+		{
+			printf("Collision on sprite %d\n", sprites[i]);
+			//playerSprite->moveBack(); // TODO: IT MAY BE NECESSARY TO HAVE AN EXTRA, SEPARATE HITBOX FOR THE SPRITE'S FEET.
+		}
+		for (int j = i + 1; j < sprites.size(); j++)
+		{
+			if (checkCollision(sprites[i]->hitbox, sprites[j]->hitbox))
+			{
+				printf("Two sprites are colliding\n");
+				// TODO: MOVE BACK
+			}
+		}
+	}
+	
+	// "pick up" any items dropped by the sprite
+	for (int i = 0; i < sprites.size(); i++)
+	{
+		while (!sprites[i]->drops.empty()) // TODO: LINKED LIST IMPLEMENTATION
+		{
+			items.push_back(sprites[i]->drops.back());
+			printf("Collected Drop %s from Player\n", sprites[i]->drops.back()->getName());
+			sprites[i]->drops.pop_back();
+		}
+	}
+	
+	// play requested sounds and clear list
+	for (int i = 0; i < sprites.size(); i++)
+	{
 		while(!sprites.at(i)->sounds.empty())
 		{
 			printf("Playing Sound %d from Sprite %d\n", sprites.at(i)->sounds.back(), sprites.at(i));
@@ -43,6 +108,23 @@ void Map::update(int ms)
 			sprites.at(i)->sounds.pop_back();
 		}
 	}
+	
+	// remove playerSprite from sprites list
+	sprites.pop_back();
+	
+	// handle dead sprites
+	
+	// destroy sprites that request it
+	
+	// handle playerSprite wanting to interact: delegate to handlePlayerInteract()
+	if (playerSprite->interactPressed && !playerSprite->interactHandled)
+	{
+		playerSprite->interactHandled = true;
+		handlePlayerInteract(playerSprite); // TODO: DIRECTIONAL INTERACTION
+	}
+		
+	// clear attacks TODO: SPRITE SHOULD HANDLE THIS IN UPDATE()
+	playerSprite->attacks.clear();
 }
 
 void Map::handlePlayer(PlayerSprite* playerSprite) 

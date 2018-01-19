@@ -14,7 +14,7 @@ SoundAtlas::SoundAtlas()
 
 Mix_Chunk* SoundAtlas::getSound(int soundId)
 {
-	return NULL;
+	return loadedSounds[soundId];
 }
 
 SoundAtlas::~SoundAtlas()

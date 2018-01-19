@@ -70,6 +70,9 @@ class Map
 	// pointer to SoundAtlas used to play sounds
 	SoundAtlas* soundAtlas = NULL;
 	
+	// pointer to player's sprite
+	PlayerSprite* playerSprite = NULL;
+	
 	// sprites generated and managed by map
 	std::vector<Sprite*> sprites;
 	
