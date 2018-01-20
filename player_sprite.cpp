@@ -256,6 +256,16 @@ void PlayerSprite::handleAttacked(Attack* attack)
 	printf("Player Attacked\n");
 }
 
+void PlayerSprite::handleSoundHeard(Sound* sound)
+{
+	printf("Player Heard Sound\n");
+}
+
+void PlayerSprite::handleSpriteSeen(Sprite* sprite)
+{
+	printf("Player saw sprite\n");
+}
+
 void PlayerSprite::update(int ms) {
 	(*current_anim).passTime(ms);
 	if (currAction && !currAction->apply(this, ms)) // todo: should Actions be called from the Map/GameDriver?

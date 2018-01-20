@@ -84,6 +84,16 @@ void CivilianSprite::handleAttacked(Attack* attack)
 	sounds.push_back(SOUND_2);
 }
 
+void CivilianSprite::handleSoundHeard(Sound* sound)
+{
+	
+}
+
+void CivilianSprite::handleSpriteSeen(Sprite* sprite)
+{
+	
+}
+
 void CivilianSprite::showHealthbar() 
 {
 	numHealthbarFrames += 200;	

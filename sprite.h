@@ -9,6 +9,7 @@
 #include "inventory.h"
 #include "trigger.h"
 #include "attack.h"
+#include "sound.h"
 #include "healthbar.h"
 
 class Action;
@@ -75,8 +76,10 @@ class Sprite
 		
 		// responds to sprite being attacked
 		virtual void handleAttacked(Attack* attack) = 0;
-		// handles sprite hearing a sound (TODO)
-		// handles sprite seeing another sprite (TODO)
+		// handles sprite hearing a sound 
+		virtual void handleSoundHeard(Sound* sound) = 0;
+		// handles sprite seeing another sprite 
+		virtual void handleSpriteSeen(Sprite* sprite) = 0;
 		
 		// finalizes DIRECTION and any other updates to the sprite's state
 		virtual void update(int ms);

@@ -1,8 +1,9 @@
 #include "map.h"
 
-void Map::init(Sprite* playerSprite, TextureAtlas* textureAtlas, SoundAtlas* soundAtlas) {
+void Map::init(PlayerSprite* playerSprite, TextureAtlas* textureAtlas, SoundAtlas* soundAtlas) {
 	this->textureAtlas = textureAtlas;
 	this->soundAtlas = soundAtlas;
+	this->playerSprite = playerSprite;
 	
 	// figure out which tiles are walkable
 	for (int i = 0; i < mapRows; i++) 
@@ -30,30 +31,25 @@ void Map::init(Sprite* playerSprite, TextureAtlas* textureAtlas, SoundAtlas* sou
 
 void Map::update(int ms) 
 {
-	printf("Updating Map\n");
 	// temporarily push player sprite to sprite list
-	sprites.push_back(playerSprite);
+	sprites.push_back(playerSprite); // TODO: SOME ISSUE PUSHING PLAYERSPRITE BACK
 	
 	int num_sprites = sprites.size();
 	int num_sounds = 0; // TODO
 	SDL_Rect attack_pos;
 	
-	printf("Handling Triggers\n");
 	// check for trigger conditions
 	for (int i = 0; i < num_sprites; i++)
 	{
 		// check sprite's attacks against other sprite hitboxes
 		for (std::list<Attack*>::iterator it = sprites[i]->attacks.begin(); it != sprites[i]->attacks.end(); it++) 
 		{
-			printf("Map: Found attack\n");
 			attack_pos = (*it)->position;
 			// check against other sprites
 			for (int j = 0; j < num_sprites; j++)
 			{
-				printf("Checking Attack against Sprite\n");
 				if (j != i && checkCollision(attack_pos, sprites[j]->hitbox))
 				{
-					printf("Collision!! Hit a sprite!\n");
 					sprites[j]->handleAttacked(*it);
 				}
 			}
@@ -62,11 +58,10 @@ void Map::update(int ms)
 		// check distance to sounds that were created the previous frame
 		for (int j = 0; j < num_sounds; j++)
 		{
-			/*if (distSquared(sprites[i], sounds[j] < 102400) // TODO: SOME HEARING-RANGE CONSTANT (?)
+			if (distSquared(sprites[i], sounds[j]) < 102400) // TODO: SOME HEARING-RANGE CONSTANT (?)
 			{
-				printf("Sprite %d heard sound %d\n", sprites[i], sounds[j]->soundId);
 				sprites[i]->handleSoundHeard(sounds[j]);
-			}*/
+			}
 		}
 		
 		// check sprite's line of sight against other sprites
@@ -74,13 +69,11 @@ void Map::update(int ms)
 		{
 			if (checkCollision(sprites[i]->lineOfSight, sprites[j]->hitbox))
 			{
-				printf("Sprite %d saw Sprite %d\n", sprites[i], sprites[j]);
-				//sprites[i]->handleSpriteSeen(sprites[j]);	
+				sprites[i]->handleSpriteSeen(sprites[j]);	
 			}
 		}
 	}
 	
-	printf("Updating Individual Sprites\n");
 	// no other triggers will be checked this frame
 	// update and move each sprite
 	for (int i = 0; i < num_sprites; i++)
@@ -94,7 +87,6 @@ void Map::update(int ms)
 	{
 		if (!isValidPosition(sprites[i]->hitbox) )
 		{
-			printf("Sprite %d in invalid position\n", sprites[i]);
 			//sprites[i]->moveBack(); // TODO: IT MAY BE NECESSARY TO HAVE AN EXTRA, SEPARATE HITBOX FOR THE SPRITE'S FEET.
 		}
 		for (int j = i + 1; j < num_sprites; j++)
@@ -121,9 +113,9 @@ void Map::update(int ms)
 	// clear list of sounds, so that new ones can be added
 	for (int i = 0; i < num_sounds; i++)
 	{
-		//delete sounds[i];	
+		delete sounds[i];	
 	}
-	//sounds.clear();
+	sounds.clear();
 				
 	// fetch sounds requested by sprites, play them, and store them in the map
 	for (int i = 0; i < num_sprites; i++)
@@ -131,7 +123,7 @@ void Map::update(int ms)
 		while(!sprites.at(i)->sounds.empty())
 		{
 			printf("Playing Sound %d from Sprite %d\n", sprites.at(i)->sounds.back(), sprites.at(i));
-			// sounds.push_back(new Sound(sprites.at(i)->sounds.back(), sprites[i]->x, sprites[i]->y, sprites[i]));
+			sounds.push_back(new Sound(sprites.at(i)->sounds.back(), sprites[i]->x, sprites[i]->y, sprites[i]));
 			Mix_PlayChannel( -1, soundAtlas->getSound(sprites.at(i)->sounds.back()), 0 ); // TODO: SEEMS INEFFICIENT 
 			sprites.at(i)->sounds.pop_back();
 		}

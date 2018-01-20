@@ -80,6 +80,9 @@ class Map
 	// items generated and managed by map
 	std::vector<Item*> items;
 	
+	// sounds created by sprites, and the map
+	std::vector<Sound*> sounds;
+	
 	// triggers created by sprites that may affect other sprites
 	std::vector<Trigger*> triggers;
 	
@@ -97,7 +100,7 @@ class Map
 		// offsets on x and y that graphics should be drawn to to convert virtual to canvas coordinates
 		int viewOffsetX, viewOffsetY;
 		// init tile images
-		void init(Sprite* playerSprite, TextureAtlas* textureAtlas, SoundAtlas* soundAtlas);
+		void init(PlayerSprite* playerSprite, TextureAtlas* textureAtlas, SoundAtlas* soundAtlas);
 		// advances state by given number of milliseconds
 		void update(int ms);
 	  	// handles playerSprite on the map. Checks for interactions and calles collision handler if necessary
