@@ -10,19 +10,31 @@ void Sprite::onHealthChanged()
 	printf("Sprite received onHealthChanged");
 }
 			
-void Sprite::move(int ms)
-{
+void Sprite::move(int ms) {
+	// save current position
+	lastX = x;
+	lastY = y;
+	
 	if (movementDir == DIRECTION_RIGHT) {
-		x += ms * speedPerMs;
+		x += ms * PX_PER_MS;
 	} else if (movementDir == DIRECTION_LEFT) {
-		x -= ms * speedPerMs;
+		x -= ms * PX_PER_MS;
 	}
 
 	if (movementDir == DIRECTION_UP) {
-		y -= ms * speedPerMs;
+		y -= ms * PX_PER_MS;
 	} else if (movementDir == DIRECTION_DOWN) {
-		y += ms * speedPerMs;
+		y += ms * PX_PER_MS;
 	}	
+	hitbox.x = x + hitboxOffsetX;
+	hitbox.y = y + hitboxOffsetY;
+}
+
+void Sprite::moveBack() 
+{
+	x = lastX;
+	y = lastY;
+
 	hitbox.x = x + hitboxOffsetX;
 	hitbox.y = y + hitboxOffsetY;
 }

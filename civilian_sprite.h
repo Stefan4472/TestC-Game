@@ -10,7 +10,7 @@
 #include "action.h"
 #include "action_set.h"
 
-class CivilianSprite:public Sprite
+class CivilianSprite : public Sprite
 {
 	// pointer to player
 	Sprite* playerSprite;

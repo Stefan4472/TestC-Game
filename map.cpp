@@ -21,8 +21,8 @@ void Map::init(PlayerSprite* playerSprite, TextureAtlas* textureAtlas, SoundAtla
 		}
 		
 	}
-	addSprite(new CivilianSprite(200.0f, 200.0f, playerSprite, textureAtlas));
-	addSprite(new CivilianSprite(100.0f, 100.0f, playerSprite, textureAtlas));
+	addSprite(new CivilianSprite(200.0f, 168.0f, playerSprite, textureAtlas));
+	addSprite(new CivilianSprite(132.0f, 100.0f, playerSprite, textureAtlas));
 	
 	addItem(new Consumable(ITEM_BREAD_LOAF, 100, 200, textureAtlas));
 	addItem(new Consumable(ITEM_BEER_MUG, 132, 200, textureAtlas));
@@ -85,16 +85,18 @@ void Map::update(int ms)
 	// check that sprite is in a valid position and not colliding with any others
 	for (int i = 0; i < num_sprites; i++)
 	{
-		if (!isValidPosition(sprites[i]->hitbox) )
+		if (!isValidPosition(sprites[i]->hitbox))
 		{
-			//sprites[i]->moveBack(); // TODO: IT MAY BE NECESSARY TO HAVE AN EXTRA, SEPARATE HITBOX FOR THE SPRITE'S FEET.
+			printf("Collision of sprite %d at %f, %f\n", sprites[i], sprites[i]->x, sprites[i]->y);
+			sprites[i]->moveBack(); // TODO: IT MAY BE NECESSARY TO HAVE AN EXTRA, SEPARATE HITBOX FOR THE SPRITE'S FEET.
+			printf("Moved back to %f, %f\n", sprites[i]->x, sprites[i]->y);
 		}
 		for (int j = i + 1; j < num_sprites; j++)
 		{
 			if (checkCollision(sprites[i]->hitbox, sprites[j]->hitbox))
 			{
 				printf("Two sprites are colliding\n");
-				// sprites[j]->moveBack();
+				sprites[j]->moveBack();
 			}
 		}
 	}

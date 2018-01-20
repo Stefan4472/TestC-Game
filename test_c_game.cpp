@@ -270,13 +270,7 @@ int main( int argc, char* args[] )
 
 		map.update(ticks_since_last_frame);
 		
-		//printf("Moving playersprite\n");
-		playerSprite.move(ticks_since_last_frame);
-		
 		map.handlePlayer(&playerSprite);
-		
-		//printf("Updating playersprite\n");
-		playerSprite.update(ticks_since_last_frame);
 		
 		//printf("Drawing Map\n");
 		

@@ -16,6 +16,9 @@ class Action;
 
 // Sprite base class
 
+// pixels moved in x/y per millisecond
+const float PX_PER_MS = 0.25f;
+
 class Sprite
 {
 	protected:
@@ -38,6 +41,8 @@ class Sprite
 	public:
 		// virtual coordinates
 		float x = -1, y = -1;
+		// virtual coordinates at last frame
+		float lastX = -1, lastY = -1;
 		// hitpoints the sprite has at full health, and currently
 		float fullHp = -1, currHp = -1;
 		// area on map this sprite can be hit
@@ -61,16 +66,19 @@ class Sprite
 		int facingDir = DIRECTION_DOWN;
 		
 		// called when the sprite's in-hand item changes. Listener function
-		virtual void onInHandChanged(int id); // TODO: PUT THIS IN SPRITE CLASS
+		virtual void onInHandChanged(int id);
 		// called when the sprite's health changes
 		virtual void onHealthChanged();
 		
 		// get coordinates of sprite's right hand
 		virtual SDL_Point getRightHandPosition() = 0;
+		
 		// sets coordinates to intended DIRECTION, given number of milliseconds since last frame
-		virtual void move(int ms);
+		void move(int ms);
+		// moves sprite to position it was at in previous frame
+		void moveBack();
 		// changes to given DIRECTION direction
-		virtual void changeDir(int newDir);
+		void changeDir(int newDir);
 		// handles a trigger (event a sprite is made aware of)
 		virtual void handleTrigger(Trigger* trigger);
 		
