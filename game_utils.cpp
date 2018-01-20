@@ -14,3 +14,8 @@ float distSquared(Sprite* sprite, Sound* sound)
 {
 	return (sprite->x - sound->x) * (sprite->x - sound->x) + (sprite->y - sound->y)  * (sprite->y - sound->y);
 }
+
+SDL_Rect offsetRect(SDL_Rect rect, float offX, float offY)
+{
+	return SDL_Rect { rect.x - offX, rect.y - offY, rect.w, rect.h };	
+}

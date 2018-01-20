@@ -188,6 +188,8 @@ void PlayerSprite::handleSpriteSeen(Sprite* sprite)
 }
 
 void PlayerSprite::update(int ms) {
+	//printf("Now %d, %d w/h %d, %d\n", lineOfSight.x, lineOfSight.y, lineOfSight.w, lineOfSight.h);
+
 	(*current_anim).passTime(ms);
 	if (currAction && !currAction->apply(this, ms)) // todo: should Actions be called from the Map/GameDriver?
 	{

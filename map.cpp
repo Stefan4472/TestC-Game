@@ -372,18 +372,34 @@ void Map::drawSpritesTo(SDL_Renderer* renderer)
 	{
 		sprites[i]->drawTo(renderer, viewOffsetX, viewOffsetY);
 	}
+	sprites.push_back(playerSprite);
 	// draw hitboxes in red
 	SDL_SetRenderDrawColor(renderer, 255, 0, 0, SDL_ALPHA_OPAQUE);
 	for (int i = 0; i < sprites.size(); i++) 
 	{
+		sprites[i]->hitbox.x -= viewOffsetX;
+		sprites[i]->hitbox.y -= viewOffsetY;
 		SDL_RenderDrawRect(renderer, &sprites[i]->hitbox);
+		sprites[i]->hitbox.x += viewOffsetX;
+		sprites[i]->hitbox.y += viewOffsetY;
 	}
-	// draw attack hitboxes in blu
+	// draw line of sight in blue
+	SDL_SetRenderDrawColor(renderer, 0, 0, 255, SDL_ALPHA_OPAQUE);
+	for (int i = 0; i < sprites.size(); i++) 
+	{
+		sprites[i]->lineOfSight.x -= viewOffsetX;
+		sprites[i]->lineOfSight.y -= viewOffsetY;
+		SDL_RenderDrawRect(renderer, &sprites[i]->lineOfSight);
+		sprites[i]->lineOfSight.x += viewOffsetX;
+		sprites[i]->lineOfSight.y += viewOffsetY;
+	}
+	// draw attack hitboxes in blue
 	/*SDL_SetRenderDrawColor(renderer, 0, 0, 255, SDL_ALPHA_OPAQUE);
 	for (int i = 0; i < playerSprite-attacks.size(); i++) 
 	{
 		SDL_RenderDrawRect(renderer, &attacks[i]->position);	
 	}*/
+	sprites.pop_back();
 }
 
 bool Map::checkCollision(SDL_Rect a, SDL_Rect b)

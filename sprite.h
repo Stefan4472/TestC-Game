@@ -16,9 +16,6 @@ class Action;
 
 // Sprite base class
 
-// pixels moved in x/y per millisecond
-const float PX_PER_MS = 0.25f;
-
 class Sprite
 {
 	protected:
@@ -27,6 +24,8 @@ class Sprite
 		Spritesheet *current_anim = NULL;
 		// offset of start of hitbox, from sprite's x and y (x + hitboxOffsetX = hitbox.x)
 		int hitboxOffsetX, hitboxOffsetY;
+		// offset of start of lineOfSight, from sprite's x and y
+		int lineOfSightOffsetX, lineOfSightOffsetY;
 		// default DIRECTION speed
 		float speedPerMs = 0;
 		// current action controlling the sprite
@@ -35,6 +34,10 @@ class Sprite
 		SpriteHealthBar* healthbar;
 		// list of buffs currently affecting player
 		std::list<Action*> buffs;
+		// sprite's movement speed, px per millisecond
+		float moveSpeed = 0.25f;
+		// distance sprite can see, and width of line of sight
+		int sightDistance = 256, sightWidth = 96;
 		
 		// TODO: LIST (or hashmap) OF FRIENDLY SPRITES, LIST OF ENEMY SPRITES. LINE OF SIGHT HITBOX. MAP_POSITION HITBOX?
 	
@@ -46,9 +49,9 @@ class Sprite
 		// hitpoints the sprite has at full health, and currently
 		float fullHp = -1, currHp = -1;
 		// area on map this sprite can be hit
-		SDL_Rect hitbox;
+		SDL_Rect hitbox { 0, 0, 0, 0 };
 		// area on map this sprite can "see"
-		SDL_Rect lineOfSight;
+		SDL_Rect lineOfSight { 0, 0, 0, 0 };
 		
 		// sprite's inventory
 		Inventory* inventory = NULL; 
