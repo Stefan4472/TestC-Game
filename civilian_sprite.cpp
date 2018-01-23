@@ -31,6 +31,7 @@ CivilianSprite::CivilianSprite(float xCoord, float yCoord, Sprite* playerSprite,
 	currAction = getInitialAction();
 		
 	// TODO: KNOW WHICH DIRECTION SPRITE IS INITIALLY FACING. DEFAULTS TO DOWN
+	changeDir(DIRECTION_DOWN); // sets line of sight
 }
 
 void CivilianSprite::update(int ms) {
@@ -86,12 +87,12 @@ void CivilianSprite::handleAttacked(Attack* attack)
 
 void CivilianSprite::handleSoundHeard(Sound* sound)
 {
-	
+	printf("Sprite %d heard sound %d\n", this, sound->soundId);
 }
 
 void CivilianSprite::handleSpriteSeen(Sprite* sprite)
 {
-	
+	//printf("Sprite %d sees sprite %d\n", this, sprite);
 }
 
 void CivilianSprite::showHealthbar() 

@@ -5,22 +5,10 @@ void Map::init(PlayerSprite* playerSprite, TextureAtlas* textureAtlas, SoundAtla
 	this->soundAtlas = soundAtlas;
 	this->playerSprite = playerSprite;
 	
-	// figure out which tiles are walkable
-	for (int i = 0; i < mapRows; i++) 
-	{
-		for (int j = 0; j < mapCols; j++) 
-		{
-			if (mapTiles[i][j] != TILE_WATER && objectTiles[i][j] == TEXTURE_NONE)
-			{
-				walkableTiles[i][j] = true;
-			} 
-			else 
-			{
-				walkableTiles[i][j] = false;
-			}
-		}
+	mapChunk = new MapChunk(10);
+	
 		
-	}
+	
 	addSprite(new CivilianSprite(200.0f, 168.0f, playerSprite, textureAtlas));
 	addSprite(new CivilianSprite(132.0f, 100.0f, playerSprite, textureAtlas));
 	
@@ -236,7 +224,8 @@ bool Map::isValidPosition(SDL_Rect position)
 
 bool Map::isWalkable(int x, int y) // todo: check x >= 0 && y >= 0 && x <= SCREEN_WIDTH && y <= SCREEN_HEIGHT ??
 {
-	return walkableTiles[y / TILE_HEIGHT][x / TILE_WIDTH];
+	//printf("%d\n", mapChunk->walkableTiles[y / TILE_HEIGHT][x / TILE_WIDTH]);
+	return mapChunk->walkableTiles[y / TILE_HEIGHT][x / TILE_WIDTH];
 }
 
 void Map::addSprite(Sprite* sprite)
@@ -305,13 +294,13 @@ void Map::drawTerrainTo(SDL_Renderer* renderer)
 			//printf("dest.x is %d\n", dest.x);
 			
 			// out of range: draw black
-			if (start_tile_y + i < 0 || start_tile_x + j < 0 || start_tile_y + i >= mapRows || start_tile_x + j >= mapCols) 
+			if (start_tile_y + i < 0 || start_tile_x + j < 0 || start_tile_y + i >= mapChunk->mapRows || start_tile_x + j >= mapChunk->mapCols) 
 			{
 				SDL_RenderFillRect( renderer, &dest );
 			}
 			else 
 			{
-				textureAtlas->draw(renderer, mapTiles[start_tile_y + i][start_tile_x + j], dest.x, dest.y);
+				textureAtlas->draw(renderer, mapChunk->mapTiles[start_tile_y + i][start_tile_x + j], dest.x, dest.y);
 				//SDL_BlitSurface( tileImgs[ mapTiles[start_tile_y + i][start_tile_x + j] ], &src, renderer, &dest );
 			}
 		}
@@ -350,12 +339,12 @@ void Map::drawObjectsTo(SDL_Renderer* renderer)  // todo: don't' redo calculatio
 			tile_row = start_tile_y + i;
 			tile_col = start_tile_x + j;
 			
-			if (tile_row >= 0 && tile_col >= 0 && tile_row < mapRows && tile_col < mapCols && objectTiles[tile_row][tile_col])
+			if (tile_row >= 0 && tile_col >= 0 && tile_row < mapChunk->mapRows && tile_col < mapChunk->mapCols && mapChunk->objectTiles[tile_row][tile_col])
 			{
 				// draw so image is centered, with bottom on tile
-				dest.y = i * TILE_HEIGHT - offset_y - textureAtlas->getHeight(objectTiles[tile_row][tile_col]) + TILE_HEIGHT; 
-				dest.x = j * TILE_WIDTH - offset_x - (textureAtlas->getWidth(objectTiles[tile_row][tile_col]) - TILE_WIDTH) / 2;
-				textureAtlas->draw(renderer, objectTiles[start_tile_y + i][start_tile_x + j], dest.x, dest.y);
+				dest.y = i * TILE_HEIGHT - offset_y - textureAtlas->getHeight(mapChunk->objectTiles[tile_row][tile_col]) + TILE_HEIGHT; 
+				dest.x = j * TILE_WIDTH - offset_x - (textureAtlas->getWidth(mapChunk->objectTiles[tile_row][tile_col]) - TILE_WIDTH) / 2;
+				textureAtlas->draw(renderer, mapChunk->objectTiles[start_tile_y + i][start_tile_x + j], dest.x, dest.y);
 			}
 		 }
 	}

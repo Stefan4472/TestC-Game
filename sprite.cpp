@@ -64,7 +64,6 @@ void Sprite::changeDir(int newDir)
 				break;
 
 			case DIRECTION_RIGHT:
-				printf("R\n");
 				current_anim = &mv_right_anim;
 				current_anim->play();
 				facingDir = DIRECTION_RIGHT;
@@ -72,11 +71,9 @@ void Sprite::changeDir(int newDir)
 				lineOfSightOffsetY = 0;
 				lineOfSight.w = sightDistance; // todo: center. also, hitbox is too small: want full dimensions of sprite
 				lineOfSight.h = sightWidth;
-				printf("%d, %d w/h %d, %d\n", lineOfSight.x, lineOfSight.y, lineOfSight.w, lineOfSight.h);
 				break;
 
 			case DIRECTION_UP:
-				printf("U\n");
 				current_anim = &mv_up_anim;
 				current_anim->play();
 				facingDir = DIRECTION_UP;
@@ -84,11 +81,9 @@ void Sprite::changeDir(int newDir)
 				lineOfSightOffsetY = -sightDistance;
 				lineOfSight.w = sightWidth;
 				lineOfSight.h = sightDistance;
-				printf("%d, %d w/h %d, %d\n", lineOfSight.x, lineOfSight.y, lineOfSight.w, lineOfSight.h);
 				break;
 
 			case DIRECTION_DOWN:
-				printf("D\n");
 				current_anim = &mv_down_anim;
 				current_anim->play();
 				facingDir = DIRECTION_DOWN;
@@ -96,11 +91,9 @@ void Sprite::changeDir(int newDir)
 				lineOfSightOffsetY = hitbox.h;
 				lineOfSight.w = sightWidth;
 				lineOfSight.h = sightDistance;
-				printf("%d, %d w/h %d, %d\n", lineOfSight.x, lineOfSight.y, lineOfSight.w, lineOfSight.h);
 				break;
 
 			case DIRECTION_LEFT:
-				printf("L\n");
 				current_anim = &mv_left_anim;
 				current_anim->play();
 				facingDir = DIRECTION_LEFT;
@@ -108,7 +101,6 @@ void Sprite::changeDir(int newDir)
 				lineOfSightOffsetY = 0;
 				lineOfSight.w = sightDistance;
 				lineOfSight.h = sightWidth;
-				printf("%d, %d w/h %d, %d\n", lineOfSight.x, lineOfSight.y, lineOfSight.w, lineOfSight.h);
 				break;
 
 			default:
