@@ -2,6 +2,14 @@
 #define MAP_CHUNK_H
 
 #include "texture_atlas.h"
+#include <vector>
+
+class MapObject
+{
+	public:
+		SDL_Rect position;
+		int textureId;
+};
 
 // a chunk defines a 16x16 tile section of Map. This includes the tiles for the terrain,
 // tile-based objects, pick-ups, and sprites. Chunks have their own coordinate system 
@@ -9,17 +17,20 @@
 class MapChunk
 {
 	public:
-		int mapRows = 16;
-		int mapCols = 16;
+		int mapRows = 24;
+		int mapCols = 24;
 
 		// tile grid
-		char mapTiles[16][16];
+		char mapTiles[24][24];
 
-		char objectTiles[16][16];
+		std::vector<MapObject> objects;
 
 		// grid of tiles that are walkable--generated based on mapTiles and objectTiles
-		bool walkableTiles[16][16]; 
+		bool walkableTiles[24][24]; 
 		
+		// instantiates procedurally-generated chunk, using seed for random number generation
 		MapChunk(int seed);
+		// loads chunk from given file
+		//MapChunk load(
 };
 #endif

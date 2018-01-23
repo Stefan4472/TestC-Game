@@ -309,6 +309,7 @@ void Map::drawTerrainTo(SDL_Renderer* renderer)
 
 void Map::drawObjectsTo(SDL_Renderer* renderer)  // todo: don't' redo calculations. ALSO: draw everything above player tile, then player, then everything at and below
 {
+	/*
 	// virtual coordinates for top-left of view 
 	int top_left_x = center.x - (SCREEN_WIDTH - center.w) / 2;
 	int top_left_y = center.y - (SCREEN_HEIGHT - center.h) / 2;
@@ -352,7 +353,7 @@ void Map::drawObjectsTo(SDL_Renderer* renderer)  // todo: don't' redo calculatio
 	for (int i = 0; i < items.size(); i++) 
 	{
 		items[i]->drawToMap(renderer, top_left_x, top_left_y);	
-	}
+	}*/
 }
 
 void Map::drawSpritesTo(SDL_Renderer* renderer)
