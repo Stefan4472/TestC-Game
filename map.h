@@ -28,8 +28,8 @@ class Map
 	// defines the tiles that make up the terrain and map
 	MapChunk* mapChunk = NULL;
 	
-	// virtual coordinates view should center on
-	SDL_Rect center;  // todo: replace with camera
+	// virtual coordinates defining view field
+	SDL_Rect camera = { 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT };
 	
 	// source and destination rects 
 	SDL_Rect src = {0, 0, TILE_WIDTH, TILE_HEIGHT}, dest = {0, 0, TILE_WIDTH, TILE_HEIGHT};
@@ -72,20 +72,14 @@ class Map
 		void init(PlayerSprite* playerSprite, TextureAtlas* textureAtlas, SoundAtlas* soundAtlas);
 		// advances state by given number of milliseconds
 		void update(int ms);
-	  	// handles playerSprite on the map. Checks for interactions and calles collision handler if necessary
-		void handlePlayer(PlayerSprite* playerSprite);
 		// adds sprite to list of tracked sprites
 		void addSprite(Sprite* sprite);
 		// adds item to list of items on the map
 		void addItem(Item* item);
-		// center background to given rect, updating viewOffsetX and viewOffsetY to match
-		void centerTo(SDL_Rect newCenter);
-		// draws tiled terrain to the given surface/screen. Use center() to center the background to a virtual rectangle
-		void drawTerrainTo(SDL_Renderer* renderer);
-		// draws objects to the surface/screen
-		void drawObjectsTo(SDL_Renderer* renderer);
-		// draws sprites to the surface/screen
-		void drawSpritesTo(SDL_Renderer* renderer);
+		// center background to given rect, updating camera
+		void centerTo(SDL_Rect center);
+		// draws map, sprites, objects. Use center() to center the background to a virtual rectangle
+		void drawTo(SDL_Renderer* renderer);
 		// returns whether the two rectangles have any intersection
 		bool checkCollision(SDL_Rect a, SDL_Rect b);
 

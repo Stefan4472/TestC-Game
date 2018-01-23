@@ -7,7 +7,8 @@
 class MapObject
 {
 	public:
-		SDL_Rect position;
+		MapObject(TextureAtlas* textureAtlas, int textureId, int x, int y);
+		int x, y, w, h;
 		int textureId;
 };
 
@@ -29,7 +30,7 @@ class MapChunk
 		bool walkableTiles[24][24]; 
 		
 		// instantiates procedurally-generated chunk, using seed for random number generation
-		MapChunk(int seed);
+		MapChunk(TextureAtlas* textureAtlas, int seed);
 		// loads chunk from given file
 		//MapChunk load(
 };

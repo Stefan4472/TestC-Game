@@ -270,22 +270,13 @@ int main( int argc, char* args[] )
 
 		map.update(ticks_since_last_frame);
 		
-		map.handlePlayer(&playerSprite);
-		
 		//printf("Drawing Map\n");
 		
 		//printf("Centering on %d, %d, %d, %d. Sprite at %f, %f\n", playerSprite.hitbox.x, playerSprite.hitbox.y, playerSprite.hitbox.w, playerSprite.hitbox.h, playerSprite.x, playerSprite.y);
 		// center map on playerSprite and draw
 		map.centerTo(playerSprite.hitbox);
 		
-		map.drawTerrainTo(gRenderer);
-		
-		//printf("Drawing sprite\n");
-		
-		playerSprite.drawTo(gRenderer, map.viewOffsetX, map.viewOffsetY);
-		
-		map.drawObjectsTo(gRenderer);
-		map.drawSpritesTo(gRenderer);
+		map.drawTo(gRenderer);
 		
 		// draw heads-up-display
 		playerSprite.drawHUD(gRenderer);
