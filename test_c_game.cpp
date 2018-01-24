@@ -6,6 +6,8 @@
 #include <sstream>
 #include "texture_atlas.h"
 #include "sound_atlas.h"
+#include "font_atlas.h"
+#include "colors.h"
 #include "gui_window.h"
 #include "pause_dialog.h"
 #include "player_sprite.h"
@@ -32,12 +34,6 @@ SDL_Window* gWindow = NULL;
 	
 // renderer for the window
 SDL_Renderer* gRenderer = NULL;
-
-// colors used in GUI
-SDL_Color textColor = {255, 255, 255}, backgroundColor = {0, 0, 0};
-
-// globally used font
-TTF_Font *font = NULL;
 
 // loaded texture atlas
 SDL_Texture *texture_atlas_img = NULL;
@@ -108,14 +104,6 @@ bool loadMedia()
 		printf("Failed to load texture image!\n");
 		return false;	
 	}
-	// open the font
-	font = TTF_OpenFont( "fonts/AdventPro-Light.ttf", 28 );
-	if(font == NULL)
-	{
-		printf( "Failed to load lazy font! SDL_ttf Error: %s\n", TTF_GetError() );
-		return false;
-	}
-	
 	return true;
 }
 
@@ -123,9 +111,6 @@ void close()
 {
 	SDL_DestroyTexture(texture_atlas_img);
 	texture_atlas_img = NULL;
-	
-	TTF_CloseFont(font);
-	font = NULL;
 	
 	// destroy renderer
 	SDL_DestroyRenderer( gRenderer );
@@ -175,6 +160,8 @@ int main( int argc, char* args[] )
 	printf("Loaded Texture Atlas\n");
 	SoundAtlas soundAtlas = SoundAtlas();
 	printf("Loaded Sound Atlas\n");
+	FontAtlas fontAtlas = FontAtlas();
+	printf("Loaded Font Atlas\n");
 	PlayerSprite playerSprite = PlayerSprite(100.0f, 140.0f, &textureAtlas, gRenderer, font);
 	printf("Created player sprite\n");
 	Map map;
@@ -183,18 +170,11 @@ int main( int argc, char* args[] )
 	// pointer to current Window active on screen
 	Window* currWindow = NULL;
 	// window showing player or sprite inventory
-	Window* invWindow = new PauseDialog(SDL_Rect{100, 100, 300, 300}, SDLK_e, SCREEN_WIDTH, SCREEN_HEIGHT, font, textColor, backgroundColor);;
+	Window* invWindow = new Window(200, 300, SCREEN_WIDTH, SCREEN_HEIGHT);
 	// window showing pause menu
-	Window* pauseWindow = new PauseDialog(SDL_Rect{100, 100, 300, 300}, SDLK_e, SCREEN_WIDTH, SCREEN_HEIGHT, font, textColor, backgroundColor);
+	Window* pauseWindow = new Window(100, 300, SCREEN_WIDTH, SCREEN_HEIGHT);;
 	// window showing quit menu
-	Window* quitWindow = new PauseDialog(SDL_Rect{100, 100, 300, 300}, SDLK_e, SCREEN_WIDTH, SCREEN_HEIGHT, font, textColor, backgroundColor);
-	
-	// displays name of item in-hand, if any
-	SDL_Surface* rendered_inhand_name = NULL;
-	// displays frame-rate in top-left corner
-	SDL_Surface* rendered_fps = NULL;
-	// string used to show frame rate 
-	std::stringstream fps_string;
+	Window* quitWindow = new Window(300, 300, SCREEN_WIDTH, SCREEN_HEIGHT);;
 	
 	printf("Created windows\n");
 	
@@ -229,7 +209,7 @@ int main( int argc, char* args[] )
 				quit = true;
 			}
 			// send event to currWindow, if active
-			else if (currWindow && currWindow->isActive() && currWindow->handleInputEvent(e))
+			else if (currWindow && currWindow->active && currWindow->handleInputEvent(e))
 			{
 				
 			}
@@ -246,7 +226,7 @@ int main( int argc, char* args[] )
 					// show player's inventory in window
 					case SDLK_e: 
 						//invWindow = playerSprite.inventory->getWindow();
-						invWindow->setActive(true);
+						invWindow->active = true;
 						currWindow = invWindow;
 						break;
 
@@ -254,14 +234,14 @@ int main( int argc, char* args[] )
 					case SDLK_p: 
 						printf("Pausing\n");
 						paused = true;
-						pauseWindow->setActive(true);
+						pauseWindow->active = true;
 						currWindow = pauseWindow;
 						break;
 
 					// show exit menu
 					case SDLK_ESCAPE:
 						quit = true;
-						quitWindow->setActive(true);
+						quitWindow->active = true;
 						currWindow = quitWindow;
 						break;
 				}
@@ -270,9 +250,6 @@ int main( int argc, char* args[] )
 
 		map.update(ticks_since_last_frame);
 		
-		//printf("Drawing Map\n");
-		
-		//printf("Centering on %d, %d, %d, %d. Sprite at %f, %f\n", playerSprite.hitbox.x, playerSprite.hitbox.y, playerSprite.hitbox.w, playerSprite.hitbox.h, playerSprite.x, playerSprite.y);
 		// center map on playerSprite and draw
 		map.centerTo(playerSprite.hitbox);
 		
@@ -284,13 +261,13 @@ int main( int argc, char* args[] )
 		// handle current window: draw if active, set to NULL if inactive
 		if (currWindow)
 		{
-			if (currWindow->isActive())
+			if (currWindow->active)
 			{
-				//currWindow->drawTo(gRenderer);
+				currWindow->drawTo(gRenderer);
 			}
 			else
 			{
-				currWindow->setActive(false);
+				currWindow->active = false;
 				currWindow = NULL;
 			}
 		}
@@ -305,21 +282,10 @@ int main( int argc, char* args[] )
 			rendered_inhand_name = TTF_RenderText_Solid(font, playerSprite.inventory->getInHand()->getName(), textColor);
 			//SDL_BlitSurface(rendered_inhand_name, NULL, gScreenSurface, NULL);
 		}
-		// calculate and render frame rate text. Draw to top-left of screen
-		if (ticks_since_last_frame > 0) 
-		{
-			float fps = 1000 / ticks_since_last_frame;
-			fps_string.str(""); 
-			fps_string << fps; 
-			//rendered_fps = TTF_RenderText_Solid(font, fps_string.str().c_str(), textColor);
-			//SDL_BlitSurface(rendered_fps, NULL, gScreenSurface, NULL);
-		}
-		
-		//SDL_RenderClear(gRenderer);
+
 		// update screen
 		SDL_RenderPresent(gRenderer);
 		
-		//printf("Finished\n");
 		// update last_frame_ticks
 		last_time = curr_time;
 	}

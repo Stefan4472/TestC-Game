@@ -222,11 +222,9 @@ void Map::drawTo(SDL_Renderer* renderer)
 	for (int i = 0; i < tiles_tall; i++) 
 	{
 		dest.y = i * TILE_HEIGHT - offset_y;
-		//printf("dest.y is %d\n", dest.y);
 		for (int j = 0; j < tiles_wide; j++) 
 		{
 			dest.x = j * TILE_WIDTH - offset_x;
-			//printf("dest.x is %d\n", dest.x);
 			
 			// out of range: draw black
 			if (start_tile_y + i < 0 || start_tile_x + j < 0 || start_tile_y + i >= mapChunk->mapRows || start_tile_x + j >= mapChunk->mapCols) 

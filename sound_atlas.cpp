@@ -24,15 +24,4 @@ SoundAtlas::~SoundAtlas()
 		Mix_FreeChunk(loadedSounds[i]);
 		loadedSounds[i] = NULL;
 	}
-	//delete[] loadedSounds;
-	/*
-	
-	//The music that will be played
-Mix_Music *gMusic = NULL;
-
-//The sound effects that will be used
-Mix_Chunk *gScratch = NULL;
-Mix_Chunk *gHigh = NULL;
-Mix_Chunk *gMedium = NULL;
-Mix_Chunk *gLow = NULL;	*/
 }

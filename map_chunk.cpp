@@ -13,13 +13,7 @@ MapObject::MapObject(TextureAtlas* textureAtlas, int textureId, int x, int y)
 MapChunk::MapChunk(TextureAtlas* textureAtlas, int seed)
 {
 	// generate tiles
-	for (int i = 0; i < mapRows; i++)
-	{
-		for (int j = 0; j < mapCols; j++)
-		{
-			mapTiles[i][j] = TILE_GRASS;
-		}
-	}
+	render(seed);
 
 	// generate map objects, aligned with tiles
 	objects.push_back(MapObject(textureAtlas, OBJECT_TREE_1, 32 * 6, 32 * 6));
@@ -61,5 +55,29 @@ MapChunk::MapChunk(TextureAtlas* textureAtlas, int seed)
 			printf("%d", walkableTiles[i][j]);
 		}
 		printf("\n");
+	}
+}
+
+void MapChunk::render(int seed)
+{
+	int random;
+	// currently just fills with random tiles
+	for (int i = 0; i < mapRows; i++)
+	{
+		for (int j = 0; j < mapCols; j++)
+		{
+			random = rand() % 10;
+			
+			// 60% of the tiles are grass
+			if (random < 6)
+			{
+				mapTiles[i][j] = TILE_GRASS;
+			}
+			// other 40% are the other tiles, spread evenly
+			else
+			{
+				mapTiles[i][j] = random - 4;
+			}
+		}
 	}
 }

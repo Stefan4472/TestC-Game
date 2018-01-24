@@ -3,7 +3,6 @@
 
 #include <stdio.h>
 #include <SDL2/SDL.h>
-//#include "gui_window.h"
 
 class Window;
 
@@ -30,7 +29,7 @@ class Widget
 		// gives the widget focus
 		virtual void giveFocus() = 0;
 		// draws widget in position to given surface
-		virtual void drawTo(SDL_Surface* renderer) = 0;
+		virtual void drawTo(SDL_Renderer* renderer) = 0;
 };
 
 #endif

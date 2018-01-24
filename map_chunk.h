@@ -3,6 +3,7 @@
 
 #include "texture_atlas.h"
 #include <vector>
+#include <cmath>
 
 class MapObject
 {
@@ -17,6 +18,10 @@ class MapObject
 // defining how they fit into the Map as a whole, which works with an x- and y-coordinate.
 class MapChunk
 {
+	private:
+		// renders the chunk given seed
+		void render(int seed);
+		
 	public:
 		int mapRows = 24;
 		int mapCols = 24;

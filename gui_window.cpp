@@ -1,23 +1,12 @@
 #include "gui_window.h"
 
-Window::Window(SDL_Rect position, int closeKeyCode)
+Window::Window(int width, int height, int screenWidth, int screenHeight)
 {
-	this->position.x = position.x;
-	this->position.y = position.y; 
-	this->position.w = position.w; 
-	this->position.h = position.h; 
-	
-	this->closeKeyCode = closeKeyCode;
-}
-
-bool Window::isActive()
-{
-	return active; 
-}
-
-void Window::setActive(bool activeState)
-{
-	active = activeState;
+	// set position so window is centered on screen
+	this->position.x = (screenWidth - width) / 2;
+	this->position.y = (screenHeight - height) / 2; 
+	this->position.w = width; 
+	this->position.h = height; 
 }
 
 void Window::addWidget(Widget* widget)
@@ -49,25 +38,20 @@ bool Window::handleInputEvent(SDL_Event e)
 		switch( e.key.keysym.sym )
 		{ 
 			case SDLK_ESCAPE:
-				active = false;
+				//active = false;
 				return true;
-		}
-		if (e.key.keysym.sym == closeKeyCode)
-		{
-			active = false;
-			return true;
 		}
 	}
 	return false;	
 }
 
-void Window::drawTo(SDL_Surface* renderer)
+void Window::drawTo(SDL_Renderer* renderer)
 {
 	if (active) 
 	{
 		// draw window background
-		SDL_FillRect(renderer, &position, SDL_MapRGB(renderer->format, 0x47, 0x5C, 0x8D));
-
+		SDL_SetRenderDrawColor(COLOR_BLACK);
+		SDL_RenderFillRect(renderer, &position);
 		
 		for (int i = 0; i < widgets.size(); i++)
 		{

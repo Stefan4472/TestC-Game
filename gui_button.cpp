@@ -23,7 +23,7 @@ void Button::giveFocus()
 	focused = true;
 }
 
-void Button::drawTo(SDL_Surface* renderer)
+void Button::drawTo(SDL_Renderer* renderer)
 {
 	if (focused)
 	{

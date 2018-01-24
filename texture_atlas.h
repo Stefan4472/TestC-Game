@@ -19,10 +19,10 @@
 enum Textures 
 {
 	TEXTURE_NONE,
+	TILE_GRASS,
 	TILE_BROWN_BRICK,
 	TILE_DARK_BRICK,
 	TILE_WHITE_BRICK,
-	TILE_GRASS,
 	TILE_WATER,
 	OBJECT_TREE_1,
 	OBJECT_TREE_2, 
@@ -53,10 +53,10 @@ enum Textures
 const SDL_Rect textureRegions[30] = 
 {
 	SDL_Rect { 0, 0, 0, 0 }, // todo: don't allow texture zero to be called, or give some hint it's null
+	SDL_Rect { 64, 32, 32, 32 },
 	SDL_Rect { 0, 0, 32, 32 },
 	SDL_Rect { 64, 0, 32, 32 },
 	SDL_Rect { 0, 32, 32, 32 },
-	SDL_Rect { 64, 32, 32, 32 },
 	SDL_Rect { 0, 64, 32, 32 },
 	SDL_Rect { 128, 0, 72, 112 },
 	SDL_Rect { 128, 112, 120, 100 },
