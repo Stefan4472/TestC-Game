@@ -38,10 +38,28 @@ void Button::setFont(int fontId)
 	font = fontAtlas->getFont(fontId);
 }
 
-void Button::giveFocus()
+void Button::onReceiveFocus()
 {
-	
+	focused = true;
+	printf("Button %d gaining focus\n", id);
 }
+
+void Button::onLoseFocus()
+{
+	focused = false;	
+	printf("Button %d losing focus\n", id);
+}
+
+void Button::onClick()
+{
+	printf("Button clicked!\n");	
+	clicked = true;
+}
+
+/*void Button::onClickReleased()
+{
+	clicked = false;	
+}*/
 
 bool Button::handleInputEvent(SDL_Event e)
 {
@@ -52,18 +70,14 @@ void Button::drawTo(SDL_Renderer* renderer)
 {
 	if (focused)
 	{
-		SDL_SetRenderDrawColor(renderer, backgroundColor.r, backgroundColor.g, backgroundColor.b, backgroundColor.a);
+		SDL_SetRenderDrawColor(renderer, focusedColor.r, focusedColor.g, focusedColor.b, focusedColor.a);
 		SDL_RenderFillRect(renderer, &position);
 		SDL_RenderCopy(renderer, renderedText, NULL, &position);
-		//SDL_FillRect(renderer, &position, SDL_MapRGB(renderer->format, 0x00, 0x00, 0x00));
-		//SDL_BlitSurface(renderedText, NULL, renderer, &position);
 	}
 	else 
 	{
 		SDL_SetRenderDrawColor(renderer, backgroundColor.r, backgroundColor.g, backgroundColor.b, backgroundColor.a);
 		SDL_RenderFillRect(renderer, &position);
 		SDL_RenderCopy(renderer, renderedText, NULL, &position);
-		//SDL_FillRect(renderer, &position, SDL_MapRGB(renderer->format, 0xFF, 0xFF, 0xFF));	
-		//SDL_BlitSurface(renderedText, NULL, renderer, &position);
 	}
 }

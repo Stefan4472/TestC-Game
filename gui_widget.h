@@ -27,7 +27,11 @@ class Widget
 		// attempts to handle a given SDL_Event, and returns whether it was handled
 		virtual bool handleInputEvent(SDL_Event e) = 0;
 		// gives the widget focus
-		virtual void giveFocus() = 0;
+		virtual void onReceiveFocus() = 0;
+		// removes focus
+		virtual void onLoseFocus() = 0;
+		// handles user clicking on widget
+		virtual void onClick() = 0;
 		// draws widget in position to given surface
 		virtual void drawTo(SDL_Renderer* renderer) = 0;
 };

@@ -19,8 +19,8 @@ class Window
 		SDL_Rect position;
 		// widgets belonging to the window
 		std::vector<Widget*> widgets;
-		// widget in focus (NULL if none)
-		Widget *focused = NULL;
+		// index of focused widget in widgets list. Will be -1 if none is focused
+		int focusedIndex = -1;
 		// returns whether the given coordinate is on the given rect
 		bool pointInRect(int x, int y, SDL_Rect rect);
 	

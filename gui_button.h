@@ -17,9 +17,11 @@ class Button: public Widget
 	// font used for button text
 	TTF_Font* font = NULL;
 	// color used for text, and background
-	SDL_Color textColor = COLOR_WHITE, backgroundColor = COLOR_GRAY;
+	SDL_Color textColor = COLOR_WHITE, backgroundColor = COLOR_GRAY, focusedColor = COLOR_ORANGE;
 	// rendered button text
 	SDL_Texture* renderedText = NULL;
+	// whether button is currently being clicked
+	bool clicked = false;
 	
 	public:
 		// inits widget with pointer to parent and defined position
@@ -28,7 +30,9 @@ class Button: public Widget
 		void setText(SDL_Renderer* renderer, char* text);
 		// sets font for text displayed on button
 		void setFont(int fontId);
-		void giveFocus();
+		void onReceiveFocus();
+		void onLoseFocus();
+		void onClick();
 		// attempts to handle a given KeyEvent, and returns whether it was handled
 		bool handleInputEvent(SDL_Event e);
 		// gives the widget focus

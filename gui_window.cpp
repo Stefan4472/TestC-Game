@@ -23,18 +23,18 @@ bool Window::handleInputEvent(SDL_Event e)
 	{
 		printf("Motion\n");
 		// first check currently-focused widget (if any)
-		if (focused)
+		if (focusedIndex > -1)
 		{
-			// still focused: return. Else, set to not hovered
-			if (pointInRect(e.motion.x, e.motion.y, focused->position))
+			// still focused: return. Else, remove focus
+			if (pointInRect(e.motion.x, e.motion.y, widgets[focusedIndex]->position))
 			{
 				return true;
 			}
 			else
 			{
 				printf("Taking focus\n");
-				//widgets[i]->onStopHover();
-				focused = NULL;	
+				widgets[focusedIndex]->onLoseFocus();
+				focusedIndex = -1;	
 			}
 		}
 		// check which widget mouse is hovering over
@@ -42,8 +42,8 @@ bool Window::handleInputEvent(SDL_Event e)
 		{
 			if (pointInRect(e.motion.x, e.motion.y, widgets[i]->position))
 			{
-				focused = widgets[i];
-				widgets[i]->giveFocus();
+				focusedIndex = i;
+				widgets[i]->onReceiveFocus();
 				printf("Giving Focus\n");
 				break;
 			}
@@ -52,6 +52,10 @@ bool Window::handleInputEvent(SDL_Event e)
 	// user clicked mouse
 	else if (e.type == SDL_MOUSEBUTTONDOWN)
 	{
+		if (focusedIndex > -1)
+		{
+			widgets[focusedIndex]->onClick();	
+		}
 		printf("user clicked\n");
 	}
 	// user released mouse
@@ -62,11 +66,59 @@ bool Window::handleInputEvent(SDL_Event e)
 	// key pressed down
 	else if (e.type == SDL_KEYDOWN) 
 	{
-		switch( e.key.keysym.sym )
-		{ 
+		// handle window-bound keys
+		switch (e.key.keysym.sym)
+		{
+			// deactivate on escape
 			case SDLK_ESCAPE:
 				active = false;
 				return true;
+				
+			// increment focus on tab or down key
+			case SDLK_TAB:
+			case SDLK_DOWN:
+				if (focusedIndex > -1)
+				{
+					widgets[focusedIndex]->onLoseFocus();
+					focusedIndex = (focusedIndex + 1) % widgets.size();	
+					widgets[focusedIndex]->onReceiveFocus();
+				}
+				else if (widgets.size())
+				{
+					// set focus to top widget
+					focusedIndex = 0;	
+					widgets[focusedIndex]->onReceiveFocus();
+				}
+				return true;
+				
+			// decrement focus on up key
+			case SDLK_UP:
+				if (focusedIndex > -1)
+				{
+					widgets[focusedIndex]->onLoseFocus();
+					focusedIndex = (focusedIndex ? focusedIndex - 1 : widgets.size() - 1);
+					widgets[focusedIndex]->onReceiveFocus();
+				}
+				else
+				{
+					// set focus to top widget
+					focusedIndex = 0;	
+					widgets[focusedIndex]->onReceiveFocus();
+				}
+				return true;
+				
+			// simulate click of focused widget using enter key
+			case SDLK_RETURN:
+				if (focusedIndex > -1)
+				{
+					widgets[focusedIndex]->onClick();
+				}
+				return true;
+		}
+		// send event to focused
+		if (focusedIndex > -1)
+		{
+			return widgets[focusedIndex]->handleInputEvent(e);	
 		}
 	}
 	return false;	
