@@ -17,7 +17,7 @@ class Button: public Widget
 	// font used for button text
 	TTF_Font* font = NULL;
 	// color used for text, and background
-	SDL_Color textColor = COLOR_WHITE, backgroundColor = COLOR_BLACK;
+	SDL_Color textColor = COLOR_WHITE, backgroundColor = COLOR_GRAY;
 	// rendered button text
 	SDL_Texture* renderedText = NULL;
 	

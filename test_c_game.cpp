@@ -171,9 +171,15 @@ int main( int argc, char* args[] )
 	Window* currWindow = NULL;
 	// window showing player or sprite inventory
 	Window* invWindow = new Window(200, 300, SCREEN_WIDTH, SCREEN_HEIGHT);
+	
 	Button* playButton = new Button(1, invWindow, SDL_Rect { 50, 50, 100, 40 }, &fontAtlas);
 	playButton->setText(gRenderer, "Play");
 	invWindow->addWidget(playButton);
+	
+	Button* quitButton = new Button(2, invWindow, SDL_Rect { 50, 100, 100, 40 }, &fontAtlas);
+	quitButton->setText(gRenderer, "Quit");
+	invWindow->addWidget(quitButton);
+	
 	// window showing pause menu
 	Window* pauseWindow = new Window(100, 300, SCREEN_WIDTH, SCREEN_HEIGHT);;
 	// window showing quit menu

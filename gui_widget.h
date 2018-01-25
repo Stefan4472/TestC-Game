@@ -16,10 +16,10 @@ class Widget
 		Window* parent = NULL;
 		// whether the widget has focus
 		bool focused = false;
-		// defines the size and position of button on the screen, RELATIVE TO WINDOW
-		SDL_Rect position;
 	
 	public:
+		// defines the size and position of button on the screen, RELATIVE TO WINDOW
+		SDL_Rect position;
 		// widget requires an id
 		Widget(int id);
 		// returns widget's id

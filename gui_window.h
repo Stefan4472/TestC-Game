@@ -21,6 +21,8 @@ class Window
 		std::vector<Widget*> widgets;
 		// widget in focus (NULL if none)
 		Widget *focused = NULL;
+		// returns whether the given coordinate is on the given rect
+		bool pointInRect(int x, int y, SDL_Rect rect);
 	
 	public:
 		// whether window is on-screen
