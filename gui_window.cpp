@@ -11,7 +11,10 @@ Window::Window(int width, int height, int screenWidth, int screenHeight)
 
 void Window::addWidget(Widget* widget)
 {
-	//widget-> todo: make relative to window
+	// adjust widget's position to be relative to this window TODO: ONATTACHED?
+	widget->position.x += position.x;
+	widget->position.y += position.y;
+
 	widgets.push_back(widget);	
 }
 
@@ -21,7 +24,6 @@ bool Window::handleInputEvent(SDL_Event e)
 	// user moved mouse: check if a widget is being hovered over
 	if (e.type == SDL_MOUSEMOTION)
 	{
-		printf("Motion\n");
 		// first check currently-focused widget (if any)
 		if (focusedIndex > -1)
 		{

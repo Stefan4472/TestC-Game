@@ -17,17 +17,24 @@ class Button: public Widget
 	// font used for button text
 	TTF_Font* font = NULL;
 	// color used for text, and background
-	SDL_Color textColor = COLOR_WHITE, backgroundColor = COLOR_GRAY, focusedColor = COLOR_ORANGE;
+	SDL_Color textColor = COLOR_WHITE, backgroundColor = COLOR_GRAY, focusedColor = COLOR_ORANGE,
+		hintColor = COLOR_WHITE;
 	// rendered button text
 	SDL_Texture* renderedText = NULL;
+	// rendered hint text
+	SDL_Texture* renderedHint = NULL;
 	// whether button is currently being clicked
 	bool clicked = false;
+	// position of hint text, if it is shown
+	SDL_Rect hintPosition;
 	
 	public:
 		// inits widget with pointer to parent and defined position
 		Button(int id, Window* parent, SDL_Rect position, FontAtlas* fontAtlas);
 		// sets text displayed on button
 		void setText(SDL_Renderer* renderer, char* text);
+		// sets text for hint displayed over the button when focused
+		void setHint(SDL_Renderer* renderer, char* text);
 		// sets font for text displayed on button
 		void setFont(int fontId);
 		void onReceiveFocus();

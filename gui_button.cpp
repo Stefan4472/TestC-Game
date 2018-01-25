@@ -12,27 +12,14 @@ Button::Button(int id, Window* parent, SDL_Rect position, FontAtlas* fontAtlas) 
 void Button::setText(SDL_Renderer* renderer, char* text) 
 {
 	printf("Setting text of Button with id %d to %s\n", id, text);
-	// render button text
-	SDL_Surface* rendered_text_surface = TTF_RenderText_Solid(font, text, textColor);
-	if(rendered_text_surface == NULL)
-	{
-		printf( "Unable to render text surface! SDL_ttf Error: %s\n", TTF_GetError() );
-	}
-	else
-	{
-		printf("Rendered to surface\n");
-		renderedText = SDL_CreateTextureFromSurface(renderer, rendered_text_surface);
-		if (renderedText == NULL)
-		{
-			printf("Unable to create texture from %s! SDL Error: %s\n", text);	
-		}
-		printf("Created Texture\n");
-		// free loaded surface (no longer necessary)
-		SDL_FreeSurface(rendered_text_surface);	
-		printf("Freed surface\n");
-	}
+	renderedText = renderText(renderer, text, font, textColor);
 }
 
+void Button::setHint(SDL_Renderer* renderer, char* text)
+{
+	printf("Setting hint of Button with id %d to %s\n", id, text);
+	renderedHint = renderText(renderer, text, font, hintColor);
+}
 void Button::setFont(int fontId)
 {
 	font = fontAtlas->getFont(fontId);
@@ -66,13 +53,20 @@ bool Button::handleInputEvent(SDL_Event e)
 	return false;
 }
 
-void Button::drawTo(SDL_Renderer* renderer)
+void Button::drawTo(SDL_Renderer* renderer) // TODO: KNOW TIME. THAT WAY IT CAN DECIDE TO SHOW HINT AFTER A CERTAIN AMOUNT OF TIME
 {
 	if (focused)
 	{
 		SDL_SetRenderDrawColor(renderer, focusedColor.r, focusedColor.g, focusedColor.b, focusedColor.a);
 		SDL_RenderFillRect(renderer, &position);
 		SDL_RenderCopy(renderer, renderedText, NULL, &position);
+		
+		// draw hint text
+		hintPosition.x = position.x + position.w;
+		hintPosition.y = position.y - 28;
+		hintPosition.w = 100;
+		hintPosition.h = 28;
+		SDL_RenderCopy(renderer, renderedHint, NULL, &hintPosition);
 	}
 	else 
 	{

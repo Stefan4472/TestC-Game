@@ -174,10 +174,12 @@ int main( int argc, char* args[] )
 	
 	Button* playButton = new Button(1, invWindow, SDL_Rect { 50, 50, 100, 40 }, &fontAtlas);
 	playButton->setText(gRenderer, "Play");
+	playButton->setHint(gRenderer, "Press to Play");
 	invWindow->addWidget(playButton);
-	
+
 	Button* quitButton = new Button(2, invWindow, SDL_Rect { 50, 100, 100, 40 }, &fontAtlas);
 	quitButton->setText(gRenderer, "Quit");
+	quitButton->setHint(gRenderer, "Press to Quit");
 	invWindow->addWidget(quitButton);
 	
 	// window showing pause menu

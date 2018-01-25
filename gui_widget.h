@@ -1,8 +1,9 @@
 #ifndef GUI_WIDGET_H
 #define GUI_WIDGET_H
 
-#include <stdio.h>
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_ttf.h>
+#include <stdio.h>
 
 class Window;
 
@@ -35,5 +36,8 @@ class Widget
 		// draws widget in position to given surface
 		virtual void drawTo(SDL_Renderer* renderer) = 0;
 };
+
+// renders given text using font, size, and color
+SDL_Texture* renderText(SDL_Renderer* renderer, char* text, TTF_Font* font, SDL_Color color);
 
 #endif
