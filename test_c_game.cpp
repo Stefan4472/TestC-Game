@@ -181,6 +181,11 @@ int main( int argc, char* args[] )
 	quitButton->setText(gRenderer, "Quit");
 	quitButton->setHint(gRenderer, "Press to Quit");
 	invWindow->addWidget(quitButton);
+
+	ImageButton* imgButton = new ImageButton(3, SDL_Rect { 50, 150, 50, 50 }, &textureAtlas, &fontAtlas);
+	imgButton->setImage(SWORD_1);
+	imgButton->setHint(gRenderer, "This is an Image");
+	invWindow->addWidget(imgButton);
 	
 	// window showing pause menu
 	Window* pauseWindow = new Window(100, 300, SCREEN_WIDTH, SCREEN_HEIGHT);;

@@ -10,6 +10,7 @@
 #include "colors.h"
 #include "gui_widget.h"
 #include "gui_button.h"
+#include "gui_img_button.h"
 
 // base class for GUI window drawn on the screen
 class Window
