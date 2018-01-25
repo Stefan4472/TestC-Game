@@ -17,10 +17,12 @@ void Window::addWidget(Widget* widget)
 
 bool Window::handleInputEvent(SDL_Event e)
 {
+	
 	// user moved mouse
 	if (e.type == SDL_MOUSEMOTION)
 	{
 		printf("Received mouse motion\n");
+		
 	}
 	// user clicked mouse
 	else if (e.type == SDL_MOUSEBUTTONDOWN)
@@ -38,7 +40,7 @@ bool Window::handleInputEvent(SDL_Event e)
 		switch( e.key.keysym.sym )
 		{ 
 			case SDLK_ESCAPE:
-				//active = false;
+				active = false;
 				return true;
 		}
 	}
@@ -50,7 +52,7 @@ void Window::drawTo(SDL_Renderer* renderer)
 	if (active) 
 	{
 		// draw window background
-		SDL_SetRenderDrawColor(COLOR_BLACK);
+		SDL_SetRenderDrawColor(renderer, COLOR_BLACK.r, COLOR_BLACK.g, COLOR_BLACK.b, COLOR_BLACK.a);
 		SDL_RenderFillRect(renderer, &position);
 		
 		for (int i = 0; i < widgets.size(); i++)

@@ -12,7 +12,7 @@ enum PauseDialogButtons
 };
 
 // window showed when player pauses
-class PauseDialog : public Window
+/*class PauseDialog : public Window
 {
 	public:
 		// creates the dialog relative to screen size, initializing elements
@@ -20,6 +20,6 @@ class PauseDialog : public Window
 		// handles GUI events (button clicks)
 		bool handleGUIEvent(Widget* target);
 
-};
+};*/
 
 #endif

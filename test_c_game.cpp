@@ -162,7 +162,7 @@ int main( int argc, char* args[] )
 	printf("Loaded Sound Atlas\n");
 	FontAtlas fontAtlas = FontAtlas();
 	printf("Loaded Font Atlas\n");
-	PlayerSprite playerSprite = PlayerSprite(100.0f, 140.0f, &textureAtlas, gRenderer, font);
+	PlayerSprite playerSprite = PlayerSprite(100.0f, 140.0f, &textureAtlas, gRenderer, fontAtlas.getFont(MAIN_FONT)); 
 	printf("Created player sprite\n");
 	Map map;
 	map.init(&playerSprite, &textureAtlas, &soundAtlas);
@@ -171,6 +171,9 @@ int main( int argc, char* args[] )
 	Window* currWindow = NULL;
 	// window showing player or sprite inventory
 	Window* invWindow = new Window(200, 300, SCREEN_WIDTH, SCREEN_HEIGHT);
+	Button* playButton = new Button(1, invWindow, SDL_Rect { 50, 50, 100, 40 }, &fontAtlas);
+	playButton->setText(gRenderer, "Play");
+	invWindow->addWidget(playButton);
 	// window showing pause menu
 	Window* pauseWindow = new Window(100, 300, SCREEN_WIDTH, SCREEN_HEIGHT);;
 	// window showing quit menu
@@ -272,14 +275,14 @@ int main( int argc, char* args[] )
 			}
 		}
 		
-		if (invWindow->isActive()) // currently work-around to draw inventory
+		if (invWindow->active) // currently work-around to draw inventory
 		{
 			playerSprite.inventory->drawTo(gRenderer, &textureAtlas);	
 		}
 		// draw name of in-hand item to screen, if any
 		if (playerSprite.inventory->getInHand()) // TODO: ONLY RENDER WHEN CHANGE OCCURS. Use Item.drawAsInHand()
 		{
-			rendered_inhand_name = TTF_RenderText_Solid(font, playerSprite.inventory->getInHand()->getName(), textColor);
+			//rendered_inhand_name = TTF_RenderText_Solid(font, playerSprite.inventory->getInHand()->getName(), textColor);
 			//SDL_BlitSurface(rendered_inhand_name, NULL, gScreenSurface, NULL);
 		}
 
