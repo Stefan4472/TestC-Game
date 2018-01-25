@@ -36,7 +36,7 @@ class ImageButton: public Widget
 		// sets image to be displayed on button. Image will be sized to the button size
 		void setImage(int textureId);
 		// sets text for hint displayed over the button when focused
-		void setHint(SDL_Renderer* renderer, char* text);
+		void setHint(SDL_Renderer* renderer, const char* text);
 		// sets font for text displayed on button
 		void setFont(int fontId);
 		void onReceiveFocus();

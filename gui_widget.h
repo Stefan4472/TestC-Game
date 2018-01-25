@@ -38,6 +38,6 @@ class Widget
 };
 
 // renders given text using font, size, and color
-SDL_Texture* renderText(SDL_Renderer* renderer, char* text, TTF_Font* font, SDL_Color color);
+SDL_Texture* renderText(SDL_Renderer* renderer, const char* text, TTF_Font* font, SDL_Color color);
 
 #endif

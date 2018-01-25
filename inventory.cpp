@@ -142,8 +142,24 @@ void Inventory::drawTo(SDL_Renderer* renderer, TextureAtlas* textureAtlas)
 	}
 }
 
-Window* Inventory::getWindow()
+Window* Inventory::getWindow(SDL_Renderer* renderer, TextureAtlas* textureAtlas, FontAtlas* fontAtlas)
 {
-	//return new PauseDialog(SDL_Rect { 100, 100, 200, 200 }, SDLK_e);
-	return NULL;
+	// calculate number of rows and columns of items (each row has 10 items)
+	int rows = capacity < 10 ? 1 : capacity / 10;
+	int cols = capacity < 10 ? capacity : 10;
+	
+	Window* window = new Window(rows * 32, cols * 32, 640, 480);// todo: know screen width and height, or find a better way
+	
+	for (int i = 0; i < items.size(); i++)
+	{
+		int row = i / 10;
+		int col = i % 10;
+		
+		ImageButton* item_btn = new ImageButton(i, SDL_Rect { col * 32, row * 32, 32, 32 }, textureAtlas, fontAtlas);
+		item_btn->setImage(items[i]->textureId);
+		item_btn->setHint(renderer, items[i]->name.c_str());
+		
+		window->addWidget(item_btn);
+	}
+	return window;
 }

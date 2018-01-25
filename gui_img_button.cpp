@@ -14,7 +14,7 @@ void ImageButton::setImage(int textureId)
 	imageId = textureId; 
 }
 
-void ImageButton::setHint(SDL_Renderer* renderer, char* text)
+void ImageButton::setHint(SDL_Renderer* renderer, const char* text)
 {
 	printf("Setting hint of Button with id %d to %s\n", id, text);
 	renderedHint = renderText(renderer, text, font, hintColor);

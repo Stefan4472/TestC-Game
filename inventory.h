@@ -6,8 +6,9 @@
 #include <vector>
 #include "constants.h"
 #include "texture_atlas.h"
+#include "font_atlas.h"
 #include "gui_window.h"
-#include "gui_button.h"
+#include "gui_img_button.h"
 #include "item.h"
 
 class Sprite;
@@ -74,6 +75,6 @@ class Inventory
 		// sets listener function for in-hand item change
 		void setInventoryListener(InventoryListener* listener);
 		// opens a Window with inventory displayed
-		Window* getWindow();
+		Window* getWindow(SDL_Renderer* renderer, TextureAtlas* textureAtlas, FontAtlas* fontAtlas);
 };
 #endif

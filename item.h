@@ -68,7 +68,7 @@ class Item
 	private:
 		void init(TextureAtlas* textureAtlas, int itemType);
 		
-	protected:
+	public:
 		// ItemType id
 		int itemType;
 		// id for sprite in texture_atlas.h
@@ -79,7 +79,6 @@ class Item
 		// pointer to TextureAtlas used for drawing
 		TextureAtlas* textureAtlas = NULL;
 	
-	public: 
 		// defines position of Item on the map
 		SDL_Rect hitbox = {0, 0, 0, 0};
 		// whether item should be destroyed (removed from inventory and deleted)

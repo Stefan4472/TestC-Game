@@ -10,7 +10,7 @@ int Widget::getId()
 	return id;	
 }
 
-SDL_Texture* renderText(SDL_Renderer* renderer, char* text, TTF_Font* font, SDL_Color color)
+SDL_Texture* renderText(SDL_Renderer* renderer, const char* text, TTF_Font* font, SDL_Color color)
 {
 	SDL_Surface* rendered_text_surface = TTF_RenderText_Solid(font, text, color);
 	if(rendered_text_surface == NULL)

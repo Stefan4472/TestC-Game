@@ -170,25 +170,26 @@ int main( int argc, char* args[] )
 	// pointer to current Window active on screen
 	Window* currWindow = NULL;
 	// window showing player or sprite inventory
-	Window* invWindow = new Window(200, 300, SCREEN_WIDTH, SCREEN_HEIGHT);
+	Window* invWindow = NULL;
 	
-	Button* playButton = new Button(1, invWindow, SDL_Rect { 50, 50, 100, 40 }, &fontAtlas);
+	// window showing pause menu
+	Window* pauseWindow = new Window(100, 300, SCREEN_WIDTH, SCREEN_HEIGHT);;
+
+	Button* playButton = new Button(1, pauseWindow, SDL_Rect { 50, 50, 100, 40 }, &fontAtlas);
 	playButton->setText(gRenderer, "Play");
 	playButton->setHint(gRenderer, "Press to Play");
-	invWindow->addWidget(playButton);
+	pauseWindow->addWidget(playButton);
 
-	Button* quitButton = new Button(2, invWindow, SDL_Rect { 50, 100, 100, 40 }, &fontAtlas);
+	Button* quitButton = new Button(2, pauseWindow, SDL_Rect { 50, 100, 100, 40 }, &fontAtlas);
 	quitButton->setText(gRenderer, "Quit");
 	quitButton->setHint(gRenderer, "Press to Quit");
-	invWindow->addWidget(quitButton);
+	pauseWindow->addWidget(quitButton);
 
 	ImageButton* imgButton = new ImageButton(3, SDL_Rect { 50, 150, 50, 50 }, &textureAtlas, &fontAtlas);
 	imgButton->setImage(SWORD_1);
 	imgButton->setHint(gRenderer, "This is an Image");
-	invWindow->addWidget(imgButton);
+	pauseWindow->addWidget(imgButton);
 	
-	// window showing pause menu
-	Window* pauseWindow = new Window(100, 300, SCREEN_WIDTH, SCREEN_HEIGHT);;
 	// window showing quit menu
 	Window* quitWindow = new Window(300, 300, SCREEN_WIDTH, SCREEN_HEIGHT);;
 	
@@ -241,7 +242,7 @@ int main( int argc, char* args[] )
 				{ 
 					// show player's inventory in window
 					case SDLK_e: 
-						//invWindow = playerSprite.inventory->getWindow();
+						invWindow = playerSprite.inventory->getWindow(gRenderer, &textureAtlas, &fontAtlas); // TODO: SHOULDN'T CREATE A NEW WINDOW EVERY TIME
 						invWindow->active = true;
 						currWindow = invWindow;
 						break;
@@ -288,7 +289,7 @@ int main( int argc, char* args[] )
 			}
 		}
 		
-		if (invWindow->active) // currently work-around to draw inventory
+		if (invWindow && invWindow->active) // currently work-around to draw inventory
 		{
 			playerSprite.inventory->drawTo(gRenderer, &textureAtlas);	
 		}
