@@ -28,15 +28,15 @@ void Map::update(int ms)
 	for (int i = 0; i < num_sprites; i++)
 	{
 		// check sprite's attacks against other sprite hitboxes
-		for (std::list<Attack*>::iterator it = sprites[i]->attacks.begin(); it != sprites[i]->attacks.end(); it++) 
+		for (int j = 0; j < sprites[i]->attacks.size(); j++) 
 		{
-			attack_pos = (*it)->position;
+			attack_pos = sprites[i]->attacks[j]->position;
 			// check against other sprites
-			for (int j = 0; j < num_sprites; j++)
+			for (int k = 0; k < num_sprites; k++) // TODO: BETTER VARIABLE NAMES
 			{
-				if (j != i && checkCollision(attack_pos, sprites[j]->hitbox))
+				if (k != i && checkCollision(attack_pos, sprites[k]->hitbox))
 				{
-					sprites[j]->handleAttacked(*it);
+					sprites[k]->handleAttacked(sprites[i]->attacks[j]);
 				}
 			}
 		}
@@ -276,11 +276,10 @@ void Map::drawTo(SDL_Renderer* renderer)
 		sprites[i]->lineOfSight.y += viewOffsetY;
 	}
 	// draw attack hitboxes in blue
-	/*SDL_SetRenderDrawColor(renderer, 0, 0, 255, SDL_ALPHA_OPAQUE);
-	for (int i = 0; i < playerSprite-attacks.size(); i++) 
+	for (int i = 0; i < playerSprite->attacks.size(); i++) 
 	{
-		SDL_RenderDrawRect(renderer, &attacks[i]->position);	
-	}*/
+		SDL_RenderDrawRect(renderer, &playerSprite->attacks[i]->position);	
+	}
 	sprites.pop_back();
 }
 

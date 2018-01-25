@@ -2,7 +2,7 @@
 #define SPRITE_H
 
 #include <SDL2/SDL.h>
-#include <list>
+#include <vector>
 #include "constants.h"
 #include "spritesheet.h"
 #include "item.h"
@@ -33,7 +33,7 @@ class Sprite
 		// healthbar, which may be drawn over the sprite
 		SpriteHealthBar* healthbar;
 		// list of buffs currently affecting player
-		std::list<Action*> buffs;
+		std::vector<Action*> buffs;
 		// sprite's movement speed, px per millisecond
 		float moveSpeed = 0.25f;
 		// distance sprite can see, and width of line of sight
@@ -56,12 +56,12 @@ class Sprite
 		// sprite's inventory
 		Inventory* inventory = NULL; 
 		// list of Items sprite wants to drop. Meant to be picked up by the Map/Gamedriver
-		std::list<Item*> drops;
+		std::vector<Item*> drops;
 		// list of Attacks sprite wants to carry out. Meant to be picked up by the Map/Gamedriver
 		// a sprite may have multiple attacks progressing, e.g. if several bullets have been fired
-		std::list<Attack*> attacks;
+		std::vector<Attack*> attacks;
 		// list of SoundIds the sprite has requested. Meant to be picked up by the Map/Gamedriver
-		std::list<int> sounds;
+		std::vector<int> sounds;
 		
 		// direction currently moving in
 		int movementDir = DIRECTION_NONE;
