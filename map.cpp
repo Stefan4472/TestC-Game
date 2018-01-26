@@ -13,6 +13,7 @@ void Map::init(PlayerSprite* playerSprite, TextureAtlas* textureAtlas, SoundAtla
 	addItem(new Consumable(ITEM_BREAD_LOAF, 100, 200, textureAtlas));
 	addItem(new Consumable(ITEM_BEER_MUG, 132, 200, textureAtlas));
 	addItem(new Sword(textureAtlas, 164, 200));
+	addItem(new Pistol(textureAtlas, 68, 200));
 }
 
 void Map::update(int ms) 
@@ -267,27 +268,29 @@ void Map::drawTo(SDL_Renderer* renderer)
 	SDL_SetRenderDrawColor(renderer, 255, 0, 0, SDL_ALPHA_OPAQUE);
 	for (int i = 0; i < sprites.size(); i++) 
 	{
-		sprites[i]->hitbox.x -= viewOffsetX;
-		sprites[i]->hitbox.y -= viewOffsetY;
+		sprites[i]->hitbox.x -= camera.x;
+		sprites[i]->hitbox.y -= camera.y;
 		SDL_RenderDrawRect(renderer, &sprites[i]->hitbox);
-		sprites[i]->hitbox.x += viewOffsetX;
-		sprites[i]->hitbox.y += viewOffsetY;
+		sprites[i]->hitbox.x += camera.x;
+		sprites[i]->hitbox.y += camera.y;
 	}
 	// draw line of sight in blue
 	SDL_SetRenderDrawColor(renderer, 0, 0, 255, SDL_ALPHA_OPAQUE);
 	for (int i = 0; i < sprites.size(); i++) 
 	{
-		sprites[i]->lineOfSight.x -= viewOffsetX;
-		sprites[i]->lineOfSight.y -= viewOffsetY;
+		sprites[i]->lineOfSight.x -= camera.x;
+		sprites[i]->lineOfSight.y -= camera.y;
 		SDL_RenderDrawRect(renderer, &sprites[i]->lineOfSight);
-		sprites[i]->lineOfSight.x += viewOffsetX;
-		sprites[i]->lineOfSight.y += viewOffsetY;
+		sprites[i]->lineOfSight.x += camera.x;
+		sprites[i]->lineOfSight.y += camera.y;
 	}
 	// draw attack hitboxes in blue
 	for (int i = 0; i < playerSprite->attacks.size(); i++) 
 	{
 		SDL_RenderDrawRect(renderer, &playerSprite->attacks[i]->position);	
+		playerSprite->attacks[i]->drawToMap(renderer, textureAtlas, camera.x, camera.y);
 	}
+	textureAtlas->draw(renderer, MOVING_BULLET, 0, 0);
 	sprites.pop_back();
 }
 

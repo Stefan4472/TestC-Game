@@ -66,8 +66,6 @@ class Map
 	bool isWalkable(int x, int y);
 	
 	public:
-		// offsets on x and y that graphics should be drawn to to convert virtual to canvas coordinates
-		int viewOffsetX, viewOffsetY;
 		// init tile images
 		void init(PlayerSprite* playerSprite, TextureAtlas* textureAtlas, SoundAtlas* soundAtlas);
 		// advances state by given number of milliseconds

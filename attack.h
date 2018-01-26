@@ -43,7 +43,7 @@ class Attack
 		// updates state of attack once given number of ms has passed
 		virtual void update(int ms) = 0;
 		// draws to screen
-		virtual void drawTo(SDL_Renderer* renderer, TextureAtlas* textureAtlas, float offsetX, float offsetY);
+		virtual void drawToMap(SDL_Renderer* renderer, TextureAtlas* textureAtlas, float offsetX, float offsetY);
 };
 
 class SwordSwing : public Attack
@@ -61,6 +61,6 @@ class Bullet : public Attack
 	public:
 		Bullet(SDL_Rect position, int dir, Sprite* attacker, Item* weapon);
 		void update(int ms);
-		void drawTo(SDL_Renderer* renderer, TextureAtlas* textureAtlas, float offsetX, float offsetY);
+		void drawToMap(SDL_Renderer* renderer, TextureAtlas* textureAtlas, float offsetX, float offsetY);
 };
 #endif

@@ -22,4 +22,23 @@ class Sword : public Item
 		void use(Sprite* actor, SDL_Point handPos, int useDir);
 		Attack* getAttack();
 };
+
+class Pistol : public Item
+{
+	// sprite using the pistol
+	Sprite* actor = NULL;
+	// direction gun is fired in
+	int fireDirection = 0;
+	// if gun was fired in this frame
+	bool fired = false;
+	// num milliseconds before gun can be fired again
+	const int COOL_OFF = 500;	
+	// num milliseconds since gun was last fired
+	int framesSinceShot = COOL_OFF;
+	
+	public:
+		Pistol(TextureAtlas* textureAtlas, float x, float y);
+		void use(Sprite* actor, SDL_Point handPos, int useDir);
+		Attack* getAttack();
+};
 #endif
