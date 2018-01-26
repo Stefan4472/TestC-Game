@@ -27,7 +27,7 @@ class Attack
 		int elapsedTime = 0;
 		
 	public:
-		Attack(SDL_Rect position, int dir, Sprite* attacker, Item* weapon);
+		Attack(SDL_Rect position, int dir, Sprite* attacker, Item* weapon); // TODO: METHOD TO HANDLE COLLISION
 		// positino attack covers in map
 		SDL_Rect position;
 		// direction attack is directed in
@@ -44,23 +44,5 @@ class Attack
 		virtual void update(int ms) = 0;
 		// draws to screen
 		virtual void drawToMap(SDL_Renderer* renderer, TextureAtlas* textureAtlas, float offsetX, float offsetY);
-};
-
-class SwordSwing : public Attack
-{
-	public:
-		SwordSwing(SDL_Rect position, int dir, Sprite* attacker, Item* weapon);
-		void update(int ms);
-};
-
-class Bullet : public Attack
-{
-	// speed bullet is travelling in x and y
-	int dx = 0, dy = 0;
-	
-	public:
-		Bullet(SDL_Rect position, int dir, Sprite* attacker, Item* weapon);
-		void update(int ms);
-		void drawToMap(SDL_Renderer* renderer, TextureAtlas* textureAtlas, float offsetX, float offsetY);
 };
 #endif
