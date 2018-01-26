@@ -42,7 +42,8 @@ MapChunk::MapChunk(TextureAtlas* textureAtlas, int seed)
 		{
 			for (int k = 0; k < tiles_wide; k++)
 			{
-				walkableTiles[tile_row + j][tile_col + k] = false;		
+				walkableTiles[tile_row + j][tile_col + k] = false;	
+				flyableTiles[tile_row + j][tile_col + k] = false;
 			}
 		}
 	}

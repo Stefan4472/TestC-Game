@@ -27,8 +27,8 @@ class Attack
 		int elapsedTime = 0;
 		
 	public:
-		Attack(SDL_Rect position, int dir, Sprite* attacker, Item* weapon); // TODO: METHOD TO HANDLE COLLISION
-		// positino attack covers in map
+		Attack(SDL_Rect position, int dir, Sprite* attacker, Item* weapon);
+		// position attack currently covers in map
 		SDL_Rect position;
 		// direction attack is directed in
 		int dir = 0;
@@ -42,6 +42,10 @@ class Attack
 		int damage = 0;
 		// updates state of attack once given number of ms has passed
 		virtual void update(int ms) = 0;
+		// handles attack hitting a sprite. Default action is to set finished = true
+		virtual void handleSpriteCollision();
+		// handles attack hitting a map object. Default action is to set finished = true
+		virtual void handleObjectCollision();
 		// draws to screen
 		virtual void drawToMap(SDL_Renderer* renderer, TextureAtlas* textureAtlas, float offsetX, float offsetY);
 };

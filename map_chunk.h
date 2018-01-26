@@ -34,6 +34,9 @@ class MapChunk
 		// grid of tiles that are walkable--generated based on mapTiles and objectTiles
 		bool walkableTiles[24][24]; 
 		
+		// grid of tiles that a bullet can fly in
+		bool flyableTiles[24][24];
+		
 		// instantiates procedurally-generated chunk, using seed for random number generation
 		MapChunk(TextureAtlas* textureAtlas, int seed);
 		// loads chunk from given file

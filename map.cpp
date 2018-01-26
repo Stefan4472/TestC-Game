@@ -38,8 +38,10 @@ void Map::update(int ms)
 				if (k != i && checkCollision(attack_pos, sprites[k]->hitbox))
 				{
 					sprites[k]->handleAttacked(sprites[i]->attacks[j]);
+					sprites[i]->attacks[j]->handleSpriteCollision();
 				}
 			}
+			// check against map objects TODO
 		}
 		
 		// check distance to sounds that were created the previous frame
