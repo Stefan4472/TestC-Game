@@ -9,17 +9,6 @@
 // limit (number of times it can be used TODO: OR DAMAGE IT CAN INFLICT?) or a requirement that it
 // have ammunition. 
 
-class Weapon : public Item
-{
-	// amount of damage done
-	int damage = 0;
-	
-	public:
-		Weapon(int itemType, float x, float y, TextureAtlas* textureAtlas);
-		void use(Sprite* actor, SDL_Point handPos, int useDir);
-};
-
-
 class Sword : public Item
 {
 	int swingDirection = 0;

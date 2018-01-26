@@ -18,10 +18,10 @@ Item::Item(TextureAtlas* textureAtlas, int itemType, float x, float y)
 {	
 	init(textureAtlas, itemType);
 	
-	hitbox.x = x;
-	hitbox.y = y;
-	hitbox.w = textureAtlas->getWidth(textureId);
-	hitbox.h = textureAtlas->getHeight(textureId);
+	position.x = x;
+	position.y = y;
+	position.w = textureAtlas->getWidth(textureId);
+	position.h = textureAtlas->getHeight(textureId);
 }
 
 const char* Item::getName() 
@@ -31,8 +31,8 @@ const char* Item::getName()
 
 void Item::setPosition(float x, float y)
 {
-	hitbox.x = x;
-	hitbox.y = y;
+	position.x = x;
+	position.y = y;
 }
 
 Action* Item::getAction()
@@ -57,7 +57,7 @@ void Item::drawTo(SDL_Renderer* renderer, int x, int y)
 
 void Item::drawToMap(SDL_Renderer* renderer, int offsetX, int offsetY)
 {
-	textureAtlas->draw(renderer, textureId, hitbox.x - offsetX, hitbox.y - offsetY);
+	textureAtlas->draw(renderer, textureId, position.x - offsetX, position.y - offsetY);
 }
 
 void Item::drawToInventory(SDL_Renderer* renderer, SDL_Rect dest)

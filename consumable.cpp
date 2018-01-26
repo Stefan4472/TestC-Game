@@ -2,10 +2,10 @@
 
 Consumable::Consumable(int itemType, float x, float y, TextureAtlas* textureAtlas) : Item(textureAtlas, itemType)
 {
-	hitbox.x = x;
-	hitbox.y = y;
-	hitbox.w = textureAtlas->getWidth(textureId);
-	hitbox.h = textureAtlas->getHeight(textureId);
+	position.x = x;
+	position.y = y;
+	position.w = textureAtlas->getWidth(textureId);
+	position.h = textureAtlas->getHeight(textureId);
 	
 	switch (itemType)
 	{

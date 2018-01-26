@@ -47,10 +47,11 @@ enum Textures
 	BEER_MUG,
 	SWORD_1,
 	POTION_GREEN,
-	SCROLL_1
+	SCROLL_1,
+	MOVING_BULLET
 };
 
-const SDL_Rect textureRegions[30] = 
+const SDL_Rect textureRegions[31] = 
 {
 	SDL_Rect { 0, 0, 0, 0 }, // todo: don't allow texture zero to be called, or give some hint it's null
 	SDL_Rect { 64, 32, 32, 32 },
@@ -81,7 +82,8 @@ const SDL_Rect textureRegions[30] =
 	SDL_Rect { 284, 53, 16, 21 },
 	SDL_Rect { 284, 76, 32, 32 },
 	SDL_Rect { 284, 108, 32, 32 },
-	SDL_Rect { 284, 141, 32, 32 }
+	SDL_Rect { 284, 141, 32, 32 },
+	SDL_Rect { 284, 143, 20, 10 }
 };
 
 class TextureAtlas 

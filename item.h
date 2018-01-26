@@ -80,7 +80,7 @@ class Item
 		TextureAtlas* textureAtlas = NULL;
 	
 		// defines position of Item on the map
-		SDL_Rect hitbox = {0, 0, 0, 0};
+		SDL_Rect position = {0, 0, 0, 0};
 		// whether item should be destroyed (removed from inventory and deleted)
 		bool destroy = false;
 		// sets textureAtlas and image, name, and description based on ItemType

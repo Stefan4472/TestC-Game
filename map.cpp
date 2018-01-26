@@ -132,7 +132,15 @@ void Map::update(int ms)
 	}
 		
 	// clear attacks TODO: SPRITE SHOULD HANDLE THIS IN UPDATE()
-	playerSprite->attacks.clear();
+	for (int i = 0; i < playerSprite->attacks.size(); i++)
+	{
+		playerSprite->attacks[i]->update(ms);
+		if (playerSprite->attacks[i]->finished)
+		{
+			playerSprite->attacks.erase(playerSprite->attacks.begin() + i);
+		}
+	}
+	//playerSprite->attacks.clear();
 }
 
 void Map::handlePlayerInteract(PlayerSprite* playerSprite)
@@ -155,9 +163,9 @@ void Map::handlePlayerInteract(PlayerSprite* playerSprite)
 	}
 	for (int i = 0; i < items.size(); i++) 
 	{
-		if (checkCollision(player_hitbox, items[i]->hitbox))
+		if (checkCollision(player_hitbox, items[i]->position))
 		{
-			printf("Collision with object at %f, %f\n", items[i]->hitbox.x, items[i]->hitbox.y); // todo: something suspicious with the hitbox
+			printf("Collision with object at %f, %f\n", items[i]->position.x, items[i]->position.y); // todo: something suspicious with the hitbox
 				// TODO: HANDLE
 			//items[i]->handleInteract(playerSprite); 
 			

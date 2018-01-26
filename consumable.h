@@ -15,9 +15,9 @@
 const static int BREAD_HEALING = 10;
 const static int CHICKENLEG_HEALING = 35;
 const static int BEERMUG_HEALING = 15;
-const static int GREENPOTION_HEALING = 60;
+const static int GREENPOTION_HEALING = 60; 
 
-class Consumable : public Item
+class Consumable : public Item // TODO: IS IT WORTH CREATING A NEW CLASS??
 {
 	// amount healed
 	int healValue = 0;
