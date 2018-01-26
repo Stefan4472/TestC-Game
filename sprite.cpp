@@ -15,6 +15,16 @@ void Sprite::move(int ms) {
 	lastX = x;
 	lastY = y;
 	
+	x += ms * speedX;
+	y += ms * speedY;
+	
+	/*hitbox.x += ms * speedX;
+	hitbox.y += ms * speedY;
+	
+	lineOfSight.x += ms * speedX;
+	lineOfSight.y += ms * speedY;	
+	*/
+	/*
 	if (movementDir == DIRECTION_RIGHT) {
 		x += ms * moveSpeed;
 	} else if (movementDir == DIRECTION_LEFT) {
@@ -25,7 +35,8 @@ void Sprite::move(int ms) {
 		y -= ms * moveSpeed;
 	} else if (movementDir == DIRECTION_DOWN) {
 		y += ms * moveSpeed;
-	}	
+	}*/	
+	
 	
 	// adjust hitbox and line of sight
 	hitbox.x = x + hitboxOffsetX;
@@ -33,6 +44,40 @@ void Sprite::move(int ms) {
 	
 	lineOfSight.x = x + lineOfSightOffsetX;
 	lineOfSight.y = y + lineOfSightOffsetY;	
+	
+}
+
+void Sprite::startMoving()
+{
+	switch( facingDir ) 
+	{ 
+		case SDLK_RIGHT:
+			speedX = moveSpeed;
+			speedY = 0;
+			break;					
+
+		case SDLK_UP:
+			speedX = 0;
+			speedY = -moveSpeed;
+			break;;
+
+		case SDLK_LEFT:
+			speedX = -moveSpeed;
+			speedY = 0;
+			break;;
+
+		case SDLK_DOWN:
+			speedX = 0;
+			speedY = moveSpeed;
+			break;
+	}
+	printf("Player Moving, %f %f\n", speedX, speedY);
+}
+
+void Sprite::stopMoving()
+{
+	speedX = 0;
+	speedY = 0;
 }
 
 void Sprite::moveBack() 
@@ -47,14 +92,14 @@ void Sprite::moveBack()
 void Sprite::setDir(int dir)
 {
 	// change of direction: reset current animation
-	if (dir != movementDir) 
+	if (dir != facingDir) 
 	{
-		(*current_anim).reset();
-		movementDir = dir;
+		(*current_anim).reset(); 
+		facingDir = dir;
 	}
 		
 	// set animation, direction, and lineOfSight
-	switch (movementDir) 
+	switch (facingDir) 
 	{	
 		case DIRECTION_RIGHT:
 			current_anim = &mv_right_anim;
@@ -96,6 +141,7 @@ void Sprite::setDir(int dir)
 			printf("Weird!! Don't know which animation to show!\n");
 			break;
 	}
+	facingDir = DIRECTION_DOWN;
 }
 
 void Sprite::handleTrigger(Trigger* trigger)

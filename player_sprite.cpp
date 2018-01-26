@@ -47,26 +47,22 @@ bool PlayerSprite::handleKeyEvent(SDL_Event e)
 		{ 
 			case SDLK_RIGHT:
 				setDir(DIRECTION_RIGHT);
-				speedX = moveSpeed;
-				speedY = 0;
+				startMoving();
 				return true;					
 
 			case SDLK_UP:
 				setDir(DIRECTION_UP);
-				speedX = 0;
-				speedY = -moveSpeed;
+				startMoving();
 				return true;
 
 			case SDLK_LEFT:
 				setDir(DIRECTION_LEFT);
-				speedX = -moveSpeed;
-				speedY = 0;
+				startMoving();
 				return true;
 
 			case SDLK_DOWN:
 				setDir(DIRECTION_DOWN);
-				speedX = 0;
-				speedY = moveSpeed;
+				startMoving();
 				return true;
 				
 			// interact key
@@ -129,9 +125,7 @@ bool PlayerSprite::handleKeyEvent(SDL_Event e)
 			case SDLK_UP:
 			case SDLK_LEFT:
 			case SDLK_DOWN:
-				setDir(DIRECTION_NONE);
-				speedX = 0;
-				speedY = 0;
+				stopMoving();
 				return true;
 
 			case SDLK_f:
