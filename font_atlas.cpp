@@ -18,7 +18,9 @@ FontAtlas::~FontAtlas()
 	printf("Freeing Fonts\n");
 	for (int i = 1; i < NUM_FONTS; i++) 
 	{
+		printf("closing font %d\n", i);
 		TTF_CloseFont(loadedFonts[i]);
+		printf("done\n");
 		loadedFonts[i] = NULL;
 	}
 }

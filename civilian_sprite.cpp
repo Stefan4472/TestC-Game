@@ -7,7 +7,7 @@ CivilianSprite::CivilianSprite(float xCoord, float yCoord, Sprite* playerSprite,
 	x = xCoord;
 	y = yCoord;
 	this->playerSprite = playerSprite;
-	speedPerMs = 0.1f;
+	moveSpeed = 0.1f;
 	// note: this depends on the image of the sprite, and will need to be adjusted at times. Also: hitboxes corresponding to frames of spritesheets
 	hitboxOffsetX = 7;
 	hitboxOffsetY = 25;
@@ -31,7 +31,7 @@ CivilianSprite::CivilianSprite(float xCoord, float yCoord, Sprite* playerSprite,
 	currAction = getInitialAction();
 		
 	// TODO: KNOW WHICH DIRECTION SPRITE IS INITIALLY FACING. DEFAULTS TO DOWN
-	changeDir(DIRECTION_DOWN); // sets line of sight
+	setDir(DIRECTION_DOWN); // sets line of sight
 }
 
 void CivilianSprite::update(int ms) {
@@ -43,7 +43,12 @@ void CivilianSprite::update(int ms) {
 		delete currAction;
 		currAction = new IdleAction(ACTION_LOOPING);
 	}
-	(*current_anim).passTime(ms);
+	
+	// only animate if moving
+	if (speedX || speedY)
+	{
+		(*current_anim).passTime(ms);
+	}
 }
 
 SDL_Point CivilianSprite::getRightHandPosition() // todo: standardize for all sprites

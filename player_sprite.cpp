@@ -41,24 +41,32 @@ void PlayerSprite::onInHandItemChanged(Item* newItem)
 bool PlayerSprite::handleKeyEvent(SDL_Event e) 
 {
 	// player pressed a key TODO: IGNORE REPEATED SIGNALS
-	if (e.type == SDL_KEYDOWN)  // todo: E: inventory, R reload, F action, Q drop
+	if (e.type == SDL_KEYDOWN && !e.key.repeat)  // todo: E: inventory, R reload, F action, Q drop
 	{
 		switch( e.key.keysym.sym )
 		{ 
 			case SDLK_RIGHT:
-				changeDir(DIRECTION_RIGHT);
+				setDir(DIRECTION_RIGHT);
+				speedX = moveSpeed;
+				speedY = 0;
 				return true;					
 
 			case SDLK_UP:
-				changeDir(DIRECTION_UP);
+				setDir(DIRECTION_UP);
+				speedX = 0;
+				speedY = -moveSpeed;
 				return true;
 
 			case SDLK_LEFT:
-				changeDir(DIRECTION_LEFT);
+				setDir(DIRECTION_LEFT);
+				speedX = -moveSpeed;
+				speedY = 0;
 				return true;
 
 			case SDLK_DOWN:
-				changeDir(DIRECTION_DOWN);
+				setDir(DIRECTION_DOWN);
+				speedX = 0;
+				speedY = moveSpeed;
 				return true;
 				
 			// interact key
@@ -121,7 +129,9 @@ bool PlayerSprite::handleKeyEvent(SDL_Event e)
 			case SDLK_UP:
 			case SDLK_LEFT:
 			case SDLK_DOWN:
-				changeDir(DIRECTION_NONE);
+				setDir(DIRECTION_NONE);
+				speedX = 0;
+				speedY = 0;
 				return true;
 
 			case SDLK_f:
@@ -174,7 +184,7 @@ SDL_Point PlayerSprite::getRightHandPosition()
 
 void PlayerSprite::handleAttacked(Attack* attack) 
 {
-	printf("Player Attacked\n");
+	printf("Player Was Attacked\n");
 }
 
 void PlayerSprite::handleSoundHeard(Sound* sound)
@@ -184,17 +194,39 @@ void PlayerSprite::handleSoundHeard(Sound* sound)
 
 void PlayerSprite::handleSpriteSeen(Sprite* sprite)
 {
-	printf("Player saw sprite\n");
+
 }
 
 void PlayerSprite::update(int ms) {
 	//printf("Now %d, %d w/h %d, %d\n", lineOfSight.x, lineOfSight.y, lineOfSight.w, lineOfSight.h);
 
-	(*current_anim).passTime(ms);
+	printf("speedx, speedy %f %f\n", speedX, speedY);
+	printf("default speed is %f\n", moveSpeed);
+	// only animate if moving
+	if (speedX || speedY)
+	{
+		(*current_anim).passTime(ms);
+	}
+	
 	if (currAction && !currAction->apply(this, ms)) // todo: should Actions be called from the Map/GameDriver?
 	{
 		delete(currAction);	
 		currAction = NULL;
+	}
+	
+	// update attacks, removing those that are finished
+	for (int i = 0; i < attacks.size(); )
+	{
+		attacks[i]->update(ms);
+		if (attacks[i]->finished)
+		{
+			delete attacks[i];
+			attacks.erase(attacks.begin() + i);
+		}
+		else
+		{
+			i++;	
+		}
 	}
 }
 

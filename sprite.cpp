@@ -44,69 +44,57 @@ void Sprite::moveBack()
 	hitbox.y = y + hitboxOffsetY;
 }
 
-void Sprite::changeDir(int newDir)
+void Sprite::setDir(int dir)
 {
-	// only change if direction has been changed
-	if (newDir != movementDir) {
-		
-		// reset currently-playing animation
+	// change of direction: reset current animation
+	if (dir != movementDir) 
+	{
 		(*current_anim).reset();
+		movementDir = dir;
+	}
 		
-		movementDir = newDir;
-		
-		switch (movementDir) 
-		{	
-			// no movement: simply pause animation that was playing. This way, the sprite remains
-			// facing the same direction
-			case DIRECTION_NONE:
-				//current_anim = &idle_anim;
-				current_anim->pause();
-				break;
+	// set animation, direction, and lineOfSight
+	switch (movementDir) 
+	{	
+		case DIRECTION_RIGHT:
+			current_anim = &mv_right_anim;
+			facingDir = DIRECTION_RIGHT;
+			lineOfSightOffsetX = hitbox.w;
+			lineOfSightOffsetY = 0;
+			lineOfSight.w = sightDistance; // todo: center. also, hitbox is too small: want full dimensions of sprite
+			lineOfSight.h = sightWidth;
+			break;
 
-			case DIRECTION_RIGHT:
-				current_anim = &mv_right_anim;
-				current_anim->play();
-				facingDir = DIRECTION_RIGHT;
-				lineOfSightOffsetX = hitbox.w;
-				lineOfSightOffsetY = 0;
-				lineOfSight.w = sightDistance; // todo: center. also, hitbox is too small: want full dimensions of sprite
-				lineOfSight.h = sightWidth;
-				break;
+		case DIRECTION_UP:
+			current_anim = &mv_up_anim;
+			facingDir = DIRECTION_UP;
+			lineOfSightOffsetX = 0;
+			lineOfSightOffsetY = -sightDistance;
+			lineOfSight.w = sightWidth;
+			lineOfSight.h = sightDistance;
+			break;
 
-			case DIRECTION_UP:
-				current_anim = &mv_up_anim;
-				current_anim->play();
-				facingDir = DIRECTION_UP;
-				lineOfSightOffsetX = 0;
-				lineOfSightOffsetY = -sightDistance;
-				lineOfSight.w = sightWidth;
-				lineOfSight.h = sightDistance;
-				break;
+		case DIRECTION_LEFT:
+			current_anim = &mv_left_anim;
+			facingDir = DIRECTION_LEFT;
+			lineOfSightOffsetX = -sightDistance;
+			lineOfSightOffsetY = 0;
+			lineOfSight.w = sightDistance;
+			lineOfSight.h = sightWidth;
+			break;
+			
+		case DIRECTION_DOWN:
+			current_anim = &mv_down_anim;
+			facingDir = DIRECTION_DOWN;
+			lineOfSightOffsetX = 0;
+			lineOfSightOffsetY = hitbox.h;
+			lineOfSight.w = sightWidth;
+			lineOfSight.h = sightDistance;
+			break;
 
-			case DIRECTION_DOWN:
-				current_anim = &mv_down_anim;
-				current_anim->play();
-				facingDir = DIRECTION_DOWN;
-				lineOfSightOffsetX = 0;
-				lineOfSightOffsetY = hitbox.h;
-				lineOfSight.w = sightWidth;
-				lineOfSight.h = sightDistance;
-				break;
-
-			case DIRECTION_LEFT:
-				current_anim = &mv_left_anim;
-				current_anim->play();
-				facingDir = DIRECTION_LEFT;
-				lineOfSightOffsetX = -sightDistance;
-				lineOfSightOffsetY = 0;
-				lineOfSight.w = sightDistance;
-				lineOfSight.h = sightWidth;
-				break;
-
-			default:
-				printf("Weird!! Don't know which animation to show!\n");
-				break;
-		}
+		default:
+			printf("Weird!! Don't know which animation to show!\n");
+			break;
 	}
 }
 
@@ -116,7 +104,11 @@ void Sprite::handleTrigger(Trigger* trigger)
 }
 
 void Sprite::update(int ms) {
-	(*current_anim).passTime(ms);
+	// only animate if moving
+	if (speedX || speedY)
+	{
+		(*current_anim).passTime(ms);
+	}
 }
 
 void Sprite::addHealth(float amount)

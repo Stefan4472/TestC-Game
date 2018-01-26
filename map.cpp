@@ -7,6 +7,7 @@ void Map::init(PlayerSprite* playerSprite, TextureAtlas* textureAtlas, SoundAtla
 	
 	mapChunk = new MapChunk(textureAtlas, 10);
 	
+	addSprite(playerSprite);
 	addSprite(new CivilianSprite(32 * 4, 32 * 4, playerSprite, textureAtlas));
 	addSprite(new CivilianSprite(32 * 8, 32 * 8, playerSprite, textureAtlas));
 	
@@ -19,7 +20,7 @@ void Map::init(PlayerSprite* playerSprite, TextureAtlas* textureAtlas, SoundAtla
 void Map::update(int ms) 
 {
 	// temporarily push player sprite to sprite list
-	sprites.push_back(playerSprite);
+	//sprites.push_back(playerSprite);
 	
 	int num_sprites = sprites.size();
 	int num_sounds = 0; // TODO
@@ -120,9 +121,6 @@ void Map::update(int ms)
 		}
 	}
 	
-	// remove playerSprite from sprites list
-	sprites.pop_back();
-	
 	// handle dead sprites
 	
 	// destroy sprites that request it
@@ -133,29 +131,19 @@ void Map::update(int ms)
 		playerSprite->interactHandled = true;
 		handlePlayerInteract(playerSprite); // TODO: DIRECTIONAL INTERACTION
 	}
-		
-	// clear attacks TODO: SPRITE SHOULD HANDLE THIS IN UPDATE()
-	for (int i = 0; i < playerSprite->attacks.size(); i++)
-	{
-		playerSprite->attacks[i]->update(ms);
-		if (playerSprite->attacks[i]->finished)
-		{
-			playerSprite->attacks.erase(playerSprite->attacks.begin() + i);
-		}
-	}
-	//playerSprite->attacks.clear();
 }
 
 void Map::handlePlayerInteract(PlayerSprite* playerSprite)
 {
-	// check tile first, then hitboxes of sprites, then hitboxes of objects objects	
+	// check tile first, then hitboxes of sprites, then hitboxes of objects	
 	printf("Handling Player Interact\n");
 	
 	// TODO: INTERACTIBLE TILES
 	
 	SDL_Rect player_hitbox = playerSprite->hitbox; // TODO: PLAYERSPRITE INTERACT_POSITION
 	
-	for (int i = 0; i < sprites.size(); i++) 
+	// check player hitbox against other sprite hitboxes
+	for (int i = 1; i < sprites.size(); i++) 
 	{
 		if (checkCollision(player_hitbox, sprites[i]->hitbox))
 		{
@@ -261,7 +249,6 @@ void Map::drawTo(SDL_Renderer* renderer)
 		items[i]->drawToMap(renderer, camera.x, camera.y);	
 	}
 	
-	sprites.push_back(playerSprite);
 	for (int i = 0; i < sprites.size(); i++) 
 	{
 		sprites[i]->drawTo(renderer, camera.x, camera.y);
@@ -292,8 +279,6 @@ void Map::drawTo(SDL_Renderer* renderer)
 		SDL_RenderDrawRect(renderer, &playerSprite->attacks[i]->position);	
 		playerSprite->attacks[i]->drawToMap(renderer, textureAtlas, camera.x, camera.y);
 	}
-	textureAtlas->draw(renderer, MOVING_BULLET, 0, 0);
-	sprites.pop_back();
 }
 
 bool Map::checkCollision(SDL_Rect a, SDL_Rect b)

@@ -26,8 +26,6 @@ class Sprite
 		int hitboxOffsetX, hitboxOffsetY;
 		// offset of start of lineOfSight, from sprite's x and y
 		int lineOfSightOffsetX, lineOfSightOffsetY;
-		// default DIRECTION speed
-		float speedPerMs = 0;
 		// current action controlling the sprite
 		Action* currAction = NULL;
 		// healthbar, which may be drawn over the sprite
@@ -46,6 +44,8 @@ class Sprite
 		float x = -1, y = -1;
 		// virtual coordinates at last frame
 		float lastX = -1, lastY = -1;
+		// pixels moved per ms in x and y
+		float speedX = 0, speedY = 0;
 		// hitpoints the sprite has at full health, and currently
 		float fullHp = -1, currHp = -1;
 		// area on map this sprite can be hit
@@ -80,8 +80,8 @@ class Sprite
 		void move(int ms);
 		// moves sprite to position it was at in previous frame
 		void moveBack();
-		// changes to given DIRECTION direction
-		void changeDir(int newDir);
+		// sets direction to given DIRECTION direction
+		void setDir(int dir);
 		// handles a trigger (event a sprite is made aware of)
 		virtual void handleTrigger(Trigger* trigger);
 		
