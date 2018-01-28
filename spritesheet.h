@@ -22,10 +22,10 @@ class Spritesheet
 		int msPerFrame;
 		// number of milliseconds this frame should keep playing for
 		int msLeftThisFrame;
-		// whether animation is currently paused
-		bool paused = false;
 		
 	public:
+		// whether animation is currently paused
+		bool paused = false;
 		// width/height of each individual frame
 		int frameWidth, frameHeight;
 		// inits with id of spritesheet's image, number of frames spritesheet splits into, and number of ms to display each frame

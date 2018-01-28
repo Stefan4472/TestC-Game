@@ -7,7 +7,7 @@ PlayerSpriteController::PlayerSpriteController(PlayerSprite* playerSprite) : Spr
 
 void PlayerSpriteController::update(int ms)
 {
-
+	player->update(ms);
 }
 
 void PlayerSpriteController::handleAttacked(Attack* attack)

@@ -4,6 +4,7 @@
 // Defines certain constants used in a lot of different classes/files.
 
 enum DIRECTION { 
+	DIRECTION_NONE,
 	DIRECTION_UP,
 	//DIRECTION_UP_RIGHT,
 	DIRECTION_RIGHT, 
@@ -12,7 +13,7 @@ enum DIRECTION {
 	//DIRECTION_DOWN_LEFT,
 	DIRECTION_LEFT,
 	//DIRECTION_UP_LEFT,
-	DIRECTION_NONE
+	
 };
 
 #endif

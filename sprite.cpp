@@ -51,33 +51,40 @@ void Sprite::startMoving()
 {
 	switch( facingDir ) 
 	{ 
-		case SDLK_RIGHT:
+		case DIRECTION_RIGHT:
 			speedX = moveSpeed;
 			speedY = 0;
 			break;					
 
-		case SDLK_UP:
+		case DIRECTION_UP:
 			speedX = 0;
 			speedY = -moveSpeed;
-			break;;
+			break;
 
-		case SDLK_LEFT:
+		case DIRECTION_LEFT:
 			speedX = -moveSpeed;
 			speedY = 0;
-			break;;
+			break;
 
-		case SDLK_DOWN:
+		case DIRECTION_DOWN:
 			speedX = 0;
 			speedY = moveSpeed;
 			break;
+			
+		default:
+			printf("Sprite::startMoving received unkown facingDir! %d\n", facingDir);
 	}
-	printf("Player Moving, %f %f\n", speedX, speedY);
+	printf("Set speedX and speedY to %f, %f for dir %d\n", speedX, speedY, facingDir);
+	current_anim->play();
 }
 
 void Sprite::stopMoving()
 {
 	speedX = 0;
 	speedY = 0;
+	current_anim->pause();
+	current_anim->reset();
+	printf("Player stopping movement\n");
 }
 
 void Sprite::moveBack() 
@@ -97,7 +104,6 @@ void Sprite::setDir(int dir)
 		(*current_anim).reset(); 
 		facingDir = dir;
 	}
-		
 	// set animation, direction, and lineOfSight
 	switch (facingDir) 
 	{	
@@ -138,10 +144,9 @@ void Sprite::setDir(int dir)
 			break;
 
 		default:
-			printf("Weird!! Don't know which animation to show!\n");
+			printf("Weird!! Don't know which animation to show! Facing dir = %d\n", facingDir);
 			break;
 	}
-	facingDir = DIRECTION_DOWN;
 }
 
 void Sprite::handleTrigger(Trigger* trigger)

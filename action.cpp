@@ -47,7 +47,7 @@ bool WanderAction::apply(Sprite* sprite, int ms)
 		nextChange = elapsedTime + (currMovement == DIRECTION_NONE ? wanderInterval : idleInterval);
 		// set movement to random direction if it was previously NONE, else stop movement
 		currMovement = (currMovement == DIRECTION_NONE ? rand() % 4 : DIRECTION_NONE);
-		sprite->setDir(currMovement);
+		//sprite->setDir(currMovement);
 	}
 	sprite->move(ms);
 	
@@ -101,7 +101,7 @@ bool FollowAction::apply(Sprite* sprite, int ms) // todo: need to return false i
 		// change direction if not correct
 		if (currMovement != dir) 
 		{
-			sprite->setDir(dir);
+			//sprite->setDir(dir);
 		}
 		nextSample += sampleRate;
 	}

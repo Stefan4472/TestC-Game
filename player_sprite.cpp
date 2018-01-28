@@ -171,7 +171,7 @@ SDL_Point PlayerSprite::getRightHandPosition()
 			return SDL_Point { x + 19, y + 41 };
 
 		default:
-			printf("Weird!! Don't know which animation to show!\n");
+			printf("Weird!! PlayerSprite, don't know which animation to show!\n");
 			break;
 	}
 }
@@ -186,6 +186,7 @@ void PlayerSprite::update(int ms) {
 	{
 		(*current_anim).passTime(ms);
 	}
+	printf("Current anim paused = %d\n", current_anim->paused);
 	
 	/*if (currAction && !currAction->apply(this, ms)) // todo: should Actions be called from the Map/GameDriver?
 	{
