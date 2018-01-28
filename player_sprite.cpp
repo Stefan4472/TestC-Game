@@ -78,7 +78,7 @@ bool PlayerSprite::handleKeyEvent(SDL_Event e)
 			// use in-hand inventory item
 			case SDLK_SPACE: {
 				inventory->useInHand(getRightHandPosition(), facingDir);
-				Action* action = inventory->getAction();
+				/*Action* action = inventory->getAction();
 				if (action)
 				{
 					printf("Received action\n");
@@ -89,7 +89,7 @@ bool PlayerSprite::handleKeyEvent(SDL_Event e)
 				{
 					printf("Received buff\n");
 					buffs.push_back(buff);
-				}
+				}*/
 				Attack* attack = inventory->getAttack();
 				if (attack)
 				{
@@ -176,21 +176,6 @@ SDL_Point PlayerSprite::getRightHandPosition()
 	}
 }
 
-void PlayerSprite::handleAttacked(Attack* attack) 
-{
-	printf("Player Was Attacked\n");
-}
-
-void PlayerSprite::handleSoundHeard(Sound* sound)
-{
-	printf("Player Heard Sound\n");
-}
-
-void PlayerSprite::handleSpriteSeen(Sprite* sprite)
-{
-
-}
-
 void PlayerSprite::update(int ms) {
 	//printf("Now %d, %d w/h %d, %d\n", lineOfSight.x, lineOfSight.y, lineOfSight.w, lineOfSight.h);
 
@@ -202,11 +187,11 @@ void PlayerSprite::update(int ms) {
 		(*current_anim).passTime(ms);
 	}
 	
-	if (currAction && !currAction->apply(this, ms)) // todo: should Actions be called from the Map/GameDriver?
+	/*if (currAction && !currAction->apply(this, ms)) // todo: should Actions be called from the Map/GameDriver?
 	{
 		delete(currAction);	
 		currAction = NULL;
-	}
+	}*/
 	
 	// update attacks, removing those that are finished
 	for (int i = 0; i < attacks.size(); )

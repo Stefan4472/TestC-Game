@@ -48,8 +48,8 @@ class Map
 	// pointer to player's sprite
 	PlayerSprite* playerSprite = NULL;
 	
-	// sprites generated and managed by map
-	std::vector<Sprite*> sprites;
+	// controllers for sprites managed by map
+	std::vector<SpriteController*> sprites;
 	
 	// items generated and managed by map
 	std::vector<Item*> items;
@@ -76,7 +76,7 @@ class Map
 		// advances state by given number of milliseconds
 		void update(int ms);
 		// adds sprite to list of tracked sprites
-		void addSprite(Sprite* sprite);
+		void addControlledSprite(SpriteController* spriteController);
 		// adds item to list of items on the map
 		void addItem(Item* item);
 		// center background to given rect, updating camera

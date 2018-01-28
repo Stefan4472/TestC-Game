@@ -27,23 +27,12 @@ CivilianSprite::CivilianSprite(float xCoord, float yCoord, Sprite* playerSprite,
 	fullHp = 30;
 	currHp = 30;
 	healthbar = new SpriteHealthBar(32, currHp,fullHp);
-
-	currAction = getInitialAction();
 		
 	// TODO: KNOW WHICH DIRECTION SPRITE IS INITIALLY FACING. DEFAULTS TO DOWN
 	setDir(DIRECTION_DOWN); // sets line of sight
 }
 
 void CivilianSprite::update(int ms) {
-	// apply current action 
-	if (!currAction->apply(this, ms))
-	{
-		printf("CivilianSprite %d starting new action\n", this);
-		// current action is over: free and create new idle action TODO: MORE SOPHISTICATED DECISION PROCESS
-		delete currAction;
-		currAction = new IdleAction(ACTION_LOOPING);
-	}
-	
 	// only animate if moving
 	if (speedX || speedY)
 	{
@@ -71,33 +60,6 @@ SDL_Point CivilianSprite::getRightHandPosition() // todo: standardize for all sp
 			printf("Weird!! Don't know which animation to show!\n");
 			break;
 	}
-}
-
-void CivilianSprite::handleAttacked(Attack* attack)
-{
-	printf("Civilian Attacked!!\n");
-	
-	// replace current action with knockback in the direction of the attack
-	delete currAction;
-	currAction = new KnockbackAction(attack->dir);
-	
-	// handle loss of hp and show healthbar
-	loseHealth(attack->damage);
-	healthbar->changeHealth(-attack->damage);
-	showHealthbar();
-	
-	// add sound
-	sounds.push_back(SOUND_2);
-}
-
-void CivilianSprite::handleSoundHeard(Sound* sound)
-{
-	printf("Sprite %d heard sound %d\n", this, sound->soundId);
-}
-
-void CivilianSprite::handleSpriteSeen(Sprite* sprite)
-{
-	//printf("Sprite %d sees sprite %d\n", this, sprite);
 }
 
 void CivilianSprite::showHealthbar() 

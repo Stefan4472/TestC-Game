@@ -7,13 +7,13 @@ void Map::init(PlayerSprite* playerSprite, TextureAtlas* textureAtlas, SoundAtla
 	
 	mapChunk = new MapChunk(textureAtlas, 10);
 	
-	addSprite(playerSprite);
+	/*addSprite(playerSprite);
 	addSprite(new CivilianSprite(32 * 4, 32 * 4, playerSprite, textureAtlas));
-	addSprite(new CivilianSprite(32 * 8, 32 * 8, playerSprite, textureAtlas));
+	addSprite(new CivilianSprite(32 * 8, 32 * 8, playerSprite, textureAtlas));*/
 	
 	Sprite* controlled = new CivilianSprite(32 * 12, 32 * 8, playerSprite, textureAtlas);
 	spriteController = new SpriteController(controlled);
-	addSprite(controlled);
+	addControlledSprite(spriteController);
 	
 	addItem(new Consumable(ITEM_BREAD_LOAF, 100, 200, textureAtlas));
 	addItem(new Consumable(ITEM_BEER_MUG, 132, 200, textureAtlas));
@@ -34,16 +34,16 @@ void Map::update(int ms)
 	for (int i = 0; i < num_sprites; i++)
 	{
 		// check sprite's attacks against other sprite hitboxes
-		for (int j = 0; j < sprites[i]->attacks.size(); j++) 
+		for (int j = 0; j < sprites[i]->sprite->attacks.size(); j++) 
 		{
-			attack_pos = sprites[i]->attacks[j]->position;
+			attack_pos = sprites[i]->sprite->attacks[j]->position;
 			// check against other sprites
 			for (int k = 0; k < num_sprites; k++) // TODO: BETTER VARIABLE NAMES
 			{
-				if (k != i && checkCollision(attack_pos, sprites[k]->hitbox))
+				if (k != i && checkCollision(attack_pos, sprites[k]->sprite->hitbox))
 				{
-					sprites[k]->handleAttacked(sprites[i]->attacks[j]);
-					sprites[i]->attacks[j]->handleSpriteCollision();
+					sprites[k]->handleAttacked(sprites[i]->sprite->attacks[j]);
+					sprites[i]->sprite->attacks[j]->handleSpriteCollision();
 				}
 			}
 			// check against map objects TODO
@@ -52,7 +52,7 @@ void Map::update(int ms)
 		// check distance to sounds that were created the previous frame
 		for (int j = 0; j < num_sounds; j++)
 		{
-			if (distSquared(sprites[i], sounds[j]) < 102400) // TODO: SOME HEARING-RANGE CONSTANT (?)
+			if (distSquared(sprites[i]->sprite, sounds[j]) < 102400) // TODO: SOME HEARING-RANGE CONSTANT (?)
 			{
 				sprites[i]->handleSoundHeard(sounds[j]);
 			}
@@ -61,9 +61,9 @@ void Map::update(int ms)
 		// check sprite's line of sight against other sprites
 		for (int j = i + 1; j < num_sprites; j++) 
 		{
-			if (checkCollision(sprites[i]->lineOfSight, sprites[j]->hitbox))
+			if (checkCollision(sprites[i]->sprite->lineOfSight, sprites[j]->sprite->hitbox))
 			{
-				sprites[i]->handleSpriteSeen(sprites[j]);	
+				sprites[i]->handleSpriteSeen(sprites[j]->sprite);	
 			}
 		}
 	}
@@ -72,26 +72,26 @@ void Map::update(int ms)
 	// update and move each sprite
 	for (int i = 0; i < num_sprites; i++)
 	{
-		sprites[i]->move(ms);
-		sprites[i]->update(ms);
+		sprites[i]->sprite->move(ms);
+		sprites[i]->sprite->update(ms);
 	}
 	spriteController->update(ms);
 	
 	// check that sprite is in a valid position and not colliding with any others
 	for (int i = 0; i < num_sprites; i++)
 	{
-		if (!isValidPosition(sprites[i]->hitbox))
+		if (!isValidPosition(sprites[i]->sprite->hitbox))
 		{
-			printf("Collision of sprite %d at %f, %f\n", sprites[i], sprites[i]->x, sprites[i]->y);
-			sprites[i]->moveBack(); // TODO: IT MAY BE NECESSARY TO HAVE AN EXTRA, SEPARATE HITBOX FOR THE SPRITE'S FEET.
-			printf("Moved back to %f, %f\n", sprites[i]->x, sprites[i]->y);
+			printf("Collision of sprite %d at %f, %f\n", sprites[i]->sprite, sprites[i]->sprite->x, sprites[i]->sprite->y);
+			sprites[i]->sprite->moveBack(); // TODO: IT MAY BE NECESSARY TO HAVE AN EXTRA, SEPARATE HITBOX FOR THE SPRITE'S FEET.
+			printf("Moved back to %f, %f\n", sprites[i]->sprite->x, sprites[i]->sprite->y);
 		}
 		for (int j = i + 1; j < num_sprites; j++)
 		{
-			if (checkCollision(sprites[i]->hitbox, sprites[j]->hitbox))
+			if (checkCollision(sprites[i]->sprite->hitbox, sprites[j]->sprite->hitbox))
 			{
 				printf("Two sprites are colliding\n");
-				sprites[j]->moveBack();
+				sprites[j]->sprite->moveBack();
 			}
 		}
 	}
@@ -99,11 +99,11 @@ void Map::update(int ms)
 	// "pick up" any items dropped by the sprite
 	for (int i = 0; i < num_sprites; i++)
 	{
-		while (!sprites[i]->drops.empty()) // TODO: LINKED LIST IMPLEMENTATION
+		while (!sprites[i]->sprite->drops.empty()) // TODO: LINKED LIST IMPLEMENTATION
 		{
-			items.push_back(sprites[i]->drops.back());
-			printf("Collected Drop %s from Sprite %d\n", sprites[i]->drops.back()->getName(), sprites[i]);
-			sprites[i]->drops.pop_back();
+			items.push_back(sprites[i]->sprite->drops.back());
+			printf("Collected Drop %s from Sprite %d\n", sprites[i]->sprite->drops.back()->getName(), sprites[i]->sprite);
+			sprites[i]->sprite->drops.pop_back();
 		}
 	}
 	
@@ -117,12 +117,12 @@ void Map::update(int ms)
 	// fetch sounds requested by sprites, play them, and store them in the map
 	for (int i = 0; i < num_sprites; i++)
 	{
-		while(!sprites.at(i)->sounds.empty())
+		while(!sprites.at(i)->sprite->sounds.empty())
 		{
-			printf("Playing Sound %d from Sprite %d\n", sprites.at(i)->sounds.back(), sprites.at(i));
-			sounds.push_back(new Sound(sprites.at(i)->sounds.back(), sprites[i]->x, sprites[i]->y, sprites[i]));
-			Mix_PlayChannel( -1, soundAtlas->getSound(sprites.at(i)->sounds.back()), 0 ); // TODO: SEEMS INEFFICIENT 
-			sprites.at(i)->sounds.pop_back();
+			printf("Playing Sound %d from Sprite %d\n", sprites.at(i)->sprite->sounds.back(), sprites.at(i)->sprite);
+			sounds.push_back(new Sound(sprites.at(i)->sprite->sounds.back(), sprites[i]->sprite->x, sprites[i]->sprite->y, sprites[i]->sprite));
+			Mix_PlayChannel( -1, soundAtlas->getSound(sprites.at(i)->sprite->sounds.back()), 0 ); // TODO: SEEMS INEFFICIENT 
+			sprites.at(i)->sprite->sounds.pop_back();
 		}
 	}
 	
@@ -150,9 +150,9 @@ void Map::handlePlayerInteract(PlayerSprite* playerSprite)
 	// check player hitbox against other sprite hitboxes
 	for (int i = 1; i < sprites.size(); i++) 
 	{
-		if (checkCollision(player_hitbox, sprites[i]->hitbox))
+		if (checkCollision(player_hitbox, sprites[i]->sprite->hitbox))
 		{
-			printf("Collision with sprite at %f, %f\n", sprites[i]->x, sprites[i]->y);
+			printf("Collision with sprite at %f, %f\n", sprites[i]->sprite->x, sprites[i]->sprite->y);
 				// TODO: HANDLE
 			return;
 		}
@@ -188,9 +188,9 @@ bool Map::isWalkable(int x, int y) // todo: check x >= 0 && y >= 0 && x <= SCREE
 	return mapChunk->walkableTiles[y / TILE_HEIGHT][x / TILE_WIDTH];
 }
 
-void Map::addSprite(Sprite* sprite)
+void Map::addControlledSprite(SpriteController* spriteController)
 {
-	sprites.push_back(sprite);	
+	sprites.push_back(spriteController);	
 }
 
 void Map::addItem(Item* item)
@@ -256,27 +256,27 @@ void Map::drawTo(SDL_Renderer* renderer)
 	
 	for (int i = 0; i < sprites.size(); i++) 
 	{
-		sprites[i]->drawTo(renderer, camera.x, camera.y);
+		sprites[i]->sprite->drawTo(renderer, camera.x, camera.y);
 	}
 	// draw hitboxes in red
 	SDL_SetRenderDrawColor(renderer, 255, 0, 0, SDL_ALPHA_OPAQUE);
 	for (int i = 0; i < sprites.size(); i++) 
 	{
-		sprites[i]->hitbox.x -= camera.x;
-		sprites[i]->hitbox.y -= camera.y;
-		SDL_RenderDrawRect(renderer, &sprites[i]->hitbox);
-		sprites[i]->hitbox.x += camera.x;
-		sprites[i]->hitbox.y += camera.y;
+		sprites[i]->sprite->hitbox.x -= camera.x;
+		sprites[i]->sprite->hitbox.y -= camera.y;
+		SDL_RenderDrawRect(renderer, &sprites[i]->sprite->hitbox);
+		sprites[i]->sprite->hitbox.x += camera.x;
+		sprites[i]->sprite->hitbox.y += camera.y;
 	}
 	// draw line of sight in blue
 	SDL_SetRenderDrawColor(renderer, 0, 0, 255, SDL_ALPHA_OPAQUE);
 	for (int i = 0; i < sprites.size(); i++) 
 	{
-		sprites[i]->lineOfSight.x -= camera.x;
-		sprites[i]->lineOfSight.y -= camera.y;
-		SDL_RenderDrawRect(renderer, &sprites[i]->lineOfSight);
-		sprites[i]->lineOfSight.x += camera.x;
-		sprites[i]->lineOfSight.y += camera.y;
+		sprites[i]->sprite->lineOfSight.x -= camera.x;
+		sprites[i]->sprite->lineOfSight.y -= camera.y;
+		SDL_RenderDrawRect(renderer, &sprites[i]->sprite->lineOfSight);
+		sprites[i]->sprite->lineOfSight.x += camera.x;
+		sprites[i]->sprite->lineOfSight.y += camera.y;
 	}
 	// draw attack hitboxes in blue
 	for (int i = 0; i < playerSprite->attacks.size(); i++) 

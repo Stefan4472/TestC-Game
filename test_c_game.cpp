@@ -268,7 +268,8 @@ int main( int argc, char* args[] )
 		map.update(ticks_since_last_frame);
 		
 		// center map on playerSprite and draw
-		map.centerTo(playerSprite.hitbox);
+		//map.centerTo(playerSprite.hitbox);
+		map.centerTo(SDL_Rect { 100, 100, 50, 50 });
 		
 		map.drawTo(gRenderer);
 		

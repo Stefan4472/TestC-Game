@@ -24,13 +24,6 @@ class CivilianSprite : public Sprite
 		// return coordinates of right hand
 		SDL_Point getRightHandPosition();
 		
-		// called by map when sprite is hit by an attack
-		void handleAttacked(Attack* attack);
-		// called by map when sprite is in range of a sound
-		void handleSoundHeard(Sound* sound);
-		// handles sprite seeing another sprite 
-		void handleSpriteSeen(Sprite* sprite);
-		
 		// shows the healthbar for a given number of frames
 		void showHealthbar();
 		// draws sprite to the given surface/screen. Subtracting offsets from coordinates results in on-canvas coordinate to draw to

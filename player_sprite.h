@@ -33,13 +33,6 @@ class PlayerSprite: public InventoryListener, public Sprite
 		// given KeyEvent from user, sees whether it is relevant and consumes it. Returns true if it was consumed.
 		bool handleKeyEvent(SDL_Event e);
 		
-		// called by map when player is struck by an attack
-		void handleAttacked(Attack* attack);
-		// handles sprite hearing a sound
-		void handleSoundHeard(Sound* sound);
-		// handles sprite seeing another sprite 
-		void handleSpriteSeen(Sprite* sprite);
-		
 		// whether key for interact has been pressed
 		bool interactPressed = false;
 		// whether the player has pressed key for interaction, and has been handled 

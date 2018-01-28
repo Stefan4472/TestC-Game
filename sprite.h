@@ -12,13 +12,11 @@
 #include "sound.h"
 #include "healthbar.h"
 
-class Action;
-
 // Sprite base class
 
 class Sprite
 {
-	protected:
+	public: // TODO: MAKE SOME PRIVATE/PROTECTED
 		Spritesheet idle_anim, mv_up_anim, mv_down_anim, mv_right_anim, mv_left_anim;
 		// pointer to animation that's currently playing
 		Spritesheet *current_anim = NULL;
@@ -26,12 +24,8 @@ class Sprite
 		int hitboxOffsetX, hitboxOffsetY;
 		// offset of start of lineOfSight, from sprite's x and y
 		int lineOfSightOffsetX, lineOfSightOffsetY;
-		// current action controlling the sprite
-		Action* currAction = NULL;
 		// healthbar, which may be drawn over the sprite
 		SpriteHealthBar* healthbar;
-		// list of buffs currently affecting player
-		std::vector<Action*> buffs;
 		// sprite's movement speed, px per millisecond
 		float moveSpeed = 0.25f;
 		// distance sprite can see, and width of line of sight
@@ -39,7 +33,7 @@ class Sprite
 		
 		// TODO: LIST (or hashmap) OF FRIENDLY SPRITES, LIST OF ENEMY SPRITES. LINE OF SIGHT HITBOX. MAP_POSITION HITBOX?
 	
-	public:
+	
 		// virtual coordinates
 		float x = -1, y = -1;
 		// virtual coordinates at last frame
@@ -88,13 +82,6 @@ class Sprite
 		void setDir(int dir);
 		// handles a trigger (event a sprite is made aware of)
 		virtual void handleTrigger(Trigger* trigger);
-		
-		// responds to sprite being attacked
-		virtual void handleAttacked(Attack* attack) = 0;
-		// handles sprite hearing a sound 
-		virtual void handleSoundHeard(Sound* sound) = 0;
-		// handles sprite seeing another sprite 
-		virtual void handleSpriteSeen(Sprite* sprite) = 0;
 		
 		// finalizes DIRECTION and any other updates to the sprite's state
 		virtual void update(int ms);
