@@ -11,6 +11,7 @@
 #include "gui_window.h"
 #include "pause_dialog.h"
 #include "player_sprite.h"
+#include "player_sprite_controller.h"
 #include "map.h"
 
 //Screen dimension constants. Actually defined in map.h atm
@@ -163,9 +164,10 @@ int main( int argc, char* args[] )
 	FontAtlas fontAtlas = FontAtlas();
 	printf("Loaded Font Atlas\n");
 	PlayerSprite playerSprite = PlayerSprite(100.0f, 140.0f, &textureAtlas, gRenderer, fontAtlas.getFont(MAIN_FONT)); 
-	printf("Created player sprite\n");
+	PlayerSpriteController* playerController = new PlayerSpriteController(&playerSprite);
+	printf("Created player sprite and controller\n");
 	Map map;
-	map.init(&playerSprite, &textureAtlas, &soundAtlas);
+	map.init(playerController, &textureAtlas, &soundAtlas);
 	printf("Created map\n");
 	// pointer to current Window active on screen
 	Window* currWindow = NULL;
@@ -231,7 +233,7 @@ int main( int argc, char* args[] )
 				
 			}
 			// send event to playerSprite, which will handle it in almost all cases.
-			else if (playerSprite.handleKeyEvent(e)) 
+			else if (playerController->player->handleKeyEvent(e)) 
 			{
 				
 			}
@@ -268,8 +270,7 @@ int main( int argc, char* args[] )
 		map.update(ticks_since_last_frame);
 		
 		// center map on playerSprite and draw
-		//map.centerTo(playerSprite.hitbox);
-		map.centerTo(SDL_Rect { 100, 100, 50, 50 });
+		map.centerTo(playerController->player->hitbox);
 		
 		map.drawTo(gRenderer);
 		

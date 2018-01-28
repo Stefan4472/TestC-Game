@@ -4,7 +4,7 @@
 #include "sprite_controller.h"
 #include "civilian_sprite.h"
 
-// Provides the controller for a CivilianSprite
+// Provides the controller for a CivilianSprite.
 
 class CivilianSpriteController : public SpriteController
 {

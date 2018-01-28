@@ -1,16 +1,16 @@
 #include "map.h"
 
-void Map::init(PlayerSprite* playerSprite, TextureAtlas* textureAtlas, SoundAtlas* soundAtlas) {
+void Map::init(PlayerSpriteController* playerSpriteController, TextureAtlas* textureAtlas, SoundAtlas* soundAtlas) {
 	this->textureAtlas = textureAtlas;
 	this->soundAtlas = soundAtlas;
-	this->playerSprite = playerSprite;
+	this->playerSpriteController = playerSpriteController;
 	
 	mapChunk = new MapChunk(textureAtlas, 10);
 	
-	/*addSprite(playerSprite);*/
-	addControlledSprite(new CivilianSpriteController(new CivilianSprite(32 * 4, 32 * 4, playerSprite, textureAtlas)));
-	addControlledSprite(new CivilianSpriteController(new CivilianSprite(32 * 8, 32 * 8, playerSprite, textureAtlas)));	
-	addControlledSprite(new CivilianSpriteController(new CivilianSprite(32 * 12, 32 * 8, playerSprite, textureAtlas)));
+	addControlledSprite(playerSpriteController);
+	addControlledSprite(new CivilianSpriteController(new CivilianSprite(32 * 4, 32 * 4, playerSpriteController->player, textureAtlas)));
+	addControlledSprite(new CivilianSpriteController(new CivilianSprite(32 * 8, 32 * 8, playerSpriteController->player, textureAtlas)));	
+	addControlledSprite(new CivilianSpriteController(new CivilianSprite(32 * 12, 32 * 8, playerSpriteController->player, textureAtlas)));
 	
 	addItem(new Consumable(ITEM_BREAD_LOAF, 100, 200, textureAtlas));
 	addItem(new Consumable(ITEM_BEER_MUG, 132, 200, textureAtlas));
@@ -21,7 +21,6 @@ void Map::init(PlayerSprite* playerSprite, TextureAtlas* textureAtlas, SoundAtla
 void Map::update(int ms) 
 {
 	// temporarily push player sprite to sprite list
-	//sprites.push_back(playerSprite);
 	
 	int num_sprites = sprites.size();
 	int num_sounds = 0; // TODO
@@ -127,10 +126,10 @@ void Map::update(int ms)
 	// destroy sprites that request it
 	
 	// handle playerSprite wanting to interact: delegate to handlePlayerInteract()
-	if (playerSprite->interactPressed && !playerSprite->interactHandled)
+	if (playerSpriteController->player->interactPressed && !playerSpriteController->player->interactHandled)
 	{
-		playerSprite->interactHandled = true;
-		handlePlayerInteract(playerSprite); // TODO: DIRECTIONAL INTERACTION
+		playerSpriteController->player->interactHandled = true;
+		handlePlayerInteract(playerSpriteController->player); // TODO: DIRECTIONAL INTERACTION
 	}
 }
 
@@ -275,10 +274,10 @@ void Map::drawTo(SDL_Renderer* renderer)
 		sprites[i]->sprite->lineOfSight.y += camera.y;
 	}
 	// draw attack hitboxes in blue
-	for (int i = 0; i < playerSprite->attacks.size(); i++) 
+	for (int i = 0; i < playerSpriteController->player->attacks.size(); i++) 
 	{
-		SDL_RenderDrawRect(renderer, &playerSprite->attacks[i]->position);	
-		playerSprite->attacks[i]->drawToMap(renderer, textureAtlas, camera.x, camera.y);
+		SDL_RenderDrawRect(renderer, &playerSpriteController->player->attacks[i]->position);	
+		playerSpriteController->player->attacks[i]->drawToMap(renderer, textureAtlas, camera.x, camera.y);
 	}
 }
 

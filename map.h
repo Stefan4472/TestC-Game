@@ -18,6 +18,7 @@
 #include "player_sprite.h"
 #include "sprite_controller.h"
 #include "civilian_sprite_controller.h"
+#include "player_sprite_controller.h"
 #include "trigger.h"
 
 // screen dimension constants: todo: read from a universal file
@@ -44,7 +45,7 @@ class Map
 	SoundAtlas* soundAtlas = NULL;
 	
 	// pointer to player's sprite
-	PlayerSprite* playerSprite = NULL;
+	PlayerSpriteController* playerSpriteController = NULL;
 	
 	// controllers for sprites managed by map
 	std::vector<SpriteController*> sprites;
@@ -70,7 +71,7 @@ class Map
 	
 	public:
 		// init tile images
-		void init(PlayerSprite* playerSprite, TextureAtlas* textureAtlas, SoundAtlas* soundAtlas);
+		void init(PlayerSpriteController* playerSpriteController, TextureAtlas* textureAtlas, SoundAtlas* soundAtlas);
 		// advances state by given number of milliseconds
 		void update(int ms);
 		// adds sprite to list of tracked sprites
