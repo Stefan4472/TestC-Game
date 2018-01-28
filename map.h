@@ -17,6 +17,7 @@
 #include "civilian_sprite.h"
 #include "player_sprite.h"
 #include "sprite_controller.h"
+#include "civilian_sprite_controller.h"
 #include "trigger.h"
 
 // screen dimension constants: todo: read from a universal file
@@ -35,9 +36,6 @@ class Map
 	
 	// source and destination rects 
 	SDL_Rect src = {0, 0, TILE_WIDTH, TILE_HEIGHT}, dest = {0, 0, TILE_WIDTH, TILE_HEIGHT};
-	
-	// test SpriteController
-	SpriteController* spriteController = NULL;
 	
 	// pointer to TextureAtlas used for drawing images
 	TextureAtlas* textureAtlas = NULL;

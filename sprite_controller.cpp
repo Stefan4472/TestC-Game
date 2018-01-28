@@ -3,10 +3,9 @@
 SpriteController::SpriteController(Sprite* sprite)
 {
 	this->sprite = sprite;
-	currAction = new WanderAction(ACTION_LOOPING, 10, 400, 100);
 }
 
-void SpriteController::update(int ms)
+/*void SpriteController::update(int ms)
 {
 	currAction->apply(sprite, ms);
 }

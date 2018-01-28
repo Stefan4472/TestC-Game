@@ -7,13 +7,10 @@ void Map::init(PlayerSprite* playerSprite, TextureAtlas* textureAtlas, SoundAtla
 	
 	mapChunk = new MapChunk(textureAtlas, 10);
 	
-	/*addSprite(playerSprite);
-	addSprite(new CivilianSprite(32 * 4, 32 * 4, playerSprite, textureAtlas));
-	addSprite(new CivilianSprite(32 * 8, 32 * 8, playerSprite, textureAtlas));*/
-	
-	Sprite* controlled = new CivilianSprite(32 * 12, 32 * 8, playerSprite, textureAtlas);
-	spriteController = new SpriteController(controlled);
-	addControlledSprite(spriteController);
+	/*addSprite(playerSprite);*/
+	addControlledSprite(new CivilianSpriteController(new CivilianSprite(32 * 4, 32 * 4, playerSprite, textureAtlas)));
+	addControlledSprite(new CivilianSpriteController(new CivilianSprite(32 * 8, 32 * 8, playerSprite, textureAtlas)));	
+	addControlledSprite(new CivilianSpriteController(new CivilianSprite(32 * 12, 32 * 8, playerSprite, textureAtlas)));
 	
 	addItem(new Consumable(ITEM_BREAD_LOAF, 100, 200, textureAtlas));
 	addItem(new Consumable(ITEM_BEER_MUG, 132, 200, textureAtlas));
@@ -73,9 +70,8 @@ void Map::update(int ms)
 	for (int i = 0; i < num_sprites; i++)
 	{
 		sprites[i]->sprite->move(ms);
-		sprites[i]->sprite->update(ms);
+		sprites[i]->update(ms);
 	}
-	spriteController->update(ms);
 	
 	// check that sprite is in a valid position and not colliding with any others
 	for (int i = 0; i < num_sprites; i++)
