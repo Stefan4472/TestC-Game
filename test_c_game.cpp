@@ -233,7 +233,7 @@ int main( int argc, char* args[] )
 				
 			}
 			// send event to playerSprite, which will handle it in almost all cases.
-			else if (playerController->player->handleKeyEvent(e)) 
+			else if (playerController->handleKeyEvent(e)) 
 			{
 				
 			}
@@ -244,7 +244,7 @@ int main( int argc, char* args[] )
 				{ 
 					// show player's inventory in window
 					case SDLK_e: 
-						invWindow = playerSprite.inventory->getWindow(gRenderer, &textureAtlas, &fontAtlas); // TODO: SHOULDN'T CREATE A NEW WINDOW EVERY TIME
+						invWindow = playerController->inventory->getWindow(gRenderer, &textureAtlas, &fontAtlas); // TODO: SHOULDN'T CREATE A NEW WINDOW EVERY TIME
 						invWindow->active = true;
 						currWindow = invWindow;
 						break;
@@ -293,10 +293,10 @@ int main( int argc, char* args[] )
 		
 		if (invWindow && invWindow->active) // currently work-around to draw inventory
 		{
-			playerSprite.inventory->drawTo(gRenderer, &textureAtlas);	
+			playerController->inventory->drawTo(gRenderer, &textureAtlas);	
 		}
 		// draw name of in-hand item to screen, if any
-		if (playerSprite.inventory->getInHand()) // TODO: ONLY RENDER WHEN CHANGE OCCURS. Use Item.drawAsInHand()
+		if (playerController->inventory->getInHand()) // TODO: ONLY RENDER WHEN CHANGE OCCURS. Use Item.drawAsInHand()
 		{
 			//rendered_inhand_name = TTF_RenderText_Solid(font, playerSprite.inventory->getInHand()->getName(), textColor);
 			//SDL_BlitSurface(rendered_inhand_name, NULL, gScreenSurface, NULL);

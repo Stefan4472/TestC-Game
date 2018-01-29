@@ -8,9 +8,10 @@
 #include "player_hud.h"
 #include "action.h"
 #include "sprite.h"
+#include "item.h"
 
 // updating: handle input events in queue, call move(), check collisions, handle any collisions, update, draw
-class PlayerSprite: public InventoryListener, public Sprite
+class PlayerSprite: public Sprite
 {
 	// renderer 
 	SDL_Renderer* renderer = NULL;
@@ -30,13 +31,7 @@ class PlayerSprite: public InventoryListener, public Sprite
 		void drawTo(SDL_Renderer* renderer, int offsetX, int offsetY);
 		// draws sprite's head's up display to the screen. Includes healthbar, in-hand item, etc.
 		void drawHUD(SDL_Renderer* renderer);
-		// given KeyEvent from user, sees whether it is relevant and consumes it. Returns true if it was consumed.
-		bool handleKeyEvent(SDL_Event e);
 		
-		// whether key for interact has been pressed
-		bool interactPressed = false;
-		// whether the player has pressed key for interaction, and has been handled 
-		bool interactHandled = false;
 		~PlayerSprite();
 };
 #endif

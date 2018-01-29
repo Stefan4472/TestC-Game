@@ -18,6 +18,14 @@ class PlayerSpriteController : public SpriteController
 		// must be maintained separately from Sprite* pointer included in SpriteController base class
 		PlayerSprite* player = NULL;
 		
+		// whether player pressed key to interact
+		bool interactPressed = false;
+		// whether interact request was handled by Map
+		bool interactHandled = false;
+		
+		// handles given event, and returns if it was consumed
+		bool handleKeyEvent(SDL_Event e);
+		
 		// updates state of sprite by given number of milliseconds
 		void update(int ms);
 

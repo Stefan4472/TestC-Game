@@ -3,6 +3,9 @@
 
 #include "sprite.h"
 #include "action.h"
+#include "inventory.h"
+#include "attack.h"
+#include "sound.h"
 
 // The SpriteController provides the AI controlling a sprite. It is essentially a Finite State Machine
 // that manages the action a Sprite is currently following, and handles responses to certain events/
@@ -13,14 +16,22 @@
 
 class SpriteController 
 {
-	protected:
-		// list of buffs currently affecting player
-		std::vector<Action*> buffs;
-	
 	public:
 		SpriteController(Sprite* sprite);
+		
 		// the sprite being controlled
 		Sprite* sprite = NULL;
+		// sprite's inventory
+		Inventory* inventory = NULL; 
+		// list of Items sprite wants to drop. Meant to be picked up by the Map/Gamedriver
+		std::vector<Item*> drops;
+		// list of Attacks sprite wants to carry out. Meant to be picked up by the Map/Gamedriver
+		// a sprite may have multiple attacks progressing, e.g. if several bullets have been fired
+		std::vector<Attack*> attacks;
+		// list of SoundIds the sprite has requested. Meant to be picked up by the Map/Gamedriver
+		std::vector<int> sounds;
+		// list of buffs currently affecting player
+		std::vector<Action*> buffs;
 		
 		// updates state of sprite by given number of milliseconds
 		virtual void update(int ms) = 0;

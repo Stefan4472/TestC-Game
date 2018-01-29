@@ -10,8 +10,7 @@
 #include "gui_window.h"
 #include "gui_img_button.h"
 #include "item.h"
-
-class Sprite;
+#include "sprite.h"
 
 // An inventory manages the Items a Sprite has and can use. It also manages the usage and effects of
 // those items.

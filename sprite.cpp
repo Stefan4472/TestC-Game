@@ -74,7 +74,6 @@ void Sprite::startMoving()
 		default:
 			printf("Sprite::startMoving received unkown facingDir! %d\n", facingDir);
 	}
-	printf("Set speedX and speedY to %f, %f for dir %d\n", speedX, speedY, facingDir);
 	current_anim->play();
 }
 
@@ -84,7 +83,6 @@ void Sprite::stopMoving()
 	speedY = 0;
 	current_anim->pause();
 	current_anim->reset();
-	printf("Player stopping movement\n");
 }
 
 void Sprite::moveBack() 
@@ -147,11 +145,6 @@ void Sprite::setDir(int dir)
 			printf("Weird!! Don't know which animation to show! Facing dir = %d\n", facingDir);
 			break;
 	}
-}
-
-void Sprite::handleTrigger(Trigger* trigger)
-{
-	printf("Sprite baseclass received trigger %d\n", trigger->triggerType);	
 }
 
 void Sprite::update(int ms) {

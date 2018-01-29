@@ -22,8 +22,6 @@ CivilianSprite::CivilianSprite(float xCoord, float yCoord, Sprite* playerSprite,
 	
 	current_anim = &idle_anim;
 	
-	inventory = new Inventory(this, 5);	
-	
 	fullHp = 30;
 	currHp = 30;
 	healthbar = new SpriteHealthBar(32, currHp,fullHp);
@@ -74,6 +72,6 @@ void CivilianSprite::drawTo(SDL_Renderer* renderer, int offsetX, int offsetY) {
 	if (numHealthbarFrames)
 	{
 		healthbar->drawTo(renderer, x - offsetX, y - offsetY);
-		numHealthbarFrames--;
+		numHealthbarFrames--; // TODO: USE MILLISECONDS, NOT FRAME COUNT (?)
 	}
 }

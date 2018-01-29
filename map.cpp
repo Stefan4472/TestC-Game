@@ -30,16 +30,16 @@ void Map::update(int ms)
 	for (int i = 0; i < num_sprites; i++)
 	{
 		// check sprite's attacks against other sprite hitboxes
-		for (int j = 0; j < sprites[i]->sprite->attacks.size(); j++) 
+		for (int j = 0; j < sprites[i]->attacks.size(); j++) 
 		{
-			attack_pos = sprites[i]->sprite->attacks[j]->position;
+			attack_pos = sprites[i]->attacks[j]->position;
 			// check against other sprites
 			for (int k = 0; k < num_sprites; k++) // TODO: BETTER VARIABLE NAMES
 			{
 				if (k != i && checkCollision(attack_pos, sprites[k]->sprite->hitbox))
 				{
-					sprites[k]->handleAttacked(sprites[i]->sprite->attacks[j]);
-					sprites[i]->sprite->attacks[j]->handleSpriteCollision();
+					sprites[k]->handleAttacked(sprites[i]->attacks[j]);
+					sprites[i]->attacks[j]->handleSpriteCollision();
 				}
 			}
 			// check against map objects TODO
@@ -94,11 +94,11 @@ void Map::update(int ms)
 	// "pick up" any items dropped by the sprite
 	for (int i = 0; i < num_sprites; i++)
 	{
-		while (!sprites[i]->sprite->drops.empty()) // TODO: LINKED LIST IMPLEMENTATION
+		while (!sprites[i]->drops.empty()) // TODO: LINKED LIST IMPLEMENTATION
 		{
-			items.push_back(sprites[i]->sprite->drops.back());
-			printf("Collected Drop %s from Sprite %d\n", sprites[i]->sprite->drops.back()->getName(), sprites[i]->sprite);
-			sprites[i]->sprite->drops.pop_back();
+			items.push_back(sprites[i]->drops.back());
+			printf("Collected Drop %s from Sprite %d\n", sprites[i]->drops.back()->getName(), sprites[i]->sprite);
+			sprites[i]->drops.pop_back();
 		}
 	}
 	
@@ -112,12 +112,12 @@ void Map::update(int ms)
 	// fetch sounds requested by sprites, play them, and store them in the map
 	for (int i = 0; i < num_sprites; i++)
 	{
-		while(!sprites.at(i)->sprite->sounds.empty())
+		while(!sprites.at(i)->sounds.empty())
 		{
-			printf("Playing Sound %d from Sprite %d\n", sprites.at(i)->sprite->sounds.back(), sprites.at(i)->sprite);
-			sounds.push_back(new Sound(sprites.at(i)->sprite->sounds.back(), sprites[i]->sprite->x, sprites[i]->sprite->y, sprites[i]->sprite));
-			Mix_PlayChannel( -1, soundAtlas->getSound(sprites.at(i)->sprite->sounds.back()), 0 ); // TODO: SEEMS INEFFICIENT 
-			sprites.at(i)->sprite->sounds.pop_back();
+			printf("Playing Sound %d from Sprite %d\n", sprites.at(i)->sounds.back(), sprites.at(i)->sprite);
+			sounds.push_back(new Sound(sprites.at(i)->sounds.back(), sprites[i]->sprite->x, sprites[i]->sprite->y, sprites[i]->sprite));
+			Mix_PlayChannel( -1, soundAtlas->getSound(sprites.at(i)->sounds.back()), 0 ); // TODO: SEEMS INEFFICIENT 
+			sprites.at(i)->sounds.pop_back();
 		}
 	}
 	
@@ -126,9 +126,9 @@ void Map::update(int ms)
 	// destroy sprites that request it
 	
 	// handle playerSprite wanting to interact: delegate to handlePlayerInteract()
-	if (playerSpriteController->player->interactPressed && !playerSpriteController->player->interactHandled)
+	if (playerSpriteController->interactPressed && !playerSpriteController->interactHandled)
 	{
-		playerSpriteController->player->interactHandled = true;
+		playerSpriteController->interactHandled = true;
 		handlePlayerInteract(playerSpriteController->player); // TODO: DIRECTIONAL INTERACTION
 	}
 }
@@ -161,7 +161,7 @@ void Map::handlePlayerInteract(PlayerSprite* playerSprite)
 			//items[i]->handleInteract(playerSprite); 
 			
 			// add item to inventory
-			playerSprite->inventory->addItem(items[i]);
+			playerSpriteController->inventory->addItem(items[i]);
 			// remove item from map TODO: USE LINKED LIST
 			items.erase(items.begin() + i);
 			return;
@@ -274,10 +274,10 @@ void Map::drawTo(SDL_Renderer* renderer)
 		sprites[i]->sprite->lineOfSight.y += camera.y;
 	}
 	// draw attack hitboxes in blue
-	for (int i = 0; i < playerSpriteController->player->attacks.size(); i++) 
+	for (int i = 0; i < playerSpriteController->attacks.size(); i++) 
 	{
-		SDL_RenderDrawRect(renderer, &playerSpriteController->player->attacks[i]->position);	
-		playerSpriteController->player->attacks[i]->drawToMap(renderer, textureAtlas, camera.x, camera.y);
+		SDL_RenderDrawRect(renderer, &playerSpriteController->attacks[i]->position);	
+		playerSpriteController->attacks[i]->drawToMap(renderer, textureAtlas, camera.x, camera.y);
 	}
 }
 

@@ -22,136 +22,17 @@ PlayerSprite::PlayerSprite(float xCoord, float yCoord, TextureAtlas* textureAtla
 	
 	current_anim = &idle_anim;
 	
-	// create inventory with capacity 30
-	inventory = new Inventory(this, 30);
-	
 	fullHp = 100;
 	currHp = 100;
 	
 	headsUpDisplay = new PlayerHUD(renderer, HUDFont, NULL, currHp, fullHp);
-	inventory->setInventoryListener(this);
+	//inventory->setInventoryListener(this);
 }
 
 void PlayerSprite::onInHandItemChanged(Item* newItem)
 {
 	printf("Received callback\n");	
 	headsUpDisplay->updateItem(renderer, newItem);
-}
-
-bool PlayerSprite::handleKeyEvent(SDL_Event e) 
-{
-	// player pressed a key TODO: IGNORE REPEATED SIGNALS
-	if (e.type == SDL_KEYDOWN && !e.key.repeat)  // todo: E: inventory, R reload, F action, Q drop
-	{
-		switch( e.key.keysym.sym )
-		{ 
-			case SDLK_RIGHT:
-				setDir(DIRECTION_RIGHT);
-				startMoving();
-				return true;					
-
-			case SDLK_UP:
-				setDir(DIRECTION_UP);
-				startMoving();
-				return true;
-
-			case SDLK_LEFT:
-				setDir(DIRECTION_LEFT);
-				startMoving();
-				return true;
-
-			case SDLK_DOWN:
-				setDir(DIRECTION_DOWN);
-				startMoving();
-				return true;
-				
-			// interact key
-			case SDLK_f:
-				if (!interactPressed)
-				{
-					interactPressed = true;
-					interactHandled = false;
-					printf("Started Interact Request\n");
-				}
-				return true;
-
-			// use in-hand inventory item
-			case SDLK_SPACE: {
-				inventory->useInHand(getRightHandPosition(), facingDir);
-				/*Action* action = inventory->getAction();
-				if (action)
-				{
-					printf("Received action\n");
-					// todo: add action
-				}
-				Action* buff = inventory->getBuff();
-				if (buff)
-				{
-					printf("Received buff\n");
-					buffs.push_back(buff);
-				}*/
-				Attack* attack = inventory->getAttack();
-				if (attack)
-				{
-					printf("Adding attack\n");
-					attacks.push_back(attack);	
-				}
-				return true;
-			}
-				
-			// cycle in-hand inventory item forward and update HUD
-			case SDLK_TAB:
-				inventory->cycleInHandFwd(); // TODO: NEED A LISTENER FOR INVENTORY IN-HAND CHANGES
-				return true;
-				
-			// drops item in-hand
-			case SDLK_q: {
-				Item* drop = inventory->removeInHand();
-				drop->setPosition(x, y);
-				drops.push_back(drop);
-				return true;
-			}
-				
-			default:
-				return false;
-		}
-	}
-	// player released a key
-	else if (e.type == SDL_KEYUP)
-	{
-		switch (e.key.keysym.sym) 
-		{
-			case SDLK_RIGHT: // todo: support bi-directionality
-			case SDLK_UP:
-			case SDLK_LEFT:
-			case SDLK_DOWN:
-				stopMoving();
-				return true;
-
-			case SDLK_f:
-				interactPressed = false;
-				printf("Stopped Interaction Request \n");
-				return true;
-				
-			default:
-				return false;
-		}
-	}
-	// player rolled mouse wheel
-	else if (e.type == SDL_MOUSEWHEEL)
-	{
-		// user scrolled up: cycle in-hand inventory item forward
-		if (e.wheel.y == 1)
-		{
-			inventory->cycleInHandFwd();
-			
-		}
-		// user scrolled down: cycle in-hand inventory item backward
-		else 
-		{
-			inventory->cycleInHandBck();
-		}
-	}
 }
 
 SDL_Point PlayerSprite::getRightHandPosition()
@@ -179,35 +60,7 @@ SDL_Point PlayerSprite::getRightHandPosition()
 void PlayerSprite::update(int ms) {
 	//printf("Now %d, %d w/h %d, %d\n", lineOfSight.x, lineOfSight.y, lineOfSight.w, lineOfSight.h);
 
-	printf("speedx, speedy %f %f\n", speedX, speedY);
-	printf("default speed is %f\n", moveSpeed);
-	// only animate if moving
-	if (speedX || speedY)
-	{
-		(*current_anim).passTime(ms);
-	}
-	printf("Current anim paused = %d\n", current_anim->paused);
 	
-	/*if (currAction && !currAction->apply(this, ms)) // todo: should Actions be called from the Map/GameDriver?
-	{
-		delete(currAction);	
-		currAction = NULL;
-	}*/
-	
-	// update attacks, removing those that are finished
-	for (int i = 0; i < attacks.size(); )
-	{
-		attacks[i]->update(ms);
-		if (attacks[i]->finished)
-		{
-			delete attacks[i];
-			attacks.erase(attacks.begin() + i);
-		}
-		else
-		{
-			i++;	
-		}
-	}
 }
 
 /*void PlayerSprite::onInHandChanged()
@@ -220,12 +73,12 @@ void PlayerSprite::drawTo(SDL_Renderer* renderer, int offsetX, int offsetY) {
 	(*current_anim).drawTo(renderer, x - offsetX, y - offsetY);
 	
 	// draw in-hand item (if any)
-	Item* in_hand = inventory->getInHand();
+	/*Item* in_hand = inventory->getInHand();
 	if (in_hand)
 	{
-		SDL_Point hand_location = getRightHandPosition();
+		SDL_Point hand_location = sprite->getRightHandPosition();
 		in_hand->drawTo(renderer, (int) (hand_location.x - offsetX), (int) (hand_location.y - offsetY));
-	}
+	}*/
 }
 
 void PlayerSprite::drawHUD(SDL_Renderer* renderer)

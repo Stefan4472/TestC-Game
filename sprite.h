@@ -6,10 +6,6 @@
 #include "constants.h"
 #include "spritesheet.h"
 #include "item.h"
-#include "inventory.h"
-#include "trigger.h"
-#include "attack.h"
-#include "sound.h"
 #include "healthbar.h"
 
 // Sprite base class
@@ -25,7 +21,7 @@ class Sprite
 		// offset of start of lineOfSight, from sprite's x and y
 		int lineOfSightOffsetX, lineOfSightOffsetY;
 		// healthbar, which may be drawn over the sprite
-		SpriteHealthBar* healthbar;
+		SpriteHealthBar* healthbar = NULL;
 		// sprite's movement speed, px per millisecond
 		float moveSpeed = 0.25f;
 		// distance sprite can see, and width of line of sight
@@ -46,16 +42,6 @@ class Sprite
 		SDL_Rect hitbox { 0, 0, 0, 0 };
 		// area on map this sprite can "see"
 		SDL_Rect lineOfSight { 0, 0, 0, 0 };
-		
-		// sprite's inventory
-		Inventory* inventory = NULL; 
-		// list of Items sprite wants to drop. Meant to be picked up by the Map/Gamedriver
-		std::vector<Item*> drops;
-		// list of Attacks sprite wants to carry out. Meant to be picked up by the Map/Gamedriver
-		// a sprite may have multiple attacks progressing, e.g. if several bullets have been fired
-		std::vector<Attack*> attacks;
-		// list of SoundIds the sprite has requested. Meant to be picked up by the Map/Gamedriver
-		std::vector<int> sounds;
 		
 		// direction currently moving in
 		int movementDir = DIRECTION_NONE;
@@ -80,8 +66,6 @@ class Sprite
 		void moveBack();
 		// sets direction to given DIRECTION direction
 		void setDir(int dir);
-		// handles a trigger (event a sprite is made aware of)
-		virtual void handleTrigger(Trigger* trigger);
 		
 		// finalizes DIRECTION and any other updates to the sprite's state
 		virtual void update(int ms);

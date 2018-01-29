@@ -3,6 +3,7 @@
 CivilianSpriteController::CivilianSpriteController(CivilianSprite* sprite) : SpriteController(sprite)
 {
 	currAction = new WanderAction(ACTION_LOOPING, 10, 400, 100);
+	inventory = new Inventory(sprite, 5);	
 }
 
 void CivilianSpriteController::update(int ms)
@@ -24,7 +25,7 @@ void CivilianSpriteController::handleAttacked(Attack* attack)
 	//sprite->showHealthbar();
 	
 	// add sound
-	sprite->sounds.push_back(SOUND_2);
+	sounds.push_back(SOUND_2);
 }
 
 void CivilianSpriteController::handleSoundHeard(Sound* sound)
