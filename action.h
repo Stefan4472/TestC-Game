@@ -36,7 +36,7 @@ class Action
 	public:
 		// applies the given action to the Sprite over number of milliseconds
 		// returns false once the action is completed
-		virtual bool apply(Sprite* sprite, int ms)=0; 
+		virtual bool apply(Sprite* sprite, int ms) = 0; // TODO: INITIALIZE METHOD 
 		// resets the state of the Action, re-initializing it 
 		virtual void reset(); // TODO: NOT SURE IF THIS IS A GOOD IDEA
 		~Action();

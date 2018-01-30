@@ -22,7 +22,7 @@ class SpriteController
 		// the sprite being controlled
 		Sprite* sprite = NULL;
 		// sprite's inventory
-		Inventory* inventory = NULL; 
+		Inventory* inventory = NULL;  // TODO: SHOULD THIS BE IN THE SPRITE CLASS?? SPRITE NEEDS TO KNOW WHICH ITEM IT HAS IN-HAND
 		// list of Items sprite wants to drop. Meant to be picked up by the Map/Gamedriver
 		std::vector<Item*> drops;
 		// list of Attacks sprite wants to carry out. Meant to be picked up by the Map/Gamedriver
@@ -32,6 +32,10 @@ class SpriteController
 		std::vector<int> sounds;
 		// list of buffs currently affecting player
 		std::vector<Action*> buffs;
+		// list of sprites that are friends TODO: HASHMAP
+		std::vector<Sprite*> friendls;
+		// list of sprites that are enemies. The sprite may act hostile when it sees them TODO: HASHMAP
+		std::vector<Sprite*> enemies;
 		
 		// updates state of sprite by given number of milliseconds
 		virtual void update(int ms) = 0;

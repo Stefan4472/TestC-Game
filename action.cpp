@@ -20,12 +20,12 @@ bool IdleAction::apply(Sprite* sprite, int ms)
 {
 	elapsedTime += ms;
 	// set to no movement
-	sprite->movementDir = DIRECTION_NONE;
+	sprite->stopMoving();
 	
 	return duration == ACTION_LOOPING || elapsedTime < duration;
 }
 
-WanderAction::WanderAction(int ms, int randomSeed, int idleInterval, int wanderInterval)
+WanderAction::WanderAction(int ms, int randomSeed, int idleInterval, int wanderInterval)  // TODO: MORE RANDOM. LOOK AT MAP AND BLAZE A PATH A FEW TILES LONG
 {
 	duration = ms;
 	elapsedTime = 0;
@@ -101,7 +101,7 @@ bool FollowAction::apply(Sprite* sprite, int ms) // todo: need to return false i
 		// change direction if not correct
 		if (currMovement != dir) 
 		{
-			//sprite->setDir(dir);
+			sprite->setDir(dir);
 		}
 		nextSample += sampleRate;
 	}

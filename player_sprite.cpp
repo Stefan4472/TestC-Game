@@ -73,12 +73,11 @@ void PlayerSprite::drawTo(SDL_Renderer* renderer, int offsetX, int offsetY) {
 	(*current_anim).drawTo(renderer, x - offsetX, y - offsetY);
 	
 	// draw in-hand item (if any)
-	/*Item* in_hand = inventory->getInHand();
-	if (in_hand)
+	if (inHand)
 	{
-		SDL_Point hand_location = sprite->getRightHandPosition();
-		in_hand->drawTo(renderer, (int) (hand_location.x - offsetX), (int) (hand_location.y - offsetY));
-	}*/
+		SDL_Point hand_location = getRightHandPosition();
+		inHand->drawTo(renderer, (int) (hand_location.x - offsetX), (int) (hand_location.y - offsetY));
+	}
 }
 
 void PlayerSprite::drawHUD(SDL_Renderer* renderer)

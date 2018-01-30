@@ -18,7 +18,7 @@ void Sprite::move(int ms) {
 	x += ms * speedX;
 	y += ms * speedY;
 	
-	/*hitbox.x += ms * speedX;
+	/*hitbox.x += ms * speedX; // TODO: CLEANUP
 	hitbox.y += ms * speedY;
 	
 	lineOfSight.x += ms * speedX;
@@ -47,7 +47,7 @@ void Sprite::move(int ms) {
 	
 }
 
-void Sprite::startMoving()
+void Sprite::startWalking()
 {
 	switch( facingDir ) 
 	{ 
@@ -169,4 +169,17 @@ void Sprite::loseHealth(float amount)
 	// norm to zero
 	currHp = currHp < 0 ? 0 : currHp;
 	printf("Sprite lost %d health to hit %d hp\n", amount, currHp);
+}
+
+void Sprite::drawTo(SDL_Renderer* renderer, int offsetX, int offsetY)
+{
+	// draw current animation frame to screen
+	(*current_anim).drawTo(renderer, x - offsetX, y - offsetY);
+	
+	// draw in-hand item (if any)
+	if (inHand)
+	{
+		SDL_Point hand_location = getRightHandPosition();
+		inHand->drawTo(renderer, (int) (hand_location.x - offsetX), (int) (hand_location.y - offsetY));
+	}
 }

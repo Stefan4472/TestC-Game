@@ -66,8 +66,16 @@ void CivilianSprite::showHealthbar()
 }
 
 void CivilianSprite::drawTo(SDL_Renderer* renderer, int offsetX, int offsetY) {
-	// draw current animatino frame to screen
-	current_anim->drawTo(renderer, x - offsetX, y - offsetY);
+	// draw current animation frame to screen
+	(*current_anim).drawTo(renderer, x - offsetX, y - offsetY);
+	
+	// draw in-hand item (if any)
+	if (inHand)
+	{
+		SDL_Point hand_location = getRightHandPosition();
+		inHand->drawTo(renderer, (int) (hand_location.x - offsetX), (int) (hand_location.y - offsetY));
+	}
+	
 	// draw healthbar, if visible
 	if (numHealthbarFrames)
 	{

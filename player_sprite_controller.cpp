@@ -17,22 +17,22 @@ bool PlayerSpriteController::handleKeyEvent(SDL_Event e)
 		{ 
 			case SDLK_RIGHT:
 				sprite->setDir(DIRECTION_RIGHT);
-				sprite->startMoving();
+				sprite->startWalking();
 				return true;					
 
 			case SDLK_UP:
 				sprite->setDir(DIRECTION_UP);
-				sprite->startMoving();
+				sprite->startWalking();
 				return true;
 
 			case SDLK_LEFT:
 				sprite->setDir(DIRECTION_LEFT);
-				sprite->startMoving();
+				sprite->startWalking();
 				return true;
 
 			case SDLK_DOWN:
 				sprite->setDir(DIRECTION_DOWN);
-				sprite->startMoving();
+				sprite->startWalking();
 				return true;
 				
 			// interact key
@@ -48,7 +48,7 @@ bool PlayerSpriteController::handleKeyEvent(SDL_Event e)
 			// use in-hand inventory item
 			case SDLK_SPACE: {
 				inventory->useInHand(sprite->getRightHandPosition(), sprite->facingDir);
-				/*Action* action = inventory->getAction();
+				Action* action = inventory->getAction();
 				if (action)
 				{
 					printf("Received action\n");
@@ -59,7 +59,7 @@ bool PlayerSpriteController::handleKeyEvent(SDL_Event e)
 				{
 					printf("Received buff\n");
 					buffs.push_back(buff);
-				}*/
+				}
 				Attack* attack = inventory->getAttack();
 				if (attack)
 				{
@@ -77,6 +77,7 @@ bool PlayerSpriteController::handleKeyEvent(SDL_Event e)
 			// drops item in-hand
 			case SDLK_q: {
 				Item* drop = inventory->removeInHand();
+				sprite->inHand = inventory->getInHand();
 				drop->setPosition(sprite->x, sprite->y);
 				drops.push_back(drop);
 				return true;
@@ -114,12 +115,13 @@ bool PlayerSpriteController::handleKeyEvent(SDL_Event e)
 		if (e.wheel.y == 1)
 		{
 			inventory->cycleInHandFwd();
-			
+			sprite->inHand = inventory->getInHand();
 		}
 		// user scrolled down: cycle in-hand inventory item backward
 		else 
 		{
 			inventory->cycleInHandBck();
+			sprite->inHand = inventory->getInHand();
 		}
 	}
 }

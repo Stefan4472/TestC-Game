@@ -27,8 +27,7 @@ class Sprite
 		// distance sprite can see, and width of line of sight
 		int sightDistance = 256, sightWidth = 96;
 		
-		// TODO: LIST (or hashmap) OF FRIENDLY SPRITES, LIST OF ENEMY SPRITES. LINE OF SIGHT HITBOX. MAP_POSITION HITBOX?
-	
+		// MAP_POSITION HITBOX? DRAW_POSITION?
 	
 		// virtual coordinates
 		float x = -1, y = -1;
@@ -48,6 +47,9 @@ class Sprite
 		// direction currently facing
 		int facingDir = DIRECTION_DOWN;
 		
+		// item sprite is holding in-hand. Sprite is drawn to reflect it is holding the item
+		Item* inHand = NULL;
+		
 		// called when the sprite's in-hand item changes. Listener function
 		virtual void onInHandChanged(int id);
 		// called when the sprite's health changes
@@ -58,8 +60,8 @@ class Sprite
 		
 		// sets coordinates to intended DIRECTION, given number of milliseconds since last frame
 		void move(int ms);
-		// sets speeds to make sprite move in direction it is facing in
-		void startMoving();
+		// sets speeds to make sprite walk in direction it is facing in
+		void startWalking();
 		// sets speeds to zero
 		void stopMoving();
 		// moves sprite to position it was at in previous frame
@@ -74,7 +76,7 @@ class Sprite
 		// subtracts given amount from sprite's currHp
 		void loseHealth(float amount);
 		// draws sprite to the given surface/screen. Subtracting offsets from coordinates results in on-canvas coordinate to draw to
-		virtual void drawTo(SDL_Renderer* renderer, int offsetX, int offsetY) = 0;
+		virtual void drawTo(SDL_Renderer* renderer, int offsetX, int offsetY);
 		
 };
 
