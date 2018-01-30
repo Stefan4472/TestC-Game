@@ -33,7 +33,10 @@ class Action
 		int duration;
 		// number of ms left in action
 		int elapsedTime = 0;
+		
 	public:
+		// prepares the sprite to execute the action
+		virtual void init(Sprite* sprite) = 0;
 		// applies the given action to the Sprite over number of milliseconds
 		// returns false once the action is completed
 		virtual bool apply(Sprite* sprite, int ms) = 0; // TODO: INITIALIZE METHOD 
