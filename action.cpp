@@ -10,21 +10,6 @@ Action::~Action()
 	printf("Deleting Action\n");	
 }
 
-IdleAction::IdleAction(int ms)
-{
-	duration = ms;	
-	elapsedTime = 0;
-}
-
-bool IdleAction::apply(Sprite* sprite, int ms)
-{
-	elapsedTime += ms;
-	// set to no movement
-	sprite->stopMoving();
-	
-	return duration == ACTION_LOOPING || elapsedTime < duration;
-}
-
 WanderAction::WanderAction(int ms, int randomSeed, int idleInterval, int wanderInterval)  // TODO: MORE RANDOM. LOOK AT MAP AND BLAZE A PATH A FEW TILES LONG
 {
 	duration = ms;

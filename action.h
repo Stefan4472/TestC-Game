@@ -28,12 +28,7 @@ enum ActionType
 
 class Action
 {
-	protected:
-		// length of action (ms)
-		int duration;
-		// number of ms left in action
-		int elapsedTime = 0;
-		
+
 	public:
 		// prepares the sprite to execute the action
 		virtual void init(Sprite* sprite) = 0;
@@ -45,13 +40,7 @@ class Action
 		~Action();
 };
 
-// action where sprite stands there, unmoving
-class IdleAction:public Action
-{
-	public:
-		IdleAction(int ms);
-		bool apply(Sprite* sprite, int ms);
-};
+
 
 // sprite idles for idleInterval ms, then walks in a random direction for wanderInterval ms
 class WanderAction:public Action
