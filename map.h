@@ -5,6 +5,7 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_mixer.h>
 #include <vector>
+#include <cmath>
 #include "texture_atlas.h"
 #include "sound_atlas.h"
 #include "sound.h"
@@ -19,6 +20,8 @@
 #include "sprite_controller.h"
 #include "civilian_sprite_controller.h"
 #include "player_sprite_controller.h"
+#include "follow_path_action.h"
+#include "move_action.h"
 #include "trigger.h"
 
 // screen dimension constants: todo: read from a universal file
@@ -84,7 +87,11 @@ class Map
 		void drawTo(SDL_Renderer* renderer);
 		// returns whether the two rectangles have any intersection
 		bool checkCollision(SDL_Rect a, SDL_Rect b);
-
+		// returns an action (list of MoveToActions, each of which define a direction and distance)
+		// than a sprite can follow to get from (startX, startY) to (endX, endY)
+		FollowPathAction* findPath(float startX, float startY, float endX, float endY);
+		// returns an action a sprite can follow that will move it the given number of tiles more or less randomly
+		FollowPathAction* findRandomPath(int startX, startY, numTiles);
 };
 
 #endif

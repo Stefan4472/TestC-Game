@@ -285,3 +285,41 @@ bool Map::checkCollision(SDL_Rect a, SDL_Rect b)
 {
 	return a.y + a.h > b.y && a.y < b.y + b.h && a.x + a.w > b.x && a.x < b.x + b.w;
 }
+
+FollowPathAction* Map::findPath(float startX, float startY, float endX, float endY) // TODO: RUNNING?
+{
+	// TODO: A* SEARCH
+	FollowPathAction* path = new FollowPathAction();
+	
+	// determine movement along X
+	if (endX > startX)
+	{
+		path.addMovement(new MoveInDirAction(DIRECTION_RIGHT, endX - startX, false));
+	} 
+	else if (endX < startX)
+	{
+		path.addMovement(new MoveInDirAction(DIRECTION_LEFT, startX - endX, false));
+	}
+	
+	// determine movement along Y
+	if (endY > startY)
+	{
+		path.addMovement(new MoveInDirAction(DIRECTION_DOWN, endY - startY, false));
+	}
+	else if (endY < startY)
+	{
+		path.addMovement(new MoveInDirAction(DIRECTION_UP, startY - endY, false));
+	}
+						 
+	return path;
+}
+ 
+FollowPathAction* findRandomPath(int startX, startY, numTiles) // todo: running? more sophisticated options
+{
+	// TODO: A* SEARCH
+	FollowPathAction* path = new FollowPathAction();
+	
+	path.addMovement(new MoveInDirection(rand() % 4 + 1, numTiles * TILE_WIDTH, false));
+					 
+	return path;
+}
