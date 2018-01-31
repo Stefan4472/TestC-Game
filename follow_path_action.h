@@ -7,7 +7,7 @@
 
 // The FollowPathAction guides a Sprite through a list of MoveInDirection Actions. 
 
-class FollowPathAction : public MoveInDirAction
+class FollowPathAction
 {
 	private:
 		// list of moves, in order
@@ -18,7 +18,7 @@ class FollowPathAction : public MoveInDirAction
 	public:
 		FollowPathAction(); // TODO: INIT WITH VECTOR OF MOVES
 		// gets sprite ready to follow first Move instruction 
-		bool init(Sprite* sprite);
+		void init(Sprite* sprite);
 		// works sprite through moving to next instruction
 		bool apply(Sprite* sprite, int ms); 
 		// adds given movement instruction to the list

@@ -5,6 +5,7 @@
 #include "texture_atlas.h"
 #include "item.h"
 #include "action.h"
+#include "health_regen_action.h"
 
 // A consumable is a type of Item that, when used, gives the consuming sprite a buff (via an Action*) and ceases to exist.
 // The only differences between consumables being their buffs, a Consumable is defined by the Item is represents. It may 

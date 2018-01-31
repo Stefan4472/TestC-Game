@@ -2,14 +2,14 @@
 
 MoveInDirAction::MoveInDirAction(int dir, int distance, bool run)
 {
-	movementDir = dir;
+	moveDir = dir;
 	remainingDist = distance;
 	this->run = run;
 }
 
-bool MoveInDirAction::init(Sprite* sprite)
+void MoveInDirAction::init(Sprite* sprite)
 {
-	sprite->setDir(movementDir);
+	sprite->setDir(moveDir);
 	
 	if (run)
 	{
@@ -21,14 +21,14 @@ bool MoveInDirAction::init(Sprite* sprite)
 bool MoveInDirAction::apply(Sprite* sprite, int ms)
 {
 	// subtract distance sprite travelled
-	switch (movementDir)
+	switch (moveDir)
 	{
 		case DIRECTION_RIGHT:
 			remainingDist -= sprite->speedX * ms; // TODO: COULD SPEED CHANGE IN THE SPACE OF ONE FRAME?
 			break;
 			
 		case DIRECTION_UP:
-			remainingDist += sprite->speedY * ms;
+			remainingDist += sprite->speedY * ms; // TODO: SIMPLY SUBTRACT ABS(SPEEDX * MS), ABS(SPEEDY * MS) ?
 			break;
 			
 		case DIRECTION_LEFT:

@@ -4,11 +4,11 @@ Action* getInitialAction()
 {
 	if (rand() % 2)
 	{
-		return new IdleAction(ACTION_LOOPING);
+		return new IdleAction(ACTION_LOOPING, 2000);
 	}
 	else 
 	{
-		return new WanderAction(ACTION_LOOPING, 15, 2000, 300);
+		return new WanderAction(map, ACTION_LOOPING, 5, 2000, 10);
 	}
 }
 

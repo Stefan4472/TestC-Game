@@ -35,7 +35,7 @@ bool WanderAction::apply(Sprite* sprite, int ms)
 	else if (msSinceMovement + ms > idleInterval)
 	{
 		currPath = map->findRandomPath(sprite->x, sprite->y, pathLength); // TODO: QUERY MAP FOR RANDOM PATH
-		currPath.init(sprite);
+		currPath->init(sprite);
 	}
 	else
 	{

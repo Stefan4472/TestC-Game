@@ -3,6 +3,7 @@
 
 #include "sprite_controller.h"
 #include "civilian_sprite.h"
+#include "wander_action.h"
 
 // Provides the controller for a CivilianSprite.
 

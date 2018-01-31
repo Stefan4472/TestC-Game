@@ -21,7 +21,7 @@
 #include "civilian_sprite_controller.h"
 #include "player_sprite_controller.h"
 #include "follow_path_action.h"
-#include "move_action.h"
+#include "move_in_dir_action.h"
 #include "trigger.h"
 
 // screen dimension constants: todo: read from a universal file
@@ -91,7 +91,7 @@ class Map // TODO: IMPLEMENTATION OF MAP, AND GAME DRIVER, SHOULD BE SEPARATE.
 		// than a sprite can follow to get from (startX, startY) to (endX, endY)
 		FollowPathAction* findPath(float startX, float startY, float endX, float endY);
 		// returns an action a sprite can follow that will move it the given number of tiles more or less randomly
-		FollowPathAction* findRandomPath(int startX, startY, numTiles);
+		FollowPathAction* findRandomPath(float startX, float startY, int numTiles);
 };
 
 #endif

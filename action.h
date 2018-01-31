@@ -55,28 +55,4 @@ class RunAwayAction
 
 };
 
-// sprite regains health over a specified amount of time
-class HealthRegenAction : public Action
-{
-	// amount of health to regen per ms (calculated in constructor)
-	float amountPerMs;
-
-	public:
-		HealthRegenAction(int amount, int duration);
-		bool apply(Sprite* sprite, int ms);
-};
-
-// sprite is knocked in the given direction
-class KnockbackAction : public Action 
-{
-
-	// direction of knockback
-	int direction;
-	// number of times apply has been called
-	int numApplies = 0;
-	
-	public:
-		KnockbackAction(int direction);
-		bool apply(Sprite* sprite, int ms);
-};
 #endif

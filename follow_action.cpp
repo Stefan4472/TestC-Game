@@ -5,7 +5,6 @@ FollowAction::FollowAction(Map* map, int randomSeed, Sprite* target, int sampleR
 	this->map = map;
 	seed = randomSeed;
 	this->target = target;
-	this->sampleRate = sampleRate;
 	nextSample = sampleRate;
 
 	// calculate path to follow
@@ -32,7 +31,7 @@ void FollowAction::init(Sprite* sprite)
 {
 	if (target)
 	{
-		path.init(sprite);
+		path->init(sprite);
 	}
 }
 
@@ -53,7 +52,7 @@ bool FollowAction::apply(Sprite* sprite, int ms) // todo: does it ever complete?
 		path = map->findPath(sprite->x, sprite->y, target->x, target->y);
 		path->init(sprite);
 		
-		nextSample += sampleRate;
+		nextSample += RESAMPLE_RATE;
 	}
 	
 	return true;

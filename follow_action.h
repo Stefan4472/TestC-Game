@@ -19,6 +19,8 @@ class FollowAction : public Action
 	int seed;
 	// path sprite follows to reach target
 	FollowPathAction* path = NULL;
+	// time (ms) this action has been going
+	int elapsedTime = 0;
 	// time next sample should be taken
 	int nextSample;
 	// sprite to follow

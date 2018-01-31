@@ -8,7 +8,7 @@
 
 class MoveInDirAction : public Action
 {
-	int moveDir = MOVEMENT_NONE;
+	int moveDir = DIRECTION_NONE;
 	float remainingDist = 0;
 	bool run = false;
 	
@@ -16,7 +16,7 @@ class MoveInDirAction : public Action
 		// sets direction and distance. Sprite will run if run = true, otherwise it will walk
 		MoveInDirAction(int dir, int distance, bool run);
 		// turns sprite in given direction and sets it to start walking/running
-		bool init(Sprite* sprite) = 0;
+		void init(Sprite* sprite);
 		// makes sure sprite doesn't overshoot
 		bool apply(Sprite* sprite, int ms); 
 };

@@ -3,6 +3,8 @@
 
 #include <cmath>
 #include "action.h"
+#include "idle_action.h"
+#include "wander_action.h"
 #include "trigger.h"
 
 // an ActionSet defines the behavior of a sprite class. It provides Actions that control sprites,
