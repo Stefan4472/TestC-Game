@@ -10,14 +10,6 @@ Action::~Action()
 	printf("Deleting Action\n");	
 }
 
-FollowAction::FollowAction(int randomSeed, Sprite* target, int sampleRate)
-{
-	seed = randomSeed;
-	this->target = target;
-	this->sampleRate = sampleRate;
-	nextSample = sampleRate;
-}
-
 HealthRegenAction::HealthRegenAction(int amount, int duration)
 {
 	amountPerMs = amount / duration;

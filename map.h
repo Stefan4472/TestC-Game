@@ -30,7 +30,7 @@ const int SCREEN_HEIGHT = 480;
 const int TILE_WIDTH = 32;
 const int TILE_HEIGHT = 32;
 
-class Map
+class Map // TODO: IMPLEMENTATION OF MAP, AND GAME DRIVER, SHOULD BE SEPARATE.
 {	
 	// defines the tiles that make up the terrain and map
 	MapChunk* mapChunk = NULL;

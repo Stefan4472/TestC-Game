@@ -5,6 +5,8 @@
 #include "follow_path_action.h"
 #include "sprite.h"
 
+class Map;
+
 // Sprite moves toward target sprite, following them. Resamples positions based on set 
 // RESAMPLE_RATE interval.
 
@@ -15,15 +17,17 @@ class FollowAction : public Action
 	
 	// seed for random number generator
 	int seed;
+	// path sprite follows to reach target
+	FollowPathAction* path = NULL;
 	// time next sample should be taken
 	int nextSample;
-	// current direction  of movement
-	int currMovement;
 	// sprite to follow
 	Sprite* target;
+	// map used for navigation
+	Map* map = NULL;
 	
 	public:
-		FollowAction(int randomSeed, Sprite* target, int sampleRate);
+		FollowAction(Map* map, int randomSeed, Sprite* target, int sampleRate);
 		void setTarget(Sprite* target);
 		void init(Sprite* sprite);
 		bool apply(Sprite* sprite, int ms);

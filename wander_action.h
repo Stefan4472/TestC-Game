@@ -5,6 +5,8 @@
 #include "follow_path_action.h"
 #include "sprite.h"
 
+class Map;
+
 // Sprite idles for idleInterval ms, then queries the map for a random path to follow that is 
 // pathLength tiles long. It follows the path, then resumes idling.
 
@@ -22,9 +24,11 @@ class WanderAction:public Action
 	// milliseconds since sprite last was following a path/moving
 	int msSinceMovement = 0;
 	int duration = 0, elapsedTime = 0;
+	// map used to find path for the sprite
+	Map* map = NULL;
 	
 	public:
-		WanderAction(int duration, int pathLength, int idleInterval, int randomSeed);
+		WanderAction(Map* map, int duration, int pathLength, int idleInterval, int randomSeed);
 		void init(Sprite* sprite);
 		bool apply(Sprite* sprite, int ms);
 };
