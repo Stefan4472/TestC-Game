@@ -4,6 +4,7 @@
 #include "action.h"
 #include "follow_path_action.h"
 #include "sprite.h"
+#include "path_finder_interface.h"
 
 class Map;
 
@@ -24,11 +25,11 @@ class WanderAction:public Action
 	// milliseconds since sprite last was following a path/moving
 	int msSinceMovement = 0;
 	int duration = 0, elapsedTime = 0;
-	// map used to find path for the sprite
-	Map* map = NULL;
+	// hook to map used to find path for the sprite
+	PathFinder* pathFinder = NULL;
 	
 	public:
-		WanderAction(Map* map, int duration, int pathLength, int idleInterval, int randomSeed);
+		WanderAction(PathFinder* pathFinder, int duration, int pathLength, int idleInterval, int randomSeed);
 		void init(Sprite* sprite);
 		bool apply(Sprite* sprite, int ms);
 };

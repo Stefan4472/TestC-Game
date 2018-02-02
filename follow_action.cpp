@@ -1,17 +1,11 @@
 #include "follow_action.h"
 
-FollowAction::FollowAction(Map* map, int randomSeed, Sprite* target, int sampleRate)
+FollowAction::FollowAction(PathFinder* pathFinder, int randomSeed, Sprite* target, int sampleRate)
 {
-	this->map = map;
+	this->pathFinder = pathFinder;
 	seed = randomSeed;
 	this->target = target;
 	nextSample = sampleRate;
-
-	// calculate path to follow
-	if (target)
-	{
-		path = map->findPath(sprite->x, sprite->y, target->x, target->y);
-	}
 }
 
 void FollowAction::setTarget(Sprite* target)
@@ -23,8 +17,6 @@ void FollowAction::setTarget(Sprite* target)
 	{
 		delete path;
 	}
-
-	path = map->findPath(sprite->x, sprite->y, target->x, target->y);
 }
 
 void FollowAction::init(Sprite* sprite)
@@ -33,11 +25,16 @@ void FollowAction::init(Sprite* sprite)
 	{
 		path->init(sprite);
 	}
+	else
+	{
+		printf("FollowAction has no target set!\n");
+	}
 }
 
-bool FollowAction::apply(Sprite* sprite, int ms) // todo: does it ever complete?
+bool FollowAction::apply(Sprite* sprite, int ms) // todo: does it ever complete? CLEAN UP
 {
 	elapsedTime += ms;
+	
 	
 	// move sprite along current path until it's 32 pixels away or less
 	if (path && elapsedTime < nextSample && distSquared(sprite, target) > 1024) 
@@ -49,7 +46,15 @@ bool FollowAction::apply(Sprite* sprite, int ms) // todo: does it ever complete?
 	{
 		delete path;
 		
-		path = map->findPath(sprite->x, sprite->y, target->x, target->y);
+		path = pathFinder->findPath(sprite->x, sprite->y, target->x, target->y);
+		path->init(sprite);
+		
+		nextSample += RESAMPLE_RATE;
+	}
+	// no path currently calculated, but target was defined
+	else if (target)
+	{
+		path = pathFinder->findPath(target->x, target->y, target->x, target->y);
 		path->init(sprite);
 		
 		nextSample += RESAMPLE_RATE;

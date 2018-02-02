@@ -4,8 +4,7 @@
 #include "action.h"
 #include "follow_path_action.h"
 #include "sprite.h"
-
-class Map;
+#include "path_finder_interface.h"
 
 // Sprite moves toward target sprite, following them. Resamples positions based on set 
 // RESAMPLE_RATE interval.
@@ -25,11 +24,11 @@ class FollowAction : public Action
 	int nextSample;
 	// sprite to follow
 	Sprite* target;
-	// map used for navigation
-	Map* map = NULL;
+	// hook to map, used for navigation
+	PathFinder* pathFinder = NULL;
 	
 	public:
-		FollowAction(Map* map, int randomSeed, Sprite* target, int sampleRate);
+		FollowAction(PathFinder* pathFinder, int randomSeed, Sprite* target, int sampleRate);
 		void setTarget(Sprite* target);
 		void init(Sprite* sprite);
 		bool apply(Sprite* sprite, int ms);

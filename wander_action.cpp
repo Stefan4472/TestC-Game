@@ -1,8 +1,8 @@
 #include "wander_action.h"
 
-WanderAction::WanderAction(Map* map, int duration, int pathLength, int idleInterval, int randomSeed)  // TODO: MORE RANDOM. LOOK AT MAP AND BLAZE A PATH A FEW TILES LONG
+WanderAction::WanderAction(PathFinder* pathFinder, int duration, int pathLength, int idleInterval, int randomSeed)  // TODO: MORE RANDOM. LOOK AT MAP AND BLAZE A PATH A FEW TILES LONG
 {
-	this->map = map;
+	this->pathFinder = pathFinder;
 	this->duration = duration;
 	this->pathLength = pathLength;
 	seed = randomSeed;
@@ -34,7 +34,7 @@ bool WanderAction::apply(Sprite* sprite, int ms)
 	// sprite has idled long enough. Time to get a new path!
 	else if (msSinceMovement + ms > idleInterval)
 	{
-		currPath = map->findRandomPath(sprite->x, sprite->y, pathLength); // TODO: QUERY MAP FOR RANDOM PATH
+		currPath = pathFinder->findRandomPath(sprite->x, sprite->y, pathLength); // TODO: QUERY MAP FOR RANDOM PATH
 		currPath->init(sprite);
 	}
 	else

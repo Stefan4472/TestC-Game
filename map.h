@@ -17,6 +17,7 @@
 #include "pistol.h"
 #include "civilian_sprite.h"
 #include "player_sprite.h"
+#include "path_finder_interface.h"
 #include "sprite_controller.h"
 #include "civilian_sprite_controller.h"
 #include "player_sprite_controller.h"
@@ -30,7 +31,10 @@ const int SCREEN_HEIGHT = 480;
 const int TILE_WIDTH = 32;
 const int TILE_HEIGHT = 32;
 
-class Map // TODO: IMPLEMENTATION OF MAP, AND GAME DRIVER, SHOULD BE SEPARATE.
+// The Map tracks and updates game state. It inherits from PathFinder to provide planning methods
+// for sprites.
+
+class Map : public PathFinder // TODO: IMPLEMENTATION OF MAP, AND GAME DRIVER, SHOULD BE SEPARATE.
 {	
 	// defines the tiles that make up the terrain and map
 	MapChunk* mapChunk = NULL;

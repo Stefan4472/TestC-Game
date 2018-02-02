@@ -1,8 +1,9 @@
 #include "civilian_sprite_controller.h"
 
-CivilianSpriteController::CivilianSpriteController(CivilianSprite* sprite) : SpriteController(sprite)
+CivilianSpriteController::CivilianSpriteController(CivilianSprite* sprite, PathFinder* pathFinder) : SpriteController(sprite)
 {
-	currAction = new WanderAction(ACTION_LOOPING, 10, 400, 100);
+	this->pathFinder = pathFinder;
+	currAction = new WanderAction(pathFinder, ACTION_LOOPING, 10, 400, 100);
 	inventory = new Inventory(sprite, 5);	
 }
 

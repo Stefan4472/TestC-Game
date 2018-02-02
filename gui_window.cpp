@@ -154,4 +154,5 @@ Window::~Window()
 		printf("Destroying widget with id %d\n", widgets[i]->getId());
 		delete(widgets[i]);	
 	}
+	printf("Done\n");
 }

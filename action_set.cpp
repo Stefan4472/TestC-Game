@@ -2,14 +2,14 @@
 
 Action* getInitialAction()
 {
-	if (rand() % 2)
-	{
+	//if (rand() % 2)
+	//{
 		return new IdleAction(ACTION_LOOPING, 2000);
-	}
-	else 
-	{
-		return new WanderAction(map, ACTION_LOOPING, 5, 2000, 10);
-	}
+	//}
+	//else 
+	//{
+	//	return new WanderAction(pathFinder, ACTION_LOOPING, 5, 2000, 10);
+	//}
 }
 
 Action* getReaction(Action* currAction, Trigger* trigger)
