@@ -108,25 +108,6 @@ bool loadMedia()
 	return true;
 }
 
-void close()
-{
-	SDL_DestroyTexture(texture_atlas_img);
-	texture_atlas_img = NULL;
-	
-	// destroy renderer
-	SDL_DestroyRenderer( gRenderer );
-	gRenderer = NULL;
-	
-	// destroy window
-	SDL_DestroyWindow( gWindow );
-	gWindow = NULL;
-
-	// quit SDL subsystems
-	TTF_Quit();
-	IMG_Quit();
-	SDL_Quit();
-}
-
 SDL_Texture* loadTexture( std::string path )
 {
 	// load image at specified path
@@ -149,6 +130,34 @@ SDL_Texture* loadTexture( std::string path )
 	return new_texture;
 }
 
+void close()
+{
+	printf("Close function reached\n");
+	SDL_DestroyTexture(texture_atlas_img);
+	texture_atlas_img = NULL;
+	
+	printf("Destroyed texture atlas\n");
+	
+	// destroy renderer
+	SDL_DestroyRenderer( gRenderer );
+	gRenderer = NULL;
+	
+	printf("Destroyed renderer\n");
+	
+	// destroy window
+	SDL_DestroyWindow( gWindow );
+	gWindow = NULL;
+
+	printf("Destroyed Window\n");
+	
+	// quit SDL subsystems
+	TTF_Quit();
+	printf("Quit TTF\n");
+	IMG_Quit();
+	printf("Quit IMG\n");
+	SDL_Quit();
+	printf("Quit SDL\n");
+}
 
 int main( int argc, char* args[] )
 {
@@ -193,7 +202,7 @@ int main( int argc, char* args[] )
 	pauseWindow->addWidget(imgButton);
 	
 	// window showing quit menu
-	Window* quitWindow = new Window(300, 300, SCREEN_WIDTH, SCREEN_HEIGHT);;
+	//Window* quitWindow = new Window(300, 300, SCREEN_WIDTH, SCREEN_HEIGHT);;
 	
 	printf("Created windows\n");
 	
@@ -260,8 +269,8 @@ int main( int argc, char* args[] )
 					// show exit menu
 					case SDLK_ESCAPE:
 						quit = true;
-						quitWindow->active = true;
-						currWindow = quitWindow;
+						//quitWindow->active = true;
+						//currWindow = quitWindow;
 						break;
 				}
 			}
@@ -311,8 +320,10 @@ int main( int argc, char* args[] )
 
 	printf("%d frames over %d ms = %d fps\n", frames, last_time, frames * 1000 / last_time);
 	delete(invWindow);
+	printf("Done1\n");
 	delete(pauseWindow);
-	delete(quitWindow);
+	//delete(quitWindow);
+	printf("Finished Closing Windows\n");
 	//Free resources and close SDL
 	close();
 

@@ -28,7 +28,7 @@ class FollowAction : public Action
 	PathFinder* pathFinder = NULL;
 	
 	public:
-		FollowAction(PathFinder* pathFinder, int randomSeed, Sprite* target, int sampleRate);
+		FollowAction(PathFinder* pathFinder, int randomSeed, Sprite* target);
 		void setTarget(Sprite* target);
 		void init(Sprite* sprite);
 		bool apply(Sprite* sprite, int ms);

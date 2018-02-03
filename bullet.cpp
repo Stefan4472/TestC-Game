@@ -26,9 +26,17 @@ Bullet::Bullet(SDL_Rect position, int dir, Sprite* attacker, Item* weapon) : Att
 
 void Bullet::update(int ms)
 {
+	elapsedTime += ms;
+	
 	// move bullet
 	position.x += dx * ms;
 	position.y += dy * ms;
+	
+	if (elapsedTime > MAX_DURATION)
+	{
+		finished = true;
+		printf("Bullet Destroying itself because it has existed for too long\n");
+	}
 }
 
 void Bullet::drawToMap(SDL_Renderer* renderer, TextureAtlas* textureAtlas, float offsetX, float offsetY)

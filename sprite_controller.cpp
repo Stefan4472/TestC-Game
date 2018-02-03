@@ -5,6 +5,16 @@ SpriteController::SpriteController(Sprite* sprite)
 	this->sprite = sprite;
 }
 
+void SpriteController::handleMapCollision()
+{
+	sprite->moveBack();	
+}
+
+void SpriteController::handleSpriteCollision(Sprite* other)
+{
+	sprite->moveBack(); // TODO: SEND TO CURRENT ACTION, IF ANY
+}
+			
 /*void SpriteController::update(int ms)
 {
 	currAction->apply(sprite, ms);

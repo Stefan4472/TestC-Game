@@ -1,11 +1,11 @@
 #include "follow_action.h"
 
-FollowAction::FollowAction(PathFinder* pathFinder, int randomSeed, Sprite* target, int sampleRate)
+FollowAction::FollowAction(PathFinder* pathFinder, int randomSeed, Sprite* target)
 {
 	this->pathFinder = pathFinder;
 	seed = randomSeed;
 	this->target = target;
-	nextSample = sampleRate;
+	nextSample = RESAMPLE_RATE;
 }
 
 void FollowAction::setTarget(Sprite* target)

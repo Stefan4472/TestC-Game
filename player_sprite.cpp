@@ -75,6 +75,7 @@ void PlayerSprite::drawTo(SDL_Renderer* renderer, int offsetX, int offsetY) {
 	// draw in-hand item (if any)
 	if (inHand)
 	{
+		printf("Player has object in hand\n");
 		SDL_Point hand_location = getRightHandPosition();
 		inHand->drawTo(renderer, (int) (hand_location.x - offsetX), (int) (hand_location.y - offsetY));
 	}

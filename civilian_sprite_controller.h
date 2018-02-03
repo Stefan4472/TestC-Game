@@ -5,6 +5,7 @@
 #include "civilian_sprite.h"
 #include "wander_action.h"
 #include "path_finder_interface.h"
+#include "follow_action.h"
 
 // Provides the controller for a CivilianSprite.
 

@@ -16,6 +16,9 @@ void CivilianSpriteController::handleAttacked(Attack* attack)
 {
 	printf("Civilian Attacked!!\n");
 	
+	// set action to follow attacker
+	delete currAction;
+	currAction = new FollowAction(pathFinder, 10, attack->attacker);
 	// replace current action with knockback in the direction of the attack
 	//delete currAction;
 	//currAction = new KnockbackAction(attack->dir);

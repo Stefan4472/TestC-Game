@@ -38,6 +38,7 @@ void Map::update(int ms)
 			{
 				if (k != i && checkCollision(attack_pos, sprites[k]->sprite->hitbox))
 				{
+					printf("Sprite attacked\n");
 					sprites[k]->handleAttacked(sprites[i]->attacks[j]);
 					sprites[i]->attacks[j]->handleSpriteCollision();
 				}
@@ -77,16 +78,18 @@ void Map::update(int ms)
 	{
 		if (!isValidPosition(sprites[i]->sprite->hitbox))
 		{
-			printf("Collision of sprite %d at %f, %f\n", sprites[i]->sprite, sprites[i]->sprite->x, sprites[i]->sprite->y);
-			sprites[i]->sprite->moveBack(); // TODO: IT MAY BE NECESSARY TO HAVE AN EXTRA, SEPARATE HITBOX FOR THE SPRITE'S FEET.
-			printf("Moved back to %f, %f\n", sprites[i]->sprite->x, sprites[i]->sprite->y);
+			//printf("Collision of sprite %d at %f, %f\n", sprites[i]->sprite, sprites[i]->sprite->x, sprites[i]->sprite->y);
+			//sprites[i]->sprite->moveBack(); // TODO: IT MAY BE NECESSARY TO HAVE AN EXTRA, SEPARATE HITBOX FOR THE SPRITE'S FEET.
+			//printf("Moved back to %f, %f\n", sprites[i]->sprite->x, sprites[i]->sprite->y);
+			sprites[i]->handleMapCollision();
 		}
 		for (int j = i + 1; j < num_sprites; j++)
 		{
 			if (checkCollision(sprites[i]->sprite->hitbox, sprites[j]->sprite->hitbox))
 			{
 				printf("Two sprites are colliding\n");
-				sprites[j]->sprite->moveBack();
+				sprites[i]->handleSpriteCollision(sprites[j]->sprite);
+				sprites[j]->handleSpriteCollision(sprites[i]->sprite);
 			}
 		}
 	}

@@ -129,12 +129,12 @@ Item* Inventory::removeInHand()
 	}
 }
 
-void Inventory::setInventoryListener(InventoryListener* listener)
+void Inventory::setInventoryListener(InventoryListener* listener) // TODO: MAKE IT WORK
 {
 	inventoryListener = listener;
 }
 
-void Inventory::drawTo(SDL_Renderer* renderer, TextureAtlas* textureAtlas)
+void Inventory::drawTo(SDL_Renderer* renderer, TextureAtlas* textureAtlas) // TODO: REMOVE
 {
 	for (int i = 0; i < items.size(); i++) 
 	{
@@ -148,7 +148,7 @@ Window* Inventory::getWindow(SDL_Renderer* renderer, TextureAtlas* textureAtlas,
 	int rows = capacity < 10 ? 1 : capacity / 10;
 	int cols = capacity < 10 ? capacity : 10;
 	
-	Window* window = new Window(rows * 32, cols * 32, 640, 480);// todo: know screen width and height, or find a better way
+	Window* window = new Window(cols * 32, rows * 32, 640, 480);// todo: know screen width and height, or find a better way
 	
 	for (int i = 0; i < items.size(); i++)
 	{

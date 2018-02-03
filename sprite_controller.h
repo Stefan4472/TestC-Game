@@ -40,6 +40,10 @@ class SpriteController
 		// updates state of sprite by given number of milliseconds
 		virtual void update(int ms) = 0;
 		
+		// responds to sprite running into an object or invalid position on the Map
+		virtual void handleMapCollision();
+		// responds to sprite running into another sprite
+		virtual void handleSpriteCollision(Sprite* other);
 		// responds to sprite being attacked
 		virtual void handleAttacked(Attack* attack) = 0; 
 		// handles sprite hearing a sound 
