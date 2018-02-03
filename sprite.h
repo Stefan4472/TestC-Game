@@ -51,7 +51,7 @@ class Sprite
 		Item* inHand = NULL;
 		
 		// called when the sprite's in-hand item changes. Listener function
-		virtual void onInHandChanged(int id);
+		virtual void onInHandItemChanged(Item* item);
 		// called when the sprite's health changes
 		virtual void onHealthChanged();
 		

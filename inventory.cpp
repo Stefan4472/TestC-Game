@@ -20,12 +20,7 @@ bool Inventory::addItem(Item* item)
 	if (items.size() == 1)
 	{
 		inHandIndex = 0;	
-		
-		// notify listener
-		if (inventoryListener)
-		{
-			inventoryListener->onInHandItemChanged(items[0]);	
-		}
+		owner->onInHandItemChanged(items[0]);	
 	}
 	return true;
 }
@@ -83,12 +78,8 @@ void Inventory::cycleInHandFwd()
 	if (items.size() > 1)
 	{
 		inHandIndex = (inHandIndex + 1) % items.size();
-
-		// notify listener
-		if (inventoryListener)
-		{
-			inventoryListener->onInHandItemChanged(items[inHandIndex]);	
-		}
+		
+		owner->onInHandItemChanged(items[inHandIndex]);	
 	}
 }
 
@@ -99,11 +90,7 @@ void Inventory::cycleInHandBck()
 	{
 		inHandIndex = inHandIndex ? inHandIndex - 1 : items.size() - 1; 
 		
-		// notify listener
-		if (inventoryListener && items.size())
-		{
-			inventoryListener->onInHandItemChanged(items[inHandIndex]);	
-		} 	
+		owner->onInHandItemChanged(items[inHandIndex]);	
 	}
 }
 
@@ -121,24 +108,11 @@ Item* Inventory::removeInHand()
 		cycleInHandFwd();
 		
 		// handle special case: dropped last item. Notify listener 
-		if (inventoryListener && items.size() == 0)
+		if (items.size() == 0)
 		{
-			inventoryListener->onInHandItemChanged(items[inHandIndex]);	
+			owner->onInHandItemChanged(items[inHandIndex]);	
 		}
 		return in_hand;
-	}
-}
-
-void Inventory::setInventoryListener(InventoryListener* listener) // TODO: MAKE IT WORK
-{
-	inventoryListener = listener;
-}
-
-void Inventory::drawTo(SDL_Renderer* renderer, TextureAtlas* textureAtlas) // TODO: REMOVE
-{
-	for (int i = 0; i < items.size(); i++) 
-	{
-		items[i]->drawToInventory(renderer, SDL_Rect{0, 0, 0, 0});
 	}
 }
 

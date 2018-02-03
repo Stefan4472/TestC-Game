@@ -300,17 +300,6 @@ int main( int argc, char* args[] )
 			}
 		}
 		
-		if (invWindow && invWindow->active) // currently work-around to draw inventory
-		{
-			playerController->inventory->drawTo(gRenderer, &textureAtlas);	
-		}
-		// draw name of in-hand item to screen, if any
-		if (playerController->inventory->getInHand()) // TODO: ONLY RENDER WHEN CHANGE OCCURS. Use Item.drawAsInHand()
-		{
-			//rendered_inhand_name = TTF_RenderText_Solid(font, playerSprite.inventory->getInHand()->getName(), textColor);
-			//SDL_BlitSurface(rendered_inhand_name, NULL, gScreenSurface, NULL);
-		}
-
 		// update screen
 		SDL_RenderPresent(gRenderer);
 		

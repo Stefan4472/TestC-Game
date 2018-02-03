@@ -1,8 +1,9 @@
 #include "sprite.h"
 
-void Sprite::onInHandChanged(int id)
+void Sprite::onInHandItemChanged(Item* item)
 {
-	printf("Sprite: on hand changed to %d\n", id);
+	printf("Sprite: on hand changed to %s\n", item->name);
+	inHand = item;
 }
 
 void Sprite::onHealthChanged()

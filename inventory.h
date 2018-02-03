@@ -53,9 +53,7 @@ class Inventory
 		Inventory(Sprite* owner, int capacity);
 		// attempts to add an item to inventory. Returns false if inventory is full
 		bool addItem(Item* item);
-		// draws inventory to given surface
-		void drawTo(SDL_Renderer* renderer, TextureAtlas* textureAtlas);
-		// returns pointer to the Item that's currently in hand. Null if empty TODO: MAKE NON-NULL?
+		// returns pointer to the Item that's currently in hand. Null if empty 
 		Item* getInHand();
 		// handles all logic for using whatever item is currently in hand. Should be followed up with
 		// getAction(), getBuff(), and getAttack(), one or more of which may be NULL. Takes the sprite's

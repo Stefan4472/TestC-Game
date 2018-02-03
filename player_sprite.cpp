@@ -32,6 +32,7 @@ PlayerSprite::PlayerSprite(float xCoord, float yCoord, TextureAtlas* textureAtla
 void PlayerSprite::onInHandItemChanged(Item* newItem)
 {
 	printf("Received callback\n");	
+	inHand = newItem;
 	headsUpDisplay->updateItem(renderer, newItem);
 }
 
@@ -59,8 +60,6 @@ SDL_Point PlayerSprite::getRightHandPosition()
 
 void PlayerSprite::update(int ms) {
 	//printf("Now %d, %d w/h %d, %d\n", lineOfSight.x, lineOfSight.y, lineOfSight.w, lineOfSight.h);
-
-	
 }
 
 /*void PlayerSprite::onInHandChanged()
@@ -75,7 +74,6 @@ void PlayerSprite::drawTo(SDL_Renderer* renderer, int offsetX, int offsetY) {
 	// draw in-hand item (if any)
 	if (inHand)
 	{
-		printf("Player has object in hand\n");
 		SDL_Point hand_location = getRightHandPosition();
 		inHand->drawTo(renderer, (int) (hand_location.x - offsetX), (int) (hand_location.y - offsetY));
 	}
