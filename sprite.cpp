@@ -53,37 +53,93 @@ void Sprite::startWalking()
 	switch( facingDir ) 
 	{ 
 		case DIRECTION_RIGHT:
-			speedX = moveSpeed;
+			speedX = walkSpeed;
 			speedY = 0;
+			current_anim = walk_right_anim;
 			break;					
 
 		case DIRECTION_UP:
 			speedX = 0;
-			speedY = -moveSpeed;
+			speedY = -walkSpeed;
+			current_anim = walk_up_anim;
 			break;
 
 		case DIRECTION_LEFT:
-			speedX = -moveSpeed;
+			speedX = -walkSpeed;
 			speedY = 0;
+			current_anim = walk_left_anim;
 			break;
 
 		case DIRECTION_DOWN:
 			speedX = 0;
-			speedY = moveSpeed;
+			speedY = walkSpeed;
+			current_anim = walk_down_anim;
 			break;
 			
 		default:
 			printf("Sprite::startMoving received unkown facingDir! %d\n", facingDir);
 	}
-	current_anim->play();
+}
+
+void Sprite::startRunning()
+{
+	switch( facingDir ) 
+	{ 
+		case DIRECTION_RIGHT:
+			speedX = runSpeed;
+			speedY = 0;
+			current_anim = run_right_anim;
+			break;					
+
+		case DIRECTION_UP:
+			speedX = 0;
+			speedY = -runSpeed;
+			current_anim = run_up_anim;
+			break;
+
+		case DIRECTION_LEFT:
+			speedX = -runSpeed;
+			speedY = 0;
+			current_anim = run_left_anim;
+			break;
+
+		case DIRECTION_DOWN:
+			speedX = 0;
+			speedY = runSpeed;
+			current_anim = run_down_anim;
+			break;
+			
+		default:
+			printf("Sprite::startRunning received unkown facingDir! %d\n", facingDir);
+	}
 }
 
 void Sprite::stopMoving()
 {
 	speedX = 0;
 	speedY = 0;
-	current_anim->pause();
-	current_anim->reset();
+	
+	switch( facingDir ) 
+	{ 
+		case DIRECTION_RIGHT:
+			current_anim = idle_right_anim;
+			break;					
+
+		case DIRECTION_UP:
+			current_anim = idle_up_anim;
+			break;
+
+		case DIRECTION_LEFT:
+			current_anim = idle_left_anim;
+			break;
+
+		case DIRECTION_DOWN:
+			current_anim = idle_down_anim;
+			break;
+			
+		default:
+			printf("Sprite::stopMoving received unkown facingDir! %d\n", facingDir);
+	}
 }
 
 void Sprite::moveBack() 
@@ -100,14 +156,14 @@ void Sprite::setDir(int dir)
 	// change of direction: reset current animation
 	if (dir != facingDir) 
 	{
-		(*current_anim).reset(); 
+		current_anim->reset(); 
 		facingDir = dir;
 	}
 	// set animation, direction, and lineOfSight
 	switch (facingDir) 
 	{	
 		case DIRECTION_RIGHT:
-			current_anim = &mv_right_anim;
+			current_anim = walk_right_anim; // TODO: NEED TO SET TO SAME ACTION AS CURRENTLY DOING (WALK, IDLE, RUN)
 			facingDir = DIRECTION_RIGHT;
 			lineOfSightOffsetX = hitbox.w;
 			lineOfSightOffsetY = 0;
@@ -116,7 +172,7 @@ void Sprite::setDir(int dir)
 			break;
 
 		case DIRECTION_UP:
-			current_anim = &mv_up_anim;
+			current_anim = walk_up_anim;
 			facingDir = DIRECTION_UP;
 			lineOfSightOffsetX = 0;
 			lineOfSightOffsetY = -sightDistance;
@@ -125,7 +181,7 @@ void Sprite::setDir(int dir)
 			break;
 
 		case DIRECTION_LEFT:
-			current_anim = &mv_left_anim;
+			current_anim = walk_left_anim;
 			facingDir = DIRECTION_LEFT;
 			lineOfSightOffsetX = -sightDistance;
 			lineOfSightOffsetY = 0;
@@ -134,7 +190,7 @@ void Sprite::setDir(int dir)
 			break;
 			
 		case DIRECTION_DOWN:
-			current_anim = &mv_down_anim;
+			current_anim = walk_down_anim;
 			facingDir = DIRECTION_DOWN;
 			lineOfSightOffsetX = 0;
 			lineOfSightOffsetY = hitbox.h;
@@ -149,11 +205,7 @@ void Sprite::setDir(int dir)
 }
 
 void Sprite::update(int ms) {
-	// only animate if moving
-	if (speedX || speedY)
-	{
-		(*current_anim).passTime(ms);
-	}
+	current_anim->passTime(ms);
 }
 
 void Sprite::addHealth(float amount)
@@ -175,7 +227,7 @@ void Sprite::loseHealth(float amount)
 void Sprite::drawTo(SDL_Renderer* renderer, int offsetX, int offsetY)
 {
 	// draw current animation frame to screen
-	(*current_anim).drawTo(renderer, x - offsetX, y - offsetY);
+	current_anim->drawTo(renderer, x - offsetX, y - offsetY);
 	
 	// draw in-hand item (if any)
 	if (inHand)

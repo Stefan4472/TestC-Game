@@ -24,12 +24,12 @@ class Spritesheet
 		int msLeftThisFrame;
 		
 	public:
+		// creates with id of spritesheet's image, number of frames spritesheet splits into, and number of ms to display each frame
+		Spritesheet(TextureAtlas* textureAtlas, int sheetImageId, int numFrames, int frameDuration);
 		// whether animation is currently paused
 		bool paused = false;
 		// width/height of each individual frame
 		int frameWidth, frameHeight;
-		// inits with id of spritesheet's image, number of frames spritesheet splits into, and number of ms to display each frame
-		void init(TextureAtlas* textureAtlas, int sheetImageId, int numFrames, int frameDuration);
 		// pauses the animation, which will return the current frame it is on until resume() or reset() are called
 		void pause();
 		// let's the animation continue, if it was previously paused (does nothing otherwise). A good idea to call it if there

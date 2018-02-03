@@ -1,6 +1,6 @@
 #include "spritesheet.h"
 
-void Spritesheet::init(TextureAtlas* textureAtlas, int sheetImageId, int numFrames, int frameDuration) 
+Spritesheet::Spritesheet(TextureAtlas* textureAtlas, int sheetImageId, int numFrames, int frameDuration) 
 {
 	printf("Creating Spritesheet with %d frames, %d ms per frame\n", numFrames, frameDuration);
 	this->textureAtlas = textureAtlas;

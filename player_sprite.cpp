@@ -13,14 +13,23 @@ PlayerSprite::PlayerSprite(float xCoord, float yCoord, TextureAtlas* textureAtla
 	hitboxOffsetY = 44;
 	hitbox.w = 32;
 	hitbox.h = 13;
+		
+	idle_right_anim = new Spritesheet(textureAtlas, PLAYER_IDLE_RIGHT, 1, 100);
+	idle_left_anim = new Spritesheet(textureAtlas, PLAYER_IDLE_LEFT, 1, 100);
+	idle_up_anim = new Spritesheet(textureAtlas, PLAYER_IDLE_UP, 1, 100);
+	idle_down_anim = new Spritesheet(textureAtlas, PLAYER_IDLE_DOWN, 1, 100);
 	
-	idle_anim.init(textureAtlas, PLAYER_IDLE, 1, 100);
-	mv_up_anim.init(textureAtlas, PLAYER_MVUP, 4, 100);
-	mv_down_anim.init(textureAtlas, PLAYER_MVDOWN, 4, 100);
-	mv_left_anim.init(textureAtlas, PLAYER_MVLEFT, 4, 100);
-	mv_right_anim.init(textureAtlas, PLAYER_MVRIGHT, 4, 100);
+	walk_right_anim = new Spritesheet(textureAtlas, PLAYER_WALK_RIGHT, 4, 100);
+	walk_left_anim = new Spritesheet(textureAtlas, PLAYER_WALK_LEFT, 4, 100);
+	walk_up_anim = new Spritesheet(textureAtlas, PLAYER_WALK_UP, 4, 100);
+	walk_down_anim = new Spritesheet(textureAtlas, PLAYER_WALK_DOWN, 4, 100);
 	
-	current_anim = &idle_anim;
+	run_right_anim = new Spritesheet(textureAtlas, PLAYER_RUN_RIGHT, 4, 100);
+	run_left_anim = new Spritesheet(textureAtlas, PLAYER_RUN_LEFT, 4, 100);
+	run_up_anim = new Spritesheet(textureAtlas, PLAYER_RUN_UP, 4, 100);
+	run_down_anim = new Spritesheet(textureAtlas, PLAYER_RUN_DOWN, 4, 100);
+	
+	current_anim = idle_down_anim;
 	
 	fullHp = 100;
 	currHp = 100;
@@ -69,21 +78,21 @@ void PlayerSprite::update(int ms) {
 
 void PlayerSprite::drawTo(SDL_Renderer* renderer, int offsetX, int offsetY) {
 	// draw current animation frame to screen
-	(*current_anim).drawTo(renderer, x - offsetX, y - offsetY);
+	/*(*current_anim).drawTo(renderer, x - offsetX, y - offsetY);
 	
 	// draw in-hand item (if any)
 	if (inHand)
 	{
 		SDL_Point hand_location = getRightHandPosition();
 		inHand->drawTo(renderer, (int) (hand_location.x - offsetX), (int) (hand_location.y - offsetY));
-	}
+	}*/
+	Sprite::drawTo(renderer, offsetX, offsetY);
 }
 
 void PlayerSprite::drawHUD(SDL_Renderer* renderer)
 {
 	headsUpDisplay->drawTo(renderer);
 }
-
 
 PlayerSprite::~PlayerSprite() 
 {

@@ -12,18 +12,27 @@
 
 class Sprite
 {
-	public: // TODO: MAKE SOME PRIVATE/PROTECTED
-		Spritesheet idle_anim, mv_up_anim, mv_down_anim, mv_right_anim, mv_left_anim;
+	protected:
+		// spritesheets for idling (not moving) while facing different directions
+		Spritesheet *idle_right_anim = NULL, *idle_left_anim = NULL, *idle_up_anim = NULL, *idle_down_anim = NULL;
+		// spritesheets for walking in different directions
+		Spritesheet *walk_up_anim = NULL, *walk_down_anim = NULL, *walk_right_anim = NULL, *walk_left_anim = NULL;
+		// spritesheets for running in different directions
+		Spritesheet *run_up_anim = NULL, *run_down_anim = NULL, *run_right_anim = NULL, *run_left_anim = NULL;
+		// 
+		//Spritesheet* walk_anims[5] = 
 		// pointer to animation that's currently playing
 		Spritesheet *current_anim = NULL;
+		
+	public: // TODO: MAKE SOME PRIVATE/PROTECTED
 		// offset of start of hitbox, from sprite's x and y (x + hitboxOffsetX = hitbox.x)
 		int hitboxOffsetX, hitboxOffsetY;
 		// offset of start of lineOfSight, from sprite's x and y
 		int lineOfSightOffsetX, lineOfSightOffsetY;
 		// healthbar, which may be drawn over the sprite
 		SpriteHealthBar* healthbar = NULL;
-		// sprite's movement speed, px per millisecond
-		float moveSpeed = 0.25f;
+		// sprite's walking and running speeds, px per millisecond
+		float walkSpeed = 0.25f, runSpeed = 0.40f;
 		// distance sprite can see, and width of line of sight
 		int sightDistance = 256, sightWidth = 96;
 		
@@ -60,9 +69,11 @@ class Sprite
 		
 		// sets coordinates to intended DIRECTION, given number of milliseconds since last frame
 		void move(int ms);
-		// sets speeds to make sprite walk in direction it is facing in
+		// sets speeds and animation to make sprite walk in direction it is facing in
 		void startWalking();
-		// sets speeds to zero
+		// sets speeds and animation to make sprite run in direction it is facing in
+		void startRunning();
+		// sets speeds to zero and animation to idle in current facingDir
 		void stopMoving();
 		// moves sprite to position it was at in previous frame
 		void moveBack();

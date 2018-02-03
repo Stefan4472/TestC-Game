@@ -1,26 +1,36 @@
 #include "civilian_sprite.h"
 
-CivilianSprite::CivilianSprite(float xCoord, float yCoord, Sprite* playerSprite, TextureAtlas* textureAtlas)
+CivilianSprite::CivilianSprite(float xCoord, float yCoord, Sprite* CIVILIANSprite, TextureAtlas* textureAtlas)
 {
 	printf("Creating civilian sprite at %f, %f\n", xCoord, yCoord);
 	
 	x = xCoord;
 	y = yCoord;
 	this->playerSprite = playerSprite;
-	moveSpeed = 0.1f;
+	walkSpeed = 0.1f;
+	runSpeed = 0.2f;
 	// note: this depends on the image of the sprite, and will need to be adjusted at times. Also: hitboxes corresponding to frames of spritesheets
 	hitboxOffsetX = 7;
 	hitboxOffsetY = 25;
 	hitbox.w = 20;
 	hitbox.h = 6;
 	
-	idle_anim.init(textureAtlas, CIVILIAN_IDLE, 1, 100);
-	mv_up_anim.init(textureAtlas, CIVILIAN_MVUP, 3, 100);
-	mv_down_anim.init(textureAtlas, CIVILIAN_MVDOWN, 3, 100);
-	mv_left_anim.init(textureAtlas, CIVILIAN_MVLEFT, 3, 100);
-	mv_right_anim.init(textureAtlas, CIVILIAN_MVRIGHT, 3, 100);
+	idle_right_anim = new Spritesheet(textureAtlas, CIVILIAN_IDLE_RIGHT, 1, 100);
+	idle_left_anim = new Spritesheet(textureAtlas, CIVILIAN_IDLE_LEFT, 1, 100);
+	idle_up_anim = new Spritesheet(textureAtlas, CIVILIAN_IDLE_UP, 1, 100);
+	idle_down_anim = new Spritesheet(textureAtlas, CIVILIAN_IDLE_DOWN, 1, 100);
 	
-	current_anim = &idle_anim;
+	walk_right_anim = new Spritesheet(textureAtlas, CIVILIAN_WALK_RIGHT, 4, 100);
+	walk_left_anim = new Spritesheet(textureAtlas, CIVILIAN_WALK_LEFT, 4, 100);
+	walk_up_anim = new Spritesheet(textureAtlas, CIVILIAN_WALK_UP, 4, 100);
+	walk_down_anim = new Spritesheet(textureAtlas, CIVILIAN_WALK_DOWN, 4, 100);
+	
+	run_right_anim = new Spritesheet(textureAtlas, CIVILIAN_RUN_RIGHT, 4, 100);
+	run_left_anim = new Spritesheet(textureAtlas, CIVILIAN_RUN_LEFT, 4, 100);
+	run_up_anim = new Spritesheet(textureAtlas, CIVILIAN_RUN_UP, 4, 100);
+	run_down_anim = new Spritesheet(textureAtlas, CIVILIAN_RUN_DOWN, 4, 100);
+	
+	current_anim = idle_down_anim;
 	
 	fullHp = 30;
 	currHp = 30;
@@ -34,7 +44,7 @@ void CivilianSprite::update(int ms) {
 	// only animate if moving
 	if (speedX || speedY)
 	{
-		(*current_anim).passTime(ms);
+		current_anim->passTime(ms);
 	}
 }
 
@@ -67,7 +77,7 @@ void CivilianSprite::showHealthbar()
 
 void CivilianSprite::drawTo(SDL_Renderer* renderer, int offsetX, int offsetY) {
 	// draw current animation frame to screen
-	(*current_anim).drawTo(renderer, x - offsetX, y - offsetY);
+	current_anim->drawTo(renderer, x - offsetX, y - offsetY);
 	
 	// draw in-hand item (if any)
 	if (inHand)

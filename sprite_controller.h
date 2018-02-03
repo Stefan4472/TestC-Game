@@ -33,7 +33,7 @@ class SpriteController
 		// list of buffs currently affecting player
 		std::vector<Action*> buffs;
 		// list of sprites that are friends TODO: HASHMAP
-		std::vector<Sprite*> friendls;
+		std::vector<Sprite*> friends;
 		// list of sprites that are enemies. The sprite may act hostile when it sees them TODO: HASHMAP
 		std::vector<Sprite*> enemies;
 		
