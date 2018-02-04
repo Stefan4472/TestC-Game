@@ -10,7 +10,29 @@ void Sprite::onHealthChanged()
 {
 	printf("Sprite received onHealthChanged");
 }
-			
+	
+SDL_Point Sprite::getRightHandPosition() // todo: standardize for all sprites
+{
+	switch (facingDir) 
+	{	
+		case DIRECTION_RIGHT:
+			return SDL_Point { x + 16, y + 30 };
+
+		case DIRECTION_UP:
+			return SDL_Point { x + 26, y + 26 };
+
+		case DIRECTION_DOWN:
+			return SDL_Point { x + 3, y + 26 };
+
+		case DIRECTION_LEFT:
+			return SDL_Point { x + 17, y + 30 };
+
+		default:
+			printf("Weird!! Don't know which animation to show!\n");
+			break;
+	}
+}
+
 void Sprite::move(int ms) {
 	// save current position
 	lastX = x;
@@ -50,8 +72,10 @@ void Sprite::move(int ms) {
 
 void Sprite::startWalking()
 {
+	printf("Walking\n");
 	current_anim_array = walk_anims;
 	current_anim = current_anim_array[facingDir];
+	printf("Set anim\n");
 	switch( facingDir ) 
 	{ 
 		case DIRECTION_RIGHT:
@@ -167,7 +191,7 @@ void Sprite::setDir(int dir)
 		current_anim->reset(); 
 		facingDir = dir;
 		printf("h");
-		//current_anim = current_anim_array[facingDir];
+		current_anim = current_anim_array[facingDir];
 		printf("i");
 	}
 	// set animation, direction, and lineOfSight  TODO: ONLY EXECUTE WHEN DIRECTION CHANGES??
@@ -217,6 +241,12 @@ void Sprite::setDir(int dir)
 
 void Sprite::update(int ms) {
 	current_anim->passTime(ms);
+	
+	// decrement remaining time to show health bar (if any)
+	if (showHealthbarMs)
+	{
+		showHealthbarMs = (showHealthbarMs > ms ? showHealthbarMs - ms : 0);	
+	}
 }
 
 void Sprite::addHealth(float amount)
@@ -235,6 +265,11 @@ void Sprite::loseHealth(float amount)
 	printf("Sprite lost %d health to hit %d hp\n", amount, currHp);
 }
 
+void Sprite::showHealthbar(int numMs)
+{
+	showHealthbarMs += numMs;
+}
+
 void Sprite::drawTo(SDL_Renderer* renderer, int offsetX, int offsetY)
 {
 	// draw current animation frame to screen
@@ -245,5 +280,11 @@ void Sprite::drawTo(SDL_Renderer* renderer, int offsetX, int offsetY)
 	{
 		SDL_Point hand_location = getRightHandPosition();
 		inHand->drawTo(renderer, (int) (hand_location.x - offsetX), (int) (hand_location.y - offsetY));
+	}
+	
+	// draw health bar 
+	if (showHealthbarMs)
+	{
+		healthbar->drawTo(renderer, x - offsetX, y - offsetY);
 	}
 }

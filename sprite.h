@@ -31,6 +31,9 @@ class Sprite
 		// pointer to current action animations
 		Spritesheet** current_anim_array = idle_anims;
 		
+		// how many milliseconds to show healthbar above sprite (0 = do not show)
+		int showHealthbarMs = 0;
+		
 	public: // TODO: MAKE SOME PRIVATE/PROTECTED
 		// offset of start of hitbox, from sprite's x and y (x + hitboxOffsetX = hitbox.x)
 		int hitboxOffsetX, hitboxOffsetY;
@@ -72,7 +75,7 @@ class Sprite
 		virtual void onHealthChanged();
 		
 		// get coordinates of sprite's right hand
-		virtual SDL_Point getRightHandPosition() = 0;
+		virtual SDL_Point getRightHandPosition();
 		
 		// sets coordinates to intended DIRECTION, given number of milliseconds since last frame
 		void move(int ms);
@@ -93,6 +96,8 @@ class Sprite
 		void addHealth(float amount);
 		// subtracts given amount from sprite's currHp
 		void loseHealth(float amount);
+		// tells sprite to show healthbar for the given number of milliseconds (default 200)
+		void showHealthbar(int numMs = 200);
 		// draws sprite to the given surface/screen. Subtracting offsets from coordinates results in on-canvas coordinate to draw to
 		virtual void drawTo(SDL_Renderer* renderer, int offsetX, int offsetY);
 		
