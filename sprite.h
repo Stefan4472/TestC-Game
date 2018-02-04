@@ -19,10 +19,17 @@ class Sprite
 		Spritesheet *walk_up_anim = NULL, *walk_down_anim = NULL, *walk_right_anim = NULL, *walk_left_anim = NULL;
 		// spritesheets for running in different directions
 		Spritesheet *run_up_anim = NULL, *run_down_anim = NULL, *run_right_anim = NULL, *run_left_anim = NULL;
-		// 
-		//Spritesheet* walk_anims[5] = 
+		// array of idle spritesheets, indexed by direction
+		Spritesheet* idle_anims[5] = { NULL, idle_up_anim, idle_down_anim, idle_right_anim, idle_left_anim };
+		// array of walk spritesheets, indexed by direction
+		Spritesheet* walk_anims[5] = { NULL, walk_up_anim, walk_down_anim, walk_right_anim, walk_left_anim };
+		// array of run spritesheets, indexed by direction
+		Spritesheet* run_anims[5] = { NULL, run_up_anim, run_down_anim, run_right_anim, run_left_anim };
+		
 		// pointer to animation that's currently playing
 		Spritesheet *current_anim = NULL;
+		// pointer to current action animations
+		Spritesheet** current_anim_array = idle_anims;
 		
 	public: // TODO: MAKE SOME PRIVATE/PROTECTED
 		// offset of start of hitbox, from sprite's x and y (x + hitboxOffsetX = hitbox.x)

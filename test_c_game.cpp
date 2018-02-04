@@ -155,8 +155,11 @@ void close()
 	printf("Quit TTF\n");
 	IMG_Quit();
 	printf("Quit IMG\n");
-	SDL_Quit();
-	printf("Quit SDL\n");
+	
+	printf("QUITING WITHOUT FULL CLEANUP\n");
+	
+	//SDL_Quit();
+	//printf("Quit SDL\n");
 }
 
 int main( int argc, char* args[] )
