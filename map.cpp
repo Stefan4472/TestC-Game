@@ -125,8 +125,26 @@ void Map::update(int ms)
 	}
 	
 	// handle dead sprites
-	
+	/*for (int i = 0; i < num_sprites; i++)
+	{
+		if (sprites[i]->sprite->dead)
+		{
+			
+		}
+	}
 	// destroy sprites that request it
+	for (int i = 0; i < num_sprites;)
+	{
+		if (sprites[i]->sprite->destroy)
+		{
+			delete sprites[i];
+			sprites[i].rem.....
+		}
+		else
+		{
+			i++;	
+		}
+	}*/
 	
 	// handle playerSprite wanting to interact: delegate to handlePlayerInteract()
 	if (playerSpriteController->interactPressed && !playerSpriteController->interactHandled)

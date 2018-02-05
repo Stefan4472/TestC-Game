@@ -276,9 +276,15 @@ void Sprite::addHealth(float amount)
 void Sprite::loseHealth(float amount)
 {
 	currHp -= amount;
-	// norm to zero
-	currHp = currHp < 0 ? 0 : currHp;
-	printf("Sprite lost %d health to hit %d hp\n", amount, currHp);
+	
+	// sprite dies if hp hits zero
+	if (currHp < 0)
+	{
+		currHp = 0;
+		dead = true;	
+		printf("Sprite died\n");
+	}
+	printf("Sprite lost %f health to hit %f hp\n", amount, currHp);
 }
 
 void Sprite::showHealthbar(int numMs)

@@ -63,8 +63,11 @@ class Sprite
 		// area on map this sprite can "see"
 		SDL_Rect lineOfSight { 0, 0, 0, 0 };
 		
-		// direction currently moving in
-		int movementDir = DIRECTION_NONE;
+		// whether sprite has hit 0 hp and is dead
+		bool dead = false;
+		// whether sprite should be deleted and removed from game
+		bool destroy = false;
+		
 		// direction currently facing
 		int facingDir = DIRECTION_DOWN;
 		

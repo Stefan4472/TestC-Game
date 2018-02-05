@@ -27,7 +27,7 @@ void CivilianSpriteController::handleAttacked(Attack* attack)
 	printf("Civilian Attacked by %d!!\n", attack->attacker);
 	
 	// add action to follow attacker
-	actionStack.push(new FollowAction(pathFinder, 10, attack->attacker));
+	actionStack.push(new FollowAction(pathFinder, 10, attack->attacker)); // TODO: WON'T THIS RESULT IN A BUNCH OF REPEATING FOLLOW ACTIONS?
 	
 	// add action to knockback in the direction of the attack (happens first)
 	actionStack.push(new KnockbackAction(attack->dir));
