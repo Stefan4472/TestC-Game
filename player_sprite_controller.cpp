@@ -141,20 +141,7 @@ void PlayerSpriteController::update(int ms)
 		currAction = NULL;
 	}*/
 	
-	// update attacks, removing those that are finished
-	for (int i = 0; i < attacks.size(); )
-	{
-		attacks[i]->update(ms);
-		if (attacks[i]->finished)
-		{
-			delete attacks[i];
-			attacks.erase(attacks.begin() + i);
-		}
-		else
-		{
-			i++;	
-		}
-	}
+	SpriteController::update(ms);
 }
 
 void PlayerSpriteController::handleAttacked(Attack* attack)

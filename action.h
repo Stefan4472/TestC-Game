@@ -35,6 +35,12 @@ class Action
 		// applies the given action to the Sprite over number of milliseconds
 		// returns false once the action is completed
 		virtual bool apply(Sprite* sprite, int ms) = 0;
+		// called if sprite runs into another sprite
+		// default is no change
+		virtual void handleSpriteCollision();
+		// called if sprite runs into an obstacle on the map
+		// default is no change
+		virtual void handleMapCollision();
 		// resets the state of the Action, re-initializing it 
 		virtual void reset(); // TODO: NOT SURE IF THIS IS A GOOD IDEA
 		~Action();

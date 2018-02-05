@@ -3,30 +3,39 @@
 CivilianSpriteController::CivilianSpriteController(CivilianSprite* sprite, PathFinder* pathFinder) : SpriteController(sprite)
 {
 	this->pathFinder = pathFinder;
-	currAction = new WanderAction(pathFinder, ACTION_LOOPING, 10, 400, 100);
-	inventory = new Inventory(sprite, 5);	
+	// default action is to wander
+	actionStack.push(new WanderAction(pathFinder, ACTION_LOOPING, 10, 400, 100));
+	inventory = new Inventory(sprite, 5);
+	//inventory->addItem(new Sword(textureAtlas, 164, 200));
 }
 
 void CivilianSpriteController::update(int ms)
 {
-	currAction->apply(sprite, ms);
+	SpriteController::update(ms);
+	
+	// switch to next action if top is finished
+	if (!actionStack.top()->apply(sprite, ms))
+	{
+		delete actionStack.top();
+		actionStack.pop();
+		actionStack.top()->init(sprite);
+	}
 }
 
 void CivilianSpriteController::handleAttacked(Attack* attack)
 {
-	printf("Civilian Attacked!!\n");
+	printf("Civilian Attacked by %d!!\n", attack->attacker);
 	
-	// set action to follow attacker
-	delete currAction;
-	currAction = new FollowAction(pathFinder, 10, attack->attacker);
-	// replace current action with knockback in the direction of the attack
-	//delete currAction;
-	//currAction = new KnockbackAction(attack->dir);
+	// add action to follow attacker
+	actionStack.push(new FollowAction(pathFinder, 10, attack->attacker));
+	
+	// add action to knockback in the direction of the attack (happens first)
+	actionStack.push(new KnockbackAction(attack->dir));
 	
 	// handle loss of hp and show healthbar
 	sprite->loseHealth(attack->damage);
 	sprite->healthbar->changeHealth(-attack->damage);
-	//sprite->showHealthbar();
+	sprite->showHealthbar();
 	
 	// add sound
 	sounds.push_back(SOUND_2);

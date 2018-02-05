@@ -2,6 +2,7 @@
 
 FollowAction::FollowAction(PathFinder* pathFinder, int randomSeed, Sprite* target)
 {
+	printf("Creating FollowAction\n");
 	this->pathFinder = pathFinder;
 	seed = randomSeed;
 	this->target = target;
@@ -21,9 +22,13 @@ void FollowAction::setTarget(Sprite* target)
 
 void FollowAction::init(Sprite* sprite)
 {
+	printf("Initializing Follow on %d\n", sprite);
 	if (target)
 	{
+		printf("Creating path\n");
+		path = pathFinder->findPath(sprite->x, sprite->y, target->x, target->y);
 		path->init(sprite);
+		printf("Finished\n");
 	}
 	else
 	{
@@ -33,6 +38,8 @@ void FollowAction::init(Sprite* sprite)
 
 bool FollowAction::apply(Sprite* sprite, int ms) // todo: does it ever complete? CLEAN UP
 {
+	printf("Applying Follow on %d\n", sprite);
+	
 	elapsedTime += ms;
 	
 	
@@ -59,6 +66,7 @@ bool FollowAction::apply(Sprite* sprite, int ms) // todo: does it ever complete?
 		
 		nextSample += RESAMPLE_RATE;
 	}
+	printf("Finished applying follow on %d\n", sprite);
 	
 	return true;
 }

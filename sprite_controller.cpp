@@ -7,7 +7,7 @@ SpriteController::SpriteController(Sprite* sprite)
 
 void SpriteController::handleMapCollision()
 {
-	sprite->moveBack();	
+	sprite->moveBack();	// TODO: SEND TO TOP ACTION ON ACTIONSTACK?
 }
 
 void SpriteController::handleSpriteCollision(Sprite* other)
@@ -15,11 +15,30 @@ void SpriteController::handleSpriteCollision(Sprite* other)
 	sprite->moveBack(); // TODO: SEND TO CURRENT ACTION, IF ANY
 }
 			
-/*void SpriteController::update(int ms)
+void SpriteController::update(int ms)
 {
-	currAction->apply(sprite, ms);
+	// update attacks, removing those that are finished
+	for (int i = 0; i < attacks.size(); )
+	{
+		attacks[i]->update(ms);
+		if (attacks[i]->finished)
+		{
+			delete attacks[i];
+			attacks.erase(attacks.begin() + i);
+		}
+		else
+		{
+			i++;	
+		}
+	}
+	// TODO: UPDATE IN-HAND ITEM, IF ANY
+	if (sprite->inHand)
+	{
+		
+	}
 }
 
+/*
 void SpriteController::handleAttacked(Attack* attack)
 {
 	printf("Civilian Attacked!!\n");
@@ -45,38 +64,4 @@ void SpriteController::handleSoundHeard(Sound* sound)
 void SpriteController::handleSpriteSeen(Sprite* sprite)
 {
 	//printf("Sprite %d sees sprite %d\n", this, sprite);
-}
-
-/*
-// apply current action 
-	if (!currAction->apply(this, ms))
-	{
-		printf("CivilianSprite %d starting new action\n", this);
-		// current action is over: free and create new idle action TODO: MORE SOPHISTICATED DECISION PROCESS
-		delete currAction;
-		currAction = new IdleAction(ACTION_LOOPING);
-	}
-	
-	
-	
-	printf("Civilian Attacked!!\n");
-	
-	// replace current action with knockback in the direction of the attack
-	delete currAction;
-	currAction = new KnockbackAction(attack->dir);
-	
-	// handle loss of hp and show healthbar
-	loseHealth(attack->damage);
-	healthbar->changeHealth(-attack->damage);
-	showHealthbar();
-	
-	// add sound
-	sounds.push_back(SOUND_2);
-	
-	// called by map when player is struck by an attack
-		void handleAttacked(Attack* attack);
-		// handles sprite hearing a sound
-		void handleSoundHeard(Sound* sound);
-		// handles sprite seeing another sprite 
-		void handleSpriteSeen(Sprite* sprite);
-	*/
+}*/

@@ -1,6 +1,7 @@
 #ifndef SPRITE_CONTROLLER_H
 #define SPRITE_CONTROLLER_H
 
+#include <stack>
 #include "sprite.h"
 #include "action.h"
 #include "inventory.h"
@@ -23,6 +24,8 @@ class SpriteController
 		Sprite* sprite = NULL;
 		// sprite's inventory
 		Inventory* inventory = NULL;  // TODO: SHOULD THIS BE IN THE SPRITE CLASS?? SPRITE NEEDS TO KNOW WHICH ITEM IT HAS IN-HAND
+		// stack of Actions sprite will complete
+		std::stack<Action*> actionStack;
 		// list of Items sprite wants to drop. Meant to be picked up by the Map/Gamedriver
 		std::vector<Item*> drops;
 		// list of Attacks sprite wants to carry out. Meant to be picked up by the Map/Gamedriver
@@ -38,7 +41,8 @@ class SpriteController
 		std::vector<Sprite*> enemies;
 		
 		// updates state of sprite by given number of milliseconds
-		virtual void update(int ms) = 0;
+		// by default updates all attacks as well as inhand item--DOES NOT CHANGE OR APPLY ACTIONSTACK!!
+		virtual void update(int ms);
 		
 		// responds to sprite running into an object or invalid position on the Map
 		virtual void handleMapCollision();

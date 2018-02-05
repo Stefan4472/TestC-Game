@@ -204,55 +204,54 @@ void Sprite::setDir(int dir)
 	// change of direction: reset current animation
 	if (dir != facingDir) 
 	{
-		printf("Setting direction to %d\n", dir);
 		current_anim->reset(); 
 		facingDir = dir;
 	
 		current_anim = current_anim_array[facingDir];
-		printf("Current anim now %d\n", current_anim);
-	}
-	// set animation, direction, and lineOfSight  TODO: ONLY EXECUTE WHEN DIRECTION CHANGES??
-	switch (facingDir) 
-	{	
-		case DIRECTION_RIGHT:
-			//current_anim = walk_right_anim; // TODO: NEED TO SET TO SAME ACTION AS CURRENTLY DOING (WALK, IDLE, RUN)
-			facingDir = DIRECTION_RIGHT;
-			lineOfSightOffsetX = hitbox.w;
-			lineOfSightOffsetY = 0;
-			lineOfSight.w = sightDistance; // todo: center. also, hitbox is too small: want full dimensions of sprite
-			lineOfSight.h = sightWidth;
-			break;
 
-		case DIRECTION_UP:
-			//current_anim = walk_up_anim;
-			facingDir = DIRECTION_UP;
-			lineOfSightOffsetX = 0;
-			lineOfSightOffsetY = -sightDistance;
-			lineOfSight.w = sightWidth;
-			lineOfSight.h = sightDistance;
-			break;
+		// set animation, direction, and lineOfSight  TODO: ONLY EXECUTE WHEN DIRECTION CHANGES??
+		switch (facingDir) 
+		{	
+			case DIRECTION_RIGHT:
+				//current_anim = walk_right_anim; // TODO: NEED TO SET TO SAME ACTION AS CURRENTLY DOING (WALK, IDLE, RUN)
+				facingDir = DIRECTION_RIGHT;
+				lineOfSightOffsetX = hitbox.w;
+				lineOfSightOffsetY = 0;
+				lineOfSight.w = sightDistance; // todo: center. also, hitbox is too small: want full dimensions of sprite
+				lineOfSight.h = sightWidth;
+				break;
 
-		case DIRECTION_LEFT:
-			//current_anim = walk_left_anim;
-			facingDir = DIRECTION_LEFT;
-			lineOfSightOffsetX = -sightDistance;
-			lineOfSightOffsetY = 0;
-			lineOfSight.w = sightDistance;
-			lineOfSight.h = sightWidth;
-			break;
-			
-		case DIRECTION_DOWN:
-			//current_anim = walk_down_anim;
-			facingDir = DIRECTION_DOWN;
-			lineOfSightOffsetX = 0;
-			lineOfSightOffsetY = hitbox.h;
-			lineOfSight.w = sightWidth;
-			lineOfSight.h = sightDistance;
-			break;
+			case DIRECTION_UP:
+				//current_anim = walk_up_anim;
+				facingDir = DIRECTION_UP;
+				lineOfSightOffsetX = 0;
+				lineOfSightOffsetY = -sightDistance;
+				lineOfSight.w = sightWidth;
+				lineOfSight.h = sightDistance;
+				break;
 
-		default:
-			printf("Weird!! Don't know which animation to show! Facing dir = %d\n", facingDir);
-			break;
+			case DIRECTION_LEFT:
+				//current_anim = walk_left_anim;
+				facingDir = DIRECTION_LEFT;
+				lineOfSightOffsetX = -sightDistance;
+				lineOfSightOffsetY = 0;
+				lineOfSight.w = sightDistance;
+				lineOfSight.h = sightWidth;
+				break;
+
+			case DIRECTION_DOWN:
+				//current_anim = walk_down_anim;
+				facingDir = DIRECTION_DOWN;
+				lineOfSightOffsetX = 0;
+				lineOfSightOffsetY = hitbox.h;
+				lineOfSight.w = sightWidth;
+				lineOfSight.h = sightDistance;
+				break;
+
+			default:
+				printf("Weird!! Don't know which animation to show! Facing dir = %d\n", facingDir);
+				break;
+		}
 	}
 }
 
@@ -289,10 +288,8 @@ void Sprite::showHealthbar(int numMs)
 
 void Sprite::drawTo(SDL_Renderer* renderer, int offsetX, int offsetY)
 {
-	printf("Current anim is %d\n", current_anim);
 	// draw current animation frame to screen
 	current_anim->drawTo(renderer, x - offsetX, y - offsetY);
-	printf("Drawn successfully\n");
 	
 	// draw in-hand item (if any)
 	if (inHand)
