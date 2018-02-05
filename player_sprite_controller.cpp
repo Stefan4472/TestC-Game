@@ -12,15 +12,13 @@ PlayerSpriteController::PlayerSpriteController(PlayerSprite* playerSprite) : Spr
 
 bool PlayerSpriteController::handleKeyEvent(SDL_Event e) 
 {
-	printf("Handling\n");
 	// don't handle input if there is an action to be carried out first (blocking action)
 	if (actionStack.size())
 	{
-		printf("hey\n");
 		return false; // TODO: PROPER RETURN?	
 	}
-	printf("Done\n");
-	// player pressed a key TODO: IGNORE REPEATED SIGNALS
+	
+	// player pressed a key TODO: ALLOW CERTAIN REPEATED SIGNALS
 	if (e.type == SDL_KEYDOWN && !e.key.repeat)  // todo: E: inventory, R reload, F action, Q drop
 	{
 		switch( e.key.keysym.sym )
@@ -141,14 +139,16 @@ void PlayerSpriteController::update(int ms) // TODO: UPDATE IN-HAND ITEM, BUFFS,
 {
 	if (actionStack.size()) // TODO: CLEANER WAY? --> THIS CAN BE ABSTRACTED TO SPRITE_CONTROLLER ONCE STATE-TRACKING FSM'S ARE IMPLEMENTED
 	{
+		printf("Player following action\n");
 		// current action is finished
 		if (!actionStack.top()->apply(sprite, ms))
 		{
+			printf("Action finished, deleting\n");
 			delete actionStack.top();
 			actionStack.pop();
 			
 			// handle another action on the stack
-			if (actionStack.top())
+			if (actionStack.size())
 			{
 				actionStack.top()->init(sprite);
 			}

@@ -5,7 +5,8 @@
 #include "item.h"
 #include "attack.h"
 #include "bullet.h"
-
+#include "action.h"
+#include "knockback_action.h"
 
 class Pistol : public Item
 {
@@ -23,7 +24,10 @@ class Pistol : public Item
 	public:
 		Pistol(TextureAtlas* textureAtlas, float x, float y);
 		void use(Sprite* actor, SDL_Point handPos, int useDir);
+		// returns bullet fired in direction of shot
 		Attack* getAttack();
+		// returns knockback in opposite direction of shot
+		Action* getAction();
 };
 
 #endif

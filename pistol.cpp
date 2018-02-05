@@ -26,3 +26,21 @@ Attack* Pistol::getAttack() // TODO: NEEDS TO KNOW HOW MUCH TIME HAS PASSED
 	}
 	fired = false;
 }
+
+Action* Pistol::getAction() // TODO: CHECK IF PISTOL WAS FIRED? ORGANIZE DIRECTIONS SO WE CAN DO -(DIRECTION)?
+{
+	switch (fireDirection)
+	{
+		case DIRECTION_RIGHT:
+			return new KnockbackAction(DIRECTION_LEFT);
+			
+		case DIRECTION_UP:
+			return new KnockbackAction(DIRECTION_DOWN);
+			
+		case DIRECTION_LEFT:
+			return new KnockbackAction(DIRECTION_RIGHT);
+			
+		case DIRECTION_DOWN:
+			return new KnockbackAction(DIRECTION_UP);
+	}
+}
