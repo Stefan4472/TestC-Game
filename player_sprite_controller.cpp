@@ -6,10 +6,20 @@ PlayerSpriteController::PlayerSpriteController(PlayerSprite* playerSprite) : Spr
 	
 	// create inventory with capacity 30
 	inventory = new Inventory(sprite, 30);
+	
+	printf("Created Player Controller\n");
 }
 
 bool PlayerSpriteController::handleKeyEvent(SDL_Event e) 
 {
+	printf("Handling\n");
+	// don't handle input if there is an action to be carried out first (blocking action)
+	if (actionStack.size())
+	{
+		printf("hey\n");
+		return false; // TODO: PROPER RETURN?	
+	}
+	printf("Done\n");
 	// player pressed a key TODO: IGNORE REPEATED SIGNALS
 	if (e.type == SDL_KEYDOWN && !e.key.repeat)  // todo: E: inventory, R reload, F action, Q drop
 	{
@@ -52,7 +62,8 @@ bool PlayerSpriteController::handleKeyEvent(SDL_Event e)
 				if (action)
 				{
 					printf("Received action\n");
-					// todo: add action
+					// put resulting action on the stack, which will block further input until finished
+					actionStack.push(action);
 				}
 				Action* buff = inventory->getBuff();
 				if (buff)
@@ -126,40 +137,41 @@ bool PlayerSpriteController::handleKeyEvent(SDL_Event e)
 	}
 }
 
-void PlayerSpriteController::update(int ms)
+void PlayerSpriteController::update(int ms) // TODO: UPDATE IN-HAND ITEM, BUFFS, CHECK IF ACTIONSTACK HAS ANYTHING (KNOCKBACK, STUN) AND BLOCK CURRENT ACTION
 {
-	// only animate if moving
-	/*if (speedX || speedY)
+	if (actionStack.size()) // TODO: CLEANER WAY? --> THIS CAN BE ABSTRACTED TO SPRITE_CONTROLLER ONCE STATE-TRACKING FSM'S ARE IMPLEMENTED
 	{
-		(*current_anim).passTime(ms);
-	}*/
-	//printf("Current anim paused = %d\n", current_anim->paused);
-	
-	/*if (currAction && !currAction->apply(this, ms)) // todo: should Actions be called from the Map/GameDriver?
+		// current action is finished
+		if (!actionStack.top()->apply(sprite, ms))
+		{
+			delete actionStack.top();
+			actionStack.pop();
+			
+			// handle another action on the stack
+			if (actionStack.top())
+			{
+				actionStack.top()->init(sprite);
+			}
+		}
+	}
+	else
 	{
-		delete(currAction);	
-		currAction = NULL;
-	}*/
-	
-	SpriteController::update(ms);
+		// follow 
+		SpriteController::update(ms);
+	}
 }
 
 void PlayerSpriteController::handleAttacked(Attack* attack)
 {
-	return;
-/*	printf("Civilian Attacked!!\n");
+	// add action to knockback in the direction of the attack and block further input
+	actionStack.push(new KnockbackAction(attack->dir));
+	actionStack.top()->init(sprite);
 	
-	// replace current action with knockback in the direction of the attack
-	//delete currAction;
-	//currAction = new KnockbackAction(attack->dir);
-	
-	// handle loss of hp and show healthbar
+	// handle loss of hp
 	sprite->loseHealth(attack->damage);
-	sprite->healthbar->changeHealth(-attack->damage);
-	//sprite->showHealthbar();
 	
 	// add sound
-	sprite->sounds.push_back(SOUND_2);*/
+	sounds.push_back(SOUND_2);
 }
 
 void PlayerSpriteController::handleSoundHeard(Sound* sound)

@@ -3,6 +3,7 @@
 
 #include "sprite_controller.h"
 #include "player_sprite.h"
+#include "knockback_action.h"
 
 // Controller for the PlayerSprite. Takes Keyboard Input to determine what to do.
 
