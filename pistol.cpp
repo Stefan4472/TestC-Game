@@ -5,6 +5,11 @@ Pistol::Pistol(TextureAtlas* textureAtlas, float x, float y) : Item(textureAtlas
 	
 }
 
+void Pistol::update(int ms)
+{
+	msSinceShot += ms;	
+}
+
 void Pistol::use(Sprite* actor, SDL_Point handPos, int useDir)
 {
 	this->actor = actor;
@@ -18,9 +23,9 @@ void Pistol::use(Sprite* actor, SDL_Point handPos, int useDir)
 
 Attack* Pistol::getAttack() // TODO: NEEDS TO KNOW HOW MUCH TIME HAS PASSED
 {
-	if (fired && framesSinceShot >= COOL_OFF)
+	if (fired && msSinceShot >= COOL_OFF)
 	{
-		//framesSinceShot = 0;
+		msSinceShot = 0;
 		//SDL_Rect position, int dir, Sprite* attacker, Item* weapon
 		return new Bullet(position, fireDirection, actor, this);
 	}

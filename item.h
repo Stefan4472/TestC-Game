@@ -66,14 +66,14 @@ const std::string ITEM_DESCRIPTIONS[7] =
 class Item
 {
 	private:
-		void init(TextureAtlas* textureAtlas, int itemType);
+		void init(TextureAtlas* textureAtlas, int itemType); // TODO: ON EQUIPPED, ON DE-EQUIPPED METHODS
 		
 	public:
 		// ItemType id
 		int itemType;
 		// id for sprite in texture_atlas.h
 		int textureId;
-		// name and descripion of the item
+		// name and description of the item
 		std::string name;
 		std::string description;
 		// pointer to TextureAtlas used for drawing
@@ -95,6 +95,9 @@ class Item
 		// called when the Item is used. Isn't required to do anything. May trigger change of state.
 		// takes sprite that is using the item, sprite's hand position, and facing direction on Map
 		virtual void use(Sprite* actor, SDL_Point handPos, int useDir) = 0;
+		// updates state of item by given number of milliseconds. Meant for when item is in sprite's hand.
+		// default does nothing.
+		virtual void update(int ms);
 		// returns Action created when this sprite is used. Default NULL
 		virtual Action* getAction();
 		// returns Buff created when this sprite is used. Default NULL

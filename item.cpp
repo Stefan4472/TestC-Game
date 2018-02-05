@@ -35,6 +35,11 @@ void Item::setPosition(float x, float y)
 	position.y = y;
 }
 
+void Item::update(int ms)
+{
+	return;	
+}
+
 Action* Item::getAction()
 {
 	return NULL;

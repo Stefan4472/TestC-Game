@@ -31,37 +31,47 @@ void SpriteController::update(int ms)
 			i++;	
 		}
 	}
-	// TODO: UPDATE IN-HAND ITEM, IF ANY
+	
+	// apply buffs, if any, and removes those that are finished
+	for (int i = 0; i < buffs.size();)
+	{
+		if (buffs[i]->apply(sprite, ms))
+		{
+			printf("Applying buff to %d\n", sprite);
+			i++;	
+		}
+		else
+		{
+			printf("Deleting buff\n");
+			delete buffs[i];
+			buffs.erase(buffs.begin() + i);
+		}
+	}
+	
+	// update in-hand item, if any, and delete if requested
 	if (sprite->inHand)
 	{
-		
+		if (sprite->inHand->destroy)
+		{
+			delete sprite->inHand;
+		}
+		printf("Updating in-hand\n");
+		sprite->inHand->update(ms);
+		printf("done\n");
 	}
 }
 
-/*
 void SpriteController::handleAttacked(Attack* attack)
 {
-	printf("Civilian Attacked!!\n");
-	
-	// replace current action with knockback in the direction of the attack
-	//delete currAction;
-	//currAction = new KnockbackAction(attack->dir);
-	
-	// handle loss of hp and show healthbar
-	sprite->loseHealth(attack->damage);
-	sprite->healthbar->changeHealth(-attack->damage);
-	//sprite->showHealthbar();
-	
-	// add sound
-	sprite->sounds.push_back(SOUND_2);
+	return;
 }
 
 void SpriteController::handleSoundHeard(Sound* sound)
 {
-	printf("Sprite %d heard sound %d\n", sprite, sound->soundId);
+	return;
 }
 
 void SpriteController::handleSpriteSeen(Sprite* sprite)
 {
-	//printf("Sprite %d sees sprite %d\n", this, sprite);
-}*/
+	return;
+}

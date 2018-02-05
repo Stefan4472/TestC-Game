@@ -14,7 +14,7 @@ class Sword : public Item
 	// damage done by the sword
 	int damage = 10;
 	
-	public:
+	public: // TODO: COOL-OFF PERIOD
 		Sword(TextureAtlas* textureAtlas, float x, float y);
 		void use(Sprite* actor, SDL_Point handPos, int useDir);
 		Attack* getAttack();

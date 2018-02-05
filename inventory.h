@@ -55,7 +55,7 @@ class Inventory
 		bool addItem(Item* item);
 		// returns pointer to the Item that's currently in hand. Null if empty 
 		Item* getInHand();
-		// handles all logic for using whatever item is currently in hand. Should be followed up with
+		// handles all logic for using whatever item is currently in hand. Should be followed up with           TODO: HOW TO HANDLE CONSUMMABLES?
 		// getAction(), getBuff(), and getAttack(), one or more of which may be NULL. Takes the sprite's
 		// current hand position, and direction facing, which is used for positional effects.
 		void useInHand(SDL_Point handPos, int useDir); 

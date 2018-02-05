@@ -19,10 +19,13 @@ class Pistol : public Item
 	// num milliseconds before gun can be fired again
 	const int COOL_OFF = 500;	
 	// num milliseconds since gun was last fired
-	int framesSinceShot = COOL_OFF;
+	int msSinceShot = COOL_OFF;
 	
 	public:
 		Pistol(TextureAtlas* textureAtlas, float x, float y);
+		// adds to framesSinceShot
+		void update(int ms);
+		// attempts to fire the gun
 		void use(Sprite* actor, SDL_Point handPos, int useDir);
 		// returns bullet fired in direction of shot
 		Attack* getAttack();

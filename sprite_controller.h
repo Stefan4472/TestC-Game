@@ -49,11 +49,11 @@ class SpriteController
 		// responds to sprite running into another sprite
 		virtual void handleSpriteCollision(Sprite* other);
 		// responds to sprite being attacked
-		virtual void handleAttacked(Attack* attack) = 0; 
+		virtual void handleAttacked(Attack* attack); 
 		// handles sprite hearing a sound 
-		virtual void handleSoundHeard(Sound* sound) = 0;
+		virtual void handleSoundHeard(Sound* sound);
 		// handles sprite seeing another sprite 
-		virtual void handleSpriteSeen(Sprite* sprite) = 0;
+		virtual void handleSpriteSeen(Sprite* sprite);
 	
 };
 #endif
