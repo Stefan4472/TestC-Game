@@ -90,16 +90,9 @@ void Sprite::move(int ms) {
 
 void Sprite::startWalking()
 {
-	printf("Walking in direction %d\n", facingDir);
 	current_anim_array = walk_anims;
-	for (int i = 0; i < 5; i++)
-	{
-		printf("%d ", current_anim_array[i]); 	
-	}
-	printf("\n");
-		
 	current_anim = current_anim_array[facingDir];
-	printf("Set anim to %d\n", current_anim);
+
 	switch( facingDir ) 
 	{ 
 		case DIRECTION_RIGHT:
