@@ -1,5 +1,23 @@
 #include "sprite.h"
 
+void Sprite::init()
+{
+	idle_anims[1] = idle_up_anim;
+	idle_anims[2] = idle_down_anim;
+	idle_anims[3] = idle_right_anim;
+	idle_anims[4] = idle_left_anim;
+	
+	walk_anims[1] = walk_up_anim; // TODO: MORE ELEGANT WAY?
+	walk_anims[2] = walk_down_anim;
+	walk_anims[3] = walk_right_anim;
+	walk_anims[4] = walk_left_anim;
+	
+	run_anims[1] = run_up_anim;
+	run_anims[2] = run_down_anim;
+	run_anims[3] = run_right_anim;
+	run_anims[4] = run_left_anim;
+}
+
 void Sprite::onInHandItemChanged(Item* item)
 {
 	printf("Sprite: on hand changed to %s\n", item->name);
@@ -72,10 +90,16 @@ void Sprite::move(int ms) {
 
 void Sprite::startWalking()
 {
-	printf("Walking\n");
+	printf("Walking in direction %d\n", facingDir);
 	current_anim_array = walk_anims;
+	for (int i = 0; i < 5; i++)
+	{
+		printf("%d ", current_anim_array[i]); 	
+	}
+	printf("\n");
+		
 	current_anim = current_anim_array[facingDir];
-	printf("Set anim\n");
+	printf("Set anim to %d\n", current_anim);
 	switch( facingDir ) 
 	{ 
 		case DIRECTION_RIGHT:
@@ -184,15 +208,15 @@ void Sprite::moveBack()
 
 void Sprite::setDir(int dir)
 {
-	printf("Setting direction to %d\n");
 	// change of direction: reset current animation
 	if (dir != facingDir) 
 	{
+		printf("Setting direction to %d\n", dir);
 		current_anim->reset(); 
 		facingDir = dir;
-		printf("h");
+	
 		current_anim = current_anim_array[facingDir];
-		printf("i");
+		printf("Current anim now %d\n", current_anim);
 	}
 	// set animation, direction, and lineOfSight  TODO: ONLY EXECUTE WHEN DIRECTION CHANGES??
 	switch (facingDir) 
@@ -272,8 +296,10 @@ void Sprite::showHealthbar(int numMs)
 
 void Sprite::drawTo(SDL_Renderer* renderer, int offsetX, int offsetY)
 {
+	printf("Current anim is %d\n", current_anim);
 	// draw current animation frame to screen
 	current_anim->drawTo(renderer, x - offsetX, y - offsetY);
+	printf("Drawn successfully\n");
 	
 	// draw in-hand item (if any)
 	if (inHand)

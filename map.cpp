@@ -8,9 +8,9 @@ void Map::init(PlayerSpriteController* playerSpriteController, TextureAtlas* tex
 	mapChunk = new MapChunk(textureAtlas, 10);
 	
 	addControlledSprite(playerSpriteController);
-	addControlledSprite(new CivilianSpriteController(new CivilianSprite(32 * 4, 32 * 4, playerSpriteController->player, textureAtlas), this));
-	addControlledSprite(new CivilianSpriteController(new CivilianSprite(32 * 8, 32 * 8, playerSpriteController->player, textureAtlas), this));	
-	addControlledSprite(new CivilianSpriteController(new CivilianSprite(32 * 12, 32 * 8, playerSpriteController->player, textureAtlas), this));
+	addControlledSprite(new CivilianSpriteController(new CivilianSprite(32 * 4, 32 * 4, textureAtlas), this));
+	addControlledSprite(new CivilianSpriteController(new CivilianSprite(32 * 8, 32 * 8, textureAtlas), this));	
+	addControlledSprite(new CivilianSpriteController(new CivilianSprite(32 * 12, 32 * 8, textureAtlas), this));
 	
 	addItem(new Consumable(ITEM_BREAD_LOAF, 100, 200, textureAtlas));
 	addItem(new Consumable(ITEM_BEER_MUG, 132, 200, textureAtlas));

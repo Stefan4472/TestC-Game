@@ -12,11 +12,8 @@
 
 class CivilianSprite : public Sprite
 {
-	// pointer to player
-	Sprite* playerSprite;
-	
 	public:
-		CivilianSprite(float xCoord, float yCoord, Sprite* playerSprite, TextureAtlas* textureAtlas);		
+		CivilianSprite(float x, float y, TextureAtlas* textureAtlas);		
 };
 
 #endif

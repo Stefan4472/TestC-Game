@@ -81,36 +81,36 @@ const SDL_Rect textureRegions[45] =
 	SDL_Rect { 220, 0, 32, 32 },
 	SDL_Rect { 220, 32, 32, 32 },
 	SDL_Rect { 220, 64, 32, 32 },
-	// civilian idling
-	SDL_Rect { 416, 36, 34, 34 },
-	SDL_Rect { 416, 72, 34, 34 },
-	SDL_Rect { 416, 108, 34, 34 },
+	// civilian idling  r l u d    r = d, d = r, l = u, u = l
 	SDL_Rect { 416, 146, 34, 34 },
+	SDL_Rect { 416, 108, 34, 34 },
+	SDL_Rect { 416, 72, 34, 34 },
+	SDL_Rect { 416, 36, 34, 34 },
 	// civilian walking
 	SDL_Rect { 416, 146, 99, 34 },
 	SDL_Rect { 416, 108, 100, 36 },
 	SDL_Rect { 416, 72, 102, 34 },
 	SDL_Rect { 416, 36, 103, 34 },
 	// civilian running
-	SDL_Rect { 416, 36, 103, 34 },
-	SDL_Rect { 416, 72, 102, 34 },
-	SDL_Rect { 416, 108, 100, 36 },
 	SDL_Rect { 416, 146, 99, 34 },
-	// player idling
-	SDL_Rect { 416, 183, 52, 59 },
-	SDL_Rect { 416, 258, 52, 59 },
-	SDL_Rect { 416, 330, 52, 59 },
+	SDL_Rect { 416, 108, 100, 36 },
+	SDL_Rect { 416, 72, 102, 34 },
+	SDL_Rect { 416, 36, 103, 34 },
+	// player idling 
 	SDL_Rect { 416, 408, 52, 59 },
+	SDL_Rect { 416, 330, 52, 59 },
+	SDL_Rect { 416, 258, 52, 59 },
+	SDL_Rect { 416, 183, 52, 59 },
 	// player walking
-	SDL_Rect { 416, 183, 197, 59 },
-	SDL_Rect { 416, 258, 197, 59 },
-	SDL_Rect { 416, 330, 197, 59 },
 	SDL_Rect { 416, 408, 197, 59 },
+	SDL_Rect { 416, 330, 197, 59 },
+	SDL_Rect { 416, 258, 197, 59 },
+	SDL_Rect { 416, 183, 197, 59 },
 	// player running
-	SDL_Rect { 416, 183, 197, 59 },
-	SDL_Rect { 416, 258, 197, 59 },
-	SDL_Rect { 416, 330, 197, 59 },
 	SDL_Rect { 416, 408, 197, 59 },
+	SDL_Rect { 416, 330, 197, 59 },
+	SDL_Rect { 416, 258, 197, 59 },
+	SDL_Rect { 416, 183, 197, 59 },
 	// objects
 	SDL_Rect { 284, 0, 26, 19 },
 	SDL_Rect { 284, 21, 19, 15 },

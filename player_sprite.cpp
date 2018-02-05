@@ -36,6 +36,8 @@ PlayerSprite::PlayerSprite(float xCoord, float yCoord, TextureAtlas* textureAtla
 	
 	headsUpDisplay = new PlayerHUD(renderer, HUDFont, NULL, currHp, fullHp);
 	//inventory->setInventoryListener(this);
+	
+	init();
 }
 
 void PlayerSprite::onInHandItemChanged(Item* newItem)

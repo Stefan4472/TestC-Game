@@ -35,6 +35,8 @@ class Sprite
 		int showHealthbarMs = 0;
 		
 	public: // TODO: MAKE SOME PRIVATE/PROTECTED
+		// initializes arrays of Spritesheets
+		void init();
 		// offset of start of hitbox, from sprite's x and y (x + hitboxOffsetX = hitbox.x)
 		int hitboxOffsetX, hitboxOffsetY;
 		// offset of start of lineOfSight, from sprite's x and y
