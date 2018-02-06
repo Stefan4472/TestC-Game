@@ -5,9 +5,6 @@
 #include "texture_atlas.h"
 #include "attack.h"
 
-//class Sprite;
-//lass Item;
-
 class Bullet : public Attack
 {
 	// speed bullet is travelling in x and y

@@ -173,13 +173,3 @@ void PlayerSpriteController::handleAttacked(Attack* attack)
 	// add sound
 	sounds.push_back(SOUND_2);
 }
-
-void PlayerSpriteController::handleSoundHeard(Sound* sound)
-{
-	return;
-}
-
-void PlayerSpriteController::handleSpriteSeen(Sprite* sprite)
-{
-	return;
-}

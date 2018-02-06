@@ -257,6 +257,10 @@ void Sprite::setDir(int dir)
 
 void Sprite::update(int ms) {
 	current_anim->passTime(ms);
+	if (current_anim->paused)
+	{
+		printf("An animation is paused\n");	
+	}
 	
 	// decrement remaining time to show health bar (if any)
 	if (showHealthbarMs)

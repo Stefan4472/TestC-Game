@@ -30,12 +30,8 @@ class PlayerSpriteController : public SpriteController
 		// updates state of sprite by given number of milliseconds
 		void update(int ms);
 
-		// responds to sprite being attacked
+		// responds to sprite being attacked--implements knockback
 		void handleAttacked(Attack* attack); 
-		// handles sprite hearing a sound 
-		void handleSoundHeard(Sound* sound);
-		// handles sprite seeing another sprite 
-		void handleSpriteSeen(Sprite* sprite);
 };
 
 #endif
