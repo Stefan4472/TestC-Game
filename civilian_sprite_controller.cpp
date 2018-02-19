@@ -10,6 +10,7 @@ CivilianSpriteController::CivilianSpriteController(CivilianSprite* sprite, PathF
 	currAction = new IdleAction(ACTION_LOOPING, 2000);
 	currAction->init(sprite);
 	inventory = new Inventory(sprite, 5);
+	inventory->setListener(this);
 	//inventory->addItem(new Sword(textureAtlas, 164, 200));
 }
 

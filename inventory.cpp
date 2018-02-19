@@ -27,9 +27,9 @@ bool Inventory::addItem(Item* item)
 		if (hotbar[i]->attemptAdd(item))
 		{
 			// check if need to update inHandIndex
-			if (i == inHandIndex && hotbar[i]->size() == 1)
+			if (inventoryListener && i == inHandIndex && hotbar[i]->size() == 1)
 			{
-				owner->onInHandItemChanged(hotbar[i]->peekNext());		
+				inventoryListener->onInHandItemChanged(hotbar[i]->peekNext());		
 			}
 			return true;
 		}
@@ -102,14 +102,20 @@ void Inventory::cycleInHandFwd()
 {
 	// cycle to the right, wrapping around
 	inHandIndex = (inHandIndex + 1) % hotbarSize;
-	owner->onInHandItemChanged(hotbar[inHandIndex]->peekNext());	
+	if (inventoryListener)
+	{
+		inventoryListener->onInHandItemChanged(hotbar[inHandIndex]->peekNext());	
+	}
 }
 
 void Inventory::cycleInHandBck()
 {
 	// cycle to the left, wrapping around
 	inHandIndex = inHandIndex ? inHandIndex - 1 : hotbarSize - 1; 	
-	owner->onInHandItemChanged(hotbar[inHandIndex]->peekNext());	
+	if (inventoryListener)
+	{
+		inventoryListener->onInHandItemChanged(hotbar[inHandIndex]->peekNext());	
+	}
 }
 
 Item* Inventory::removeInHand()
@@ -120,13 +126,31 @@ Item* Inventory::removeInHand()
 		printf("Removed %s from Inventory\n", in_hand->getName());
 		
 		// handle special case: dropped last item. Notify listener 
-		if (!hotbar[inHandIndex]->size())
+		if (inventoryListener && !hotbar[inHandIndex]->size())
 		{
-			owner->onInHandItemChanged(NULL);	
+			inventoryListener->onInHandItemChanged(NULL);	
 		}
 		return in_hand;
 	}
 	return NULL;
+}
+
+void Inventory::setListener(InventoryListener* listener)
+{
+	inventoryListener = listener;	
+}
+
+void Inventory::drawHotbarTo(SDL_Renderer* renderer, TextureAtlas* textureAtlas, FontAtlas* fontAtlas, int x, int y)
+{
+	for (int i = 0; i < hotbarSize; i++)
+	{
+		printf("Slot %d has %d items\n", i, hotbar[i]->size());
+		if (hotbar[i]->size())
+		{
+			textureAtlas->draw(renderer, hotbar[i]->peekNext()->textureId, x + i * 32, y);	
+			printf("Drawing Hotbar item %d, %d, %d\n", hotbar[i]->peekNext()->textureId, x + i * 32, y);
+		}
+	}
 }
 
 Window* Inventory::getWindow(SDL_Renderer* renderer, TextureAtlas* textureAtlas, FontAtlas* fontAtlas)

@@ -27,6 +27,8 @@ class ItemStack
 		Item* peekNext();
 		// removes next item in the stack and returns it (can be null)
 		Item* popNext();
+		// draws item icon to given position, and draws quantity (if > 1)
+		//void 
 	
 };
 

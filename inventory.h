@@ -82,7 +82,9 @@ class Inventory // TODO: SEPARATE CLASS FOR NON-SPRITE INVENTORIES
 		// removes and returns in-hand item, if it exists. Automatically cycles forward
 		Item* removeInHand();
 		// sets listener function for in-hand item change
-		void setInventoryListener(InventoryListener* listener);
+		void setListener(InventoryListener* listener);
+		// draws hotbar items to the screen at x, y
+		void drawHotbarTo(SDL_Renderer* renderer, TextureAtlas* textureAtlas, FontAtlas* fontAtlas, int x, int y);
 		// opens a Window with inventory displayed
 		Window* getWindow(SDL_Renderer* renderer, TextureAtlas* textureAtlas, FontAtlas* fontAtlas);
 };

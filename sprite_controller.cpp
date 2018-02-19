@@ -5,6 +5,11 @@ SpriteController::SpriteController(Sprite* sprite)
 	this->sprite = sprite;
 }
 
+void SpriteController::onInHandItemChanged(Item* newItem)
+{
+	sprite->onInHandItemChanged(newItem);	
+}
+
 void SpriteController::handleMapCollision()
 {
 	sprite->moveBack();	// TODO: SEND TO TOP ACTION ON ACTIONSTACK?

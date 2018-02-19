@@ -15,7 +15,7 @@
 // The Controller is abstracted, so different Sprite Classes may define their own handlers and controlling
 // actions.
 
-class SpriteController 
+class SpriteController : public InventoryListener
 {
 	public:
 		SpriteController(Sprite* sprite);
@@ -43,6 +43,9 @@ class SpriteController
 		// updates state of sprite by given number of milliseconds
 		// by default updates all attacks as well as inhand item--DOES NOT CHANGE OR APPLY ACTIONSTACK!!
 		virtual void update(int ms);
+		
+		// inventory callback when in-hand item has changed. Sends to sprite by default
+		void onInHandItemChanged(Item* newItem);
 		
 		// responds to sprite running into an object or invalid position on the Map
 		virtual void handleMapCollision();

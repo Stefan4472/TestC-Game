@@ -6,6 +6,7 @@ PlayerSpriteController::PlayerSpriteController(PlayerSprite* playerSprite) : Spr
 	
 	// create inventory with capacity 30
 	inventory = new Inventory(sprite, 30);
+	inventory->setListener(this);
 	
 	printf("Created Player Controller\n");
 }
@@ -172,4 +173,13 @@ void PlayerSpriteController::handleAttacked(Attack* attack)
 	
 	// add sound
 	sounds.push_back(SOUND_2);
+}
+
+void PlayerSpriteController::drawHUD(SDL_Renderer* renderer, TextureAtlas* textureAtlas, FontAtlas* fontAtlas, int screenWidth, int screenHeight)
+{
+	inventory->drawHotbarTo(renderer, textureAtlas, NULL, 160, 440);
+	//SDL_SetRenderDrawColor(COLOR_GRAY);
+	//inHandSlotBound.x = 160 + 
+	// draw gray rectangle around current in-hand slot
+	//SDL_RenderDrawRect(renderer, &inHandSlotBound);
 }

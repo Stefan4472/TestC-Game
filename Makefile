@@ -1,7 +1,3 @@
-#Copyright Notice:
-#The files within this zip file are copyrighted by Lazy Foo' Productions (2004-2014)
-#and may not be redistributed without written permission.
-
 #OBJS specifies which files to compile as part of the project
 OBJS = game_utils.cpp texture_atlas.cpp sound_atlas.cpp font_atlas.cpp gui_widget.cpp gui_button.cpp gui_img_button.cpp gui_window.cpp pause_dialog.cpp spritesheet.cpp item.cpp consumable.cpp attack.cpp punch.cpp sword_swing.cpp bullet.cpp sword.cpp pistol.cpp item_stack.cpp inventory.cpp action.cpp move_in_dir_action.cpp follow_path_action.cpp idle_action.cpp wander_action.cpp follow_sprite_action.cpp health_regen_action.cpp knockback_action.cpp trigger.cpp action_set.cpp healthbar.cpp player_hud.cpp sprite.cpp sprite_controller.cpp player_sprite_controller.cpp civilian_sprite_controller.cpp sound.cpp player_sprite.cpp civilian_sprite.cpp map_chunk.cpp map.cpp test_c_game.cpp 
 

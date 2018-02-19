@@ -97,7 +97,7 @@ void Map::update(int ms)
 	// "pick up" any items dropped by the sprite
 	for (int i = 0; i < num_sprites; i++)
 	{
-		while (!sprites[i]->drops.empty()) // TODO: LINKED LIST IMPLEMENTATION
+		while (!sprites[i]->drops.empty() && sprites[i]->drops.back()) // TODO: LINKED LIST IMPLEMENTATION
 		{
 			items.push_back(sprites[i]->drops.back());
 			printf("Collected Drop %s from Sprite %d\n", sprites[i]->drops.back()->getName(), sprites[i]->sprite);
@@ -300,6 +300,8 @@ void Map::drawTo(SDL_Renderer* renderer)
 		SDL_RenderDrawRect(renderer, &playerSpriteController->attacks[i]->position);	
 		playerSpriteController->attacks[i]->drawToMap(renderer, textureAtlas, camera.x, camera.y);
 	}
+	// draw player's hotbar
+	playerSpriteController->drawHUD(renderer, textureAtlas, NULL, SCREEN_WIDTH, SCREEN_HEIGHT);
 }
 
 bool Map::checkCollision(SDL_Rect a, SDL_Rect b)

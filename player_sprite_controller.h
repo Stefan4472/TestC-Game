@@ -4,6 +4,7 @@
 #include "sprite_controller.h"
 #include "player_sprite.h"
 #include "knockback_action.h"
+#include "colors.h"
 
 // Controller for the PlayerSprite. Takes Keyboard Input to determine what to do.
 
@@ -32,6 +33,12 @@ class PlayerSpriteController : public SpriteController
 
 		// responds to sprite being attacked--implements knockback
 		void handleAttacked(Attack* attack); 
+		
+		// draws heads-up-display for the player to the screen as an overlay
+		void drawHUD(SDL_Renderer* renderer, TextureAtlas* textureAtlas, FontAtlas* fontAtlas, int screenWidth, int screenHeight);
+		SDL_Rect inHandSlotBound = SDL_Rect { 0, 0, 32, 32 };
+		SDL_Rect healthBarRect = SDL_Rect { 0, 0, 240, 64 };
+		SDL_Rect healthBarFillRect = SDL_Rect { 0, 0, 240, 64 };
 };
 
 #endif
