@@ -4,6 +4,7 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
 #include "item.h"
+#include "colors.h"
 
 // The PlayerHUD draws a "heads-up-display" for the player to the screen.
 // The HUD includes a healthbar along the top of the screen, as well as
@@ -14,6 +15,14 @@
 class PlayerHUD
 {
 	private:
+		// width and height of HUD/screen
+		int screenWidth = 640, screenHeight = 480; // TODO: FEED IN FROM SOMEWHERE
+		
+		// current and full health of player
+		int currHealth = 0, fullHealth = 0;
+		SDL_Rect healthBarRect = { 0, 0, screenWidth, 32 };
+		SDL_Rect healthBarFillRect = { 0, 0, screenWidth, 32 };
+		
 		// loaded font for displaying item name
 		TTF_Font* itemNameFont = NULL;
 		// color for displaying item name
@@ -26,6 +35,7 @@ class PlayerHUD
 		SDL_Texture* renderedItemName = NULL;
 
 	public:
+		PlayerHUD();
 		PlayerHUD(SDL_Renderer* renderer, TTF_Font* textFont, Item* inHandItem, int currHealth, int fullHealth);
 		// reflects item change. Re-renders text to display
 		void updateItem(SDL_Renderer* renderer, Item* newItem);

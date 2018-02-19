@@ -301,7 +301,7 @@ void Map::drawTo(SDL_Renderer* renderer)
 		playerSpriteController->attacks[i]->drawToMap(renderer, textureAtlas, camera.x, camera.y);
 	}
 	// draw player's hotbar
-	playerSpriteController->drawHUD(renderer, textureAtlas, NULL, SCREEN_WIDTH, SCREEN_HEIGHT);
+	playerSpriteController->hud->drawTo(renderer);
 }
 
 bool Map::checkCollision(SDL_Rect a, SDL_Rect b)

@@ -9,4 +9,5 @@ const SDL_Color COLOR_BLACK { 0, 0, 0 };
 const SDL_Color COLOR_WHITE { 255, 255, 255 };
 const SDL_Color COLOR_GRAY { 125, 125, 125 };
 const SDL_Color COLOR_ORANGE { 255, 153, 0 };
+const SDL_Color COLOR_GREEN { 0, 255, 0 };
 #endif

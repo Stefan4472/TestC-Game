@@ -21,6 +21,8 @@ class PlayerSpriteController : public SpriteController
 		// must be maintained separately from Sprite* pointer included in SpriteController base class
 		PlayerSprite* player = NULL;
 		
+		PlayerHUD* hud = NULL;
+		
 		// whether player pressed key to interact
 		bool interactPressed = false;
 		// whether interact request was handled by Map
@@ -34,12 +36,6 @@ class PlayerSpriteController : public SpriteController
 
 		// responds to sprite being attacked--implements knockback
 		void handleAttacked(Attack* attack); 
-		
-		// draws heads-up-display for the player to the screen as an overlay
-		void drawHUD(SDL_Renderer* renderer, TextureAtlas* textureAtlas, FontAtlas* fontAtlas, int screenWidth, int screenHeight);
-		SDL_Rect inHandSlotBound = SDL_Rect { 0, 0, 32, 32 };
-		SDL_Rect healthBarRect = SDL_Rect { 0, 0, 240, 64 };
-		SDL_Rect healthBarFillRect = SDL_Rect { 0, 0, 240, 64 };
 };
 
 #endif
