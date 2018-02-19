@@ -6,7 +6,6 @@
 #include "constants.h"
 #include "spritesheet.h"
 #include "item.h"
-#include "healthbar.h"
 
 // Listener interface for receiving sprite callbacks
 class SpriteListener
@@ -38,9 +37,6 @@ class Sprite
 		// pointer to current action animations
 		Spritesheet** current_anim_array = idle_anims;
 		
-		// how many milliseconds to show healthbar above sprite (0 = do not show)
-		int showHealthbarMs = 0;
-		
 		// registered listener
 		SpriteListener* listener = NULL;
 		
@@ -51,8 +47,6 @@ class Sprite
 		int hitboxOffsetX, hitboxOffsetY;
 		// offset of start of lineOfSight, from sprite's x and y
 		int lineOfSightOffsetX, lineOfSightOffsetY;
-		// healthbar, which may be drawn over the sprite
-		SpriteHealthBar* healthbar = NULL;
 		// sprite's walking and running speeds, px per millisecond
 		float walkSpeed = 0.25f, runSpeed = 0.40f;
 		// distance sprite can see, and width of line of sight
@@ -112,8 +106,6 @@ class Sprite
 		void addHealth(float amount);
 		// subtracts given amount from sprite's currHp
 		void loseHealth(float amount);
-		// tells sprite to show healthbar for the given number of milliseconds (default 200)
-		void showHealthbar(int numMs = 200);
 		// draws sprite to the given surface/screen. Subtracting offsets from coordinates results in on-canvas coordinate to draw to
 		virtual void drawTo(SDL_Renderer* renderer, int offsetX, int offsetY);
 		

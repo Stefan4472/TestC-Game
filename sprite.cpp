@@ -256,12 +256,6 @@ void Sprite::update(int ms) {
 	{
 		printf("An animation is paused\n");	
 	}
-	
-	// decrement remaining time to show health bar (if any)
-	if (showHealthbarMs)
-	{
-		showHealthbarMs = (showHealthbarMs > ms ? showHealthbarMs - ms : 0);	
-	}
 }
 
 void Sprite::setListener(SpriteListener* listener)
@@ -301,11 +295,6 @@ void Sprite::loseHealth(float amount)
 	}
 }
 
-void Sprite::showHealthbar(int numMs)
-{
-	showHealthbarMs += numMs;
-}
-
 void Sprite::drawTo(SDL_Renderer* renderer, int offsetX, int offsetY)
 {
 	// draw current animation frame to screen
@@ -316,11 +305,5 @@ void Sprite::drawTo(SDL_Renderer* renderer, int offsetX, int offsetY)
 	{
 		SDL_Point hand_location = getRightHandPosition();
 		inHand->drawTo(renderer, (int) (hand_location.x - offsetX), (int) (hand_location.y - offsetY));
-	}
-	
-	// draw health bar 
-	if (showHealthbarMs)
-	{
-		healthbar->drawTo(renderer, x - offsetX, y - offsetY);
 	}
 }

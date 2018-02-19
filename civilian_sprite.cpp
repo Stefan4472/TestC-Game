@@ -33,7 +33,6 @@ CivilianSprite::CivilianSprite(float x, float y, TextureAtlas* textureAtlas)
 	
 	fullHp = 30;
 	currHp = 30;
-	healthbar = new SpriteHealthBar(32, currHp,fullHp);
 		
 	// TODO: KNOW WHICH DIRECTION SPRITE IS INITIALLY FACING. DEFAULTS TO DOWN
 	setDir(DIRECTION_DOWN); // sets line of sight

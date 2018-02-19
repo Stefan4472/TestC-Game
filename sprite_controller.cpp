@@ -12,6 +12,8 @@ void SpriteController::onInHandItemChanged(Item* newItem)
 
 void SpriteController::onSpriteHealthChanged(int amount, int currHp)
 {
+	// set healthbar to show for 200 ms
+	showHealthbarMs += 200;
 	return;	
 }
 
@@ -67,6 +69,12 @@ void SpriteController::update(int ms)
 		}
 		sprite->inHand->update(ms);
 	}
+	
+	// decrement remaining time to show health bar (if any)
+	if (showHealthbarMs)
+	{
+		showHealthbarMs = (showHealthbarMs > ms ? showHealthbarMs - ms : 0);	
+	}
 }
 
 void SpriteController::handleAttacked(Attack* attack)
@@ -82,4 +90,15 @@ void SpriteController::handleSoundHeard(Sound* sound)
 void SpriteController::handleSpriteSeen(Sprite* sprite)
 {
 	return;
+}
+
+void SpriteController::drawTo(SDL_Renderer* renderer, int offsetX, int offsetY)
+{
+	sprite->drawTo(renderer, offsetX, offsetY);
+	
+	// draw health bar 
+	if (showHealthbarMs)
+	{
+		healthbar->drawTo(renderer, sprite->x - offsetX, sprite->y - offsetY);
+	}
 }

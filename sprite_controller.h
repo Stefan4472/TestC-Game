@@ -1,8 +1,10 @@
 #ifndef SPRITE_CONTROLLER_H
 #define SPRITE_CONTROLLER_H
 
+#include <SDL2/SDL.h>
 #include <stack>
 #include "sprite.h"
+#include "healthbar.h"
 #include "action.h"
 #include "inventory.h"
 #include "attack.h"
@@ -24,6 +26,12 @@ class SpriteController : public InventoryListener, public SpriteListener
 		Sprite* sprite = NULL;
 		// sprite's inventory
 		Inventory* inventory = NULL;  // TODO: SHOULD THIS BE IN THE SPRITE CLASS?? SPRITE NEEDS TO KNOW WHICH ITEM IT HAS IN-HAND
+		
+		// healthbar, which may be drawn over the sprite
+		SpriteHealthBar* healthbar = NULL;
+		// number of ms to show healthbar (0 do not show)
+		int showHealthbarMs = 0;
+
 		// stack of Actions sprite will complete
 		std::stack<Action*> actionStack;
 		// list of Items sprite wants to drop. Meant to be picked up by the Map/Gamedriver
@@ -59,6 +67,9 @@ class SpriteController : public InventoryListener, public SpriteListener
 		virtual void handleSoundHeard(Sound* sound);
 		// handles sprite seeing another sprite 
 		virtual void handleSpriteSeen(Sprite* sprite);
+		
+		// draws sprite to the screen
+		virtual void drawTo(SDL_Renderer* renderer, int offsetX, int offsetY);
 	
 };
 #endif

@@ -11,6 +11,7 @@ CivilianSpriteController::CivilianSpriteController(CivilianSprite* sprite, PathF
 	currAction->init(sprite);
 	inventory = new Inventory(sprite, 5);
 	inventory->setListener(this);
+	healthbar = new SpriteHealthBar(32, sprite->currHp, sprite->fullHp);
 	//inventory->addItem(new Sword(textureAtlas, 164, 200));
 }
 
@@ -70,11 +71,10 @@ void CivilianSpriteController::handleAttacked(Attack* attack)
 	// add attacker to list of enemies
 	enemies.push_back(attack->attacker);
 	
-	// handle loss of hp and show healthbar
+	// handle loss of hp
 	sprite->loseHealth(attack->damage);
-	sprite->healthbar->changeHealth(-attack->damage);
-	sprite->showHealthbar();
-	
+	healthbar->changeHealth(-attack->damage);
+		
 	// add action to follow attacker
 	//actionStack.push(new FollowSpriteAction(pathFinder, 10, attack->attacker)); // TODO: WON'T THIS RESULT IN A BUNCH OF REPEATING FOLLOW ACTIONS?
 	//actionStack.push(new MoveInDirAction(DIRECTION_RIGHT, 96, false));
