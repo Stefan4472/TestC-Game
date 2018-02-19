@@ -5,8 +5,9 @@
 #include "civilian_sprite.h"
 #include "wander_action.h"
 #include "path_finder_interface.h"
-#include "follow_action.h"
+#include "follow_sprite_action.h"
 #include "knockback_action.h"
+#include "move_in_dir_action.h"
 
 // Provides the controller for a CivilianSprite.
 
@@ -15,6 +16,11 @@ class CivilianSpriteController : public SpriteController
 	private:
 		// hook to map via PathFinder interface
 		PathFinder* pathFinder = NULL;
+		
+		Sprite* attackOrder = NULL;
+		Sprite* fleeOrder = NULL;
+		bool takeEffectOrder = false;
+		Action* currAction = NULL;
 	
 	public:
 		CivilianSpriteController(CivilianSprite* civilianSprite, PathFinder* pathFinder);

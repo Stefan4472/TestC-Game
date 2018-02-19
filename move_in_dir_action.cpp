@@ -5,6 +5,7 @@ MoveInDirAction::MoveInDirAction(int dir, int distance, bool run)
 	moveDir = dir;
 	remainingDist = distance;
 	this->run = run;
+	printf("Move action created with direction %d and distance %d\n", dir, distance);
 }
 
 void MoveInDirAction::init(Sprite* sprite)
@@ -13,15 +14,20 @@ void MoveInDirAction::init(Sprite* sprite)
 	
 	if (run)
 	{
-		//sprite->startRunning();
+		sprite->startRunning();
 	}
-	sprite->startWalking();
+	else
+	{
+		sprite->startWalking();
+	}
 }
 
 bool MoveInDirAction::apply(Sprite* sprite, int ms)
 {
 	// subtract distance sprite travelled
-	switch (moveDir)
+	remainingDist -= (std::abs(sprite->speedX) + std::abs(sprite->speedY)) * ms;
+	printf("Sprite moved %f px in direction %d\n", (std::abs(sprite->speedX) + std::abs(sprite->speedY)) * ms, sprite->facingDir);
+	/*switch (moveDir)
 	{
 		case DIRECTION_RIGHT:
 			remainingDist -= sprite->speedX * ms; // TODO: COULD SPEED CHANGE IN THE SPACE OF ONE FRAME?
@@ -38,7 +44,7 @@ bool MoveInDirAction::apply(Sprite* sprite, int ms)
 		case DIRECTION_DOWN:
 			remainingDist -= sprite->speedY * ms;
 			break;
-	}
+	}*/
 	
 	// move back if sprite has gone too far
 	if (remainingDist < 0)

@@ -7,6 +7,7 @@ void Item::init(TextureAtlas* textureAtlas, int itemType)
 	this->itemType = itemType;
 	name = ITEM_NAMES[itemType];
 	description = ITEM_NAMES[itemType];
+	stackSize = ITEM_STACKSIZES[itemType];
 }
 
 Item::Item(TextureAtlas* textureAtlas, int itemType)

@@ -7,30 +7,29 @@ KnockbackAction::KnockbackAction(int direction)
 	
 void KnockbackAction::init(Sprite* sprite)
 {
-	
+	switch (direction)
+	{
+		case DIRECTION_RIGHT:
+			sprite->speedX = 4;
+			break;
+
+		case DIRECTION_LEFT:
+			sprite->speedX = -4;
+			break;
+
+		case DIRECTION_UP:
+			sprite->speedY = -4;
+			break;
+
+		case DIRECTION_DOWN:
+			sprite->speedY = 4;
+			break;
+	}
 }
 
 bool KnockbackAction::apply(Sprite* sprite, int ms)
 {
 	numApplies++;
 	// todo: apply over time and use method calls (don't just mess with coordinates)
-	switch (direction)  
-	{	
-		case DIRECTION_RIGHT:
-			sprite->x += 32;
-			break;
-			
-		case DIRECTION_LEFT:
-			sprite->x -= 32;
-			break;
-			
-		case DIRECTION_UP:
-			sprite->y -= 32;
-			break;
-			
-		case DIRECTION_DOWN:
-			sprite->y += 32;
-			break;
-	}
 	return numApplies < 3;
 }

@@ -3,31 +3,51 @@
 Inventory::Inventory(Sprite* owner, int capacity)
 {
 	this->owner = owner;
-	this->capacity = capacity;
+	hotbarSize = 10;
+	// fill hotbar
+	for (int i = 0; i < hotbarSize; i++)
+	{
+		hotbar.push_back(new ItemStack());
+	}
+	inventorySize = capacity;
+	// fill inventory
+	for (int i = 0; i < inventorySize; i++) // TODO: MORE EFFICIENT
+	{
+		inventory.push_back(new ItemStack());
+	}
+	inHandIndex = 0;
 }
 
 bool Inventory::addItem(Item* item)
 {
 	printf("Adding %s to Inventory...\n", item->getName());
-	if (items.size() == capacity)
+	// attempt to add to next hotbar slot TODO: MORE EFFICIENT ALGORITHM (CONSTANT TIME?)
+	for (int i = 0; i < hotbarSize; i++) 
 	{
-		printf("Inventory full! Not today\n");
-		return false;
+		if (hotbar[i]->attemptAdd(item))
+		{
+			// check if need to update inHandIndex
+			if (i == inHandIndex && hotbar[i]->size() == 1)
+			{
+				owner->onInHandItemChanged(hotbar[i]->peekNext());		
+			}
+			return true;
+		}
 	}
-	items.push_back(item);
-	printf("Added! Now at %d items\n", items.size());
-	// put item in hand, if it's the first
-	if (items.size() == 1)
+	for (int i = 0; i < inventorySize; i++)
 	{
-		inHandIndex = 0;	
-		owner->onInHandItemChanged(items[0]);	
+		if (inventory[i]->attemptAdd(item))
+		{
+			return true;
+		}
 	}
-	return true;
+	// no available slot found: couldn't add item
+	return false;
 }
 
 Item* Inventory::getInHand()
 {
-	return items.size() ? items[inHandIndex] : NULL;
+	return hotbar[inHandIndex]->peekNext();
 }
 
 void Inventory::useInHand(SDL_Point handPos, int useDir)
@@ -48,6 +68,12 @@ void Inventory::useInHand(SDL_Point handPos, int useDir)
 			removeInHand();
 			delete in_hand;
 		}
+	}
+	// throw punch
+	else if (owner)
+	{
+		printf("Punching!\n");
+		resultingAttack = new Punch(owner->getRightHandPosition(), owner->facingDir, owner);
 	}
 }
 
@@ -74,46 +100,33 @@ Attack* Inventory::getAttack()
 
 void Inventory::cycleInHandFwd()
 {
-	// cycle to the right, if more than one item in inventory
-	if (items.size() > 1)
-	{
-		inHandIndex = (inHandIndex + 1) % items.size();
-		
-		owner->onInHandItemChanged(items[inHandIndex]);	
-	}
+	// cycle to the right, wrapping around
+	inHandIndex = (inHandIndex + 1) % hotbarSize;
+	owner->onInHandItemChanged(hotbar[inHandIndex]->peekNext());	
 }
 
 void Inventory::cycleInHandBck()
 {
-	// cycle to the left, if more than one item in inventory
-	if (items.size() > 1)
-	{
-		inHandIndex = inHandIndex ? inHandIndex - 1 : items.size() - 1; 
-		
-		owner->onInHandItemChanged(items[inHandIndex]);	
-	}
+	// cycle to the left, wrapping around
+	inHandIndex = inHandIndex ? inHandIndex - 1 : hotbarSize - 1; 	
+	owner->onInHandItemChanged(hotbar[inHandIndex]->peekNext());	
 }
 
 Item* Inventory::removeInHand()
 {
-	if (inHandIndex == -1)
+	if (hotbar[inHandIndex]->size())
 	{
-		return NULL;	
-	} 
-	else
-	{
-		Item* in_hand = items[inHandIndex];
-		items.erase(items.begin() + inHandIndex);
+		Item* in_hand = hotbar[inHandIndex]->popNext();
 		printf("Removed %s from Inventory\n", in_hand->getName());
-		cycleInHandFwd();
 		
 		// handle special case: dropped last item. Notify listener 
-		if (items.size() == 0)
+		if (!hotbar[inHandIndex]->size())
 		{
-			owner->onInHandItemChanged(items[inHandIndex]);	
+			owner->onInHandItemChanged(NULL);	
 		}
 		return in_hand;
 	}
+	return NULL;
 }
 
 Window* Inventory::getWindow(SDL_Renderer* renderer, TextureAtlas* textureAtlas, FontAtlas* fontAtlas)

@@ -10,7 +10,9 @@
 #include "gui_window.h"
 #include "gui_img_button.h"
 #include "item.h"
+#include "item_stack.h"
 #include "sprite.h"
+#include "punch.h"
 
 // An inventory manages the Items a Sprite has and can use. It also manages the usage and effects of
 // those items.
@@ -25,22 +27,32 @@
 
 // An InventoryListener is an interface that allows callbacks from an Inventory. The implementing object 
 // must register itself via setInventoryListener().
-class InventoryListener
+class InventoryListener 
 {
 	public:
 		virtual void onInHandItemChanged(Item* newItem) = 0;
 };
 
-class Inventory
+class Inventory // TODO: SEPARATE CLASS FOR NON-SPRITE INVENTORIES
 {
 	// sprite to which this Inventory belongs
-	Sprite* owner;
+	Sprite* owner = NULL;
+	
+	// size of hotbar (items at ready selection)
+	int hotbarSize = 0;
+	std::vector<ItemStack*> hotbar;
+	//std::vector<int> emptyHotbarSlots;
+	// size of inventory (rest of items)
+	int inventorySize = 10;
+	std::vector<ItemStack*> inventory;
+	//std::vector<int> emptyInventorySlots;
+	// index of Item that's currently in hand
+	int inHandIndex = -1;
+	
 	// number of items that'll fit in the inventory
 	int capacity = 10;
 	// vector of pointers to items in storage
 	std::vector<Item*> items;
-	// index of Item that's currently in hand
-	int inHandIndex = -1;
 	// stored Action, Buff, and Attack (if any) from last-used Item
 	Action* resultingAction = NULL;
 	Action* resultingBuff = NULL;

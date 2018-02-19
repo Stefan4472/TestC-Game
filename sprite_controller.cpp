@@ -55,9 +55,7 @@ void SpriteController::update(int ms)
 		{
 			delete sprite->inHand;
 		}
-		printf("Updating in-hand\n");
 		sprite->inHand->update(ms);
-		printf("done\n");
 	}
 }
 

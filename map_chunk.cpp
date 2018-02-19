@@ -67,6 +67,8 @@ void MapChunk::render(int seed)
 	{
 		for (int j = 0; j < mapCols; j++)
 		{
+			mapTiles[i][j] = TILE_GRASS;
+			/*
 			random = rand() % 10;
 			
 			// 60% of the tiles are grass
@@ -78,7 +80,7 @@ void MapChunk::render(int seed)
 			else
 			{
 				mapTiles[i][j] = random - 4;
-			}
+			}*/
 		}
 	}
 }

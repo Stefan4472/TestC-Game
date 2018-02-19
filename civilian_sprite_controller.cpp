@@ -4,7 +4,11 @@ CivilianSpriteController::CivilianSpriteController(CivilianSprite* sprite, PathF
 {
 	this->pathFinder = pathFinder;
 	// default action is to wander
-	actionStack.push(new WanderAction(pathFinder, ACTION_LOOPING, 10, 400, 100));
+	//actionStack.push(new WanderAction(pathFinder, ACTION_LOOPING, 10, 400, 100));
+	
+	//actionStack.push(new IdleAction(ACTION_LOOPING, 2000));
+	currAction = new IdleAction(ACTION_LOOPING, 2000);
+	currAction->init(sprite);
 	inventory = new Inventory(sprite, 5);
 	//inventory->addItem(new Sword(textureAtlas, 164, 200));
 }
@@ -13,29 +17,86 @@ void CivilianSpriteController::update(int ms)
 {
 	SpriteController::update(ms);
 	
-	// switch to next action if top is finished
+	if (!currAction->apply(sprite, ms))
+	{
+		delete currAction;
+		printf("Determining next action to take\n");
+		// sprite was taking an effect, and should now resume the action it had scheduled
+		if (takeEffectOrder)
+		{
+			printf("Finished taking effect\n");
+			takeEffectOrder = false;
+			if (attackOrder)
+			{
+				printf("Attacking %d\n", attackOrder);
+				currAction = new FollowSpriteAction(pathFinder, attackOrder, 64);	
+				//currAction = new MoveInDirAction(DIRECTION_LEFT, 96, false);
+			}
+			else if (fleeOrder)
+			{
+				printf("Starting flee order from %d\n", fleeOrder);
+				currAction = new WanderAction(pathFinder, 2000, 10, 400, 100);
+			}
+			else
+			{
+				printf("Resuming default action\n");
+				currAction = new IdleAction(ACTION_LOOPING, 2000);	
+			}
+		}
+		else
+		{
+			printf("Didn't take any effects\n");
+			attackOrder = NULL;
+			fleeOrder = NULL;
+			printf("New default action\n");
+			currAction = new IdleAction(ACTION_LOOPING, 2000);	
+		}
+		currAction->init(sprite);
+	}
+	/*/ switch to next action if top is finished
 	if (!actionStack.top()->apply(sprite, ms))
 	{
 		delete actionStack.top();
 		actionStack.pop();
 		actionStack.top()->init(sprite);
-	}
+	}*/
 }
 
 void CivilianSpriteController::handleAttacked(Attack* attack)
 {
 	printf("Civilian Attacked by %d!!\n", attack->attacker);
 	
-	// add action to follow attacker
-	actionStack.push(new FollowAction(pathFinder, 10, attack->attacker)); // TODO: WON'T THIS RESULT IN A BUNCH OF REPEATING FOLLOW ACTIONS?
-	
-	// add action to knockback in the direction of the attack (happens first)
-	actionStack.push(new KnockbackAction(attack->dir));
+	// add attacker to list of enemies
+	enemies.push_back(attack->attacker);
 	
 	// handle loss of hp and show healthbar
 	sprite->loseHealth(attack->damage);
 	sprite->healthbar->changeHealth(-attack->damage);
 	sprite->showHealthbar();
+	
+	// add action to follow attacker
+	//actionStack.push(new FollowSpriteAction(pathFinder, 10, attack->attacker)); // TODO: WON'T THIS RESULT IN A BUNCH OF REPEATING FOLLOW ACTIONS?
+	//actionStack.push(new MoveInDirAction(DIRECTION_RIGHT, 96, false));
+	//actionStack.top()->init(sprite);
+	if (sprite->currHp < 10)
+	{
+		fleeOrder = attack->attacker;
+		attackOrder = NULL;
+	}
+	else 
+	{
+		attackOrder = attack->attacker;
+		fleeOrder = NULL;
+	}
+	takeEffectOrder = true;
+	printf("starting knockback\n");
+	delete currAction;
+	currAction = new KnockbackAction(attack->dir);
+	currAction->init(sprite);
+	// add action to knockback in the direction of the attack (happens first)
+	//actionStack.push(new KnockbackAction(attack->dir));
+	
+	
 	
 	// add sound
 	sounds.push_back(SOUND_2);
@@ -48,5 +109,18 @@ void CivilianSpriteController::handleSoundHeard(Sound* sound)
 
 void CivilianSpriteController::handleSpriteSeen(Sprite* sprite)
 {
-	//printf("Sprite %d sees sprite %d\n", this, sprite);
+	for (int i = 0; i < enemies.size(); i++)
+	{
+		//printf("Sprite sees an enemy\n");	
+		// attack
+		if (sprite->currHp > 10)
+		{
+			
+		}
+		// run away
+		else 
+		{
+				
+		}
+	}
 }

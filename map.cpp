@@ -9,8 +9,8 @@ void Map::init(PlayerSpriteController* playerSpriteController, TextureAtlas* tex
 	
 	addControlledSprite(playerSpriteController);
 	addControlledSprite(new CivilianSpriteController(new CivilianSprite(32 * 4, 32 * 4, textureAtlas), this));
-	addControlledSprite(new CivilianSpriteController(new CivilianSprite(32 * 8, 32 * 8, textureAtlas), this));	
-	addControlledSprite(new CivilianSpriteController(new CivilianSprite(32 * 12, 32 * 8, textureAtlas), this));
+	//addControlledSprite(new CivilianSpriteController(new CivilianSprite(32 * 8, 32 * 8, textureAtlas), this));	
+	//addControlledSprite(new CivilianSpriteController(new CivilianSprite(32 * 12, 32 * 8, textureAtlas), this));
 	
 	addItem(new Consumable(ITEM_BREAD_LOAF, 100, 200, textureAtlas));
 	addItem(new Consumable(ITEM_BEER_MUG, 132, 200, textureAtlas));
@@ -38,7 +38,7 @@ void Map::update(int ms)
 			{
 				if (k != i && checkCollision(attack_pos, sprites[k]->sprite->hitbox))
 				{
-					printf("Sprite attacked\n");
+					printf("Sprite %d attacked by sprite %d\n", sprites[k], sprites[i]);
 					sprites[k]->handleAttacked(sprites[i]->attacks[j]);
 					sprites[i]->attacks[j]->handleSpriteCollision();
 				}
@@ -49,16 +49,16 @@ void Map::update(int ms)
 		// check distance to sounds that were created the previous frame
 		for (int j = 0; j < num_sounds; j++)
 		{
-			if (distSquared(sprites[i]->sprite, sounds[j]) < 102400) // TODO: SOME HEARING-RANGE CONSTANT (?)
+			if (distSquared(sprites[i]->sprite, sounds[j]) < 102400) // TODO: SOUND SHOULD HAVE OWN RANGE DEFINED (?)
 			{
 				sprites[i]->handleSoundHeard(sounds[j]);
 			}
 		}
 		
 		// check sprite's line of sight against other sprites
-		for (int j = i + 1; j < num_sprites; j++) 
+		for (int j = 0; j < num_sprites; j++) 
 		{
-			if (checkCollision(sprites[i]->sprite->lineOfSight, sprites[j]->sprite->hitbox))
+			if (i != j && checkCollision(sprites[i]->sprite->lineOfSight, sprites[j]->sprite->hitbox))
 			{
 				sprites[i]->handleSpriteSeen(sprites[j]->sprite);	
 			}
@@ -310,37 +310,42 @@ bool Map::checkCollision(SDL_Rect a, SDL_Rect b)
 FollowPathAction* Map::findPath(float startX, float startY, float endX, float endY) // TODO: RUNNING?
 {
 	// TODO: A* SEARCH
-	FollowPathAction* path = new FollowPathAction();
+	std::vector<MoveInDirAction*> moves;
 	
+	printf("Path from %f, %f to %f, %f queried\n", startX, startY, endX, endY);
 	// determine movement along X
 	if (endX > startX)
 	{
-		path->addMovement(new MoveInDirAction(DIRECTION_RIGHT, endX - startX, false));
+		printf("move right %f\n", endX - startX);
+		moves.push_back(new MoveInDirAction(DIRECTION_RIGHT, endX - startX, false));
 	} 
 	else if (endX < startX)
 	{
-		path->addMovement(new MoveInDirAction(DIRECTION_LEFT, startX - endX, false));
+		printf("move left %f\n", startX - endX);
+		moves.push_back(new MoveInDirAction(DIRECTION_LEFT, startX - endX, false));
 	}
 	
 	// determine movement along Y
 	if (endY > startY)
 	{
-		path->addMovement(new MoveInDirAction(DIRECTION_DOWN, endY - startY, false));
+		printf("move down %f\n", endY - startY);
+		moves.push_back(new MoveInDirAction(DIRECTION_DOWN, endY - startY, false));
 	}
 	else if (endY < startY)
 	{
-		path->addMovement(new MoveInDirAction(DIRECTION_UP, startY - endY, false));
+		printf("move up %f\n", startY - endY);
+		moves.push_back(new MoveInDirAction(DIRECTION_UP, startY - endY, false));
 	}
-						 
-	return path;
+	printf("Done\n");
+	return new FollowPathAction(moves);;
 }
  
 FollowPathAction* Map::findRandomPath(float startX, float startY, int numTiles) // todo: running? more sophisticated options
 {
 	// TODO: A* SEARCH
-	FollowPathAction* path = new FollowPathAction();
+	std::vector<MoveInDirAction*> moves;
 	
-	path->addMovement(new MoveInDirAction(rand() % 4 + 1, numTiles * TILE_WIDTH, false));
+	moves.push_back(new MoveInDirAction(rand() % 4 + 1, numTiles * TILE_WIDTH, false));
 					 
-	return path;
+	return new FollowPathAction(moves);
 }

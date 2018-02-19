@@ -16,13 +16,10 @@ class FollowPathAction
 		int movingToIndex = -1;
 		
 	public:
-		FollowPathAction(); // TODO: INIT WITH VECTOR OF MOVES
+		FollowPathAction(std::vector<MoveInDirAction*> moveCmds); // TODO: USE REFERENCE INSTEAD?
 		// gets sprite ready to follow first Move instruction 
 		void init(Sprite* sprite);
 		// works sprite through moving to next instruction
 		bool apply(Sprite* sprite, int ms); 
-		// adds given movement instruction to the list
-		// should only be called before the path is begun!!
-		void addMovement(MoveInDirAction* action); 
 };
 #endif

@@ -57,6 +57,18 @@ const std::string ITEM_DESCRIPTIONS[7] =
 	"Fancy-looking pistol. Bang bang!"
 };	
 
+// Stack amounts, mapped by ItemType id
+const int ITEM_STACKSIZES[7] =
+{
+	16,
+	16,
+	4,
+	4,
+	1,
+	1,
+	1
+};
+
 // An item is the base class for anything that can be picked up or kept in inventory.
 // An item must implement a use() method, and can override getAction(), getBuff(), and
 // getAttack() if using the Item creates those effects. TODO: REQUIREMENTS (ITEMTYPE IDS)
@@ -76,6 +88,8 @@ class Item
 		// name and description of the item
 		std::string name;
 		std::string description;
+		// number of this item that can go in one inventory slot
+		int stackSize = 0;
 		// pointer to TextureAtlas used for drawing
 		TextureAtlas* textureAtlas = NULL;
 	

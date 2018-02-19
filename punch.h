@@ -13,9 +13,12 @@ class Punch : public Attack
 	int elapsedTime = 0;
 	// maximum number of milliseconds this punch can exist before requesting destruction
 	const int MAX_DURATION = 2000;
-	
+	// num pixels punch extends (width and height)
+	const int PUNCH_WIDTH = 32, PUNCH_LENGTH = 32;
 	public:
-		Punch(SDL_Rect position, int dir, Sprite* attacker);
+		Punch(SDL_Point handPos, int facingDir, Sprite* attacker);
+		// returns position of attack on map given handposition and direction of sprite
+		SDL_Rect getPos(SDL_Point handPos, int facingDir);
 		void update(int ms);
 		void handleSpriteCollision();
 		void handleObjectCollision();

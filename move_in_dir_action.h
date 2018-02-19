@@ -1,6 +1,7 @@
 #ifndef MOVE_IN_DIR_ACTION
 #define MOVE_IN_DIR_ACTION
 
+#include <cmath>
 #include "action.h"
 #include "sprite.h"
 

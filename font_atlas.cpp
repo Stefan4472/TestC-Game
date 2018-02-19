@@ -3,7 +3,7 @@
 FontAtlas::FontAtlas()
 {
 	loadedFonts[NO_FONT] = NULL;
-	loadedFonts[MAIN_FONT] = TTF_OpenFont( "fonts/AdventPro-Light.ttf", 28 );
+	loadedFonts[MAIN_FONT] = TTF_OpenFont( "fonts/joystix monospace.ttf", 28 );
 	// todo: error checking
 	
 }
