@@ -5,6 +5,7 @@
 #include "player_sprite.h"
 #include "knockback_action.h"
 #include "colors.h"
+#include "player_hud.h"
 
 // Controller for the PlayerSprite. Takes Keyboard Input to determine what to do.
 

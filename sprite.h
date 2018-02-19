@@ -8,6 +8,13 @@
 #include "item.h"
 #include "healthbar.h"
 
+// Listener interface for receiving sprite callbacks
+class SpriteListener
+{
+	public:
+		virtual void onSpriteHealthChanged(int amount, int currHealth) = 0;
+};
+
 // Sprite base class
 
 class Sprite
@@ -33,6 +40,9 @@ class Sprite
 		
 		// how many milliseconds to show healthbar above sprite (0 = do not show)
 		int showHealthbarMs = 0;
+		
+		// registered listener
+		SpriteListener* listener = NULL;
 		
 	public: // TODO: MAKE SOME PRIVATE/PROTECTED
 		// initializes arrays of Spritesheets
@@ -63,6 +73,9 @@ class Sprite
 		// area on map this sprite can "see"
 		SDL_Rect lineOfSight { 0, 0, 0, 0 };
 		
+		// sets sprite's listener
+		void setListener(SpriteListener* listener);
+		
 		// whether sprite has hit 0 hp and is dead
 		bool dead = false;
 		// whether sprite should be deleted and removed from game
@@ -76,8 +89,6 @@ class Sprite
 		
 		// called when the sprite's in-hand item changes. Listener function
 		virtual void onInHandItemChanged(Item* item);
-		// called when the sprite's health changes
-		virtual void onHealthChanged();
 		
 		// get coordinates of sprite's right hand
 		virtual SDL_Point getRightHandPosition();

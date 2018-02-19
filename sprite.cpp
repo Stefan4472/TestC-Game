@@ -23,11 +23,6 @@ void Sprite::onInHandItemChanged(Item* item)
 	printf("Sprite: on hand changed to %s\n", item->name);
 	inHand = item;
 }
-
-void Sprite::onHealthChanged()
-{
-	printf("Sprite received onHealthChanged");
-}
 	
 SDL_Point Sprite::getRightHandPosition() // todo: standardize for all sprites
 {
@@ -269,12 +264,22 @@ void Sprite::update(int ms) {
 	}
 }
 
+void Sprite::setListener(SpriteListener* listener)
+{
+	this->listener = listener;
+}
+
 void Sprite::addHealth(float amount)
 {
 	currHp += amount;	
 	// norm to fullHp
 	currHp = currHp > fullHp ? fullHp : currHp;
 	printf("Sprite received %f health to hit %f hp\n", amount, currHp);
+	
+	if (listener)
+	{
+		listener->onSpriteHealthChanged(amount, currHp);
+	}
 }
 
 void Sprite::loseHealth(float amount)
@@ -289,6 +294,11 @@ void Sprite::loseHealth(float amount)
 		printf("Sprite died\n");
 	}
 	printf("Sprite lost %f health to hit %f hp\n", amount, currHp);
+	
+	if (listener)
+	{
+		listener->onSpriteHealthChanged(-amount, currHp);
+	}
 }
 
 void Sprite::showHealthbar(int numMs)

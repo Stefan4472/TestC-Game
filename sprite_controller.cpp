@@ -10,6 +10,11 @@ void SpriteController::onInHandItemChanged(Item* newItem)
 	sprite->onInHandItemChanged(newItem);	
 }
 
+void SpriteController::onSpriteHealthChanged(int amount, int currHp)
+{
+	return;	
+}
+
 void SpriteController::handleMapCollision()
 {
 	sprite->moveBack();	// TODO: SEND TO TOP ACTION ON ACTIONSTACK?

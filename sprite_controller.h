@@ -15,7 +15,7 @@
 // The Controller is abstracted, so different Sprite Classes may define their own handlers and controlling
 // actions.
 
-class SpriteController : public InventoryListener
+class SpriteController : public InventoryListener, public SpriteListener
 {
 	public:
 		SpriteController(Sprite* sprite);
@@ -46,6 +46,8 @@ class SpriteController : public InventoryListener
 		
 		// inventory callback when in-hand item has changed. Sends to sprite by default
 		void onInHandItemChanged(Item* newItem);
+		// sprite callback when hp changes
+		void onSpriteHealthChanged(int amount, int currHp);
 		
 		// responds to sprite running into an object or invalid position on the Map
 		virtual void handleMapCollision();

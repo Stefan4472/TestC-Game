@@ -6,10 +6,10 @@
 #include "item.h"
 
 // The PlayerHUD draws a "heads-up-display" for the player to the screen.
-// The HUD includes a healthbar along the top of the screen, as well as 
-// rendered text saying the name of the item in-hand (if any).
+// The HUD includes a healthbar along the top of the screen, as well as
+// the hotbar.
 
-// The PlayerHUD must be updated via the updateItem() and updateHP() commands.
+// The PlayerHUD must be updated via the updateInHandItem() and updateHP() commands.
 
 class PlayerHUD
 {

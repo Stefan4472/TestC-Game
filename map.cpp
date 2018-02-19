@@ -58,7 +58,7 @@ void Map::update(int ms)
 		// check sprite's line of sight against other sprites
 		for (int j = 0; j < num_sprites; j++) 
 		{
-			if (i != j && checkCollision(sprites[i]->sprite->lineOfSight, sprites[j]->sprite->hitbox))
+			if (i != j && checkCollision(sprites[i]->sprite->lineOfSight, sprites[j]->sprite->hitbox)) // TODO: IGNORES BLOCKAGES OF LINE-OF-SIGHT
 			{
 				sprites[i]->handleSpriteSeen(sprites[j]->sprite);	
 			}
