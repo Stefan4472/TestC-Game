@@ -29,37 +29,15 @@ PlayerHUD::PlayerHUD(int currHealth, int fullHealth, Inventory* inventory, int s
 	
 	// set inHandHighlight
 	inHandHighlight.x = hotbarX + inventory->inHandIndex * 32;
+	inHandHighlight.y = hotbarY;
 }
 
-PlayerHUD::PlayerHUD(SDL_Renderer* renderer, TTF_Font* textFont, Item* inHandItem, int currHealth, int fullHealth)
+void PlayerHUD::updateItem(Item* inHand) 
 {
-	this->renderer = renderer;
-	
-	itemNameFont = textFont;
-	
-	if (inHandItem)
-	{
-		updateItem(renderer, inHandItem);
-	}
-}
-
-void PlayerHUD::updateItem(SDL_Renderer* renderer, Item* newItem) // TODO: CAUSES VERY STRANGE BEHAVIOR
-{
+	printf("PlayerhUD received update\n");
 	// set inHandHighlight to highlight current in-hand item
 	inHandHighlight.x = hotbarX + inventory->inHandIndex * 32;
-	
-	// free currently rendered name
-	/*free(renderedItemName);
-	
-	// new item exists
-	if (newItem)
-	{
-		SDL_Surface* item_name_surface = TTF_RenderText_Solid(itemNameFont, newItem->getName(), itemNameColor);
-
-		renderedItemName = SDL_CreateTextureFromSurface(renderer, item_name_surface);
-
-		free(item_name_surface);
-	}*/
+	printf("inhand is %d, highlight.x is %d\n", inventory->inHandIndex, inHandHighlight.x);
 }
 
 void PlayerHUD::updateHealth(int newHealth)
@@ -71,12 +49,6 @@ void PlayerHUD::updateHealth(int newHealth)
 
 void PlayerHUD::drawTo(SDL_Renderer* renderer)
 {
-	// only draw if item name is rendered (there is an item in-hand)
-	if (renderedItemName)
-	{
-		SDL_RenderCopy(renderer, renderedItemName, NULL, &itemNamePosition);
-	}
-	
 	// set color to green and draw healthbar fill
 	SDL_SetRenderDrawColor(renderer, COLOR_GREEN.r, COLOR_GREEN.g, COLOR_GREEN.b, COLOR_GREEN.a);
 	SDL_RenderFillRect(renderer, &healthBarFillRect);
@@ -86,11 +58,7 @@ void PlayerHUD::drawTo(SDL_Renderer* renderer)
 	SDL_RenderDrawRect(renderer, &healthBarRect);
 	
 	// draw hotbar and in-hand outline SDL_Renderer* renderer, TextureAtlas* textureAtlas, FontAtlas* fontAtlas, int x, int y TODO: NEED FONTATLAS??
-	printf("yes %d\n", textureAtlas);
-	if (textureAtlas)
-	{
-		inventory->drawHotbarTo(renderer, textureAtlas, NULL, hotbarX, hotbarY);
-	}
-	printf("now %d\n", textureAtlas);
+	inventory->drawHotbarTo(renderer, textureAtlas, NULL, hotbarX, hotbarY);
+	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 	SDL_RenderDrawRect(renderer, &inHandHighlight);
 }

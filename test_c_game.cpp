@@ -175,7 +175,7 @@ int main( int argc, char* args[] )
 	printf("Loaded Sound Atlas\n");
 	FontAtlas fontAtlas = FontAtlas();
 	printf("Loaded Font Atlas\n");
-	PlayerSprite playerSprite = PlayerSprite(100.0f, 140.0f, &textureAtlas, gRenderer, fontAtlas.getFont(MAIN_FONT)); 
+	PlayerSprite playerSprite = PlayerSprite(100.0f, 140.0f, &textureAtlas, gRenderer); 
 	PlayerSpriteController* playerController = new PlayerSpriteController(&playerSprite, &textureAtlas);
 	printf("Created player sprite and controller\n");
 	Map map;
@@ -285,9 +285,6 @@ int main( int argc, char* args[] )
 		map.centerTo(playerController->player->hitbox);
 		
 		map.drawTo(gRenderer);
-		
-		// draw heads-up-display
-		playerSprite.drawHUD(gRenderer);
 		
 		// handle current window: draw if active, set to NULL if inactive
 		if (currWindow)

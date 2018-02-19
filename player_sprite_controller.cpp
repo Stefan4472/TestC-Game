@@ -138,6 +138,20 @@ bool PlayerSpriteController::handleKeyEvent(SDL_Event e)
 	}
 }
 
+void PlayerSpriteController::onInHandItemChanged(Item* newItem)
+{
+	SpriteController::onInHandItemChanged(newItem);
+	// send update to HUD
+	hud->updateItem(newItem);
+}
+
+void PlayerSpriteController::onSpriteHealthChanged(int amount, int currHp)
+{
+	// send update to HUD
+	hud->updateHealth(amount);
+}
+
+
 void PlayerSpriteController::update(int ms) // TODO: UPDATE IN-HAND ITEM, BUFFS, CHECK IF ACTIONSTACK HAS ANYTHING (KNOCKBACK, STUN) AND BLOCK CURRENT ACTION
 {
 	if (actionStack.size()) // TODO: CLEANER WAY? --> THIS CAN BE ABSTRACTED TO SPRITE_CONTROLLER ONCE STATE-TRACKING FSM'S ARE IMPLEMENTED

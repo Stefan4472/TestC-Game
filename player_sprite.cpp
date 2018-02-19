@@ -1,6 +1,6 @@
 #include "player_sprite.h"
 
-PlayerSprite::PlayerSprite(float xCoord, float yCoord, TextureAtlas* textureAtlas, SDL_Renderer* renderer, TTF_Font* HUDFont) {
+PlayerSprite::PlayerSprite(float xCoord, float yCoord, TextureAtlas* textureAtlas, SDL_Renderer* renderer) {
 	printf("Creating sprite at %f, %f\n", xCoord, yCoord);
 	
 	x = xCoord;
@@ -34,9 +34,6 @@ PlayerSprite::PlayerSprite(float xCoord, float yCoord, TextureAtlas* textureAtla
 	fullHp = 100;
 	currHp = 100;
 	
-	headsUpDisplay = new PlayerHUD(renderer, HUDFont, NULL, currHp, fullHp);
-	//inventory->setInventoryListener(this);
-	
 	init();
 }
 
@@ -44,7 +41,6 @@ void PlayerSprite::onInHandItemChanged(Item* newItem)
 {
 	printf("Received callback\n");	
 	inHand = newItem;
-	headsUpDisplay->updateItem(renderer, newItem);
 }
 
 SDL_Point PlayerSprite::getRightHandPosition()
@@ -89,11 +85,6 @@ void PlayerSprite::drawTo(SDL_Renderer* renderer, int offsetX, int offsetY) {
 		inHand->drawTo(renderer, (int) (hand_location.x - offsetX), (int) (hand_location.y - offsetY));
 	}*/
 	Sprite::drawTo(renderer, offsetX, offsetY);
-}
-
-void PlayerSprite::drawHUD(SDL_Renderer* renderer)
-{
-	headsUpDisplay->drawTo(renderer);
 }
 
 PlayerSprite::~PlayerSprite() 

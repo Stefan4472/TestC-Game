@@ -53,9 +53,9 @@ class SpriteController : public InventoryListener, public SpriteListener
 		virtual void update(int ms);
 		
 		// inventory callback when in-hand item has changed. Sends to sprite by default
-		void onInHandItemChanged(Item* newItem);
+		virtual void onInHandItemChanged(Item* newItem);
 		// sprite callback when hp changes
-		void onSpriteHealthChanged(int amount, int currHp);
+		virtual void onSpriteHealthChanged(int amount, int currHp);
 		
 		// responds to sprite running into an object or invalid position on the Map
 		virtual void handleMapCollision();

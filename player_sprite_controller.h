@@ -21,7 +21,7 @@ class PlayerSpriteController : public SpriteController
 		// pointer to the PlayerSprite
 		// must be maintained separately from Sprite* pointer included in SpriteController base class
 		PlayerSprite* player = NULL;
-		
+		// heads-up-display showing user informatin on current status
 		PlayerHUD* hud = NULL;
 		
 		// whether player pressed key to interact
@@ -31,6 +31,10 @@ class PlayerSpriteController : public SpriteController
 		
 		// handles given event, and returns if it was consumed
 		bool handleKeyEvent(SDL_Event e);
+		// called when in-hand item changes: update HUD
+		void onInHandItemChanged(Item* newItem);
+		// called when hp changes: update HUD
+		void onSpriteHealthChanged(int amount, int currHp);
 		
 		// updates state of sprite by given number of milliseconds
 		void update(int ms);
