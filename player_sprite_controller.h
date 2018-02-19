@@ -1,6 +1,7 @@
 #ifndef PLAYER_SPRITE_CONTROLLER_H
 #define PLAYER_SPRITE_CONTROLLER_H
 
+#include "texture_atlas.h"
 #include "sprite_controller.h"
 #include "player_sprite.h"
 #include "knockback_action.h"
@@ -15,7 +16,7 @@
 class PlayerSpriteController : public SpriteController
 {
 	public:
-		PlayerSpriteController(PlayerSprite* playerSprite);
+		PlayerSpriteController(PlayerSprite* playerSprite, TextureAtlas* textureAtlas);
 		
 		// pointer to the PlayerSprite
 		// must be maintained separately from Sprite* pointer included in SpriteController base class

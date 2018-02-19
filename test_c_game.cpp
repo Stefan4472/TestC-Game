@@ -176,7 +176,7 @@ int main( int argc, char* args[] )
 	FontAtlas fontAtlas = FontAtlas();
 	printf("Loaded Font Atlas\n");
 	PlayerSprite playerSprite = PlayerSprite(100.0f, 140.0f, &textureAtlas, gRenderer, fontAtlas.getFont(MAIN_FONT)); 
-	PlayerSpriteController* playerController = new PlayerSpriteController(&playerSprite);
+	PlayerSpriteController* playerController = new PlayerSpriteController(&playerSprite, &textureAtlas);
 	printf("Created player sprite and controller\n");
 	Map map;
 	map.init(playerController, &textureAtlas, &soundAtlas);

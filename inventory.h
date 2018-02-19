@@ -46,8 +46,6 @@ class Inventory // TODO: SEPARATE CLASS FOR NON-SPRITE INVENTORIES
 	int inventorySize = 10;
 	std::vector<ItemStack*> inventory;
 	//std::vector<int> emptyInventorySlots;
-	// index of Item that's currently in hand
-	int inHandIndex = -1;
 	
 	// number of items that'll fit in the inventory
 	int capacity = 10;
@@ -65,6 +63,8 @@ class Inventory // TODO: SEPARATE CLASS FOR NON-SPRITE INVENTORIES
 		Inventory(Sprite* owner, int capacity);
 		// attempts to add an item to inventory. Returns false if inventory is full
 		bool addItem(Item* item);
+		// index of Item that's currently in hand
+		int inHandIndex = -1;
 		// returns pointer to the Item that's currently in hand. Null if empty 
 		Item* getInHand();
 		// handles all logic for using whatever item is currently in hand. Should be followed up with           TODO: HOW TO HANDLE CONSUMMABLES?

@@ -1,14 +1,14 @@
 #include "player_sprite_controller.h"
 
-PlayerSpriteController::PlayerSpriteController(PlayerSprite* playerSprite) : SpriteController(playerSprite)
+PlayerSpriteController::PlayerSpriteController(PlayerSprite* playerSprite, TextureAtlas* textureAtlas) : SpriteController(playerSprite)
 {
 	player = playerSprite;
 	
 	// create inventory with capacity 30
 	inventory = new Inventory(sprite, 30);
 	inventory->setListener(this);
-	
-	hud = new PlayerHUD();
+	printf("player controller atlas is %d\n", textureAtlas);
+	hud = new PlayerHUD(sprite->currHp, sprite->fullHp, inventory, 640, 480, textureAtlas);
 	
 	printf("Created Player Controller\n");
 }

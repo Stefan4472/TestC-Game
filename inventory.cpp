@@ -142,6 +142,7 @@ void Inventory::setListener(InventoryListener* listener)
 
 void Inventory::drawHotbarTo(SDL_Renderer* renderer, TextureAtlas* textureAtlas, FontAtlas* fontAtlas, int x, int y)
 {
+	printf("inventory: atlas is %d\n", textureAtlas);
 	for (int i = 0; i < hotbarSize; i++)
 	{
 		printf("Slot %d has %d items\n", i, hotbar[i]->size());
@@ -151,6 +152,7 @@ void Inventory::drawHotbarTo(SDL_Renderer* renderer, TextureAtlas* textureAtlas,
 			printf("Drawing Hotbar item %d, %d, %d\n", hotbar[i]->peekNext()->textureId, x + i * 32, y);
 		}
 	}
+	printf("inventory: finished, atlas now is %d\n", textureAtlas);
 }
 
 Window* Inventory::getWindow(SDL_Renderer* renderer, TextureAtlas* textureAtlas, FontAtlas* fontAtlas)
