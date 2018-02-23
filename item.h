@@ -18,11 +18,12 @@ enum ItemType
 	ITEM_GREEN_POTION,
 	ITEM_SCROLL,
 	ITEM_SWORD,
-	ITEM_PISTOL
+	ITEM_PISTOL,
+	ITEM_BULLET
 };
 
 // TextureAtlas image ids, mapped by ItemType id
-const int ITEM_IMAGES[7] =
+const int ITEM_IMAGES[8] =
 {
 	BREAD_LOAF,
 	CHICKEN_LEG,
@@ -30,11 +31,12 @@ const int ITEM_IMAGES[7] =
 	POTION_GREEN,
 	SCROLL_1,
 	SWORD_1,
-	OBJECT_PISTOL_1
+	OBJECT_PISTOL_1,
+	PISTOL_BULLET
 };
 
 // In-game item names, mapped by ItemType id
-const std::string ITEM_NAMES[7] = 
+const std::string ITEM_NAMES[8] = 
 {
 	"Bread Loaf",
 	"Chicken Leg",
@@ -42,11 +44,12 @@ const std::string ITEM_NAMES[7] =
 	"Green Potion",
 	"Scroll",
 	"Sword",
-	"Pistol"
+	"Pistol",
+	"Pistol Bullet"
 };
 
 // Item descriptions, mapped by ItemType id
-const std::string ITEM_DESCRIPTIONS[7] = 
+const std::string ITEM_DESCRIPTIONS[8] = 
 {
 	"A Loaf of Bread",
 	"Chicken Leg. Very tasty",
@@ -54,11 +57,12 @@ const std::string ITEM_DESCRIPTIONS[7] =
 	"Not sure what it does, but it's green",
 	"Some weird crinkled piece of paper with writing on it",
 	"Sharp Steel",
-	"Fancy-looking pistol. Bang bang!"
+	"Fancy-looking pistol. Bang bang!",
+	"Small, metallic cylinder. For pistol use only!"
 };	
 
 // Stack amounts, mapped by ItemType id
-const int ITEM_STACKSIZES[7] =
+const int ITEM_STACKSIZES[8] =
 {
 	16,
 	16,
@@ -66,7 +70,8 @@ const int ITEM_STACKSIZES[7] =
 	4,
 	1,
 	1,
-	1
+	1,
+	24
 };
 
 // An item is the base class for anything that can be picked up or kept in inventory.

@@ -16,6 +16,7 @@ void Map::init(PlayerSpriteController* playerSpriteController, TextureAtlas* tex
 	addItem(new Consumable(ITEM_BEER_MUG, 132, 200, textureAtlas));
 	addItem(new Sword(textureAtlas, 164, 200));
 	addItem(new Pistol(textureAtlas, 68, 200));
+	addItem(new PistolAmmo(textureAtlas, 36, 200));
 }
 
 void Map::update(int ms) 

@@ -15,6 +15,7 @@
 #include "consumable.h"
 #include "sword.h"
 #include "pistol.h"
+#include "pistol_ammo.h"
 #include "civilian_sprite.h"
 #include "player_sprite.h"
 #include "path_finder_interface.h"
