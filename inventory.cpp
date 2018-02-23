@@ -77,6 +77,45 @@ void Inventory::useInHand(SDL_Point handPos, int useDir)
 	}
 }
 
+ItemStack* Inventory::findItems(int id)
+{
+	// search inventory for matches
+	for (int i = 0; i < inventorySize; i++)
+	{
+		if (inventory[i]->itemId == id)
+		{
+			return inventory[i];	
+		}
+	}
+	// search hotbar for matches
+	for (int i = 0; i < hotbarSize; i++)
+	{
+		if (hotbar[i]->itemId == id)
+		{
+			return hotbar[i];	
+		}
+	}
+}
+
+void Inventory::reloadInHand()
+{
+	Item* in_hand = getInHand();
+	if (in_hand)
+	{
+		printf("Reloading %s\n", in_hand->getName());
+		int ammo_type = in_hand->ammunitionId;
+		if (ammo_type)
+		{
+			ItemStack* ammo_stack = findItems(ammo_type);
+			// feed ammunition to item, deleting it as it is used
+			while (ammo_stack->size() && in_hand->reload(ammo_stack->peekNext())) // TODO: WHAT IF GIVEN STACK DOESN'T FILL AMMO?
+			{
+				delete ammo_stack->popNext();	
+			}
+		}
+	}
+}
+
 Action* Inventory::getAction()
 {
 	Action* action = resultingAction;

@@ -81,6 +81,11 @@ bool PlayerSpriteController::handleKeyEvent(SDL_Event e)
 				return true;
 			}
 				
+			// attempts to reload in-hand item
+			case SDLK_r:	
+				inventory->reloadInHand();
+				return true;
+			
 			// cycle in-hand inventory item forward and update HUD
 			case SDLK_TAB:
 				inventory->cycleInHandFwd(); // TODO: NEED A LISTENER FOR INVENTORY IN-HAND CHANGES

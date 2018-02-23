@@ -36,6 +36,11 @@ void Item::setPosition(float x, float y)
 	position.y = y;
 }
 
+bool Item::reload(Item* item)
+{
+	return false;
+}
+
 void Item::update(int ms)
 {
 	return;	

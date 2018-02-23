@@ -10,13 +10,13 @@ class ItemStack
 {
 	// items in the stack
 	std::vector<Item*> items;
-	// id of items in stack
-	int itemId = -1;
 	// capacity of the stack for the given item
 	int capacity = 0;
 	
 	public:
 		ItemStack();
+		// id of items in stack
+		int itemId = -1;
 		// returns whether stack is empty (has no items)
 		bool isEmpty();
 		// return number of elements in the stack

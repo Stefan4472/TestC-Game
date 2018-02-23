@@ -35,28 +35,31 @@ class InventoryListener
 
 class Inventory // TODO: SEPARATE CLASS FOR NON-SPRITE INVENTORIES
 {
-	// sprite to which this Inventory belongs
-	Sprite* owner = NULL;
-	
-	// size of hotbar (items at ready selection)
-	int hotbarSize = 0;
-	std::vector<ItemStack*> hotbar;
-	//std::vector<int> emptyHotbarSlots;
-	// size of inventory (rest of items)
-	int inventorySize = 10;
-	std::vector<ItemStack*> inventory;
-	//std::vector<int> emptyInventorySlots;
-	
-	// number of items that'll fit in the inventory
-	int capacity = 10;
-	// vector of pointers to items in storage
-	std::vector<Item*> items;
-	// stored Action, Buff, and Attack (if any) from last-used Item
-	Action* resultingAction = NULL;
-	Action* resultingBuff = NULL;
-	Attack* resultingAttack = NULL;
-	// pointer to listener, if any
-	InventoryListener* inventoryListener = NULL;
+	private:
+		// sprite to which this Inventory belongs
+		Sprite* owner = NULL;
+
+		// size of hotbar (items at ready selection)
+		int hotbarSize = 0;
+		std::vector<ItemStack*> hotbar;
+		//std::vector<int> emptyHotbarSlots;
+		// size of inventory (rest of items)
+		int inventorySize = 10;
+		std::vector<ItemStack*> inventory;
+		//std::vector<int> emptyInventorySlots;
+
+		// number of items that'll fit in the inventory
+		int capacity = 10;
+		// vector of pointers to items in storage
+		std::vector<Item*> items;
+		// stored Action, Buff, and Attack (if any) from last-used Item
+		Action* resultingAction = NULL;
+		Action* resultingBuff = NULL;
+		Attack* resultingAttack = NULL;
+		// pointer to listener, if any
+		InventoryListener* inventoryListener = NULL;
+		// searches for stack of items with given id. May return Null
+		ItemStack* findItems(int id);
 	
 	public:
 		// creates enough space for the given number of items. Item uses are attributed to given owner
@@ -71,6 +74,9 @@ class Inventory // TODO: SEPARATE CLASS FOR NON-SPRITE INVENTORIES
 		// getAction(), getBuff(), and getAttack(), one or more of which may be NULL. Takes the sprite's
 		// current hand position, and direction facing, which is used for positional effects.
 		void useInHand(SDL_Point handPos, int useDir); 
+		// attempts to reload whatever item is in hand. Will only do something if that item can be reloaded, and 
+		// the correct ammunition is in inventory.
+		void reloadInHand();
 		// retrieve *AND CONSUME* Action, Buff, and/or Attack that may have been created by last-used item. 
 		Action* getAction();
 		Action* getBuff();

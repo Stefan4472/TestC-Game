@@ -97,16 +97,20 @@ class Item
 		int stackSize = 0;
 		// pointer to TextureAtlas used for drawing
 		TextureAtlas* textureAtlas = NULL;
+		// id of item type that can be used to reload this item (default to 0 i.e. none)
+		int ammunitionId = 0;
 	
 		// defines position of Item on the map
 		SDL_Rect position = {0, 0, 0, 0};
 		// whether item should be destroyed (removed from inventory and deleted)
 		bool destroy = false;
+		
 		// sets textureAtlas and image, name, and description based on ItemType
 		Item(TextureAtlas* textureAtlas, int itemType);
 		// same as above but sets position to the top-left coordinates, with width/height 
 		// the same as the textureId's dimensions
 		Item(TextureAtlas* textureAtlas, int itemType, float x, float y);
+		
 		// returns name of the item
 		const char* getName();
 		// sets top-left of item position
@@ -114,6 +118,9 @@ class Item
 		// called when the Item is used. Isn't required to do anything. May trigger change of state.
 		// takes sprite that is using the item, sprite's hand position, and facing direction on Map
 		virtual void use(Sprite* actor, SDL_Point handPos, int useDir) = 0;
+		// attempts to reload with the given Item, which can be consumed. Returns whether the given
+		// item was used to reload.
+		virtual bool reload(Item* item);
 		// updates state of item by given number of milliseconds. Meant for when item is in sprite's hand.
 		// default does nothing.
 		virtual void update(int ms);
