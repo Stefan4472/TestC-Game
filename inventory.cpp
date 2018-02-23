@@ -90,11 +90,13 @@ ItemStack* Inventory::findItems(int id)
 	// search hotbar for matches
 	for (int i = 0; i < hotbarSize; i++)
 	{
+		printf("Hotbar[%d] has item id %d\n", i, hotbar[i]->itemId);
 		if (hotbar[i]->itemId == id)
 		{
 			return hotbar[i];	
 		}
 	}
+	return NULL;
 }
 
 void Inventory::reloadInHand()
@@ -107,8 +109,9 @@ void Inventory::reloadInHand()
 		if (ammo_type)
 		{
 			ItemStack* ammo_stack = findItems(ammo_type);
+			printf("Stack of %d pointer is %d\n", ammo_type, ammo_stack);
 			// feed ammunition to item, deleting it as it is used
-			while (ammo_stack->size() && in_hand->reload(ammo_stack->peekNext())) // TODO: WHAT IF GIVEN STACK DOESN'T FILL AMMO?
+			while (ammo_stack && ammo_stack->size() && in_hand->reload(ammo_stack->peekNext())) // TODO: WHAT IF GIVEN STACK DOESN'T FILL AMMO?
 			{
 				delete ammo_stack->popNext();	
 			}
