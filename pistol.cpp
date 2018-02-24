@@ -19,7 +19,17 @@ void Pistol::use(Sprite* actor, SDL_Point handPos, int useDir)
 		position.y = handPos.y;
 		position.w = 32;
 		position.h = 32;
-		lastFiredBullet = new Bullet(position, actor->facingDir, actor, this);
+		
+		SDL_Rect target = { actor->aimingX, actor->aimingY, 32, 32 };
+		
+		if (actor->aiming)
+		{
+			lastFiredBullet = new Bullet(position, target, actor, this);	
+		}
+		else
+		{
+			lastFiredBullet = new Bullet(position, actor->facingDir, actor, this);
+		}
 		
 		switch (actor->facingDir)
 		{
