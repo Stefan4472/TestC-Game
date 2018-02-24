@@ -68,4 +68,5 @@ Action* Pistol::getAction() // TODO: CHECK IF PISTOL WAS FIRED? ORGANIZE DIRECTI
 		case DIRECTION_DOWN:
 			return new KnockbackAction(DIRECTION_UP);
 	}
+	return NULL;
 }

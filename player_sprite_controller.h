@@ -29,6 +29,11 @@ class PlayerSpriteController : public SpriteController
 		// whether interact request was handled by Map
 		bool interactHandled = false;
 		
+		// whether player is trying to aim in-hand item
+		bool aiming = false;
+		// on-screen coordinates being aimed at. Only valid when aiming = true
+		float aimingX = 0, aimingY = 0;
+		
 		// handles given event, and returns if it was consumed
 		bool handleKeyEvent(SDL_Event e);
 		// called when in-hand item changes: update HUD

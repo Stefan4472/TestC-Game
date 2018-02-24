@@ -46,6 +46,9 @@ class Map : public PathFinder // TODO: IMPLEMENTATION OF MAP, AND GAME DRIVER, S
 	// source and destination rects 
 	SDL_Rect src = {0, 0, TILE_WIDTH, TILE_HEIGHT}, dest = {0, 0, TILE_WIDTH, TILE_HEIGHT};
 	
+	// coordinates of current-selected/aimed tile (if any)
+	SDL_Rect selectedTile = { 0, 0, 32, 32 };
+	
 	// pointer to TextureAtlas used for drawing images
 	TextureAtlas* textureAtlas = NULL;
 	

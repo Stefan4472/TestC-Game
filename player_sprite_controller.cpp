@@ -125,6 +125,31 @@ bool PlayerSpriteController::handleKeyEvent(SDL_Event e)
 				return false;
 		}
 	}
+	// player moved mouse
+	else if (e.type == SDL_MOUSEBUTTONDOWN)
+	{
+		// set aiming
+		if (e.button.button == SDL_BUTTON_RIGHT)
+		{
+			aiming = true;
+			aimingX = e.button.x;
+			aimingY = e.button.y;
+		}
+	}
+	else if (e.type == SDL_MOUSEBUTTONUP)
+	{
+		// set aiming
+		if (e.button.button == SDL_BUTTON_RIGHT)
+		{
+			aiming = false;
+		}
+	}
+	else if (e.type == SDL_MOUSEMOTION && aiming)
+	{
+		aimingX = e.button.x;
+		aimingY = e.button.y;
+	}
+	
 	// player rolled mouse wheel
 	else if (e.type == SDL_MOUSEWHEEL)
 	{
