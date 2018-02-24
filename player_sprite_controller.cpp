@@ -131,9 +131,9 @@ bool PlayerSpriteController::handleKeyEvent(SDL_Event e)
 		// set aiming
 		if (e.button.button == SDL_BUTTON_RIGHT)
 		{
-			aiming = true;
-			aimingX = e.button.x;
-			aimingY = e.button.y;
+			sprite->aiming = true;
+			sprite->aimingX = e.button.x;  // TODO: HOW TO GET IN-GAME COORDINATES FROM ON-SCREEN COORDINATES?
+			sprite->aimingY = e.button.y;
 		}
 	}
 	else if (e.type == SDL_MOUSEBUTTONUP)
@@ -141,15 +141,14 @@ bool PlayerSpriteController::handleKeyEvent(SDL_Event e)
 		// set aiming
 		if (e.button.button == SDL_BUTTON_RIGHT)
 		{
-			aiming = false;
+			sprite->aiming = false;
 		}
 	}
-	else if (e.type == SDL_MOUSEMOTION && aiming)
+	else if (e.type == SDL_MOUSEMOTION && sprite->aiming)
 	{
-		aimingX = e.button.x;
-		aimingY = e.button.y;
+		sprite->aimingX = e.button.x;
+		sprite->aimingY = e.button.y;
 	}
-	
 	// player rolled mouse wheel
 	else if (e.type == SDL_MOUSEWHEEL)
 	{

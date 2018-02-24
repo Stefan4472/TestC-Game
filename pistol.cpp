@@ -12,15 +12,34 @@ void Pistol::update(int ms)
 
 void Pistol::use(Sprite* actor, SDL_Point handPos, int useDir)
 {
-	if (bulletsLoaded)
+	printf("Pistol: actor direction is %d\n", actor->facingDir);
+	if (bulletsLoaded && msSinceShot >= COOL_OFF)
 	{
-		this->actor = actor;
-		fireDirection = useDir;
-		fired = true;
 		position.x = handPos.x;
 		position.y = handPos.y;
 		position.w = 32;
 		position.h = 32;
+		lastFiredBullet = new Bullet(position, actor->facingDir, actor, this);
+		
+		switch (actor->facingDir)
+		{
+			case DIRECTION_RIGHT:
+				lastRecoilAction = new KnockbackAction(DIRECTION_LEFT);
+				break;
+				
+			case DIRECTION_UP:
+				lastRecoilAction = new KnockbackAction(DIRECTION_DOWN);
+				break;
+
+			case DIRECTION_LEFT:
+				lastRecoilAction = new KnockbackAction(DIRECTION_RIGHT);
+				break;
+
+			case DIRECTION_DOWN:
+				lastRecoilAction = new KnockbackAction(DIRECTION_UP);
+				break;
+		}
+		
 		bulletsLoaded--;
 	}
 	else
@@ -42,31 +61,14 @@ bool Pistol::reload(Item* item)
 
 Attack* Pistol::getAttack() 
 {
-	if (fired && msSinceShot >= COOL_OFF)
-	{
-		msSinceShot = 0;
-		fired = false;
-		//SDL_Rect position, int dir, Sprite* attacker, Item* weapon
-		return new Bullet(position, fireDirection, actor, this);
-	}
-	fired = false;
+	Attack* bullet = lastFiredBullet;
+	lastFiredBullet = NULL;
+	return bullet;
 }
 
 Action* Pistol::getAction() // TODO: CHECK IF PISTOL WAS FIRED? ORGANIZE DIRECTIONS SO WE CAN DO -(DIRECTION)?
 {
-	switch (fireDirection)
-	{
-		case DIRECTION_RIGHT:
-			return new KnockbackAction(DIRECTION_LEFT);
-			
-		case DIRECTION_UP:
-			return new KnockbackAction(DIRECTION_DOWN);
-			
-		case DIRECTION_LEFT:
-			return new KnockbackAction(DIRECTION_RIGHT);
-			
-		case DIRECTION_DOWN:
-			return new KnockbackAction(DIRECTION_UP);
-	}
-	return NULL;
+	Action* recoil = lastRecoilAction;
+	lastRecoilAction = NULL;
+	return recoil;
 }

@@ -10,18 +10,17 @@
 
 class Pistol : public Item
 {
-	// sprite using the pistol
-	Sprite* actor = NULL;
-	// direction gun is fired in
-	int fireDirection = 0;
-	// if gun was fired in this frame
-	bool fired = false;
-	// number of bullets in magazine
-	int bulletsLoaded = 0;
 	// max. number of bullets that can be loaded at one time
 	const int MAG_SIZE = 10;
 	// num milliseconds before gun can be fired again
 	const int COOL_OFF = 500;	
+	
+	// bullet created when gun was last fired
+	Bullet* lastFiredBullet = NULL;
+	// recoil action created when gun was last fired
+	Action* lastRecoilAction = NULL;
+	// number of bullets in magazine
+	int bulletsLoaded = 0;
 	// num milliseconds since gun was last fired
 	int msSinceShot = COOL_OFF;
 	

@@ -77,6 +77,10 @@ class Sprite
 		
 		// direction currently facing
 		int facingDir = DIRECTION_DOWN;
+		// whether sprite is trying to aim in-hand item
+		bool aiming = false;
+		// coordinates being aimed at. Only valid when aiming = true
+		float aimingX = 0, aimingY = 0;
 		
 		// item sprite is holding in-hand. Sprite is drawn to reflect it is holding the item
 		Item* inHand = NULL;

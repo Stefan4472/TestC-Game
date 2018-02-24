@@ -263,11 +263,11 @@ void Map::drawTo(SDL_Renderer* renderer)
 	}
 	
 	// outline square player is aiming at, if any
-	if (playerSpriteController->aiming)
+	if (playerSpriteController->sprite->aiming)
 	{
 		// TODO: determine and outline tile based on coordinates player is aiming at
-		selectedTile.x = (int) playerSpriteController->aimingX;
-		selectedTile.y = (int) playerSpriteController->aimingY;
+		selectedTile.x = (int) playerSpriteController->sprite->aimingX;
+		selectedTile.y = (int) playerSpriteController->sprite->aimingY;
 		
 		SDL_SetRenderDrawColor(renderer, 0, 0, 255, SDL_ALPHA_OPAQUE);
 		SDL_RenderFillRect(renderer, &selectedTile);

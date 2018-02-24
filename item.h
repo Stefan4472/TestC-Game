@@ -117,7 +117,7 @@ class Item
 		void setPosition(float x, float y);
 		// called when the Item is used. Isn't required to do anything. May trigger change of state.
 		// takes sprite that is using the item, sprite's hand position, and facing direction on Map
-		virtual void use(Sprite* actor, SDL_Point handPos, int useDir) = 0;
+		virtual void use(Sprite* actor, SDL_Point handPos, int useDir) = 0;                              // TODO: CAN'T IT GET THAT INFO FROM THE SPRITE DIRECTLY???
 		// attempts to reload with the given Item, which can be consumed. Returns whether the given
 		// item was used to reload.
 		virtual bool reload(Item* item);
