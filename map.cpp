@@ -258,6 +258,7 @@ void Map::drawTo(SDL_Renderer* renderer)
 			else 
 			{
 				textureAtlas->draw(renderer, mapChunk->mapTiles[start_tile_y + i][start_tile_x + j], dest.x, dest.y);
+				SDL_RenderDrawRect( renderer, &dest );
 			}
 		}
 	}
@@ -266,9 +267,11 @@ void Map::drawTo(SDL_Renderer* renderer)
 	if (playerSpriteController->sprite->aiming)
 	{
 		// TODO: determine and outline tile based on coordinates player is aiming at
-		selectedTile.x = (int) playerSpriteController->sprite->aimingX;
-		selectedTile.y = (int) playerSpriteController->sprite->aimingY;
+		//selectedTile.x = (int) playerSpriteController->sprite->aimingX;
+		//selectedTile.y = (int) playerSpriteController->sprite->aimingY;
 		
+		//selectedTile.x = pointToTile(SDL_Rect { 
+		selectedTile = worldToScreen(playerSpriteController->sprite->aimRect);
 		SDL_SetRenderDrawColor(renderer, 0, 0, 255, SDL_ALPHA_OPAQUE);
 		SDL_RenderFillRect(renderer, &selectedTile);
 	}
@@ -377,7 +380,8 @@ SDL_Point Map::screenToWorld(int screenX, int screenY)
 	int start_tile_x = camera.x / TILE_WIDTH;
 	int start_tile_y = camera.y / TILE_HEIGHT;
 	
-	return SDL_Point { start_tile_x + (screenX - offset_x) / TILE_WIDTH, start_tile_y + (screenY - offset_y) / TILE_HEIGHT };
+	return SDL_Point { camera.x + screenX, camera.y + screenY };
+	//return SDL_Point { start_tile_x + (screenX - offset_x) / TILE_WIDTH, start_tile_y + (screenY - offset_y) / TILE_HEIGHT };
 }
 
 SDL_Rect Map::worldToScreen(SDL_Rect worldRect)
@@ -389,6 +393,9 @@ SDL_Rect Map::worldToScreen(SDL_Rect worldRect)
 	// row and col of top-left tile to render
 	int start_tile_x = camera.x / TILE_WIDTH;
 	int start_tile_y = camera.y / TILE_HEIGHT;
+	
+	//int offset_x = worldRect.x - camera.x;
+	//return SDL_Rect { 
 	
 	return SDL_Rect { worldRect.x - camera.x, worldRect.y - camera.y, worldRect.w, worldRect.h };
 }

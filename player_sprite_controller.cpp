@@ -132,8 +132,7 @@ bool PlayerSpriteController::handleKeyEvent(SDL_Event e)
 		if (e.button.button == SDL_BUTTON_RIGHT)
 		{
 			sprite->aiming = true;
-			sprite->aimingX = e.button.x;  // TODO: HOW TO GET IN-GAME COORDINATES FROM ON-SCREEN COORDINATES?
-			sprite->aimingY = e.button.y;
+			setAim(e.button.x, e.button.y);
 		}
 	}
 	else if (e.type == SDL_MOUSEBUTTONUP)
@@ -146,8 +145,8 @@ bool PlayerSpriteController::handleKeyEvent(SDL_Event e)
 	}
 	else if (e.type == SDL_MOUSEMOTION && sprite->aiming)
 	{
-		sprite->aimingX = e.button.x;
-		sprite->aimingY = e.button.y;
+		// adjust aim to reflect moved mouse position
+		setAim(e.button.x, e.button.y);
 	}
 	// player rolled mouse wheel
 	else if (e.type == SDL_MOUSEWHEEL)
@@ -165,6 +164,19 @@ bool PlayerSpriteController::handleKeyEvent(SDL_Event e)
 			sprite->inHand = inventory->getInHand();
 		}
 	}
+}
+
+void PlayerSpriteController::setAim(int mouseX, int mouseY)
+{
+	// convert mouse coordinates to in-game coordiantes
+	SDL_Point aim_point = pathFinder->screenToWorld(mouseX, mouseY);
+	// get coordinates of the tile pointed at
+	SDL_Rect aim_tile = pathFinder->pointToTile(aim_point);
+
+	sprite->aimRect.x = aim_tile.x;
+	sprite->aimRect.y = aim_tile.y;
+	sprite->aimRect.w = aim_tile.w;
+	sprite->aimRect.h = aim_tile.h;
 }
 
 void PlayerSpriteController::onInHandItemChanged(Item* newItem)

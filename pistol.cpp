@@ -24,9 +24,9 @@ void Pistol::use(Sprite* actor, SDL_Point handPos, int useDir)
 		
 		if (actor->aiming)
 		{
-			SDL_Rect target = { actor->aimingX, actor->aimingY, 32, 32 };
-			printf("Sprite is aiming at %d, %d\n", actor->aimingX, actor->aimingY); 
-			lastFiredBullet = new Bullet(position, target, actor, this);	
+			//SDL_Rect target = { actor->aimingX, actor->aimingY, 32, 32 };
+			printf("Sprite is aiming at %d, %d\n", actor->aimRect.x, actor->aimRect.y); 
+			lastFiredBullet = new Bullet(position, actor->aimRect, actor, this);	
 		}
 		else
 		{

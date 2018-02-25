@@ -3,6 +3,7 @@
 
 #include "texture_atlas.h"
 #include "sprite_controller.h"
+#include "path_finder_interface.h"
 #include "player_sprite.h"
 #include "knockback_action.h"
 #include "colors.h"
@@ -15,12 +16,18 @@
 
 class PlayerSpriteController : public SpriteController
 {
+	private:
+		// set aiming position for sprite based on on-screen coordinates of mouse
+		void setAim(int mouseX, int mouseY);
+		
 	public:
-		PlayerSpriteController(PlayerSprite* playerSprite, TextureAtlas* textureAtlas);
+		PlayerSpriteController(PlayerSprite* playerSprite, TextureAtlas* textureAtlas); // SHOULD INCLUDE PATHFINDER!!!
 		
 		// pointer to the PlayerSprite
 		// must be maintained separately from Sprite* pointer included in SpriteController base class
 		PlayerSprite* player = NULL;
+		// pointer to PathFinder interface. Used to convert mouse coordinates to in-world coordinates
+		PathFinder* pathFinder = NULL;
 		// heads-up-display showing user informatin on current status
 		PlayerHUD* hud = NULL;
 		

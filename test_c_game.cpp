@@ -180,6 +180,7 @@ int main( int argc, char* args[] )
 	printf("Created player sprite and controller\n");
 	Map map;
 	map.init(playerController, &textureAtlas, &soundAtlas);
+	playerController->pathFinder = &map; // TODO: THIS IS VERY DANGEROUS
 	printf("Created map\n");
 	// pointer to current Window active on screen
 	Window* currWindow = NULL;
