@@ -20,10 +20,12 @@ void Pistol::use(Sprite* actor, SDL_Point handPos, int useDir)
 		position.w = 32;
 		position.h = 32;
 		
-		SDL_Rect target = { actor->aimingX, actor->aimingY, 32, 32 };
+		printf("Sprite is using pistol\n");
 		
 		if (actor->aiming)
 		{
+			SDL_Rect target = { actor->aimingX, actor->aimingY, 32, 32 };
+			printf("Sprite is aiming at %d, %d\n", actor->aimingX, actor->aimingY); 
 			lastFiredBullet = new Bullet(position, target, actor, this);	
 		}
 		else

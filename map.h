@@ -95,11 +95,18 @@ class Map : public PathFinder // TODO: IMPLEMENTATION OF MAP, AND GAME DRIVER, S
 		void drawTo(SDL_Renderer* renderer);
 		// returns whether the two rectangles have any intersection
 		bool checkCollision(SDL_Rect a, SDL_Rect b);
+		
 		// returns an action (list of MoveToActions, each of which define a direction and distance)
 		// than a sprite can follow to get from (startX, startY) to (endX, endY)
 		FollowPathAction* findPath(float startX, float startY, float endX, float endY);
 		// returns an action a sprite can follow that will move it the given number of tiles more or less randomly
 		FollowPathAction* findRandomPath(float startX, float startY, int numTiles);
+		// maps point on-screen to point in world coordinates
+		SDL_Point screenToWorld(int screenX, int screenY);
+		// maps rect in world coordinates to on-screen coordinates
+		SDL_Rect worldToScreen(SDL_Rect worldRect);
+		// returns bounds of tile the given world-coordinate point is in
+		SDL_Rect pointToTile(SDL_Point worldPoint);
 };
 
 #endif

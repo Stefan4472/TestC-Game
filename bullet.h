@@ -9,7 +9,7 @@
 class Bullet : public Attack
 {
 	// speed bullet is travelling in x and y
-	int dx = 0, dy = 0;
+	float speedX = 0, speedY = 0;
 	// number of ms bullet has existed
 	int elapsedTime = 0;
 	// maximum number of milliseconds this bullet can exist before requesting destruction

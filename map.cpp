@@ -366,3 +366,34 @@ FollowPathAction* Map::findRandomPath(float startX, float startY, int numTiles) 
 					 
 	return new FollowPathAction(moves);
 }
+
+SDL_Point Map::screenToWorld(int screenX, int screenY)
+{
+	// offsets from tile borders on x and y
+	int offset_x = camera.x % TILE_WIDTH;
+	int offset_y = camera.y % TILE_HEIGHT;
+	
+	// row and col of top-left tile to render
+	int start_tile_x = camera.x / TILE_WIDTH;
+	int start_tile_y = camera.y / TILE_HEIGHT;
+	
+	return SDL_Point { start_tile_x + (screenX - offset_x) / TILE_WIDTH, start_tile_y + (screenY - offset_y) / TILE_HEIGHT };
+}
+
+SDL_Rect Map::worldToScreen(SDL_Rect worldRect)
+{
+	// offsets from tile borders on x and y
+	int offset_x = camera.x % TILE_WIDTH;
+	int offset_y = camera.y % TILE_HEIGHT;
+	
+	// row and col of top-left tile to render
+	int start_tile_x = camera.x / TILE_WIDTH;
+	int start_tile_y = camera.y / TILE_HEIGHT;
+	
+	return SDL_Rect { worldRect.x - camera.x, worldRect.y - camera.y, worldRect.w, worldRect.h };
+}
+
+SDL_Rect Map::pointToTile(SDL_Point worldPoint)
+{
+	return SDL_Rect { worldPoint.x - worldPoint.x % TILE_WIDTH, worldPoint.y - worldPoint.y % TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT };
+}
