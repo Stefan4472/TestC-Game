@@ -10,19 +10,9 @@ void Item::init(TextureAtlas* textureAtlas, int itemType)
 	stackSize = ITEM_STACKSIZES[itemType];
 }
 
-Item::Item(TextureAtlas* textureAtlas, int itemType)
+Item::Item(int itemId)
 {
-	init(textureAtlas, itemType);
-}
-
-Item::Item(TextureAtlas* textureAtlas, int itemType, float x, float y)
-{	
-	init(textureAtlas, itemType);
-	
-	position.x = x;
-	position.y = y;
-	position.w = textureAtlas->getWidth(textureId);
-	position.h = textureAtlas->getHeight(textureId);
+	this->itemId = itemId;
 }
 
 const char* Item::getName() 
@@ -30,13 +20,7 @@ const char* Item::getName()
 	return name.c_str();	
 }
 
-void Item::setPosition(float x, float y)
-{
-	position.x = x;
-	position.y = y;
-}
-
-bool Item::reload(Item* item)
+bool Item::load(Item* item)
 {
 	return false;
 }
@@ -59,21 +43,6 @@ Action* Item::getBuff()
 Attack* Item::getAttack()
 {
 	return NULL;
-}
-
-void Item::drawTo(SDL_Renderer* renderer, int x, int y)
-{
-	textureAtlas->draw(renderer, textureId, x, y);	
-}
-
-void Item::drawToMap(SDL_Renderer* renderer, int offsetX, int offsetY)
-{
-	textureAtlas->draw(renderer, textureId, position.x - offsetX, position.y - offsetY);
-}
-
-void Item::drawToInventory(SDL_Renderer* renderer, SDL_Rect dest)
-{
-	textureAtlas->draw(renderer, textureId, 0, 0);
 }
 
 int getStackSize(int itemId) 

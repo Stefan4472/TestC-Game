@@ -1,6 +1,7 @@
 #ifndef ITEM_DROP_H
 #define ITEM_DROP_H
 
+#include <SDL2/SDL.h>
 #include "item.h"
 #include "item_stack.h"
 
@@ -29,7 +30,10 @@ class ItemDrop {
 		// defines position of Item on the map TODO: DON'T DEFAULT TO 32PX
 		SDL_Rect position = {0, 0, 32, 32};
 	
-		// prepares for destruction: sets ItemStack to NULL. The ItemStack itself must
+		// draws item drop to map (uses position)
+		void drawToMap(SDL_Renderer* renderer, TextureAtlas* textureAtlas, int offsetX, int offsetY);
+		
+	// prepares for destruction: sets ItemStack to NULL. The ItemStack itself must
 		// be  
 		//~ItemStack();
 };

@@ -28,3 +28,8 @@ ItemStack* ItemDrop::getItems()
 {
 	return items;
 }
+
+void ItemStack::drawToMap(SDL_Renderer* renderer, TextureAtlas* textureAtlas, int offsetX, int offsetY)
+{
+	textureAtlas->draw(renderer, textureId, position.x - offsetX, position.y - offsetY);
+}
