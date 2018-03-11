@@ -5,6 +5,25 @@ ItemStack::ItemStack()
 
 }
 
+ItemStack::ItemStack(Item* item)
+{
+	itemId = item->itemType;
+	capacity = item->stackSize;
+	items.push_back(item);
+}
+
+ItemStack::ItemStack(int itemId, int quantity)
+{
+	this->itemId = itemId;
+	// enforce stack size limit
+	capacity = (quantity > getStackSize(itemId) ? getStackSize(itemId) : quantity);
+	// create and add items to stack
+	for (int i = 0; i < capacity; i++) 
+	{
+		items.push_back(new Item(itemId));
+	}
+}
+
 bool ItemStack::isEmpty()
 {
 	return items.size() == 0;

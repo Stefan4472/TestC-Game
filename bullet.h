@@ -8,12 +8,15 @@
 
 class Bullet : public Attack
 {
+	// maximum number of milliseconds this bullet can exist before requesting destruction
+	const int MAX_DURATION = 2000;
+	// overall bullet speed (different from speedX/speedY)
+	const int BULLET_SPEED = 2.0f;
+	
 	// speed bullet is travelling in x and y
 	float speedX = 0, speedY = 0;
 	// number of ms bullet has existed
 	int elapsedTime = 0;
-	// maximum number of milliseconds this bullet can exist before requesting destruction
-	const int MAX_DURATION = 2000;
 	
 	public:
 		// "hip fire", given position and direction

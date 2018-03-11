@@ -8,7 +8,15 @@ void Map::init(PlayerSpriteController* playerSpriteController, TextureAtlas* tex
 	mapChunk = new MapChunk(textureAtlas, 10);
 	
 	addControlledSprite(playerSpriteController);
-	addControlledSprite(new CivilianSpriteController(new CivilianSprite(32 * 4, 32 * 4, textureAtlas), this));
+	addControlledSprite(new CivilianSpriteController(new CivilianSprite(32 * 4, 32 * 4, textureAtlas), this)); // TODO: HOW TO GIVE NPC'S ITEMS?
+	
+	// arm the civilian!!!!
+	Pistol* pistol = new Pistol(textureAtlas, 32 * 4, 32 * 4);
+	pistol->reload(new PistolAmmo(textureAtlas, 36, 200));
+	pistol->reload(new PistolAmmo(textureAtlas, 36, 200));
+	pistol->reload(new PistolAmmo(textureAtlas, 36, 200));
+	pistol->reload(new PistolAmmo(textureAtlas, 36, 200));
+	sprites[1]->inventory->addItem(pistol);
 	//addControlledSprite(new CivilianSpriteController(new CivilianSprite(32 * 8, 32 * 8, textureAtlas), this));	
 	//addControlledSprite(new CivilianSpriteController(new CivilianSprite(32 * 12, 32 * 8, textureAtlas), this));
 	
@@ -16,7 +24,7 @@ void Map::init(PlayerSpriteController* playerSpriteController, TextureAtlas* tex
 	addItem(new Consumable(ITEM_BEER_MUG, 132, 200, textureAtlas));
 	addItem(new Sword(textureAtlas, 164, 200));
 	addItem(new Pistol(textureAtlas, 68, 200));
-	// TODO; allow creation of stacks of items
+	// TODO; allow creation of stacks of items? An ItemDrop class?
 	addItem(new PistolAmmo(textureAtlas, 36, 200));
 	addItem(new PistolAmmo(textureAtlas, 36, 232));
 	addItem(new PistolAmmo(textureAtlas, 36, 264));

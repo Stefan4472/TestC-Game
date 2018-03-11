@@ -14,7 +14,13 @@ class ItemStack
 	int capacity = 0;
 	
 	public:
+		// creates empty stack
 		ItemStack();
+		// creates stack with given Item*
+		ItemStack(Item* item);
+		// creates stack with given number of Items specified by id. Enforces stack size limits!!
+		ItemStack(int itemId, int quantity);
+		
 		// id of items in stack
 		int itemId = -1;
 		// returns whether stack is empty (has no items)

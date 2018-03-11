@@ -97,7 +97,8 @@ void CivilianSpriteController::handleAttacked(Attack* attack)
 	// add action to knockback in the direction of the attack (happens first)
 	//actionStack.push(new KnockbackAction(attack->dir));
 	
-	
+	//inventory->useInHand(sprite->getRightHandPosition(), sprite->facingDir);
+	//attacks.push_back(inventory->getAttack());
 	
 	// add sound
 	sounds.push_back(SOUND_2);

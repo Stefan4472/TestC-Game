@@ -75,3 +75,8 @@ void Item::drawToInventory(SDL_Renderer* renderer, SDL_Rect dest)
 {
 	textureAtlas->draw(renderer, textureId, 0, 0);
 }
+
+int getStackSize(int itemId) 
+{
+	return ITEM_STACKSIZES[itemId];	
+}

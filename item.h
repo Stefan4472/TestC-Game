@@ -74,6 +74,9 @@ const int ITEM_STACKSIZES[8] =
 	24
 };
 
+// returns stack size of given item id
+int getStackSize(int itemId);
+
 // An item is the base class for anything that can be picked up or kept in inventory.
 // An item must implement a use() method, and can override getAction(), getBuff(), and
 // getAttack() if using the Item creates those effects. TODO: REQUIREMENTS (ITEMTYPE IDS)
@@ -137,5 +140,6 @@ class Item
 		virtual void drawToInventory(SDL_Renderer* renderer, SDL_Rect dest);
 		// TODO: virtual void drawToHUD()
 };
+
 
 #endif
