@@ -24,8 +24,8 @@ class Consumable : public Item // TODO: IS IT WORTH CREATING A NEW CLASS??
 	int healValue = 0;
 	
 	public:
-		Consumable(int itemType, float x, float y, TextureAtlas* textureAtlas);
-		void use(Sprite* actor, SDL_Point handPos, int useDir);
+		Consumable(int itemType);
+		void use(Sprite* actor);
 		// returns buff created by using the Item
 		Action* getBuff();
 };

@@ -10,7 +10,7 @@
 #include "sound_atlas.h"
 #include "sound.h"
 #include "map_chunk.h"
-#include "item.h"
+#include "item_drop.h"
 #include "attack.h"
 #include "consumable.h"
 #include "sword.h"
@@ -61,8 +61,8 @@ class Map : public PathFinder // TODO: IMPLEMENTATION OF MAP, AND GAME DRIVER, S
 	// controllers for sprites managed by map
 	std::vector<SpriteController*> sprites;
 	
-	// items generated and managed by map
-	std::vector<Item*> items;
+	// item drops generated and managed by map
+	std::vector<ItemDrop*> items;
 	
 	// sounds created by sprites, and the map
 	std::vector<Sound*> sounds;

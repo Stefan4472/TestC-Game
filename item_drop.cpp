@@ -12,11 +12,11 @@ ItemDrop::ItemDrop(ItemStack* itemStack, float x, float y)
 	setPosition(x, y);
 }
 		
-ItemDrop::ItemDrop(int itemId, int quantity, float x, float y)
+/*ItemDrop::ItemDrop(int itemId, int quantity, float x, float y)
 {
 	items = new ItemStack(itemId, quantity);
 	setPosition(x, y);
-}
+}*/
 
 void ItemDrop::setPosition(float x, float y)
 {

@@ -1,23 +1,33 @@
 #include "item.h"
 
-void Item::init(TextureAtlas* textureAtlas, int itemType)
-{
-	this->textureAtlas = textureAtlas;
-	this->textureId = ITEM_IMAGES[itemType];
-	this->itemType = itemType;
-	name = ITEM_NAMES[itemType];
-	description = ITEM_NAMES[itemType];
-	stackSize = ITEM_STACKSIZES[itemType];
-}
-
 Item::Item(int itemId)
 {
 	this->itemId = itemId;
 }
 
-const char* Item::getName() 
+int Item::getId()
 {
-	return name.c_str();	
+	return itemId;
+}
+
+const char* Item::getName()
+{
+	return ITEM_NAMES[itemId].c_str();
+}
+		
+const char* Item::getDescription() // TODO: PASS CONST STD::STRING&
+{
+	return ITEM_DESCRIPTIONS[itemId].c_str();
+}
+
+int Item::getStackSize()
+{
+	return ITEM_STACKSIZES[itemId];
+}
+
+int Item::getTextureId()
+{
+	return ITEM_TEXTURES[itemId];
 }
 
 bool Item::load(Item* item)

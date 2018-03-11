@@ -74,9 +74,9 @@ class Inventory // TODO: SEPARATE CLASS FOR NON-SPRITE INVENTORIES
 		// getAction(), getBuff(), and getAttack(), one or more of which may be NULL. Takes the sprite's
 		// current hand position, and direction facing, which is used for positional effects.
 		void useInHand(SDL_Point handPos, int useDir); 
-		// attempts to reload whatever item is in hand. Will only do something if that item can be reloaded, and 
+		// attempts to load whatever item is in hand. Will only do something if that item can be reloaded, and 
 		// the correct ammunition is in inventory.
-		void reloadInHand();
+		void loadInHand();
 		// retrieve *AND CONSUME* Action, Buff, and/or Attack that may have been created by last-used item. 
 		Action* getAction();
 		Action* getBuff();

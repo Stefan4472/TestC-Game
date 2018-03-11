@@ -23,7 +23,7 @@ enum ItemType
 };
 
 // TextureAtlas image ids, mapped by ItemType id
-const int ITEM_IMAGES[8] =
+const int ITEM_TEXTURES[8] =
 {
 	BREAD_LOAF,
 	CHICKEN_LEG,
@@ -92,23 +92,21 @@ class Item
 	// TODO: ON EQUIPPED, ON DE-EQUIPPED METHODS
 		
 	public:
+		
 		// id of the item
 		int itemId;
-		// id for item, cross-referenced from texture_atlas.h
-		int textureId;
-		// name and description of the item
-		std::string name;
-		std::string description;
-		// number of this item that can go in one inventory slot
-		int stackSize = 0;
 		// whether item should be destroyed (removed from inventory and deleted)
 		bool destroy = false;
 		
 		// creates item with given ID
 		Item(int itemId);
 		
-		// returns name of the item
+		// getters
+		int getId();
 		const char* getName();
+		const char* getDescription();
+		int getStackSize();
+		int getTextureId();
 
 		// called when the Item is used. Isn't required to do anything. May trigger change of state.
 		// Takes sprite that is using the item

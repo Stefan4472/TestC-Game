@@ -20,7 +20,7 @@ void Sprite::init()
 
 void Sprite::onInHandItemChanged(Item* item)
 {
-	printf("Sprite: on hand changed to %s\n", item->name);
+	printf("Sprite: on hand changed to %s\n", item->getName());
 	inHand = item;
 }
 	
@@ -304,6 +304,6 @@ void Sprite::drawTo(SDL_Renderer* renderer, int offsetX, int offsetY)
 	if (inHand)
 	{
 		SDL_Point hand_location = getRightHandPosition();
-		inHand->drawTo(renderer, (int) (hand_location.x - offsetX), (int) (hand_location.y - offsetY));
+		//inHand->drawTo(renderer, (int) (hand_location.x - offsetX), (int) (hand_location.y - offsetY));
 	}
 }

@@ -19,7 +19,7 @@ class ItemStack
 		// creates stack with given Item*
 		ItemStack(Item* item);
 		// creates stack with given number of Items specified by id. Enforces stack size limits!!
-		ItemStack(int itemId, int quantity);
+		//ItemStack(int itemId, int quantity);
 		
 		// id of items in stack
 		int itemId = -1;

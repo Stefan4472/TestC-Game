@@ -12,10 +12,10 @@ void Map::init(PlayerSpriteController* playerSpriteController, TextureAtlas* tex
 	
 	// arm the civilian!!!!
 	Pistol* pistol = new Pistol(textureAtlas, 32 * 4, 32 * 4);
-	pistol->reload(new PistolAmmo(textureAtlas, 36, 200));
-	pistol->reload(new PistolAmmo(textureAtlas, 36, 200));
-	pistol->reload(new PistolAmmo(textureAtlas, 36, 200));
-	pistol->reload(new PistolAmmo(textureAtlas, 36, 200));
+	pistol->load(new PistolAmmo(textureAtlas, 36, 200));
+	pistol->load(new PistolAmmo(textureAtlas, 36, 200));
+	pistol->load(new PistolAmmo(textureAtlas, 36, 200));
+	pistol->load(new PistolAmmo(textureAtlas, 36, 200));
 	sprites[1]->inventory->addItem(pistol);
 	//addControlledSprite(new CivilianSpriteController(new CivilianSprite(32 * 8, 32 * 8, textureAtlas), this));	
 	//addControlledSprite(new CivilianSpriteController(new CivilianSprite(32 * 12, 32 * 8, textureAtlas), this));

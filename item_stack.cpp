@@ -7,12 +7,12 @@ ItemStack::ItemStack()
 
 ItemStack::ItemStack(Item* item)
 {
-	itemId = item->itemType;
-	capacity = item->stackSize;
+	itemId = item->getId();
+	capacity = item->getStackSize();
 	items.push_back(item);
 }
 
-ItemStack::ItemStack(int itemId, int quantity)
+/*ItemStack::ItemStack(int itemId, int quantity) // NOTE: NOT POSSIBLE, BECAUSE ITEM IS ABSTRACT
 {
 	this->itemId = itemId;
 	// enforce stack size limit
@@ -22,7 +22,7 @@ ItemStack::ItemStack(int itemId, int quantity)
 	{
 		items.push_back(new Item(itemId));
 	}
-}
+}*/
 
 bool ItemStack::isEmpty()
 {

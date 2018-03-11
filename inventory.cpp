@@ -56,7 +56,7 @@ void Inventory::useInHand(SDL_Point handPos, int useDir)
 	if (in_hand)
 	{
 		printf("Inventory: Calling use of in_hand\n");
-		in_hand->use(owner, handPos, useDir);
+		in_hand->use(owner);
 		// collect results
 		resultingAction = in_hand->getAction();
 		resultingBuff = in_hand->getBuff();
@@ -99,7 +99,7 @@ ItemStack* Inventory::findItems(int id)
 	return NULL;
 }
 
-void Inventory::reloadInHand()
+void Inventory::loadInHand()
 {
 	Item* in_hand = getInHand();
 	if (in_hand)
@@ -111,7 +111,7 @@ void Inventory::reloadInHand()
 			ItemStack* ammo_stack = findItems(ammo_type);
 			printf("Stack of %d pointer is %d\n", ammo_type, ammo_stack);
 			// feed ammunition to item, deleting it as it is used
-			while (ammo_stack && ammo_stack->size() && in_hand->reload(ammo_stack->peekNext())) // TODO: WHAT IF GIVEN STACK DOESN'T FILL AMMO?
+			while (ammo_stack && ammo_stack->size() && in_hand->load(ammo_stack->peekNext())) // TODO: WHAT IF GIVEN STACK DOESN'T FILL AMMO?
 			{
 				delete ammo_stack->popNext();	
 			}
@@ -188,7 +188,7 @@ void Inventory::drawHotbarTo(SDL_Renderer* renderer, TextureAtlas* textureAtlas,
 	{
 		if (hotbar[i]->size())
 		{
-			textureAtlas->draw(renderer, hotbar[i]->peekNext()->textureId, x + i * 32, y);	
+			textureAtlas->draw(renderer, hotbar[i]->peekNext()->getTextureId(), x + i * 32, y);	
 		}
 	}
 }
@@ -207,8 +207,8 @@ Window* Inventory::getWindow(SDL_Renderer* renderer, TextureAtlas* textureAtlas,
 		int col = i % 10;
 		
 		ImageButton* item_btn = new ImageButton(i, SDL_Rect { col * 32, row * 32, 32, 32 }, textureAtlas, fontAtlas);
-		item_btn->setImage(items[i]->textureId);
-		item_btn->setHint(renderer, items[i]->name.c_str());
+		item_btn->setImage(items[i]->getTextureId());
+		item_btn->setHint(renderer, items[i]->getName());
 		
 		window->addWidget(item_btn);
 	}

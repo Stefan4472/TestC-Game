@@ -1,16 +1,17 @@
 #include "sword.h"
 
-Sword::Sword(TextureAtlas* textureAtlas, float x, float y) : Item(textureAtlas, ITEM_SWORD, x, y)
+Sword::Sword() : Item(ITEM_SWORD)
 {
 	damage = 10;
 }
 
-void Sword::use(Sprite* actor, SDL_Point handPos, int useDir)
+void Sword::use(Sprite* actor) // TODO: REFACTORING, ADDITIONS
 {
 	this->actor = actor;
-	swingDirection = useDir;
+	swingDirection = actor->facingDir;
+	SDL_Point handPos = actor->getRightHandPosition();
 	// set position pased on handPosition and direction
-	switch (useDir)
+	switch (actor->facingDir)
 	{
 		case DIRECTION_RIGHT:		 // todo: this will require tweaking
 			position.x = handPos.x;

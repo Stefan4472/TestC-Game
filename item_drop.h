@@ -23,7 +23,7 @@ class ItemDrop {
 		// creates drop from existing ItemStack, and map coordinates
 		ItemDrop(ItemStack* itemStack, float x, float y);
 		// creates drop containing a stack of the given number of specified item, and map coordinates
-		ItemDrop(int itemId, int quantity, float x, float y);
+		//ItemDrop(int itemId, int quantity, float x, float y);
 		// returns ItemStack contained by the drop
 		ItemStack* getItems();
 	

@@ -1,12 +1,7 @@
 #include "consumable.h"
 
-Consumable::Consumable(int itemType, float x, float y, TextureAtlas* textureAtlas) : Item(textureAtlas, itemType)
+Consumable::Consumable(int itemType) : Item(itemType)
 {
-	position.x = x;
-	position.y = y;
-	position.w = textureAtlas->getWidth(textureId);
-	position.h = textureAtlas->getHeight(textureId);
-	
 	switch (itemType)
 	{
 		case ITEM_BREAD_LOAF:
@@ -27,9 +22,8 @@ Consumable::Consumable(int itemType, float x, float y, TextureAtlas* textureAtla
 	}
 }
 
-void Consumable::use(Sprite* actor, SDL_Point handPos, int useDir)
+void Consumable::use(Sprite* actor)
 {
-	//return new HealthRegenAction(healValue, 10);
 	destroy = true;
 }
 
