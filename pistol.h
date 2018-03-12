@@ -25,7 +25,7 @@ class Pistol : public Item
 	int msSinceShot = COOL_OFF;
 	
 	public:
-		Pistol(y);
+		Pistol();
 		// adds to framesSinceShot
 		void update(int ms);
 		// attempts to fire the gun
