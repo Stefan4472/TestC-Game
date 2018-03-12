@@ -3,6 +3,7 @@
 Pistol::Pistol() : Item(ITEM_PISTOL)
 {
 	ammunitionId = ITEM_BULLET;
+	printf("Creating Pistol\n");
 }
 
 void Pistol::update(int ms)

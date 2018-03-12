@@ -18,12 +18,12 @@ class ItemDrop {
 		void setPosition(float x, float y);
 	
 	public:
-		// creates drop from single item, and map coordinates
+		// creates drop from Item and map coordinates. Wraps Item in ItemStack first
 		ItemDrop(Item* item, float x, float y);
 		// creates drop from existing ItemStack, and map coordinates
 		ItemDrop(ItemStack* itemStack, float x, float y);
 		// returns ItemStack contained by the drop
-		ItemStack* getItems();
+		ItemStack* getStack();
 	
 		// defines position of Item on the map TODO: DON'T DEFAULT TO 32PX
 		SDL_Rect position = {0, 0, 32, 32};

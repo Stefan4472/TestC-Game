@@ -110,8 +110,8 @@ class Item
 		
 		// id of the item
 		int itemId;
-		std::string name = NULL;
-		std::string description = NULL;
+		std::string name;
+		std::string description;
 		int stackSize = NULL;
 		int textureId = NULL;
 		int ammunitionId = NULL; // TODO: IMPLEMENT ONLY IN GUN CLASS

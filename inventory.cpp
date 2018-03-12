@@ -20,7 +20,7 @@ Inventory::Inventory(Sprite* owner, int capacity)
 
 bool Inventory::addItem(Item* item)
 {
-	printf("Adding %s to Inventory...\n", item->name);
+	printf("Adding %s to Inventory...\n", item->name.c_str());
 	// attempt to add to next hotbar slot TODO: MORE EFFICIENT ALGORITHM (CONSTANT TIME?)
 	for (int i = 0; i < hotbarSize; i++) 
 	{
@@ -47,8 +47,30 @@ bool Inventory::addItem(Item* item)
 
 bool Inventory::addItemStack(ItemStack* stack) 
 {
-	// TODO: ADD
-	return true;
+	printf("Adding ItemStack of %d %s to Inventory...\n", stack->size(), stack->peekNext()->name.c_str());
+	// attempt to add to next hotbar slot TODO: MORE EFFICIENT ALGORITHM (CONSTANT TIME?)
+	/*for (int i = 0; i < hotbarSize; i++) 
+	{
+		if (hotbar[i]->attemptAdd(stack->peekNext()))
+		{
+			stack->popNext()
+			// check if need to update inHandIndex
+			if (inventoryListener && i == inHandIndex && hotbar[i]->size() == 1)
+			{
+				inventoryListener->onInHandItemChanged(hotbar[i]->peekNext());		
+			}
+			return true;
+		}
+	}
+	for (int i = 0; i < inventorySize; i++)
+	{
+		if (inventory[i]->attemptAdd(item))
+		{
+			return true;
+		}
+	}*/
+	// no available slot found: couldn't add item
+	return false;
 }
 
 Item* Inventory::getInHand()

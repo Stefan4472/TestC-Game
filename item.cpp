@@ -2,12 +2,14 @@
 
 Item::Item(int itemId)
 {
+	printf("Creating Item with id %d...", itemId);
 	this->itemId = itemId;
-	name = ITEM_NAMES[itemId].c_str();
-	description = ITEM_DESCRIPTIONS[itemId].c_str();
+	name = ITEM_NAMES[itemId];
+	description = ITEM_DESCRIPTIONS[itemId];
 	stackSize = ITEM_STACKSIZES[itemId];
 	textureId = ITEM_TEXTURES[itemId];
 	ammunitionId = ITEM_AMMUNITIONS[itemId];
+	printf("Done\n");
 }
 
 /*const char* Item::getName()

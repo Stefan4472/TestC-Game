@@ -19,12 +19,21 @@ void Map::init(PlayerSpriteController* playerSpriteController, TextureAtlas* tex
 	sprites[1]->inventory->addItem(pistol);
 	//addControlledSprite(new CivilianSpriteController(new CivilianSprite(32 * 8, 32 * 8, textureAtlas), this));	
 	//addControlledSprite(new CivilianSpriteController(new CivilianSprite(32 * 12, 32 * 8, textureAtlas), this));
+
+	//std::vector<Item*> created = createItems(ITEM_BULLET, 10);
+	/*printf("Created has size %d\n", created.size());
+	for (int i = 0; i < created.size(); i++)
+	{
+		printf("%d. %s\n", i, created[i]->name.c_str());
+	}*/
+	addDrop(new ItemDrop(new ItemStack(createItems(ITEM_BULLET, 10)), 34, 200));
 	
-	addDrop(new ItemDrop(new Consumable(ITEM_BREAD_LOAF), 100, 200));
+	/*addDrop(new ItemDrop(new Consumable(ITEM_BREAD_LOAF), 100, 200));
 	addDrop(new ItemDrop(new Consumable(ITEM_BEER_MUG), 132, 200));
 	addDrop(new ItemDrop(new Sword(), 164, 200));
 	addDrop(new ItemDrop(new Pistol(), 68, 200));
 	addDrop(new ItemDrop(new ItemStack(createItems(ITEM_BULLET, 10)), 34, 200));
+	*/printf("Finished Map Init\n");
 }
 
 void Map::update(int ms) 
@@ -191,7 +200,7 @@ void Map::handlePlayerInteract(PlayerSprite* playerSprite)
 			//itemDrops[i]->handleInteract(playerSprite); 
 			
 			// add ItemDrop to inventory
-			if (playerSpriteController->inventory->addItemStack(itemDrops[i]->getItems()))
+			if (playerSpriteController->inventory->addItemStack(itemDrops[i]->getStack()))
 			{
 				// remove item from map if successful TODO: USE LINKED LIST
 				itemDrops.erase(itemDrops.begin() + i);
@@ -222,6 +231,7 @@ void Map::addControlledSprite(SpriteController* spriteController)
 
 void Map::addDrop(ItemDrop* itemDrop)
 {
+	printf("Map::addDrop. Adding Drop %d of %s\n", itemDrop->getStack()->size(), itemDrop->getStack()->peekNext()->name.c_str());
 	itemDrops.push_back(itemDrop);	
 }
 
@@ -336,6 +346,7 @@ bool Map::checkCollision(SDL_Rect a, SDL_Rect b)
 
 std::vector<Item*> Map::createItems(int itemId, int quantity)
 {
+	printf("Map: Creating %d Items with Id %d\n", quantity, itemId);
 	// bound quantity to stack size of requested items TODO: DESIRED BEHAVIOR?
 	quantity = (quantity > getStackSize(itemId) ? getStackSize(itemId) : quantity);
 	
@@ -350,21 +361,21 @@ std::vector<Item*> Map::createItems(int itemId, int quantity)
 		case ITEM_GREEN_POTION:
 			for (int i = 0; i < quantity; i++) 
 			{
-				items.push_back(new Consumable(itemId));
+				items[i] = new Consumable(itemId);
 			}		
 			break;
 			
 		case ITEM_PISTOL:
 			for (int i = 0; i < quantity; i++) 
 			{
-				items.push_back(new Pistol());
+				items[i] = new Pistol();
 			}
 			break;
 			
 		case ITEM_BULLET:
 			for (int i = 0; i < quantity; i++) 
 			{
-				items.push_back(new PistolAmmo());
+				items[i] = new PistolAmmo();
 			}
 			break;
 			
@@ -374,7 +385,7 @@ std::vector<Item*> Map::createItems(int itemId, int quantity)
 		case ITEM_SWORD:
 			for (int i = 0; i < quantity; i++) 
 			{
-				items.push_back(new Sword());
+				items[i] = new Sword();
 			}
 			break;
 	
