@@ -66,6 +66,8 @@ class Inventory // TODO: SEPARATE CLASS FOR NON-SPRITE INVENTORIES
 		Inventory(Sprite* owner, int capacity);
 		// attempts to add an item to inventory. Returns false if inventory is full
 		bool addItem(Item* item);
+		// attempts to add stack of items to inventory. Returns false if inventory is full
+		bool addItemStack(ItemStack* stack); 
 		// index of Item that's currently in hand
 		int inHandIndex = -1;
 		// returns pointer to the Item that's currently in hand. Null if empty 

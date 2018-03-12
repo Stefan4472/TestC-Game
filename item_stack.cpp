@@ -7,22 +7,20 @@ ItemStack::ItemStack()
 
 ItemStack::ItemStack(Item* item)
 {
-	itemId = item->getId();
+	itemId = item->itemId;
 	capacity = item->getStackSize();
 	items.push_back(item);
 }
 
-/*ItemStack::ItemStack(int itemId, int quantity) // NOTE: NOT POSSIBLE, BECAUSE ITEM IS ABSTRACT
+ItemStack::ItemStack(std::vector<Item*> items) // NOTE: BETTER WAY TO COPY??
 {
-	this->itemId = itemId;
-	// enforce stack size limit
-	capacity = (quantity > getStackSize(itemId) ? getStackSize(itemId) : quantity);
-	// create and add items to stack
+	this->itemId = items[0]->itemId;
+	// copy items over to internal list
 	for (int i = 0; i < capacity; i++) 
 	{
-		items.push_back(new Item(itemId));
+		this->items.push_back(items[i]);
 	}
-}*/
+}
 
 bool ItemStack::isEmpty()
 {
@@ -39,12 +37,12 @@ bool ItemStack::attemptAdd(Item* toAdd)
 	// no items in stack: set id to given item's id and add
 	if (itemId == -1)
 	{
-		itemId = toAdd->itemType;
-		capacity = toAdd->stackSize;
+		itemId = toAdd->itemId;
+		capacity = toAdd->getStackSize();
 		items.push_back(toAdd);
 		return true;
 	}
-	else if (toAdd->itemType == itemId && items.size() < capacity)
+	else if (toAdd->itemId == itemId && items.size() < capacity)
 	{
 		items.push_back(toAdd);
 		return true;

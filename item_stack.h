@@ -18,8 +18,8 @@ class ItemStack
 		ItemStack();
 		// creates stack with given Item*
 		ItemStack(Item* item);
-		// creates stack with given number of Items specified by id. Enforces stack size limits!!
-		//ItemStack(int itemId, int quantity);
+		// creates stack with given items
+		ItemStack(std::vector<Item*> items);
 		
 		// id of items in stack
 		int itemId = -1;

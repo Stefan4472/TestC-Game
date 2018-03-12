@@ -83,7 +83,7 @@ bool PlayerSpriteController::handleKeyEvent(SDL_Event e)
 				
 			// attempts to reload in-hand item
 			case SDLK_r:	
-				inventory->reloadInHand();
+				inventory->loadInHand();
 				return true;
 			
 			// cycle in-hand inventory item forward and update HUD
@@ -95,7 +95,6 @@ bool PlayerSpriteController::handleKeyEvent(SDL_Event e)
 			case SDLK_q: {
 				Item* drop = inventory->removeInHand();
 				sprite->inHand = inventory->getInHand();
-				drop->setPosition(sprite->x, sprite->y);
 				drops.push_back(drop);
 				return true;
 			}

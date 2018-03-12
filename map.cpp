@@ -12,22 +12,19 @@ void Map::init(PlayerSpriteController* playerSpriteController, TextureAtlas* tex
 	
 	// arm the civilian!!!!
 	Pistol* pistol = new Pistol(textureAtlas, 32 * 4, 32 * 4);
-	pistol->load(new PistolAmmo(textureAtlas, 36, 200));
-	pistol->load(new PistolAmmo(textureAtlas, 36, 200));
-	pistol->load(new PistolAmmo(textureAtlas, 36, 200));
-	pistol->load(new PistolAmmo(textureAtlas, 36, 200));
+	pistol->load(new PistolAmmo());
+	pistol->load(new PistolAmmo());
+	pistol->load(new PistolAmmo());
+	pistol->load(new PistolAmmo());
 	sprites[1]->inventory->addItem(pistol);
 	//addControlledSprite(new CivilianSpriteController(new CivilianSprite(32 * 8, 32 * 8, textureAtlas), this));	
 	//addControlledSprite(new CivilianSpriteController(new CivilianSprite(32 * 12, 32 * 8, textureAtlas), this));
 	
-	addItem(new Consumable(ITEM_BREAD_LOAF, 100, 200, textureAtlas));
-	addItem(new Consumable(ITEM_BEER_MUG, 132, 200, textureAtlas));
-	addItem(new Sword(textureAtlas, 164, 200));
-	addItem(new Pistol(textureAtlas, 68, 200));
-	// TODO; allow creation of stacks of items? An ItemDrop class?
-	addItem(new PistolAmmo(textureAtlas, 36, 200));
-	addItem(new PistolAmmo(textureAtlas, 36, 232));
-	addItem(new PistolAmmo(textureAtlas, 36, 264));
+	addDrop(new ItemDrop(new Consumable(ITEM_BREAD_LOAF, 100, 200, textureAtlas)));
+	addDrop(new ItemDrop(new Consumable(ITEM_BEER_MUG, 132, 200, textureAtlas)));
+	addDrop(new ItemDrop(new Sword(textureAtlas, 164, 200)));
+	addDrop(new ItemDrop(new Pistol(textureAtlas, 68, 200)));
+	addDrop(new ItemDrop(createItems(ITEM_BULLET, 10)));
 }
 
 void Map::update(int ms) 
@@ -185,18 +182,18 @@ void Map::handlePlayerInteract(PlayerSprite* playerSprite)
 			return;
 		}
 	}
-	for (int i = 0; i < items.size(); i++) 
+	for (int i = 0; i < itemDrops.size(); i++) 
 	{
-		if (checkCollision(player_hitbox, items[i]->position))
+		if (checkCollision(player_hitbox, itemDrops[i]->position))
 		{
-			printf("Collision with object at %f, %f\n", items[i]->position.x, items[i]->position.y); // todo: something suspicious with the hitbox
+			printf("Collision with object at %f, %f\n", itemDrops[i]->position.x, itemDrops[i]->position.y); // todo: something suspicious with the hitbox
 				// TODO: HANDLE
-			//items[i]->handleInteract(playerSprite); 
+			//itemDrops[i]->handleInteract(playerSprite); 
 			
-			// add item to inventory
-			playerSpriteController->inventory->addItem(items[i]);
+			// add ItemDrop to inventory
+			playerSpriteController->inventory->addItem(itemDrops[i]);
 			// remove item from map TODO: USE LINKED LIST
-			items.erase(items.begin() + i);
+			itemDrops.erase(itemDrops.begin() + i);
 			return;
 		}
 	}
@@ -221,9 +218,9 @@ void Map::addControlledSprite(SpriteController* spriteController)
 	sprites.push_back(spriteController);	
 }
 
-void Map::addItem(Item* item)
+void Map::addDrop(ItemDrop* itemDrop)
 {
-	items.push_back(item);	
+	itemDrops.push_back(item);	
 }
 
 void Map::centerTo(SDL_Rect center) 
@@ -290,12 +287,12 @@ void Map::drawTo(SDL_Renderer* renderer)
 		textureAtlas->draw(renderer, mapChunk->objects[i].textureId, mapChunk->objects[i].x - camera.x, mapChunk->objects[i].y - camera.y);	
 	}
 	
-	// render items
-	for (int i = 0; i < items.size(); i++) 
+	// render item drops
+	for (int i = 0; i < itemDrops.size(); i++) 
 	{
-		items[i]->drawToMap(renderer, camera.x, camera.y);	
+		itemDrops[i]->drawToMap(renderer, textureAtlas, camera.x, camera.y);	
 	}
-	
+	// draw sprites
 	for (int i = 0; i < sprites.size(); i++) 
 	{
 		sprites[i]->sprite->drawTo(renderer, camera.x, camera.y);
@@ -333,6 +330,57 @@ void Map::drawTo(SDL_Renderer* renderer)
 bool Map::checkCollision(SDL_Rect a, SDL_Rect b)
 {
 	return a.y + a.h > b.y && a.y < b.y + b.h && a.x + a.w > b.x && a.x < b.x + b.w;
+}
+
+std::vector<Item*> Map::createItems(int itemId, int quantity)
+{
+	// bound quantity to stack size of requested items TODO: DESIRED BEHAVIOR?
+	quantity = (quantity > getStackSize(itemId) ? getStackSize(itemId) : quantity);
+	
+	std::vector<Item*> items(quantity);
+	
+	switch (itemId) // TODO: OTHER WAY TO DO THIS?
+	{
+		// consumables
+		case ITEM_BREAD_LOAF:
+		case ITEM_CHICKEN_LEG:
+		case ITEM_BEER_MUG:
+		case ITEM_GREEN_POTION:
+			for (int i = 0; i < quantity; i++) 
+			{
+				items.push_back(new Consumable(itemId));
+			}		
+			break;
+			
+		case ITEM_PISTOL:
+			for (int i = 0; i < quantity; i++) 
+			{
+				items.push_back(new Pistol());
+			}
+			break;
+			
+		case ITEM_BULLET:
+			for (int i = 0; i < quantity; i++) 
+			{
+				items.push_back(new PistolAmmo());
+			}
+			break;
+			
+		case ITEM_SCROLL:
+			break;
+			
+		case ITEM_SWORD:
+			for (int i = 0; i < quantity; i++) 
+			{
+				items.push_back(new Sword());
+			}
+			break;
+	
+		default: 
+			printf("ERROR: Don't recognize itemId %d\n", itemId);
+			break;
+	}
+	return items;
 }
 
 FollowPathAction* Map::findPath(float startX, float startY, float endX, float endY) // TODO: RUNNING?

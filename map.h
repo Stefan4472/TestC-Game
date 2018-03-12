@@ -62,13 +62,10 @@ class Map : public PathFinder // TODO: IMPLEMENTATION OF MAP, AND GAME DRIVER, S
 	std::vector<SpriteController*> sprites;
 	
 	// item drops generated and managed by map
-	std::vector<ItemDrop*> items;
+	std::vector<ItemDrop*> itemDrops;
 	
 	// sounds created by sprites, and the map
 	std::vector<Sound*> sounds;
-	
-	// triggers created by sprites that may affect other sprites
-	std::vector<Trigger*> triggers;
 	
 	// handles player request to interact with the map
 	void handlePlayerInteract(PlayerSprite* playerSprite);
@@ -87,8 +84,8 @@ class Map : public PathFinder // TODO: IMPLEMENTATION OF MAP, AND GAME DRIVER, S
 		void update(int ms);
 		// adds sprite to list of tracked sprites
 		void addControlledSprite(SpriteController* spriteController);
-		// adds item to list of items on the map
-		void addItem(Item* item);
+		// adds drop to the map
+		void addDrop(ItemDrop* itemDrop);
 		// center background to given rect, updating camera
 		void centerTo(SDL_Rect center);
 		// draws map, sprites, objects. Use center() to center the background to a virtual rectangle
@@ -96,6 +93,9 @@ class Map : public PathFinder // TODO: IMPLEMENTATION OF MAP, AND GAME DRIVER, S
 		// returns whether the two rectangles have any intersection
 		bool checkCollision(SDL_Rect a, SDL_Rect b);
 		
+		// creates items with given id
+		std::vector<Item*> createItems(int itemId, int quantity);
+	
 		// returns an action (list of MoveToActions, each of which define a direction and distance)
 		// than a sprite can follow to get from (startX, startY) to (endX, endY)
 		FollowPathAction* findPath(float startX, float startY, float endX, float endY);

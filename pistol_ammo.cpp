@@ -1,6 +1,6 @@
 #include "pistol_ammo.h"
 
-PistolAmmo::PistolAmmo(TextureAtlas* textureAtlas, float x, float y) : Item(textureAtlas, ITEM_BULLET, x, y)
+PistolAmmo::PistolAmmo() : Item(ITEM_BULLET)
 {
 	
 }

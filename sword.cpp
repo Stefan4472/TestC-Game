@@ -5,11 +5,12 @@ Sword::Sword() : Item(ITEM_SWORD)
 	damage = 10;
 }
 
-void Sword::use(Sprite* actor) // TODO: REFACTORING, ADDITIONS
+void Sword::use(Sprite* actor) // TODO: REFACTORING, ADDITIONS, CLEAN UP
 {
 	this->actor = actor;
 	swingDirection = actor->facingDir;
 	SDL_Point handPos = actor->getRightHandPosition();
+	SDL_Rect position = SDL_Rect { 0, 0, 32, 32 };
 	// set position pased on handPosition and direction
 	switch (actor->facingDir)
 	{
@@ -33,9 +34,12 @@ void Sword::use(Sprite* actor) // TODO: REFACTORING, ADDITIONS
 			position.y = handPos.y;
 			break;
 	}
+	lastAttack = new SwordSwing(position, swingDirection, actor, this);
 }
 
 Attack* Sword::getAttack()
 {
-	return new SwordSwing(position, swingDirection, actor, this);
+	Attack* copy = lastAttack;
+	lastAttack = NULL;
+	return copy;
 }

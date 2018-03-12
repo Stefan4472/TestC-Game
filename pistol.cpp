@@ -1,6 +1,6 @@
 #include "pistol.h"
 
-Pistol::Pistol(TextureAtlas* textureAtlas, float x, float y) : Item(textureAtlas, ITEM_PISTOL, x, y)
+Pistol::Pistol() : Item(ITEM_PISTOL)
 {
 	ammunitionId = ITEM_BULLET;
 }
@@ -10,15 +10,16 @@ void Pistol::update(int ms)
 	msSinceShot += ms;	
 }
 
-void Pistol::use(Sprite* actor, SDL_Point handPos, int useDir)
+void Pistol::use(Sprite* actor)
 {
 	printf("Pistol: actor direction is %d\n", actor->facingDir);
 	if (bulletsLoaded && msSinceShot >= COOL_OFF)
 	{
-		position.x = handPos.x;
-		position.y = handPos.y;
-		position.w = 32;
-		position.h = 32;
+		SDL_Rect position = SDL_Rect { handPos.x, handPos.y, 32, 32 };
+		//position.x = handPos.x;
+		//position.y = handPos.y;
+		//position.w = 32;
+		//position.h = 32;
 		
 		printf("Sprite is using pistol\n");
 		
@@ -62,7 +63,7 @@ void Pistol::use(Sprite* actor, SDL_Point handPos, int useDir)
 
 bool Pistol::reload(Item* item)
 {
-	if (bulletsLoaded < MAG_SIZE && item->itemType == ammunitionId)
+	if (bulletsLoaded < MAG_SIZE && item->getId() == ammunitionId)
 	{
 		printf("Loading bullet into Pistol\n");
 		bulletsLoaded++;

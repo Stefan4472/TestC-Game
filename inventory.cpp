@@ -45,6 +45,12 @@ bool Inventory::addItem(Item* item)
 	return false;
 }
 
+bool Inventory::addItemStack(ItemStack* stack) 
+{
+	// TODO: ADD
+	return true;
+}
+
 Item* Inventory::getInHand()
 {
 	return hotbar[inHandIndex]->peekNext();
