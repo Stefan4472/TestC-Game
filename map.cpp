@@ -11,7 +11,7 @@ void Map::init(PlayerSpriteController* playerSpriteController, TextureAtlas* tex
 	addControlledSprite(new CivilianSpriteController(new CivilianSprite(32 * 4, 32 * 4, textureAtlas), this)); // TODO: HOW TO GIVE NPC'S ITEMS?
 	
 	// arm the civilian!!!!
-	Pistol* pistol = new Pistol();
+	Gun* pistol = new Gun(ITEM_PISTOL);
 	for (int i = 0; i < 5; i++)
 	{
 		pistol->load(new PistolAmmo());
@@ -28,12 +28,12 @@ void Map::init(PlayerSpriteController* playerSpriteController, TextureAtlas* tex
 	}*/
 	addDrop(new ItemDrop(createItemStack(ITEM_BULLET, 10), 34, 200));
 	
-	/*addDrop(new ItemDrop(new Consumable(ITEM_BREAD_LOAF), 100, 200));
+	addDrop(new ItemDrop(new Consumable(ITEM_BREAD_LOAF), 100, 200));
 	addDrop(new ItemDrop(new Consumable(ITEM_BEER_MUG), 132, 200));
 	addDrop(new ItemDrop(new Sword(), 164, 200));
-	addDrop(new ItemDrop(new Pistol(), 68, 200));
-	addDrop(new ItemDrop(new ItemStack(createItems(ITEM_BULLET, 10)), 34, 200));
-	*/printf("Finished Map Init\n");
+	addDrop(new ItemDrop(new Gun(ITEM_PISTOL), 68, 200));
+	addDrop(new ItemDrop(createItemStack(ITEM_BULLET, 10), 34, 200));
+	printf("Finished Map Init\n");
 }
 
 void Map::update(int ms) 
@@ -368,7 +368,7 @@ ItemStack* Map::createItemStack(int itemId, int quantity)
 		case ITEM_PISTOL:
 			for (int i = 0; i < quantity; i++) 
 			{
-				items[i] = new Pistol();
+				items[i] = new Gun(itemId);
 			}
 			break;
 			
