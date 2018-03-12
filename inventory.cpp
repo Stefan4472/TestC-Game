@@ -20,7 +20,7 @@ Inventory::Inventory(Sprite* owner, int capacity)
 
 bool Inventory::addItem(Item* item)
 {
-	printf("Adding %s to Inventory...\n", item->getName());
+	printf("Adding %s to Inventory...\n", item->name);
 	// attempt to add to next hotbar slot TODO: MORE EFFICIENT ALGORITHM (CONSTANT TIME?)
 	for (int i = 0; i < hotbarSize; i++) 
 	{
@@ -110,7 +110,7 @@ void Inventory::loadInHand()
 	Item* in_hand = getInHand();
 	if (in_hand)
 	{
-		printf("Reloading %s\n", in_hand->getName());
+		printf("Reloading %s\n", in_hand->name);
 		int ammo_type = in_hand->ammunitionId;
 		if (ammo_type)
 		{
@@ -171,7 +171,7 @@ Item* Inventory::removeInHand()
 	if (hotbar[inHandIndex]->size())
 	{
 		Item* in_hand = hotbar[inHandIndex]->popNext();
-		printf("Removed %s from Inventory\n", in_hand->getName());
+		printf("Removed %s from Inventory\n", in_hand->name);
 		
 		// handle special case: dropped last item. Notify listener 
 		if (inventoryListener && !hotbar[inHandIndex]->size())
@@ -194,7 +194,7 @@ void Inventory::drawHotbarTo(SDL_Renderer* renderer, TextureAtlas* textureAtlas,
 	{
 		if (hotbar[i]->size())
 		{
-			textureAtlas->draw(renderer, hotbar[i]->peekNext()->getTextureId(), x + i * 32, y);	
+			textureAtlas->draw(renderer, hotbar[i]->peekNext()->textureId, x + i * 32, y);	
 		}
 	}
 }
@@ -213,8 +213,8 @@ Window* Inventory::getWindow(SDL_Renderer* renderer, TextureAtlas* textureAtlas,
 		int col = i % 10;
 		
 		ImageButton* item_btn = new ImageButton(i, SDL_Rect { col * 32, row * 32, 32, 32 }, textureAtlas, fontAtlas);
-		item_btn->setImage(items[i]->getTextureId());
-		item_btn->setHint(renderer, items[i]->getName());
+		item_btn->setImage(items[i]->textureId);
+		item_btn->setHint(renderer, items[i]->name.c_str());
 		
 		window->addWidget(item_btn);
 	}

@@ -74,8 +74,23 @@ const int ITEM_STACKSIZES[8] =
 	24
 };
 
+// ItemIds of ammunition given Item takes
+const int ITEM_AMMUNITIONS[8] = 
+{
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	ITEM_BULLET,
+	NULL
+};
+
 // returns stack size of given item id
 int getStackSize(int itemId);
+// returns texture id of given item id
+int getTextureId(int itemId);
 
 // Item provides basic functionality for anything that can be picked up, used, and kept
 // in inventory. Each Item must have certain fields, such as a texture, name, description,
@@ -95,22 +110,22 @@ class Item
 		
 		// id of the item
 		int itemId;
+		std::string name = NULL;
+		std::string description = NULL;
+		int stackSize = NULL;
+		int textureId = NULL;
+		int ammunitionId = NULL; // TODO: IMPLEMENT ONLY IN GUN CLASS
+		
 		// whether item should be destroyed (removed from inventory and deleted)
 		bool destroy = false;
 		
 		// creates item with given ID
 		Item(int itemId);
 		
-		// getters
-		int getId();
-		const char* getName();
-		const char* getDescription();
-		int getStackSize();
-		int getTextureId();
-
-		// called when the Item is used. Isn't required to do anything. May trigger change of state.
-		// Takes sprite that is using the item
-		virtual void use(const Sprite* actor) = 0;
+		// called when the Item is used. By default, doesn't do anything. Meant to be overridden by Items that
+		// create some action or consequence when used. May trigger change of state. actor is the sprite that 
+		// is using the item
+		virtual void use(const Sprite* actor);
 		// attempts to load this item with the given Item, which can be consumed. Returns whether the given
 		// item was used to reload.
 		virtual bool load(Item* item);

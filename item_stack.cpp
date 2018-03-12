@@ -8,7 +8,7 @@ ItemStack::ItemStack()
 ItemStack::ItemStack(Item* item)
 {
 	itemId = item->itemId;
-	capacity = item->getStackSize();
+	capacity = item->stackSize;
 	items.push_back(item);
 }
 
@@ -38,7 +38,7 @@ bool ItemStack::attemptAdd(Item* toAdd)
 	if (itemId == -1)
 	{
 		itemId = toAdd->itemId;
-		capacity = toAdd->getStackSize();
+		capacity = toAdd->stackSize;
 		items.push_back(toAdd);
 		return true;
 	}

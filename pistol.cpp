@@ -15,7 +15,8 @@ void Pistol::use(Sprite* actor)
 	printf("Pistol: actor direction is %d\n", actor->facingDir);
 	if (bulletsLoaded && msSinceShot >= COOL_OFF)
 	{
-		SDL_Rect position = SDL_Rect { handPos.x, handPos.y, 32, 32 };
+		SDL_Point hand_pos = actor->getRightHandPosition();
+		SDL_Rect position = SDL_Rect { hand_pos.x, hand_pos.y, 32, 32 };
 		//position.x = handPos.x;
 		//position.y = handPos.y;
 		//position.w = 32;
@@ -63,7 +64,7 @@ void Pistol::use(Sprite* actor)
 
 bool Pistol::reload(Item* item)
 {
-	if (bulletsLoaded < MAG_SIZE && item->getId() == ammunitionId)
+	if (bulletsLoaded < MAG_SIZE && item->itemId == ammunitionId)
 	{
 		printf("Loading bullet into Pistol\n");
 		bulletsLoaded++;

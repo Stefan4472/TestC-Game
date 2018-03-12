@@ -11,12 +11,6 @@ ItemDrop::ItemDrop(ItemStack* itemStack, float x, float y)
 	items = itemStack;
 	setPosition(x, y);
 }
-		
-/*ItemDrop::ItemDrop(int itemId, int quantity, float x, float y)
-{
-	items = new ItemStack(itemId, quantity);
-	setPosition(x, y);
-}*/
 
 void ItemDrop::setPosition(float x, float y)
 {
@@ -29,7 +23,7 @@ ItemStack* ItemDrop::getItems()
 	return items;
 }
 
-void ItemStack::drawToMap(SDL_Renderer* renderer, TextureAtlas* textureAtlas, int offsetX, int offsetY)
+void ItemDrop::drawToMap(SDL_Renderer* renderer, TextureAtlas* textureAtlas, int offsetX, int offsetY)
 {
-	textureAtlas->draw(renderer, textureId, position.x - offsetX, position.y - offsetY);
+	textureAtlas->draw(renderer, getTextureId(items->itemId), position.x - offsetX, position.y - offsetY);
 }

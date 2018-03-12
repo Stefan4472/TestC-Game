@@ -20,7 +20,7 @@ void Sprite::init()
 
 void Sprite::onInHandItemChanged(Item* item)
 {
-	printf("Sprite: on hand changed to %s\n", item->getName());
+	printf("Sprite: on hand changed to %s\n", item->name);
 	inHand = item;
 }
 	

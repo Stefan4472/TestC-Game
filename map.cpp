@@ -11,7 +11,7 @@ void Map::init(PlayerSpriteController* playerSpriteController, TextureAtlas* tex
 	addControlledSprite(new CivilianSpriteController(new CivilianSprite(32 * 4, 32 * 4, textureAtlas), this)); // TODO: HOW TO GIVE NPC'S ITEMS?
 	
 	// arm the civilian!!!!
-	Pistol* pistol = new Pistol(textureAtlas, 32 * 4, 32 * 4);
+	Pistol* pistol = new Pistol();
 	pistol->load(new PistolAmmo());
 	pistol->load(new PistolAmmo());
 	pistol->load(new PistolAmmo());
@@ -20,11 +20,11 @@ void Map::init(PlayerSpriteController* playerSpriteController, TextureAtlas* tex
 	//addControlledSprite(new CivilianSpriteController(new CivilianSprite(32 * 8, 32 * 8, textureAtlas), this));	
 	//addControlledSprite(new CivilianSpriteController(new CivilianSprite(32 * 12, 32 * 8, textureAtlas), this));
 	
-	addDrop(new ItemDrop(new Consumable(ITEM_BREAD_LOAF, 100, 200, textureAtlas)));
-	addDrop(new ItemDrop(new Consumable(ITEM_BEER_MUG, 132, 200, textureAtlas)));
-	addDrop(new ItemDrop(new Sword(textureAtlas, 164, 200)));
-	addDrop(new ItemDrop(new Pistol(textureAtlas, 68, 200)));
-	addDrop(new ItemDrop(createItems(ITEM_BULLET, 10)));
+	addDrop(new ItemDrop(new Consumable(ITEM_BREAD_LOAF), 100, 200));
+	addDrop(new ItemDrop(new Consumable(ITEM_BEER_MUG), 132, 200));
+	addDrop(new ItemDrop(new Sword(), 164, 200));
+	addDrop(new ItemDrop(new Pistol(), 68, 200));
+	addDrop(new ItemDrop(new ItemStack(createItems(ITEM_BULLET, 10)), 34, 200));
 }
 
 void Map::update(int ms) 
@@ -108,8 +108,8 @@ void Map::update(int ms)
 	{
 		while (!sprites[i]->drops.empty() && sprites[i]->drops.back()) // TODO: LINKED LIST IMPLEMENTATION
 		{
-			items.push_back(sprites[i]->drops.back());
-			printf("Collected Drop %s from Sprite %d\n", sprites[i]->drops.back()->getName(), sprites[i]->sprite);
+			addDrop(new ItemDrop(sprites[i]->drops.back(), sprites[i]->sprite->x, sprites[i]->sprite->y));
+			printf("Collected Drop %s from Sprite %d\n", sprites[i]->drops.back()->name, sprites[i]->sprite);
 			sprites[i]->drops.pop_back();
 		}
 	}
@@ -191,9 +191,11 @@ void Map::handlePlayerInteract(PlayerSprite* playerSprite)
 			//itemDrops[i]->handleInteract(playerSprite); 
 			
 			// add ItemDrop to inventory
-			playerSpriteController->inventory->addItem(itemDrops[i]);
-			// remove item from map TODO: USE LINKED LIST
-			itemDrops.erase(itemDrops.begin() + i);
+			if (playerSpriteController->inventory->addItemStack(itemDrops[i]->getItems()))
+			{
+				// remove item from map if successful TODO: USE LINKED LIST
+				itemDrops.erase(itemDrops.begin() + i);
+			}
 			return;
 		}
 	}
@@ -220,7 +222,7 @@ void Map::addControlledSprite(SpriteController* spriteController)
 
 void Map::addDrop(ItemDrop* itemDrop)
 {
-	itemDrops.push_back(item);	
+	itemDrops.push_back(itemDrop);	
 }
 
 void Map::centerTo(SDL_Rect center) 

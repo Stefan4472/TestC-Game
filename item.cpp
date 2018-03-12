@@ -3,14 +3,14 @@
 Item::Item(int itemId)
 {
 	this->itemId = itemId;
+	name = ITEM_NAMES[itemId].c_str();
+	description = ITEM_DESCRIPTIONS[itemId].c_str();
+	stackSize = ITEM_STACKSIZES[itemId];
+	textureId = ITEM_TEXTURES[itemId];
+	ammunitionId = ITEM_AMMUNITIONS[itemId];
 }
 
-int Item::getId()
-{
-	return itemId;
-}
-
-const char* Item::getName()
+/*const char* Item::getName()
 {
 	return ITEM_NAMES[itemId].c_str();
 }
@@ -18,17 +18,7 @@ const char* Item::getName()
 const char* Item::getDescription() // TODO: PASS CONST STD::STRING&
 {
 	return ITEM_DESCRIPTIONS[itemId].c_str();
-}
-
-int Item::getStackSize()
-{
-	return ITEM_STACKSIZES[itemId];
-}
-
-int Item::getTextureId()
-{
-	return ITEM_TEXTURES[itemId];
-}
+}*/
 
 bool Item::load(Item* item)
 {
@@ -36,6 +26,11 @@ bool Item::load(Item* item)
 }
 
 void Item::update(int ms)
+{
+	return;	
+}
+
+void use(const Sprite* actor)
 {
 	return;	
 }
@@ -58,4 +53,9 @@ Attack* Item::getAttack()
 int getStackSize(int itemId) 
 {
 	return ITEM_STACKSIZES[itemId];	
+}
+
+int getTextureId(int itemId)
+{
+	return ITEM_TEXTURES[itemId];	
 }
