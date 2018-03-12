@@ -12,10 +12,7 @@ void Map::init(PlayerSpriteController* playerSpriteController, TextureAtlas* tex
 	
 	// arm the civilian!!!!
 	Pistol* pistol = new Pistol();
-	pistol->load(new PistolAmmo());
-	pistol->load(new PistolAmmo());
-	pistol->load(new PistolAmmo());
-	pistol->load(new PistolAmmo());
+	pistol->load(createItemStack(ITEM_BULLET, 5));
 	sprites[1]->inventory->addItem(pistol);
 	//addControlledSprite(new CivilianSpriteController(new CivilianSprite(32 * 8, 32 * 8, textureAtlas), this));	
 	//addControlledSprite(new CivilianSpriteController(new CivilianSprite(32 * 12, 32 * 8, textureAtlas), this));
@@ -26,7 +23,7 @@ void Map::init(PlayerSpriteController* playerSpriteController, TextureAtlas* tex
 	{
 		printf("%d. %s\n", i, created[i]->name.c_str());
 	}*/
-	addDrop(new ItemDrop(new ItemStack(createItems(ITEM_BULLET, 10)), 34, 200));
+	addDrop(new ItemDrop(createItemStack(ITEM_BULLET, 10), 34, 200));
 	
 	/*addDrop(new ItemDrop(new Consumable(ITEM_BREAD_LOAF), 100, 200));
 	addDrop(new ItemDrop(new Consumable(ITEM_BEER_MUG), 132, 200));
@@ -343,8 +340,8 @@ bool Map::checkCollision(SDL_Rect a, SDL_Rect b)
 {
 	return a.y + a.h > b.y && a.y < b.y + b.h && a.x + a.w > b.x && a.x < b.x + b.w;
 }
-
-std::vector<Item*> Map::createItems(int itemId, int quantity)
+		
+ItemStack* Map::createItemStack(int itemId, int quantity);
 {
 	printf("Map: Creating %d Items with Id %d\n", quantity, itemId);
 	// bound quantity to stack size of requested items TODO: DESIRED BEHAVIOR?
@@ -393,7 +390,7 @@ std::vector<Item*> Map::createItems(int itemId, int quantity)
 			printf("ERROR: Don't recognize itemId %d\n", itemId);
 			break;
 	}
-	return items;
+	return new ItemStack(items);
 }
 
 FollowPathAction* Map::findPath(float startX, float startY, float endX, float endY) // TODO: RUNNING?

@@ -49,7 +49,7 @@ bool Inventory::addItemStack(ItemStack* stack)
 {
 	printf("Adding ItemStack of %d %s to Inventory...\n", stack->size(), stack->peekNext()->name.c_str());
 	// attempt to add to next hotbar slot TODO: MORE EFFICIENT ALGORITHM (CONSTANT TIME?)
-	/*for (int i = 0; i < hotbarSize; i++) 
+	for (int i = 0; i < hotbarSize; i++) 
 	{
 		if (hotbar[i]->attemptAdd(stack->peekNext()))
 		{
@@ -78,7 +78,7 @@ Item* Inventory::getInHand()
 	return hotbar[inHandIndex]->peekNext();
 }
 
-void Inventory::useInHand(SDL_Point handPos, int useDir)
+void Inventory::useInHand()
 {
 	Item* in_hand = getInHand();
 	if (in_hand)
@@ -105,16 +105,8 @@ void Inventory::useInHand(SDL_Point handPos, int useDir)
 	}
 }
 
-ItemStack* Inventory::findItems(int id)
+ItemStack* Inventory::getItemStack(int id)
 {
-	// search inventory for matches
-	for (int i = 0; i < inventorySize; i++)
-	{
-		if (inventory[i]->itemId == id)
-		{
-			return inventory[i];	
-		}
-	}
 	// search hotbar for matches
 	for (int i = 0; i < hotbarSize; i++)
 	{
@@ -124,7 +116,33 @@ ItemStack* Inventory::findItems(int id)
 			return hotbar[i];	
 		}
 	}
+	// search inventory for matches
+	for (int i = 0; i < inventorySize; i++)
+	{
+		if (inventory[i]->itemId == id)
+		{
+			return inventory[i];	
+		}
+	}
 	return NULL;
+}
+
+ItemStack* Inventory::getAvailStack(int itemId)
+{
+	for (int i = 0; i < hotbarSize; i++)
+	{
+		if (hotbar[i]->itemId == itemId && hotbar[i]->size() < hotbar[i]->capacity)
+		{
+			return hotbar[i];
+		}
+	}
+	for (int i = 0; i < inventorySize; i++)
+	{
+		if (inventory[i]->itemId == itemId && inventory[i]->size() < inventory[i]->capacity)
+		{
+			return inventory[i];
+		}
+	}
 }
 
 void Inventory::loadInHand()

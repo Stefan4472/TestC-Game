@@ -93,8 +93,8 @@ class Map : public PathFinder // TODO: IMPLEMENTATION OF MAP, AND GAME DRIVER, S
 		// returns whether the two rectangles have any intersection
 		bool checkCollision(SDL_Rect a, SDL_Rect b);
 		
-		// creates items with given id
-		std::vector<Item*> createItems(int itemId, int quantity);
+		// creates stack of items with given id and quantity
+		ItemStack* createItemStack(int itemId, int quantity);
 	
 		// returns an action (list of MoveToActions, each of which define a direction and distance)
 		// than a sprite can follow to get from (startX, startY) to (endX, endY)

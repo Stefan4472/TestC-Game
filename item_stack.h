@@ -27,6 +27,9 @@ class ItemStack
 		bool isEmpty();
 		// return number of elements in the stack
 		int size();
+		bool canAdd(Item* item);
+		bool addItem(Item* item);
+		bool addItemStack(ItemStack* stack);
 		// attempts to add given item to the stack. Must match itemId and can't exeed stack size.
 		bool attemptAdd(Item* toAdd);
 		// attempts to add given items to the stack. Adds as many as it can. Same rules as attemptAdd
