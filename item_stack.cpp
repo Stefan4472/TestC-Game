@@ -35,7 +35,13 @@ int ItemStack::size()
 	return items.size();
 }
 
-bool ItemStack::attemptAdd(Item* toAdd)
+bool ItemStack::canAdd(Item* item)
+{
+	// can be added if stack is empty or stack contains same item and is below capacity
+	return itemId == -1 || item->itemId == itemId && items.size() < capacity;
+}
+
+bool ItemStack::addItem(Item* toAdd)
 {
 	// no items in stack: set id to given item's id and add
 	if (itemId == -1)
@@ -53,35 +59,25 @@ bool ItemStack::attemptAdd(Item* toAdd)
 	return false;
 }
 
-bool ItemStack::attemptAdd(std::vector<Item*> toAdd)
+bool ItemStack::addItemStack(ItemStack* stack)
 {
-	for (int i = 0; i < toAdd.size(); i++)
-	{
-		if (toAdd[i]->itemId != toAdd[0]->itemId)
-		{
-			printf("ERROR: ITEMSTACK MUST HAVE UNIFORM ITEMS\n");
-		}
-	}
 	// no items in stack: set id to given item's id and add
 	if (itemId == -1)
 	{
-		itemId = toAdd[0]->itemId;
-		capacity = toAdd[0]->stackSize;
-		for (int i = 0; i < capacity; i++)
-		{
-			items.push_back(toAdd[i]);
-		}
-		// returns true only if all items were consumed
-		return toAdd.size() <= capacity;
+		itemId = stack->itemId;
+		capacity = stack->capacity;
+		items = stack->items;
+		//items.push_back(toAdd);
+		return true;
 	}
-	else if (toAdd[0]->itemId == itemId && items.size() < capacity)
+	else if (stack->itemId == itemId)
 	{
-		while (toAdd.size())
+		while (stack->size() && items.size() < capacity)
 		{
-			items.push_back(toAdd.back());
-			toAdd.pop_back();
+			items.push_back(stack->popNext());
 		}
-		return toAdd.size();
+		// success if full stack was added
+		return stack->size() ? false : true;
 	}
 	return false;
 }
@@ -104,6 +100,8 @@ Item* ItemStack::popNext()
 	{
 		Item* item = items.back();
 		items.pop_back();
+		// set id to -1 if stack is now empty
+		itemId = (items.size() ? itemId : -1);
 		return item;
 	}
 	else

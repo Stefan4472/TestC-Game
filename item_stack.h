@@ -27,13 +27,12 @@ class ItemStack
 		bool isEmpty();
 		// return number of elements in the stack
 		int size();
+		// returns whether the given item could be added to the stack
 		bool canAdd(Item* item);
-		bool addItem(Item* item);
+		// attempts to add given item to this stack, returns whether it was successfully added
+		bool addItem(Item* toAdd);
+		// attempts to add given stack to this stack, returns whether full stack was added
 		bool addItemStack(ItemStack* stack);
-		// attempts to add given item to the stack. Must match itemId and can't exeed stack size.
-		bool attemptAdd(Item* toAdd);
-		// attempts to add given items to the stack. Adds as many as it can. Same rules as attemptAdd
-		bool attemptAdd(std::vector<Item*> toAdd);
 		// returns next item in the stack without removing it (can be null)
 		Item* peekNext();
 		// removes next item in the stack and returns it (can be null)

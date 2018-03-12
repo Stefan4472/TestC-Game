@@ -21,56 +21,23 @@ Inventory::Inventory(Sprite* owner, int capacity)
 bool Inventory::addItem(Item* item)
 {
 	printf("Adding %s to Inventory...\n", item->name.c_str());
-	// attempt to add to next hotbar slot TODO: MORE EFFICIENT ALGORITHM (CONSTANT TIME?)
-	for (int i = 0; i < hotbarSize; i++) 
-	{
-		if (hotbar[i]->attemptAdd(item))
-		{
-			// check if need to update inHandIndex
-			if (inventoryListener && i == inHandIndex && hotbar[i]->size() == 1)
-			{
-				inventoryListener->onInHandItemChanged(hotbar[i]->peekNext());		
-			}
-			return true;
-		}
-	}
-	for (int i = 0; i < inventorySize; i++)
-	{
-		if (inventory[i]->attemptAdd(item))
-		{
-			return true;
-		}
-	}
-	// no available slot found: couldn't add item
-	return false;
+	ItemStack* receiver = getAvailStack(item);
+	return receiver->addItem(item);
 }
 
 bool Inventory::addItemStack(ItemStack* stack) 
 {
 	printf("Adding ItemStack of %d %s to Inventory...\n", stack->size(), stack->peekNext()->name.c_str());
-	// attempt to add to next hotbar slot TODO: MORE EFFICIENT ALGORITHM (CONSTANT TIME?)
-	for (int i = 0; i < hotbarSize; i++) 
+	// check if there's a slot that can take the given items
+	ItemStack* receiver = getAvailStack(stack->peekNext());
+	while (receiver && !receiver->addItemStack(stack))
 	{
-		if (hotbar[i]->attemptAdd(stack->peekNext()))
+		if (stack->size())
 		{
-			stack->popNext()
-			// check if need to update inHandIndex
-			if (inventoryListener && i == inHandIndex && hotbar[i]->size() == 1)
-			{
-				inventoryListener->onInHandItemChanged(hotbar[i]->peekNext());		
-			}
-			return true;
+			receiver = getAvailStack(stack->peekNext());
 		}
 	}
-	for (int i = 0; i < inventorySize; i++)
-	{
-		if (inventory[i]->attemptAdd(item))
-		{
-			return true;
-		}
-	}*/
-	// no available slot found: couldn't add item
-	return false;
+	return stack->size() ? false : true;
 }
 
 Item* Inventory::getInHand()
@@ -110,7 +77,6 @@ ItemStack* Inventory::getItemStack(int id)
 	// search hotbar for matches
 	for (int i = 0; i < hotbarSize; i++)
 	{
-		printf("Hotbar[%d] has item id %d\n", i, hotbar[i]->itemId);
 		if (hotbar[i]->itemId == id)
 		{
 			return hotbar[i];	
@@ -127,22 +93,23 @@ ItemStack* Inventory::getItemStack(int id)
 	return NULL;
 }
 
-ItemStack* Inventory::getAvailStack(int itemId)
+ItemStack* Inventory::getAvailStack(Item* item)
 {
 	for (int i = 0; i < hotbarSize; i++)
 	{
-		if (hotbar[i]->itemId == itemId && hotbar[i]->size() < hotbar[i]->capacity)
+		if (hotbar[i]->canAdd(item))
 		{
 			return hotbar[i];
 		}
 	}
 	for (int i = 0; i < inventorySize; i++)
 	{
-		if (inventory[i]->itemId == itemId && inventory[i]->size() < inventory[i]->capacity)
+		if (inventory[i]->canAdd(item))
 		{
 			return inventory[i];
 		}
 	}
+	return NULL;
 }
 
 void Inventory::loadInHand()
@@ -154,7 +121,7 @@ void Inventory::loadInHand()
 		int ammo_type = in_hand->ammunitionId;
 		if (ammo_type)
 		{
-			ItemStack* ammo_stack = findItems(ammo_type);
+			ItemStack* ammo_stack = getItemStack(ammo_type);
 			printf("Stack of %d pointer is %d\n", ammo_type, ammo_stack);
 			// feed ammunition to item, deleting it as it is used
 			while (ammo_stack && ammo_stack->size() && in_hand->load(ammo_stack->peekNext())) // TODO: WHAT IF GIVEN STACK DOESN'T FILL AMMO?

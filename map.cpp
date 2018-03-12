@@ -12,7 +12,10 @@ void Map::init(PlayerSpriteController* playerSpriteController, TextureAtlas* tex
 	
 	// arm the civilian!!!!
 	Pistol* pistol = new Pistol();
-	pistol->load(createItemStack(ITEM_BULLET, 5));
+	for (int i = 0; i < 5; i++)
+	{
+		pistol->load(new PistolAmmo());
+	}
 	sprites[1]->inventory->addItem(pistol);
 	//addControlledSprite(new CivilianSpriteController(new CivilianSprite(32 * 8, 32 * 8, textureAtlas), this));	
 	//addControlledSprite(new CivilianSpriteController(new CivilianSprite(32 * 12, 32 * 8, textureAtlas), this));
@@ -341,7 +344,7 @@ bool Map::checkCollision(SDL_Rect a, SDL_Rect b)
 	return a.y + a.h > b.y && a.y < b.y + b.h && a.x + a.w > b.x && a.x < b.x + b.w;
 }
 		
-ItemStack* Map::createItemStack(int itemId, int quantity);
+ItemStack* Map::createItemStack(int itemId, int quantity)
 {
 	printf("Map: Creating %d Items with Id %d\n", quantity, itemId);
 	// bound quantity to stack size of requested items TODO: DESIRED BEHAVIOR?

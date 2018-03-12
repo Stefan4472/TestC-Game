@@ -60,8 +60,8 @@ class Inventory // TODO: SEPARATE CLASS FOR NON-SPRITE INVENTORIES
 		InventoryListener* inventoryListener = NULL;
 		// searches for stack of items with given id. May return Null
 		ItemStack* getItemStack(int id);
-		// searches inventory for an ItemStack that can accept an item of the given ID 
-		ItemStack* getAvailStack(int itemId);
+		// searches inventory for an ItemStack that can accept the given item, if any (may be NULL)
+		ItemStack* getAvailStack(Item* item);
 	
 	public:
 		// creates enough space for the given number of items. Item uses are attributed to given owner
