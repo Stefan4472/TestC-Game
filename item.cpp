@@ -30,7 +30,7 @@ void Item::update(int ms)
 	return;	
 }
 
-void use(const Sprite* actor)
+void Item::use(const Sprite* actor)
 {
 	return;	
 }
