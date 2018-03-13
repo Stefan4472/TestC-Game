@@ -4,7 +4,7 @@
 #include "texture_atlas.h"
 #include "item.h"
 #include "attack.h"
-#include "bullet.h"
+#include "fired_bullet.h"
 #include "action.h"
 #include "knockback_action.h"
 
@@ -22,7 +22,7 @@ class Gun : public Item
 		int coolOff = 500;	
 	
 		// bullet created when gun was last fired
-		Bullet* lastFiredBullet = NULL;
+		FiredBullet* lastFiredBullet = NULL;
 		// recoil action created when gun was last fired
 		Action* lastRecoilAction = NULL;
 		// number of bullets in magazine
