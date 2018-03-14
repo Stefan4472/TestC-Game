@@ -18,6 +18,11 @@ void Attack::handleObjectCollision()
 	finished = true;	
 }
 
+SpriteAction* Attack::getActionOnSprite(Sprite* sprite)
+{
+	return NULL;
+}
+
 void Attack::drawToMap(SDL_Renderer* renderer, TextureAtlas* textureAtlas, float offsetX, float offsetY)
 {
 	return;

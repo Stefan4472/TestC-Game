@@ -1,11 +1,11 @@
 #ifndef HEALTH_REGEN_ACTION_H
 #define HEALTH_REGEN_ACTION_H
 
-#include "action.h"
+#include "sprite_action.h"
 #include "sprite.h"
 
 // sprite regains health over a specified amount of time
-class HealthRegenAction : public Action
+class HealthRegenAction : public SpriteAction
 {
 	// amount of health to regen per ms (calculated in constructor)
 	float amountPerMs;

@@ -53,8 +53,8 @@ class Inventory // TODO: SEPARATE CLASS FOR NON-SPRITE INVENTORIES
 		// vector of pointers to items in storage
 		std::vector<Item*> items;
 		// stored Action, Buff, and Attack (if any) from last-used Item
-		Action* resultingAction = NULL;
-		Action* resultingBuff = NULL;
+		SpriteAction* resultingAction = NULL;
+		SpriteAction* resultingBuff = NULL;
 		Attack* resultingAttack = NULL;
 		// pointer to listener, if any
 		InventoryListener* inventoryListener = NULL;
@@ -81,8 +81,8 @@ class Inventory // TODO: SEPARATE CLASS FOR NON-SPRITE INVENTORIES
 		// the correct ammunition is in inventory.
 		void loadInHand();
 		// retrieve *AND CONSUME* Action, Buff, and/or Attack that may have been created by last-used item. 
-		Action* getAction();
-		Action* getBuff();
+		SpriteAction* getAction();
+		SpriteAction* getBuff();
 		Attack* getAttack();
 		// sets in hand item to the proceeding one in inventory. Doesn't do anything if vector has only 1 element
 		void cycleInHandFwd();

@@ -59,14 +59,14 @@ bool PlayerSpriteController::handleKeyEvent(SDL_Event e)
 			// use in-hand inventory item
 			case SDLK_SPACE: {
 				inventory->useInHand();
-				Action* action = inventory->getAction();
+				SpriteAction* action = inventory->getAction();
 				if (action)
 				{
 					printf("Received action\n");
 					// put resulting action on the stack, which will block further input until finished
 					actionStack.push(action);
 				}
-				Action* buff = inventory->getBuff();
+				SpriteAction* buff = inventory->getBuff();
 				if (buff)
 				{
 					printf("Received buff\n");

@@ -4,7 +4,7 @@
 #include <SDL2/SDL.h>
 #include "constants.h"
 #include "texture_atlas.h"
-
+#include "sprite_action.h"
 class Sprite;
 class Item;
 
@@ -46,6 +46,8 @@ class Attack
 		virtual void handleSpriteCollision();
 		// handles attack hitting a map object. Default action is to set finished = true
 		virtual void handleObjectCollision();
+		// returns an action that would be done to the sprite on collision. Can be NULL
+		virtual SpriteAction* getActionOnSprite(Sprite* sprite);
 		// draws to screen
 		virtual void drawToMap(SDL_Renderer* renderer, TextureAtlas* textureAtlas, float offsetX, float offsetY);
 };

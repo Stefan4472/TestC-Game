@@ -27,7 +27,7 @@ void Consumable::use(Sprite* actor)
 	destroy = true;
 }
 
-Action* Consumable::getBuff()
+SpriteAction* Consumable::getBuff()
 {
 	return new HealthRegenAction(healValue, healValue * 100);	
 }

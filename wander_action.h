@@ -1,7 +1,7 @@
 #ifndef WANDER_ACTION_H
 #define WANDER_ACTION_H
 
-#include "action.h"
+#include "sprite_action.h"
 #include "follow_path_action.h"
 #include "sprite.h"
 #include "path_finder_interface.h"
@@ -11,7 +11,7 @@ class Map;
 // Sprite idles for idleInterval ms, then queries the map for a random path to follow that is 
 // pathLength tiles long. It follows the path, then resumes idling.
 
-class WanderAction:public Action
+class WanderAction: public SpriteAction
 {
 	// seed for random number generator
 	int seed;

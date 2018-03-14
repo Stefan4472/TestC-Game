@@ -7,7 +7,7 @@
 #include "sound_atlas.h"
 #include "spritesheet.h"
 #include "sprite.h"
-#include "action.h"
+#include "sprite_action.h"
 #include "action_set.h"
 
 class CivilianSprite : public Sprite

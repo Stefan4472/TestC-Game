@@ -132,16 +132,16 @@ void Inventory::loadInHand()
 	}
 }
 
-Action* Inventory::getAction()
+SpriteAction* Inventory::getAction()
 {
-	Action* action = resultingAction;
+	SpriteAction* action = resultingAction;
 	resultingAction = NULL;
 	return action;
 }
 
-Action* Inventory::getBuff()
+SpriteAction* Inventory::getBuff()
 {
-	Action* buff = resultingBuff;
+	SpriteAction* buff = resultingBuff;
 	resultingBuff = NULL;
 	return buff;
 }

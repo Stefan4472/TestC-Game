@@ -1,7 +1,7 @@
 #ifndef FOLLOW_ACTION_H
 #define FOLLOW_ACTION_H
 
-#include "action.h"
+#include "sprite_action.h"
 #include "follow_path_action.h"
 #include "sprite.h"
 #include "path_finder_interface.h"
@@ -17,7 +17,7 @@ class FollowAction : public Action
 	// seed for random number generator
 	int seed;
 	// path sprite follows to reach target
-	FollowPathAction* path = NULL;
+	FollowPathSpriteAction* path = NULL;
 	// time (ms) this action has been going
 	int elapsedTime = 0;
 	// time next sample should be taken

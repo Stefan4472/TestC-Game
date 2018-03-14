@@ -2,13 +2,13 @@
 #define IDLE_ACTION_H
 
 #include <cmath>
-#include "action.h"
+#include "sprite_action.h"
 #include "sprite.h"
 
 // An idling sprite generally stands still. It can be configured to change direction by setting
 // the changeDirInterval to something greater than 0.
 
-class IdleAction:public Action
+class IdleAction: public SpriteAction
 {
 	// length of action (ms)
 	int duration;

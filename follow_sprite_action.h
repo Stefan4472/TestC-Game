@@ -1,7 +1,7 @@
 #ifndef FOLLOW_ACTION_H
 #define FOLLOW_ACTION_H
 
-#include "action.h"
+#include "sprite_action.h"
 #include "follow_path_action.h"
 #include "sprite.h"
 #include "path_finder_interface.h"
@@ -10,7 +10,7 @@
 // px of target. Resamples positions based on set RESAMPLE_RATE interval. DOES NOT FINISH! Sprite
 // will continue following target indefinitely.
 
-class FollowSpriteAction : public Action
+class FollowSpriteAction : public SpriteAction
 {
  	// number of milliseconds to wait before re-planning path to target's udpated position
 	const int RESAMPLE_RATE = 2000;

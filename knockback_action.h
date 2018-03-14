@@ -1,11 +1,11 @@
 #ifndef KNOCKBACK_ACTION_H
 #define KNOCKBACK_ACTION_H
 
-#include "action.h"
+#include "sprite_action.h"
 #include "sprite.h"
 
 // sprite is knocked in the given direction
-class KnockbackAction : public Action 
+class KnockbackAction : public SpriteAction 
 {
 
 	// direction of knockback

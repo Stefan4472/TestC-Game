@@ -2,12 +2,12 @@
 #define MOVE_IN_DIR_ACTION
 
 #include <cmath>
-#include "action.h"
+#include "sprite_action.h"
 #include "sprite.h"
 
 // Moves the sprite in the given direction for the given distane
 
-class MoveInDirAction : public Action
+class MoveInDirAction : public SpriteAction
 {
 	int moveDir = DIRECTION_NONE;
 	float remainingDist = 0;

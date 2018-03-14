@@ -2,12 +2,12 @@
 #define FOLLOW_PATH_ACTION_H
 
 #include <vector>
-#include "action.h"
+#include "sprite_action.h"
 #include "move_in_dir_action.h"
 
 // The FollowPathAction guides a Sprite through a list of MoveInDirection Actions. 
 
-class FollowPathAction
+class FollowPathAction : public SpriteAction
 {
 	private:
 		// list of moves, in order

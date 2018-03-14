@@ -1,6 +1,6 @@
 #include "action_set.h"
 
-Action* getInitialAction()
+SpriteAction* getInitialAction()
 {
 	//if (rand() % 2)
 	//{
@@ -12,7 +12,7 @@ Action* getInitialAction()
 	//}
 }
 
-Action* getReaction(Action* currAction, Trigger* trigger)
+SpriteAction* getReaction(SpriteAction* currAction, Trigger* trigger)
 {
 	printf("Received Trigger type %d\n", trigger->triggerType);
 	return currAction;	

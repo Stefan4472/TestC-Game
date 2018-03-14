@@ -82,9 +82,9 @@ Attack* Gun::getAttack()
 	return bullet;
 }
 
-Action* Gun::getAction() // TODO: CHECK IF Gun WAS FIRED? ORGANIZE DIRECTIONS SO WE CAN DO -(DIRECTION)?
+SpriteAction* Gun::getAction() // TODO: CHECK IF Gun WAS FIRED? ORGANIZE DIRECTIONS SO WE CAN DO -(DIRECTION)?
 {
-	Action* recoil = lastRecoilAction;
+	SpriteAction* recoil = lastRecoilAction;
 	lastRecoilAction = NULL;
 	return recoil;
 }

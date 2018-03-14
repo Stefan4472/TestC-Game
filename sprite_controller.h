@@ -5,7 +5,7 @@
 #include <stack>
 #include "sprite.h"
 #include "healthbar.h"
-#include "action.h"
+#include "sprite_action.h"
 #include "inventory.h"
 #include "attack.h"
 #include "sound.h"
@@ -35,7 +35,7 @@ class SpriteController : public InventoryListener, public SpriteListener
 		int showHealthbarMs = 0;
 
 		// stack of Actions sprite will complete
-		std::stack<Action*> actionStack;
+		std::stack<SpriteAction*> actionStack;
 		// list of Items sprite wants to drop. Meant to be picked up by the Map/Gamedriver
 		std::vector<Item*> drops;
 		// list of Attacks sprite wants to carry out. Meant to be picked up by the Map/Gamedriver
@@ -44,7 +44,7 @@ class SpriteController : public InventoryListener, public SpriteListener
 		// list of SoundIds the sprite has requested. Meant to be picked up by the Map/Gamedriver
 		std::vector<int> sounds;
 		// list of buffs currently affecting player
-		std::vector<Action*> buffs;
+		std::vector<SpriteAction*> buffs;
 		// list of sprites that are friends TODO: HASHMAP
 		std::vector<Sprite*> friends;
 		// list of sprites that are enemies. The sprite may act hostile when it sees them TODO: HASHMAP

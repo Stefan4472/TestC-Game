@@ -20,7 +20,7 @@ class CivilianSpriteController : public SpriteController
 		Sprite* attackOrder = NULL;
 		Sprite* fleeOrder = NULL;
 		bool takeEffectOrder = false;
-		Action* currAction = NULL;
+		SpriteAction* currAction = NULL;
 	
 	public:
 		CivilianSpriteController(CivilianSprite* civilianSprite, PathFinder* pathFinder);

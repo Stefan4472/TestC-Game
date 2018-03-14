@@ -7,7 +7,7 @@
 #include "constants.h"
 #include "texture_atlas.h"
 #include "attack.h"
-class Action;
+class SpriteAction;
 
 // Items in the game. These are used as keys to retrieve name and description from the const arrays
 enum ItemType
@@ -132,10 +132,10 @@ class Item
 		// updates state of item by given number of milliseconds. Meant for when item is in sprite's hand.
 		// default does nothing.
 		virtual void update(int ms);
-		// returns Action created when this sprite is used. Default NULL
-		virtual Action* getAction();
+		// returns SpriteAction created when this sprite is used. Default NULL
+		virtual SpriteAction* getAction();
 		// returns Buff created when this sprite is used. Default NULL
-		virtual Action* getBuff();
+		virtual SpriteAction* getBuff();
 		// returns Attack created when this sprite is used. Default NULL
 		virtual Attack* getAttack();
 };

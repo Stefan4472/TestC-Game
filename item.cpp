@@ -37,12 +37,12 @@ void Item::use(const Sprite* actor)
 	return;	
 }
 
-Action* Item::getAction()
+SpriteAction* Item::getAction()
 {
 	return NULL;
 }
 
-Action* Item::getBuff()
+SpriteAction* Item::getBuff()
 {
 	return NULL;
 }

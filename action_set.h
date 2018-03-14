@@ -2,7 +2,7 @@
 #define SPRITE_ACTION_SET
 
 #include <cmath>
-#include "action.h"
+#include "sprite_action.h"
 #include "idle_action.h"
 #include "wander_action.h"
 #include "trigger.h"
@@ -38,8 +38,8 @@
 	//int transitions[NUM_ACTIONS][NUM_TRIGGERS];
 	
 	//public:
-Action* getInitialAction();
-Action* getReaction(Action* currAction, Trigger* trigger);
+SpriteAction* getInitialAction();
+SpriteAction* getReaction(SpriteAction* currAction, Trigger* trigger);
 //};
 
 #endif

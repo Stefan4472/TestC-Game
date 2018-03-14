@@ -6,7 +6,7 @@
 #include "attack.h"
 class FiredBullet;
 #include "fired_bullet.h"
-#include "action.h"
+#include "sprite_action.h"
 #include "knockback_action.h"
 // A gun is an item that is used as a weapon and shoots damaging projectiles.
 // This class defines the base behavior each gun has. This includes a type of
@@ -24,7 +24,7 @@ class Gun : public Item
 		// bullet created when gun was last fired
 		FiredBullet* lastFiredBullet = NULL;
 		// recoil action created when gun was last fired
-		Action* lastRecoilAction = NULL;
+		SpriteAction* lastRecoilAction = NULL;
 		// number of bullets in magazine
 		int bulletsLoaded = 0;
 		// num milliseconds since gun was last fired
@@ -42,7 +42,7 @@ class Gun : public Item
 		// returns bullet fired in direction of shot
 		Attack* getAttack();
 		// returns knockback in opposite direction of shot
-		Action* getAction();
+		SpriteAction* getAction();
 };
 
 #endif
