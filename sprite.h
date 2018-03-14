@@ -19,7 +19,7 @@ class Sprite
 {
 	protected:
 		// spritesheets for idling (not moving) while facing different directions
-		Spritesheet *idle_right_anim = NULL, *idle_left_anim = NULL, *idle_up_anim = NULL, *idle_down_anim = NULL;
+		Spritesheet *idle_right_anim = NULL, *idle_left_anim = NULL, *idle_up_anim = NULL, *idle_down_anim = NULL;  // TODO: REPLACE WITH SINGLE ARRAY FOR CURRENT STATE
 		// spritesheets for walking in different directions
 		Spritesheet *walk_up_anim = NULL, *walk_down_anim = NULL, *walk_right_anim = NULL, *walk_left_anim = NULL;
 		// spritesheets for running in different directions
@@ -104,8 +104,6 @@ class Sprite
 		void addHealth(float amount);
 		// subtracts given amount from sprite's currHp
 		void loseHealth(float amount);
-		// draws sprite to the given surface/screen. Subtracting offsets from coordinates results in on-canvas coordinate to draw to
-		virtual void drawTo(SDL_Renderer* renderer, int offsetX, int offsetY);
 		
 };
 

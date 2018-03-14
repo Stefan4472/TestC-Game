@@ -24,7 +24,5 @@ class PlayerSprite: public Sprite
 		PlayerSprite(float xCoord, float yCoord, TextureAtlas* textureAtlas, SDL_Renderer* renderer); // todo: use initialization list (?)
 		// return coordinates of right hand
 		SDL_Point getRightHandPosition();
-		// draws sprite to the given surface/screen. Subtracting offsets from coordinates results in on-canvas coordinate to draw to
-		void drawTo(SDL_Renderer* renderer, int offsetX, int offsetY);
 };
 #endif

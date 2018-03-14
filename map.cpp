@@ -307,7 +307,7 @@ void Map::drawTo(SDL_Renderer* renderer)
 	// draw sprites
 	for (int i = 0; i < sprites.size(); i++) 
 	{
-		sprites[i]->sprite->drawTo(renderer, camera.x, camera.y);
+		sprites[i]->drawTo(renderer, textureAtlas, camera.x, camera.y);
 	}
 	// draw hitboxes in red
 	SDL_SetRenderDrawColor(renderer, 255, 0, 0, SDL_ALPHA_OPAQUE);

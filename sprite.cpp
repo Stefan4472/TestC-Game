@@ -294,9 +294,3 @@ void Sprite::loseHealth(float amount)
 		listener->onSpriteHealthChanged(-amount, currHp);
 	}
 }
-
-void Sprite::drawTo(SDL_Renderer* renderer, int offsetX, int offsetY)
-{
-	// draw current animation frame to screen
-	current_anim->drawTo(renderer, x - offsetX, y - offsetY);
-}
