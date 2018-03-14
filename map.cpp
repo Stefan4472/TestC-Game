@@ -26,13 +26,13 @@ void Map::init(PlayerSpriteController* playerSpriteController, TextureAtlas* tex
 	{
 		printf("%d. %s\n", i, created[i]->name.c_str());
 	}*/
-	addDrop(new ItemDrop(createItemStack(ITEM_BULLET, 10), 34, 200));
+	addDrop(new ItemDrop(createItemStack(ITEM_PISTOL_AMMO, 10), 34, 200));
 	
 	addDrop(new ItemDrop(new Consumable(ITEM_BREAD_LOAF), 100, 200));
 	addDrop(new ItemDrop(new Consumable(ITEM_BEER_MUG), 132, 200));
 	addDrop(new ItemDrop(new Sword(), 164, 200));
 	addDrop(new ItemDrop(new Gun(ITEM_PISTOL), 68, 200));
-	addDrop(new ItemDrop(createItemStack(ITEM_BULLET, 10), 34, 200));
+	addDrop(new ItemDrop(createItemStack(ITEM_PISTOL_AMMO, 10), 34, 200));
 	printf("Finished Map Init\n");
 }
 
@@ -372,7 +372,9 @@ ItemStack* Map::createItemStack(int itemId, int quantity)
 			}
 			break;
 			
-		case ITEM_BULLET:
+		case ITEM_PISTOL_AMMO:
+		case ITEM_SHOTGUN_AMMO:
+		case ITEM_RIFLE_AMMO:
 			for (int i = 0; i < quantity; i++) 
 			{
 				items[i] = new PistolAmmo();

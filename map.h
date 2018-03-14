@@ -24,7 +24,6 @@
 #include "player_sprite_controller.h"
 #include "follow_path_action.h"
 #include "move_in_dir_action.h"
-#include "trigger.h"
 
 // screen dimension constants: todo: read from a universal file
 const int SCREEN_WIDTH = 640;

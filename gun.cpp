@@ -5,7 +5,7 @@ Gun::Gun(int itemId) : Item(itemId)
 	switch (itemId)
 	{
 		case ITEM_PISTOL:		
-			ammunitionId = ITEM_BULLET;
+			ammunitionId = ITEM_PISTOL_AMMO;
 			magSize = 10;
 			coolOff = 500;
 			break;

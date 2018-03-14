@@ -8,6 +8,7 @@
 #include "spritesheet.h"
 #include "sprite.h"
 #include "sprite_action.h"
+#include "idle_action.h"
 
 class CivilianSprite : public Sprite
 {
