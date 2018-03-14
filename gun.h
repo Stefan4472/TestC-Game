@@ -4,10 +4,10 @@
 #include "texture_atlas.h"
 #include "item.h"
 #include "attack.h"
+class FiredBullet;
 #include "fired_bullet.h"
 #include "action.h"
 #include "knockback_action.h"
-
 // A gun is an item that is used as a weapon and shoots damaging projectiles.
 // This class defines the base behavior each gun has. This includes a type of
 // bullet accepted (bulletType), amount of recoil, time between shots, magazine

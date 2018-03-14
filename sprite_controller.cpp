@@ -7,14 +7,14 @@ SpriteController::SpriteController(Sprite* sprite)
 
 void SpriteController::onInHandItemChanged(Item* newItem)
 {
-	sprite->onInHandItemChanged(newItem);	
+	inHand = newItem;	
 }
 
 void SpriteController::onSpriteHealthChanged(int amount, int currHp)
 {
+	printf("SpriteController received onSpriteHealthChanged callback for %d and %d. Showing Healthbar\n", amount, currHp);
 	// set healthbar to show for 200 ms
 	showHealthbarMs += 200;
-	return;	
 }
 
 void SpriteController::handleMapCollision()
@@ -61,20 +61,17 @@ void SpriteController::update(int ms)
 	}
 	
 	// update in-hand item, if any, and delete if requested
-	if (sprite->inHand)
+	if (inHand && inHand->destroy)
 	{
-		if (sprite->inHand->destroy)
-		{
-			delete sprite->inHand;
-		}
-		sprite->inHand->update(ms);
+		delete inHand;
+	}
+	else if (inHand)
+	{
+		inHand->update(ms);
 	}
 	
 	// decrement remaining time to show health bar (if any)
-	if (showHealthbarMs)
-	{
-		showHealthbarMs = (showHealthbarMs > ms ? showHealthbarMs - ms : 0);	
-	}
+	showHealthbarMs = (showHealthbarMs > ms ? showHealthbarMs - ms : 0);
 }
 
 void SpriteController::handleAttacked(Attack* attack)
@@ -92,9 +89,18 @@ void SpriteController::handleSpriteSeen(Sprite* sprite)
 	return;
 }
 
-void SpriteController::drawTo(SDL_Renderer* renderer, int offsetX, int offsetY)
+void SpriteController::drawTo(SDL_Renderer* renderer, TextureAtlas* textureAtlas, int offsetX, int offsetY)
 {
-	sprite->drawTo(renderer, offsetX, offsetY);
+	// draw sprite's current animation
+	sprite->current_anim->drawTo(renderer, sprite->x - offsetX, sprite->y - offsetY);
+	
+	// draw in-hand
+	if (inHand)
+	{
+		SDL_Point hand_location = sprite->getRightHandPosition();
+		textureAtlas->draw(renderer, inHand->textureId, (int) (hand_location.x - offsetX), (int) (hand_location.y - offsetY));
+		//inHand->drawTo(renderer, (int) (hand_location.x - offsetX), (int) (hand_location.y - offsetY));
+	}
 	
 	// draw health bar 
 	if (showHealthbarMs)

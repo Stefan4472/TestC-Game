@@ -37,12 +37,6 @@ PlayerSprite::PlayerSprite(float xCoord, float yCoord, TextureAtlas* textureAtla
 	init();
 }
 
-void PlayerSprite::onInHandItemChanged(Item* newItem)
-{
-	printf("Received callback\n");	
-	inHand = newItem;
-}
-
 SDL_Point PlayerSprite::getRightHandPosition()
 {
 	switch (facingDir) 
@@ -65,15 +59,6 @@ SDL_Point PlayerSprite::getRightHandPosition()
 	}
 }
 
-void PlayerSprite::update(int ms) {
-	//printf("Now %d, %d w/h %d, %d\n", lineOfSight.x, lineOfSight.y, lineOfSight.w, lineOfSight.h);
-}
-
-/*void PlayerSprite::onInHandChanged()
-{
-	printf("Detected Changed to in-hand item\n");
-}*/
-
 void PlayerSprite::drawTo(SDL_Renderer* renderer, int offsetX, int offsetY) {
 	// draw current animation frame to screen
 	/*(*current_anim).drawTo(renderer, x - offsetX, y - offsetY);
@@ -85,9 +70,4 @@ void PlayerSprite::drawTo(SDL_Renderer* renderer, int offsetX, int offsetY) {
 		inHand->drawTo(renderer, (int) (hand_location.x - offsetX), (int) (hand_location.y - offsetY));
 	}*/
 	Sprite::drawTo(renderer, offsetX, offsetY);
-}
-
-PlayerSprite::~PlayerSprite() 
-{
-	renderer = NULL;
 }

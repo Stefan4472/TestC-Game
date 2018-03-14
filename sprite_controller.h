@@ -25,7 +25,9 @@ class SpriteController : public InventoryListener, public SpriteListener
 		// the sprite being controlled
 		Sprite* sprite = NULL;
 		// sprite's inventory
-		Inventory* inventory = NULL;  // TODO: SHOULD THIS BE IN THE SPRITE CLASS?? SPRITE NEEDS TO KNOW WHICH ITEM IT HAS IN-HAND
+		Inventory* inventory = NULL; 
+		// item sprite has in hand. Used for drawing
+		Item* inHand = NULL;
 		
 		// healthbar, which may be drawn over the sprite
 		SpriteHealthBar* healthbar = NULL;
@@ -52,7 +54,7 @@ class SpriteController : public InventoryListener, public SpriteListener
 		// by default updates all attacks as well as inhand item--DOES NOT CHANGE OR APPLY ACTIONSTACK!!
 		virtual void update(int ms);
 		
-		// inventory callback when in-hand item has changed. Sends to sprite by default
+		// inventory callback when in-hand item has changed
 		virtual void onInHandItemChanged(Item* newItem);
 		// sprite callback when hp changes
 		virtual void onSpriteHealthChanged(int amount, int currHp);
@@ -69,7 +71,7 @@ class SpriteController : public InventoryListener, public SpriteListener
 		virtual void handleSpriteSeen(Sprite* sprite);
 		
 		// draws sprite to the screen
-		virtual void drawTo(SDL_Renderer* renderer, int offsetX, int offsetY);
+		virtual void drawTo(SDL_Renderer* renderer, TextureAtlas* textureAtlas, int offsetX, int offsetY);
 	
 };
 #endif

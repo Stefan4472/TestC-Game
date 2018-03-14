@@ -5,7 +5,6 @@
 #include <vector>
 #include "constants.h"
 #include "spritesheet.h"
-#include "item.h"
 
 // Listener interface for receiving sprite callbacks
 class SpriteListener
@@ -32,8 +31,6 @@ class Sprite
 		// array of run spritesheets, indexed by direction
 		Spritesheet* run_anims[5] = { NULL, run_up_anim, run_down_anim, run_right_anim, run_left_anim };
 		
-		// pointer to animation that's currently playing
-		Spritesheet *current_anim = NULL;
 		// pointer to current action animations
 		Spritesheet** current_anim_array = idle_anims;
 		
@@ -41,6 +38,8 @@ class Sprite
 		SpriteListener* listener = NULL;
 		
 	public: // TODO: MAKE SOME PRIVATE/PROTECTED
+		// pointer to animation that's currently playing
+		Spritesheet *current_anim = NULL;
 		// initializes arrays of Spritesheets
 		void init();
 		// offset of start of hitbox, from sprite's x and y (x + hitboxOffsetX = hitbox.x)
@@ -82,12 +81,6 @@ class Sprite
 		bool aiming = false;
 		// coordinates of tile being aimed at. Only valid when aiming = true
 		SDL_Rect aimRect = { 0, 0, 32, 32 };
-		
-		// item sprite is holding in-hand. Sprite is drawn to reflect it is holding the item
-		Item* inHand = NULL;
-		
-		// called when the sprite's in-hand item changes. Listener function
-		virtual void onInHandItemChanged(Item* item);
 		
 		// get coordinates of sprite's right hand
 		virtual SDL_Point getRightHandPosition();

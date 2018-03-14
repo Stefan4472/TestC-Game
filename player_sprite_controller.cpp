@@ -94,7 +94,7 @@ bool PlayerSpriteController::handleKeyEvent(SDL_Event e)
 			// drops item in-hand
 			case SDLK_q: {
 				Item* drop = inventory->removeInHand();
-				sprite->inHand = inventory->getInHand();
+				inHand = inventory->getInHand(); // TODO: MAY BE REDUNDANT
 				drops.push_back(drop);
 				return true;
 			}
@@ -154,13 +154,13 @@ bool PlayerSpriteController::handleKeyEvent(SDL_Event e)
 		if (e.wheel.y == 1)
 		{
 			inventory->cycleInHandFwd();
-			sprite->inHand = inventory->getInHand();
+			inHand = inventory->getInHand();
 		}
 		// user scrolled down: cycle in-hand inventory item backward
 		else 
 		{
 			inventory->cycleInHandBck();
-			sprite->inHand = inventory->getInHand();
+			inHand = inventory->getInHand();
 		}
 	}
 }

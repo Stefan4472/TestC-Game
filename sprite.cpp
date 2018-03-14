@@ -18,11 +18,11 @@ void Sprite::init()
 	run_anims[4] = run_left_anim;
 }
 
-void Sprite::onInHandItemChanged(Item* item)
+/*void Sprite::onInHandItemChanged(Item* item)
 {
 	printf("Sprite: on hand changed to %s\n", item->name.c_str());
 	inHand = item;
-}
+}*/
 	
 SDL_Point Sprite::getRightHandPosition() // todo: standardize for all sprites
 {
@@ -299,11 +299,4 @@ void Sprite::drawTo(SDL_Renderer* renderer, int offsetX, int offsetY)
 {
 	// draw current animation frame to screen
 	current_anim->drawTo(renderer, x - offsetX, y - offsetY);
-	
-	// draw in-hand item (if any)
-	if (inHand)
-	{
-		SDL_Point hand_location = getRightHandPosition();
-		//inHand->drawTo(renderer, (int) (hand_location.x - offsetX), (int) (hand_location.y - offsetY));
-	}
 }
