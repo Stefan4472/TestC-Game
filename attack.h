@@ -6,7 +6,6 @@
 #include "texture_atlas.h"
 #include "sprite_action.h"
 class Sprite;
-class Item;
 
 // An Attack is created by a Sprite. It has a direction it is exerted in, and a
 // position where it occurs on the map, defined by a rect. It also has a pointer
@@ -27,17 +26,13 @@ class Attack
 		int elapsedTime = 0;
 		
 	public:
-		Attack(SDL_Rect position, int dir, Sprite* attacker, Item* weapon);
+		Attack(SDL_Rect position, Sprite* attacker);
 		// position attack currently covers in map
 		SDL_Rect position;
-		// direction attack is directed in
-		int dir = 0;
 		// whether attack is over, and can be deleted
 		bool finished = false;
 		// pointer to sprite that made the attack
 		Sprite* attacker = NULL;
-		// item used in the attack
-		Item* weapon = NULL;
 		// amount of damage the attack does in current state
 		int damage = 0;
 		// updates state of attack once given number of ms has passed

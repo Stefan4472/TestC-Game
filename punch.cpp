@@ -1,6 +1,6 @@
 #include "punch.h"
 
-Punch::Punch(SDL_Point handPos, int facingDir, Sprite* attacker) : Attack(getPos(handPos, facingDir), facingDir, attacker, NULL)
+Punch::Punch(SDL_Point handPos, int facingDir, Sprite* attacker) : Attack(getPos(handPos, facingDir), attacker)
 {
 	damage = 5;
 }

@@ -11,7 +11,7 @@
 class SwordSwing : public Attack
 {
 	public:
-		SwordSwing(SDL_Rect position, int dir, Sprite* attacker, Item* weapon);
+		SwordSwing(SDL_Rect position, Sprite* attacker);
 		void update(int ms);
 };
 

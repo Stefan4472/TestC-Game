@@ -220,9 +220,13 @@ void PlayerSpriteController::update(int ms) // TODO: UPDATE IN-HAND ITEM, BUFFS,
 
 void PlayerSpriteController::handleAttacked(Attack* attack)
 {
-	// add action to knockback in the direction of the attack and block further input
-	actionStack.push(new KnockbackAction(attack->dir));
-	actionStack.top()->init(sprite);
+	// see if attack had a resulting action, and apply it to the sprite
+	SpriteAction* result = attack->getActionOnSprite(sprite);
+	if (result)
+	{
+		result->init(sprite);
+		actionStack.push(result);
+	}
 	
 	// handle loss of hp
 	sprite->loseHealth(attack->damage);

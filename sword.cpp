@@ -34,7 +34,7 @@ void Sword::use(Sprite* actor) // TODO: REFACTORING, ADDITIONS, CLEAN UP
 			position.y = handPos.y;
 			break;
 	}
-	lastAttack = new SwordSwing(position, swingDirection, actor, this);
+	lastAttack = new SwordSwing(position, actor);
 }
 
 Attack* Sword::getAttack()

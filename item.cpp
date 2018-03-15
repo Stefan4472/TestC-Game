@@ -12,16 +12,6 @@ Item::Item(int itemId)
 	printf("Done\n");
 }
 
-/*const char* Item::getName()
-{
-	return ITEM_NAMES[itemId].c_str();
-}
-		
-const char* Item::getDescription() // TODO: PASS CONST STD::STRING&
-{
-	return ITEM_DESCRIPTIONS[itemId].c_str();
-}*/
-
 bool Item::load(Item* item)
 {
 	return false;

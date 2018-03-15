@@ -1,11 +1,9 @@
 #include "attack.h"
 
-Attack::Attack(SDL_Rect position, int dir, Sprite* attacker, Item* weapon)
+Attack::Attack(SDL_Rect position, Sprite* attacker)
 {
-	this->dir = dir;
 	this->position = position;
 	this->attacker = attacker;
-	this->weapon = weapon;
 }
 
 void Attack::handleSpriteCollision()

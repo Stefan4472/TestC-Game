@@ -90,15 +90,15 @@ void CivilianSpriteController::handleAttacked(Attack* attack)
 		fleeOrder = NULL;
 	}
 	takeEffectOrder = true;
-	printf("starting knockback\n");
-	delete currAction;
-	currAction = new KnockbackAction(attack->dir);
-	currAction->init(sprite);
-	// add action to knockback in the direction of the attack (happens first)
-	//actionStack.push(new KnockbackAction(attack->dir));
-	
-	//inventory->useInHand(sprite->getRightHandPosition(), sprite->facingDir);
-	//attacks.push_back(inventory->getAttack());
+	printf("Starting effect from attack\n");
+
+	SpriteAction* result = attack->getActionOnSprite(sprite);
+	if (result)
+	{
+		delete currAction;
+		currAction = result;
+		currAction->init(sprite);
+	}
 	
 	// add sound
 	sounds.push_back(SOUND_2);
