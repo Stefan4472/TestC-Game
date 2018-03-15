@@ -21,11 +21,13 @@ enum ItemType
 	ITEM_PISTOL,
 	ITEM_PISTOL_AMMO,
 	ITEM_SHOTGUN_AMMO,
-	ITEM_RIFLE_AMMO
+	ITEM_RIFLE_AMMO,
+	ITEM_SHOTGUN,
+	ITEM_TOMMYGUN
 };
 
 // TextureAtlas image ids, mapped by ItemType id
-const int ITEM_TEXTURES[10] =
+const int ITEM_TEXTURES[12] =
 {
 	BREAD_LOAF,
 	CHICKEN_LEG,
@@ -37,11 +39,13 @@ const int ITEM_TEXTURES[10] =
 	//PISTOL_BULLET,
 	TEXTURE_PISTOL_AMMO,
 	TEXTURE_SHOTGUN_AMMO,
-	TEXTURE_RIFLE_AMMO
+	TEXTURE_RIFLE_AMMO,
+	TEXTURE_SHOTGUN,
+	TEXTURE_TOMMYGUN
 };
 
 // In-game item names, mapped by ItemType id
-const std::string ITEM_NAMES[10] = 
+const std::string ITEM_NAMES[12] = 
 {
 	"Bread Loaf",
 	"Chicken Leg",
@@ -52,11 +56,13 @@ const std::string ITEM_NAMES[10] =
 	"Pistol",
 	"Pistol Bullet",
 	"Shotgun Shell",
-	"Rifle Bullet"
+	"Rifle Bullet",
+	"Double-Barelled Shotgun",
+	"Tommy Gun"
 };
 
 // Item descriptions, mapped by ItemType id
-const std::string ITEM_DESCRIPTIONS[10] = 
+const std::string ITEM_DESCRIPTIONS[12] = 
 {
 	"A Loaf of Bread",
 	"Chicken Leg. Very tasty",
@@ -67,11 +73,13 @@ const std::string ITEM_DESCRIPTIONS[10] =
 	"Fancy-looking pistol. Bang bang!",
 	"Small, metallic cylinder. For pistol use only!",
 	"Shell for a shotgun",
-	"Rifle bullet."
+	"Rifle bullet",
+	"Nasty Double-Barelled Shotgun. Might be from the Civil War",
+	"Not your grandma's Tommy Gun"
 };	
 
 // Stack amounts, mapped by ItemType id
-const int ITEM_STACKSIZES[10] =
+const int ITEM_STACKSIZES[12] =
 {
 	16,
 	16,
@@ -82,11 +90,13 @@ const int ITEM_STACKSIZES[10] =
 	1,
 	48,
 	24,
-	32
+	32,
+	1,
+	1
 };
 
 // ItemIds of ammunition given Item takes
-const int ITEM_AMMUNITIONS[10] = 
+const int ITEM_AMMUNITIONS[12] = 
 {
 	NULL,
 	NULL,
@@ -97,7 +107,9 @@ const int ITEM_AMMUNITIONS[10] =
 	ITEM_PISTOL_AMMO,
 	NULL,
 	NULL,
-	NULL
+	NULL,
+	ITEM_SHOTGUN_AMMO,
+	ITEM_RIFLE_AMMO
 };
 
 // returns stack size of given item id

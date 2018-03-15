@@ -5,9 +5,18 @@ Gun::Gun(int itemId) : Item(itemId)
 	switch (itemId)
 	{
 		case ITEM_PISTOL:		
-			ammunitionId = ITEM_PISTOL_AMMO;
 			magSize = 10;
 			coolOff = 500;
+			break;
+			
+		case ITEM_SHOTGUN:
+			magSize = 2;
+			coolOff = 100;
+			break;
+			
+		case ITEM_TOMMYGUN:
+			magSize = 24;
+			coolOff = 30;
 			break;
 			
 		default:

@@ -20,19 +20,13 @@ void Map::init(PlayerSpriteController* playerSpriteController, TextureAtlas* tex
 	//addControlledSprite(new CivilianSpriteController(new CivilianSprite(32 * 8, 32 * 8, textureAtlas), this));	
 	//addControlledSprite(new CivilianSpriteController(new CivilianSprite(32 * 12, 32 * 8, textureAtlas), this));
 
-	//std::vector<Item*> created = createItems(ITEM_BULLET, 10);
-	/*printf("Created has size %d\n", created.size());
-	for (int i = 0; i < created.size(); i++)
-	{
-		printf("%d. %s\n", i, created[i]->name.c_str());
-	}*/
-	addDrop(new ItemDrop(createItemStack(ITEM_PISTOL_AMMO, 10), 34, 200));
-	
 	addDrop(new ItemDrop(new Consumable(ITEM_BREAD_LOAF), 100, 200));
 	addDrop(new ItemDrop(new Consumable(ITEM_BEER_MUG), 132, 200));
 	addDrop(new ItemDrop(new Sword(), 164, 200));
 	addDrop(new ItemDrop(new Gun(ITEM_PISTOL), 68, 200));
 	addDrop(new ItemDrop(createItemStack(ITEM_PISTOL_AMMO, 10), 34, 200));
+	addDrop(new ItemDrop(new Gun(ITEM_SHOTGUN), 34, 232));
+	addDrop(new ItemDrop(new Gun(ITEM_TOMMYGUN), 34, 264));
 	printf("Finished Map Init\n");
 }
 
@@ -366,6 +360,8 @@ ItemStack* Map::createItemStack(int itemId, int quantity)
 			break;
 			
 		case ITEM_PISTOL:
+		case ITEM_SHOTGUN:
+		case ITEM_TOMMYGUN:
 			for (int i = 0; i < quantity; i++) 
 			{
 				items[i] = new Gun(itemId);
