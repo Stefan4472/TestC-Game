@@ -31,8 +31,6 @@ class ItemStack
 		bool canAdd(Item* item);
 		// attempts to add given item to this stack, returns whether it was successfully added
 		bool addItem(Item* toAdd);
-		// attempts to add given stack to this stack, returns whether full stack was added
-		bool addItemStack(ItemStack* stack);
 		// returns next item in the stack without removing it (can be null)
 		Item* peekNext();
 		// removes next item in the stack and returns it (can be null)

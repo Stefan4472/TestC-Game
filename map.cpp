@@ -189,14 +189,14 @@ void Map::handlePlayerInteract(PlayerSprite* playerSprite)
 	{
 		if (checkCollision(player_hitbox, itemDrops[i]->position))
 		{
-			printf("Collision with object at %f, %f\n", itemDrops[i]->position.x, itemDrops[i]->position.y); // todo: something suspicious with the hitbox
-				// TODO: HANDLE
-			//itemDrops[i]->handleInteract(playerSprite); 
+			printf("Collision with object at %f, %f\n", itemDrops[i]->position.x, itemDrops[i]->position.y);
 			
 			// add ItemDrop to inventory
 			if (playerSpriteController->inventory->addItemStack(itemDrops[i]->getStack()))
 			{
+				printf("Removing drops from map\n");
 				// remove item from map if successful TODO: USE LINKED LIST
+				delete itemDrops[i];  // TODO: WHAT HAPPENS TO THE STACK CONTAINER INSIDE?
 				itemDrops.erase(itemDrops.begin() + i);
 			}
 			return;

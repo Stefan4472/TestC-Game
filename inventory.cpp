@@ -28,13 +28,15 @@ bool Inventory::addItem(Item* item)
 bool Inventory::addItemStack(ItemStack* stack) 
 {
 	printf("Adding ItemStack of %d %s to Inventory...\n", stack->size(), stack->peekNext()->name.c_str());
-	// check if there's a slot that can take the given items
-	ItemStack* receiver = getAvailStack(stack->peekNext());
-	while (receiver && !receiver->addItemStack(stack))
+	ItemStack* receiver = NULL;
+	// transfer items to inventory slots until inventory is full or stack is empty
+	while (stack->size())
 	{
-		if (stack->size())
+		receiver = getAvailStack(stack->peekNext());
+		while (receiver && stack->size() && receiver->canAdd(stack->peekNext()))
 		{
-			receiver = getAvailStack(stack->peekNext());
+			receiver->addItem(stack->popNext());
+			printf("Added item\n");
 		}
 	}
 	return stack->size() ? false : true;

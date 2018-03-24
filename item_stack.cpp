@@ -59,29 +59,6 @@ bool ItemStack::addItem(Item* toAdd)
 	return false;
 }
 
-bool ItemStack::addItemStack(ItemStack* stack)
-{
-	// no items in stack: set id to given item's id and add
-	if (itemId == -1)
-	{
-		itemId = stack->itemId;
-		capacity = stack->capacity;
-		items = stack->items;
-		//items.push_back(toAdd);
-		return true;
-	}
-	else if (stack->itemId == itemId)
-	{
-		while (stack->size() && items.size() < capacity)
-		{
-			items.push_back(stack->popNext());
-		}
-		// success if full stack was added
-		return stack->size() ? false : true;
-	}
-	return false;
-}
-
 Item* ItemStack::peekNext()
 {
 	if (items.size())

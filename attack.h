@@ -19,7 +19,7 @@ class Sprite;
 // can override the drawTo method.
 class Attack
 {	
-	private:
+	protected:
 		// number of ms this attack exists
 		int duration = 0;
 		// number of ms this attack has existed
