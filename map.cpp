@@ -5,13 +5,19 @@ Map::Map(SDL_Renderer* renderer, TextureAtlas* textureAtlas, SoundAtlas* soundAt
 	this->textureAtlas = textureAtlas;
 	this->soundAtlas = soundAtlas;
 	this->fontAtlas = fontAtlas;
+	animEngine = new AnimationEngine(textureAtlas);
 	
-	playerSpriteController = new PlayerSpriteController(new Sprite(SPRITE_TYPE_PLAYER, 100.0f, 140.0f, renderer), this, textureAtlas);
-
+	printf("Creating Map...");
 	mapChunk = new MapChunk(textureAtlas, 10);
+	printf("Done\n");
 	
+	printf("HI");
+	addControlledSprite(new CivilianSpriteController(new Sprite(SPRITE_TYPE_CIVILIAN, 32 * 4, 32 * 4, animEngine), this)); 
+	printf("Creating Player Sprite...");
+	playerSpriteController = new PlayerSpriteController(new Sprite(SPRITE_TYPE_PLAYER, 100.0f, 140.0f, animEngine), this, textureAtlas);
+	printf("Done\n");
 	addControlledSprite(playerSpriteController);
-	addControlledSprite(new CivilianSpriteController(new Sprite(SPRITE_TYPE_CIVILIAN, 32 * 4, 32 * 4, textureAtlas), this)); 
+	
 	
 	// arm the civilian!!!!
 	Gun* pistol = new Gun(ITEM_PISTOL);
@@ -20,8 +26,6 @@ Map::Map(SDL_Renderer* renderer, TextureAtlas* textureAtlas, SoundAtlas* soundAt
 		pistol->load(new PistolAmmo());
 	}
 	sprites[1]->inventory->addItem(pistol);
-	//addControlledSprite(new CivilianSpriteController(new CivilianSprite(32 * 8, 32 * 8, textureAtlas), this));	
-	//addControlledSprite(new CivilianSpriteController(new CivilianSprite(32 * 12, 32 * 8, textureAtlas), this));
 
 	addDrop(new ItemDrop(new Consumable(ITEM_BREAD_LOAF), 100, 200));
 	addDrop(new ItemDrop(new Consumable(ITEM_BEER_MUG), 132, 200));
