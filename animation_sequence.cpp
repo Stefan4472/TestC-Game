@@ -7,3 +7,8 @@ AnimationSequence::AnimationSequence(Spritesheet* right, Spritesheet* left, Spri
 	anims[3] = up;
 	anims[4] = down;
 }
+
+bool AnimationSequence::hasDir(int dir)
+{
+	return anims[dir];	
+}

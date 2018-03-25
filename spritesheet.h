@@ -7,7 +7,7 @@
 
 class Spritesheet
 {
-	private:
+	public:
 		// id of the sheet's image in texture_atlas.h
 		int sheetImageId;
 		// pointer to texture atlas
@@ -23,7 +23,6 @@ class Spritesheet
 		// number of milliseconds this frame should keep playing for
 		int msLeftThisFrame;
 		
-	public:
 		// creates with id of spritesheet's image, number of frames spritesheet splits into, and number of ms to display each frame
 		Spritesheet(TextureAtlas* textureAtlas, int sheetImageId, int numFrames, int frameDuration);
 		// whether animation is currently paused
