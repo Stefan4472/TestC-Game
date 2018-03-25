@@ -1,30 +1,58 @@
 #include "sprite.h"
 
-Sprite::Sprite(SPRITE_TYPE spriteType, AnimationEngine* animEngine)
+Sprite::Sprite(int spriteType, float x, float y, AnimationEngine* animEngine)
 {
 	this->spriteType = spriteType;
+	this->x = x;
+	this->y = y;
 	this->animEngine = animEngine;
 	animPlayer = new AnimationPlayer(animEngine->textureAtlas);
+	
+	if (spriteType == SPRITE_TYPE_CIVILIAN)
+	{
+		walkSpeed = 0.1f;
+		runSpeed = 0.2f;
+		// note: this depends on the image of the sprite, and will need to be adjusted at times. Also: hitboxes corresponding to frames of spritesheets
+		hitboxOffsetX = 7;
+		hitboxOffsetY = 25;
+		hitbox.w = 20;
+		hitbox.h = 6;
+
+		fullHp = 30;
+		currHp = 30;
+	}
+	else if (spriteType == SPRITE_TYPE_PLAYER)
+	{
+		hitboxOffsetX = 10;
+		hitboxOffsetY = 44;
+		hitbox.w = 32;
+		hitbox.h = 13;
+
+		fullHp = 100;
+		currHp = 100;	
+	}
+	setDir(DIRECTION_DOWN);
 }
 	
 SDL_Point Sprite::getRightHandPosition() // todo: standardize for all sprites
 {
+	// TODO: JUST USE ON SPRITE MODEL SO THIS WORKS FOR ALL (CURRENTLY WILL BE OFF FOR CIVILIAN)	
 	switch (facingDir) 
 	{	
 		case DIRECTION_RIGHT:
-			return SDL_Point { x + 16, y + 30 };
+			return SDL_Point { x + 24, y + 44 };
 
 		case DIRECTION_UP:
-			return SDL_Point { x + 26, y + 26 };
+			return SDL_Point { x + 42, y + 41 };
 
 		case DIRECTION_DOWN:
-			return SDL_Point { x + 3, y + 26 };
+			return SDL_Point { x + 13, y + 40 };
 
 		case DIRECTION_LEFT:
-			return SDL_Point { x + 17, y + 30 };
+			return SDL_Point { x + 19, y + 41 };
 
 		default:
-			printf("Weird!! Don't know which animation to show!\n");
+			printf("Weird!! PlayerSprite, don't know which animation to show!\n");
 			break;
 	}
 }

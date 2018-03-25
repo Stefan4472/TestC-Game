@@ -16,8 +16,6 @@
 #include "sword.h"
 #include "gun.h"
 #include "pistol_ammo.h"
-#include "civilian_sprite.h"
-#include "player_sprite.h"
 #include "path_finder_interface.h"
 #include "sprite_controller.h"
 #include "civilian_sprite_controller.h"

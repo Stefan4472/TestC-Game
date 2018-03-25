@@ -8,7 +8,7 @@ void Map::init(PlayerSpriteController* playerSpriteController, TextureAtlas* tex
 	mapChunk = new MapChunk(textureAtlas, 10);
 	
 	addControlledSprite(playerSpriteController);
-	addControlledSprite(new CivilianSpriteController(new CivilianSprite(32 * 4, 32 * 4, textureAtlas), this)); // TODO: HOW TO GIVE NPC'S ITEMS?
+	addControlledSprite(new CivilianSpriteController(new Sprite(SPRITE_TYPE_CIVILIAN, 32 * 4, 32 * 4, textureAtlas), this)); 
 	
 	// arm the civilian!!!!
 	Gun* pistol = new Gun(ITEM_PISTOL);

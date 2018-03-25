@@ -2,8 +2,6 @@
 
 PlayerSpriteController::PlayerSpriteController(PlayerSprite* playerSprite, TextureAtlas* textureAtlas) : SpriteController(playerSprite)
 {
-	player = playerSprite;
-	
 	// create inventory with capacity 30
 	inventory = new Inventory(sprite, 30);
 	inventory->setListener(this);

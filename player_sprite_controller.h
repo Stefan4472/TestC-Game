@@ -23,9 +23,6 @@ class PlayerSpriteController : public SpriteController
 	public:
 		PlayerSpriteController(PlayerSprite* playerSprite, TextureAtlas* textureAtlas); // SHOULD INCLUDE PATHFINDER!!!
 		
-		// pointer to the PlayerSprite
-		// must be maintained separately from Sprite* pointer included in SpriteController base class
-		PlayerSprite* player = NULL;
 		// pointer to PathFinder interface. Used to convert mouse coordinates to in-world coordinates
 		PathFinder* pathFinder = NULL;
 		// heads-up-display showing user informatin on current status
