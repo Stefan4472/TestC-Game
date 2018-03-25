@@ -12,6 +12,12 @@
 // Spritesheets from the TextureAtlas and creates AnimationSequences for requested animations. It
 // maintains a cache, to speed up future queries.
 
+enum SPRITE_TYPE
+{
+	SPRITE_TYPE_CIVILIAN,
+	SPRITE_TYPE_PLAYER
+};
+	
 enum SPRITE_ACTIONS 
 {
 	SPRITE_IDLE,
@@ -21,7 +27,7 @@ enum SPRITE_ACTIONS
 
 class AnimationEngine
 {
-	Spritesheet *CIV_IDLE_RIGHT = NULL, *CIV_IDLE_LEFT = NULL, *CIV_IDLE_UP = NULL, *CIV_IDLE_DOWN = NULL;
+	Spritesheet *CIV_IDLE_RIGHT = NULL, *CIV_IDLE_LEFT = NULL, *CIV_IDLE_UP = NULL, *CIV_IDLE_DOWN = NULL; // TODO: SOME SORT OF INDEXED SYSTEM
 	Spritesheet *CIV_WALK_RIGHT = NULL, *CIV_WALK_LEFT = NULL, *CIV_WALK_UP = NULL, *CIV_WALK_DOWN = NULL;
 	Spritesheet *CIV_RUN_RIGHT = NULL, *CIV_RUN_LEFT = NULL, *CIV_RUN_UP = NULL, *CIV_RUN_DOWN = NULL;
 	
@@ -34,7 +40,8 @@ class AnimationEngine
 		
 	public:
 		AnimationEngine(TextureAtlas* textureAtlas);
-		
+		// returns an AnimationSequence for the given sprite holding inHandId and doing the given SPRITE_ACTION
+		AnimationSequence* get(int spriteType, int actionType, int inHandId);
 };
 
 #endif

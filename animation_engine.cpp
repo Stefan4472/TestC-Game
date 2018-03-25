@@ -34,3 +34,43 @@ AnimationEngine::AnimationEngine(TextureAtlas* textureAtlas)
 	PLA_RUN_UP = new Spritesheet(textureAtlas, PLAYER_RUN_UP, 4, 100);
 	PLA_RUN_DOWN = new Spritesheet(textureAtlas, PLAYER_RUN_DOWN, 4, 100);
 }
+
+AnimationSequence* AnimationEngine::get(int spriteType, int actionType, int inHandId) // TODO: INDEX-BASED METHOD AND CACHE
+{
+	if (spriteType == SPRITE_TYPE_CIVILIAN)
+	{
+		switch (actionType)
+		{
+			case SPRITE_IDLE:
+				return new AnimationSequence(CIV_IDLE_RIGHT, CIV_IDLE_LEFT, CIV_IDLE_UP, CIV_IDLE_DOWN);
+				
+			case SPRITE_WALK:
+				return new AnimationSequence(CIV_WALK_RIGHT, CIV_WALK_LEFT, CIV_WALK_UP, CIV_WALK_DOWN);
+			
+			case SPRITE_RUN:
+				return new AnimationSequence(CIV_RUN_RIGHT, CIV_RUN_LEFT, CIV_RUN_UP, CIV_RUN_DOWN);
+		};
+	}
+	else if (spriteType == SPRITE_TYPE_PLAYER)
+	{
+		switch (actionType)
+		{
+			switch (actionType)
+		{
+			case SPRITE_IDLE:
+				return new AnimationSequence(PLA_IDLE_RIGHT, PLA_IDLE_LEFT, PLA_IDLE_UP, PLA_IDLE_DOWN);
+				
+			case SPRITE_WALK:
+				return new AnimationSequence(PLA_WALK_RIGHT, PLA_WALK_LEFT, PLA_WALK_UP, PLA_WALK_DOWN);
+			
+			case SPRITE_RUN:
+				return new AnimationSequence(PLA_RUN_RIGHT, PLA_RUN_LEFT, PLA_RUN_UP, PLA_RUN_DOWN);
+		};	
+		}
+	}
+	else 
+	{
+		printf("ERROR: ANIMATION_ENGINE.CPP SPRITETYPE NOT RECOGNIZED\N");
+		return NULL;
+	}
+}
