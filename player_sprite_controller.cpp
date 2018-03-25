@@ -1,11 +1,11 @@
 #include "player_sprite_controller.h"
 
-PlayerSpriteController::PlayerSpriteController(PlayerSprite* playerSprite, TextureAtlas* textureAtlas) : SpriteController(playerSprite)
+PlayerSpriteController::PlayerSpriteController(Sprite* playerSprite, PathFinder* pathFinder) : SpriteController(playerSprite)
 {
+	this->pathFinder = pathFinder;
 	// create inventory with capacity 30
-	inventory = new Inventory(sprite, 30);
+	inventory = new Inventory(sprite, 30);  // TODO: SHOULD PROBABLY BE CREATED IN SPRITE_CONTROLLER CLASS
 	inventory->setListener(this);
-	printf("player controller atlas is %d\n", textureAtlas);
 	hud = new PlayerHUD(sprite->currHp, sprite->fullHp, inventory, 640, 480, textureAtlas);
 	
 	printf("Created Player Controller\n");

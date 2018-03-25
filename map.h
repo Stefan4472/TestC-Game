@@ -8,6 +8,7 @@
 #include <cmath>
 #include "texture_atlas.h"
 #include "sound_atlas.h"
+#include "font_atlas.h"
 #include "sound.h"
 #include "map_chunk.h"
 #include "item_drop.h"
@@ -29,7 +30,7 @@ const int SCREEN_HEIGHT = 480;
 const int TILE_WIDTH = 32;
 const int TILE_HEIGHT = 32;
 
-// The Map tracks and updates game state. It inherits from PathFinder to provide planning methods
+// The Map is the game driver, it tracks and updates game state. It inherits from PathFinder to provide planning methods
 // for sprites.
 
 class Map : public PathFinder // TODO: IMPLEMENTATION OF MAP, AND GAME DRIVER, SHOULD BE SEPARATE.
@@ -40,17 +41,20 @@ class Map : public PathFinder // TODO: IMPLEMENTATION OF MAP, AND GAME DRIVER, S
 	// virtual coordinates defining view field
 	SDL_Rect camera = { 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT };
 	
-	// source and destination rects 
+	// source and destination rects for drawing
 	SDL_Rect src = {0, 0, TILE_WIDTH, TILE_HEIGHT}, dest = {0, 0, TILE_WIDTH, TILE_HEIGHT};
 	
-	// coordinates of current-selected/aimed tile (if any)
-	SDL_Rect selectedTile = { 0, 0, 32, 32 };
+	// renderer used for drawing to screen
+	SDL_Renderer* renderer = NULL;
 	
 	// pointer to TextureAtlas used for drawing images
 	TextureAtlas* textureAtlas = NULL;
 	
 	// pointer to SoundAtlas used to play sounds
 	SoundAtlas* soundAtlas = NULL;
+	
+	// available fonts 
+	FontAtlas* fontAtlas = NULL;
 	
 	// pointer to player's sprite
 	PlayerSpriteController* playerSpriteController = NULL;
@@ -76,7 +80,9 @@ class Map : public PathFinder // TODO: IMPLEMENTATION OF MAP, AND GAME DRIVER, S
 	
 	public:
 		// init tile images
-		void init(PlayerSpriteController* playerSpriteController, TextureAtlas* textureAtlas, SoundAtlas* soundAtlas);
+		Map(SDL_Renderer* renderer, TextureAtlas* textureAtlas, SoundAtlas* soundAtlas, FontAtlas* fontAtlas);
+		// runs the game
+		void run();
 		// advances state by given number of milliseconds
 		void update(int ms);
 		// adds sprite to list of tracked sprites

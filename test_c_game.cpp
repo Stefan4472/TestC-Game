@@ -164,24 +164,15 @@ void close()
 
 int main( int argc, char* args[] )
 {
-	printf("Hello from main\n");
 	init();
-	printf("Initialized\n");
 	loadMedia();
-	printf("Loaded Media\n");
 	TextureAtlas textureAtlas = TextureAtlas(texture_atlas_img);
-	printf("Loaded Texture Atlas\n");
 	SoundAtlas soundAtlas = SoundAtlas();
-	printf("Loaded Sound Atlas\n");
 	FontAtlas fontAtlas = FontAtlas();
-	printf("Loaded Font Atlas\n");
-	PlayerSprite playerSprite = PlayerSprite(100.0f, 140.0f, &textureAtlas, gRenderer); 
-	PlayerSpriteController* playerController = new PlayerSpriteController(&playerSprite, &textureAtlas);
-	printf("Created player sprite and controller\n");
-	Map map;
-	map.init(playerController, &textureAtlas, &soundAtlas);
-	playerController->pathFinder = &map; // TODO: THIS IS VERY DANGEROUS
-	printf("Created map\n");
+	Map map = Map(gRenderer, &textureAtlas, &soundAtlas, &fontAtlas);
+	map.run();
+		
+	/*
 	// pointer to current Window active on screen
 	Window* currWindow = NULL;
 	// window showing player or sprite inventory
@@ -313,7 +304,7 @@ int main( int argc, char* args[] )
 	printf("Done1\n");
 	delete(pauseWindow);
 	//delete(quitWindow);
-	printf("Finished Closing Windows\n");
+	printf("Finished Closing Windows\n");*/
 	//Free resources and close SDL
 	close();
 

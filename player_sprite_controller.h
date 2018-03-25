@@ -4,7 +4,6 @@
 #include "texture_atlas.h"
 #include "sprite_controller.h"
 #include "path_finder_interface.h"
-#include "player_sprite.h"
 #include "knockback_action.h"
 #include "colors.h"
 #include "player_hud.h"
@@ -21,7 +20,7 @@ class PlayerSpriteController : public SpriteController
 		void setAim(int mouseX, int mouseY);
 		
 	public:
-		PlayerSpriteController(PlayerSprite* playerSprite, TextureAtlas* textureAtlas); // SHOULD INCLUDE PATHFINDER!!!
+		PlayerSpriteController(Sprite* playerSprite, PathFinder* pathFinder); 
 		
 		// pointer to PathFinder interface. Used to convert mouse coordinates to in-world coordinates
 		PathFinder* pathFinder = NULL;

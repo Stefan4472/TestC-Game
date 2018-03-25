@@ -1,10 +1,13 @@
 #include "map.h"
 
-void Map::init(PlayerSpriteController* playerSpriteController, TextureAtlas* textureAtlas, SoundAtlas* soundAtlas) {
+Map::Map(SDL_Renderer* renderer, TextureAtlas* textureAtlas, SoundAtlas* soundAtlas, FontAtlas* fontAtlas) {
+	this->renderer = renderer;
 	this->textureAtlas = textureAtlas;
 	this->soundAtlas = soundAtlas;
-	this->playerSpriteController = playerSpriteController;
+	this->fontAtlas = fontAtlas;
 	
+	playerController = new PlayerSpriteController(new Sprite(SPRITE_TYPE_PLAYER, 100.0f, 140.0f, renderer), this);
+
 	mapChunk = new MapChunk(textureAtlas, 10);
 	
 	addControlledSprite(playerSpriteController);
@@ -28,6 +31,68 @@ void Map::init(PlayerSpriteController* playerSpriteController, TextureAtlas* tex
 	addDrop(new ItemDrop(new Gun(ITEM_SHOTGUN), 34, 232));
 	addDrop(new ItemDrop(new Gun(ITEM_TOMMYGUN), 34, 264));
 	printf("Finished Map Init\n");
+}
+
+void Map::run()
+{
+	// main loop flags
+	bool quit = false;
+	bool paused = false;
+	
+	Uint32 last_time = SDL_GetTicks();
+	Uint32 curr_time;
+	Uint32 ticks_since_last_frame;
+	int frames = 0;
+	
+	SDL_Event e;
+
+	// main loop
+	while( !quit )
+	{
+		frames++;
+		// calculate number of milliseconds since last frame was rendered 
+		curr_time = SDL_GetTicks();
+		ticks_since_last_frame = curr_time - last_time;
+		
+		//Handle events on queue
+		while( SDL_PollEvent( &e ) != 0 )
+		{
+			// user closes the window
+			if( e.type == SDL_QUIT )
+			{
+				quit = true;
+			}
+			// send event to playerSprite, which will handle it in almost all cases.
+			else if (playerController->handleKeyEvent(e)) 
+			{
+				
+			}
+			// handle event on base window level  TODO: GUI ELEMENTS/MENUS
+			else if (e.type == SDL_KEYDOWN)
+			{
+				switch( e.key.keysym.sym )
+				{ 
+					// show exit menu
+					case SDLK_ESCAPE:
+						quit = true;
+						break;
+				}
+			}
+		}
+
+		update(ticks_since_last_frame);
+		
+		// center map on playerSprite and draw
+		centerTo(playerController->player->hitbox);
+		
+		drawTo(gRenderer);
+		
+		// update screen
+		SDL_RenderPresent(gRenderer);
+		
+		// update last_frame_ticks
+		last_time = curr_time;
+	}
 }
 
 void Map::update(int ms) 
