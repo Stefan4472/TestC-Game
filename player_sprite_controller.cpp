@@ -1,6 +1,6 @@
 #include "player_sprite_controller.h"
 
-PlayerSpriteController::PlayerSpriteController(Sprite* playerSprite, PathFinder* pathFinder) : SpriteController(playerSprite)
+PlayerSpriteController::PlayerSpriteController(Sprite* playerSprite, PathFinder* pathFinder, TextureAtlas* textureAtlas) : SpriteController(playerSprite)
 {
 	this->pathFinder = pathFinder;
 	// create inventory with capacity 30

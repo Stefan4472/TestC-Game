@@ -6,7 +6,7 @@ Map::Map(SDL_Renderer* renderer, TextureAtlas* textureAtlas, SoundAtlas* soundAt
 	this->soundAtlas = soundAtlas;
 	this->fontAtlas = fontAtlas;
 	
-	playerController = new PlayerSpriteController(new Sprite(SPRITE_TYPE_PLAYER, 100.0f, 140.0f, renderer), this);
+	playerSpriteController = new PlayerSpriteController(new Sprite(SPRITE_TYPE_PLAYER, 100.0f, 140.0f, renderer), this, textureAtlas);
 
 	mapChunk = new MapChunk(textureAtlas, 10);
 	
@@ -63,7 +63,7 @@ void Map::run()
 				quit = true;
 			}
 			// send event to playerSprite, which will handle it in almost all cases.
-			else if (playerController->handleKeyEvent(e)) 
+			else if (playerSpriteController->handleKeyEvent(e)) 
 			{
 				
 			}
@@ -83,12 +83,12 @@ void Map::run()
 		update(ticks_since_last_frame);
 		
 		// center map on playerSprite and draw
-		centerTo(playerController->player->hitbox);
+		centerTo(playerSpriteController->sprite->hitbox);
 		
-		drawTo(gRenderer);
+		drawTo(renderer);
 		
 		// update screen
-		SDL_RenderPresent(gRenderer);
+		SDL_RenderPresent(renderer);
 		
 		// update last_frame_ticks
 		last_time = curr_time;
@@ -227,18 +227,18 @@ void Map::update(int ms)
 	if (playerSpriteController->interactPressed && !playerSpriteController->interactHandled)
 	{
 		playerSpriteController->interactHandled = true;
-		handlePlayerInteract(playerSpriteController->player); // TODO: DIRECTIONAL INTERACTION
+		handlePlayerInteract(playerSpriteController); // TODO: DIRECTIONAL INTERACTION
 	}
 }
 
-void Map::handlePlayerInteract(PlayerSprite* playerSprite)
+void Map::handlePlayerInteract(PlayerSpriteController* playerSpriteController)
 {
 	// check tile first, then hitboxes of sprites, then hitboxes of objects	
 	printf("Handling Player Interact\n");
 	
 	// TODO: INTERACTIBLE TILES
 	
-	SDL_Rect player_hitbox = playerSprite->hitbox; // TODO: PLAYERSPRITE INTERACT_POSITION
+	SDL_Rect player_hitbox = playerSpriteController->sprite->hitbox; // TODO: PLAYERSPRITE INTERACT_POSITION
 	
 	// check player hitbox against other sprite hitboxes
 	for (int i = 1; i < sprites.size(); i++) 
@@ -342,14 +342,8 @@ void Map::drawTo(SDL_Renderer* renderer)
 	// outline square player is aiming at, if any
 	if (playerSpriteController->sprite->aiming)
 	{
-		// TODO: determine and outline tile based on coordinates player is aiming at
-		//selectedTile.x = (int) playerSpriteController->sprite->aimingX;
-		//selectedTile.y = (int) playerSpriteController->sprite->aimingY;
-		
-		//selectedTile.x = pointToTile(SDL_Rect { 
-		selectedTile = worldToScreen(playerSpriteController->sprite->aimRect);
 		SDL_SetRenderDrawColor(renderer, 0, 0, 255, SDL_ALPHA_OPAQUE);
-		SDL_RenderFillRect(renderer, &selectedTile);
+		SDL_RenderFillRect(renderer, &playerSpriteController->sprite->aimRect);
 	}
 	
 	// render map objects

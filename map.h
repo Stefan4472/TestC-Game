@@ -69,7 +69,7 @@ class Map : public PathFinder // TODO: IMPLEMENTATION OF MAP, AND GAME DRIVER, S
 	std::vector<Sound*> sounds;
 	
 	// handles player request to interact with the map
-	void handlePlayerInteract(PlayerSprite* playerSprite);
+	void handlePlayerInteract(PlayerSpriteController* playerSpriteController);
 	
 	// returns whether the given region of map is a valid position for a sprite to be.
 	// In order to be valid, all four corners must be on walkable tiles.

@@ -1,18 +1,16 @@
 #include "civilian_sprite_controller.h"
 
-CivilianSpriteController::CivilianSpriteController(CivilianSprite* sprite, PathFinder* pathFinder) : SpriteController(sprite)
+CivilianSpriteController::CivilianSpriteController(Sprite* sprite, PathFinder* pathFinder) : SpriteController(sprite)
 {
 	this->pathFinder = pathFinder;
-	// default action is to wander
-	//actionStack.push(new WanderAction(pathFinder, ACTION_LOOPING, 10, 400, 100));
-	
-	//actionStack.push(new IdleAction(ACTION_LOOPING, 2000));
+	// default action is to idle
 	currAction = new IdleAction(ACTION_LOOPING, 2000);
 	currAction->init(sprite);
+
 	inventory = new Inventory(sprite, 5);
 	inventory->setListener(this);
+	
 	healthbar = new SpriteHealthBar(32, sprite->currHp, sprite->fullHp);
-	//inventory->addItem(new Sword(textureAtlas, 164, 200));
 }
 
 void CivilianSpriteController::update(int ms)

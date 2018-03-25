@@ -10,8 +10,6 @@
 #include "colors.h"
 #include "gui_window.h"
 #include "pause_dialog.h"
-#include "player_sprite.h"
-#include "player_sprite_controller.h"
 #include "map.h"
 
 //Screen dimension constants. Actually defined in map.h atm

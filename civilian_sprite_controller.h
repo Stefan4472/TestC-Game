@@ -2,12 +2,12 @@
 #define CIVILIAN_SPRITE_CONTROLLER_H
 
 #include "sprite_controller.h"
-#include "civilian_sprite.h"
 #include "wander_action.h"
 #include "path_finder_interface.h"
 #include "follow_sprite_action.h"
 #include "knockback_action.h"
 #include "move_in_dir_action.h"
+#include "idle_action.h"
 
 // Provides the controller for a CivilianSprite.
 
@@ -23,7 +23,7 @@ class CivilianSpriteController : public SpriteController
 		SpriteAction* currAction = NULL;
 	
 	public:
-		CivilianSpriteController(CivilianSprite* civilianSprite, PathFinder* pathFinder);
+		CivilianSpriteController(Sprite* civilianSprite, PathFinder* pathFinder);
 		
 		// updates state of sprite by given number of milliseconds
 		void update(int ms);

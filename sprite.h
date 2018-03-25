@@ -26,7 +26,7 @@ class Sprite
 		
 	public: // TODO: MAKE SOME PRIVATE/PROTECTED
 		// create sprite of given type (see AnimationEngine)
-		Sprite(int spriteType, AnimationEngine* animEngine);
+		Sprite(int spriteType, float x, float y, AnimationEngine* animEngine);
 		// type of sprite this is
 		int spriteType = 0;
 		// offset of start of hitbox, from sprite's x and y (x + hitboxOffsetX = hitbox.x)

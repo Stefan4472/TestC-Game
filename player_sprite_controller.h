@@ -20,7 +20,7 @@ class PlayerSpriteController : public SpriteController
 		void setAim(int mouseX, int mouseY);
 		
 	public:
-		PlayerSpriteController(Sprite* playerSprite, PathFinder* pathFinder); 
+		PlayerSpriteController(Sprite* playerSprite, PathFinder* pathFinder, TextureAtlas* textureAtlas); 
 		
 		// pointer to PathFinder interface. Used to convert mouse coordinates to in-world coordinates
 		PathFinder* pathFinder = NULL;
