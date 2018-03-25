@@ -52,7 +52,7 @@ void Inventory::useInHand()
 	Item* in_hand = getInHand();
 	if (in_hand)
 	{
-		printf("Inventory: Calling use of in_hand\n");
+		printf("Inventory: Calling use of in_hand, which is a %s\n", in_hand->name.c_str());
 		in_hand->use(owner);
 		// collect results
 		resultingAction = in_hand->getAction();

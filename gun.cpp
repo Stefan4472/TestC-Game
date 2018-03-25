@@ -2,6 +2,7 @@
 
 Gun::Gun(int itemId) : Item(itemId)
 {
+	printf("Creating gun with id %d (%s)\n", itemId, name.c_str());
 	switch (itemId)
 	{
 		case ITEM_PISTOL:		
@@ -22,7 +23,6 @@ Gun::Gun(int itemId) : Item(itemId)
 		default:
 			printf("ERROR: ItemID %d is not a gun! There may be unexpected behavior\n", itemId);
 	}
-	printf("Creating Gun with ID %d\n", itemId);
 }
 
 void Gun::update(int ms)
