@@ -4,6 +4,7 @@
 #include <SDL2/SDL.h>
 #include "texture_atlas.h"
 #include "animation_sequence.h"
+#include "animation_player.h"
 #include "spritesheet.h"
 #include "constants.h"
 
@@ -11,12 +12,6 @@
 // using specific criteria e.g. Sprite type, in hand item, current action. The AnimationEngine loads
 // Spritesheets from the TextureAtlas and creates AnimationSequences for requested animations. It
 // maintains a cache, to speed up future queries.
-
-enum SPRITE_TYPE
-{
-	SPRITE_TYPE_CIVILIAN,
-	SPRITE_TYPE_PLAYER
-};
 	
 enum SPRITE_ACTIONS 
 {
@@ -35,13 +30,12 @@ class AnimationEngine
 	Spritesheet *PLA_WALK_RIGHT = NULL, *PLA_WALK_LEFT = NULL, *PLA_WALK_UP = NULL, *PLA_WALK_DOWN = NULL;
 	Spritesheet *PLA_RUN_RIGHT = NULL, *PLA_RUN_LEFT = NULL, *PLA_RUN_UP = NULL, *PLA_RUN_DOWN = NULL;
 	
-	private:
-		TextureAtlas* textureAtlas = NULL;
 		
 	public:
 		AnimationEngine(TextureAtlas* textureAtlas);
 		// returns an AnimationSequence for the given sprite holding inHandId and doing the given SPRITE_ACTION
 		AnimationSequence* get(int spriteType, int actionType, int inHandId);
+		TextureAtlas* textureAtlas = NULL;
 };
 
 #endif

@@ -1,6 +1,6 @@
 #include "player_sprite.h"
 
-PlayerSprite::PlayerSprite(float xCoord, float yCoord, TextureAtlas* textureAtlas, SDL_Renderer* renderer) {
+PlayerSprite::PlayerSprite(float xCoord, float yCoord, TextureAtlas* textureAtlas, SDL_Renderer* renderer) : Sprite (SPRITE_TYPE_PLAYER) {
 	printf("Creating sprite at %f, %f\n", xCoord, yCoord);
 	
 	x = xCoord;
@@ -13,28 +13,9 @@ PlayerSprite::PlayerSprite(float xCoord, float yCoord, TextureAtlas* textureAtla
 	hitboxOffsetY = 44;
 	hitbox.w = 32;
 	hitbox.h = 13;
-		
-	idle_right_anim = new Spritesheet(textureAtlas, PLAYER_IDLE_RIGHT, 1, 100);
-	idle_left_anim = new Spritesheet(textureAtlas, PLAYER_IDLE_LEFT, 1, 100);
-	idle_up_anim = new Spritesheet(textureAtlas, PLAYER_IDLE_UP, 1, 100);
-	idle_down_anim = new Spritesheet(textureAtlas, PLAYER_IDLE_DOWN, 1, 100);
-	
-	walk_right_anim = new Spritesheet(textureAtlas, PLAYER_WALK_RIGHT, 4, 100);
-	walk_left_anim = new Spritesheet(textureAtlas, PLAYER_WALK_LEFT, 4, 100);
-	walk_up_anim = new Spritesheet(textureAtlas, PLAYER_WALK_UP, 4, 100);
-	walk_down_anim = new Spritesheet(textureAtlas, PLAYER_WALK_DOWN, 4, 100);
-	
-	run_right_anim = new Spritesheet(textureAtlas, PLAYER_RUN_RIGHT, 4, 100);
-	run_left_anim = new Spritesheet(textureAtlas, PLAYER_RUN_LEFT, 4, 100);
-	run_up_anim = new Spritesheet(textureAtlas, PLAYER_RUN_UP, 4, 100);
-	run_down_anim = new Spritesheet(textureAtlas, PLAYER_RUN_DOWN, 4, 100);
-	
-	current_anim = idle_down_anim;
 	
 	fullHp = 100;
-	currHp = 100;
-	
-	init();
+	currHp = 100;	
 }
 
 SDL_Point PlayerSprite::getRightHandPosition()

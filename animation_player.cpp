@@ -46,5 +46,5 @@ void AnimationPlayer::drawTo(SDL_Renderer* renderer, float x, float y)
 	src.x = currAnim->frameWidth * frameCounter;
 	dest.x = x;
 	dest.y = y;
-	textureAtlas->drawSubimg(renderer, currAnim->sheetImageId, src, x, y);
+	textureAtlas->drawSubimg(renderer, currAnim->sheetImageId, src, x, y); // TODO: OFFSETS?
 }

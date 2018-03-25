@@ -92,7 +92,7 @@ void SpriteController::handleSpriteSeen(Sprite* sprite)
 void SpriteController::drawTo(SDL_Renderer* renderer, TextureAtlas* textureAtlas, int offsetX, int offsetY)
 {
 	// draw sprite's current animation
-	sprite->current_anim->drawTo(renderer, sprite->x - offsetX, sprite->y - offsetY);
+	sprite->animPlayer->drawTo(renderer, sprite->x - offsetX, sprite->y - offsetY);
 	
 	// draw in-hand
 	if (inHand)

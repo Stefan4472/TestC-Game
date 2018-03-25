@@ -4,7 +4,7 @@
 #include <SDL2/SDL.h>
 #include <vector>
 #include "constants.h"
-#include "spritesheet.h"
+#include "animation_engine.h"
 
 // Listener interface for receiving sprite callbacks
 class SpriteListener
@@ -18,30 +18,17 @@ class SpriteListener
 class Sprite
 {
 	protected:
-		// spritesheets for idling (not moving) while facing different directions
-		Spritesheet *idle_right_anim = NULL, *idle_left_anim = NULL, *idle_up_anim = NULL, *idle_down_anim = NULL;  // TODO: REPLACE WITH SINGLE ARRAY FOR CURRENT STATE
-		// spritesheets for walking in different directions
-		Spritesheet *walk_up_anim = NULL, *walk_down_anim = NULL, *walk_right_anim = NULL, *walk_left_anim = NULL;
-		// spritesheets for running in different directions
-		Spritesheet *run_up_anim = NULL, *run_down_anim = NULL, *run_right_anim = NULL, *run_left_anim = NULL;
-		// array of idle spritesheets, indexed by direction
-		Spritesheet* idle_anims[5] = { NULL, idle_up_anim, idle_down_anim, idle_right_anim, idle_left_anim };
-		// array of walk spritesheets, indexed by direction
-		Spritesheet* walk_anims[5] = { NULL, walk_up_anim, walk_down_anim, walk_right_anim, walk_left_anim };
-		// array of run spritesheets, indexed by direction
-		Spritesheet* run_anims[5] = { NULL, run_up_anim, run_down_anim, run_right_anim, run_left_anim };
-		
-		// pointer to current action animations
-		Spritesheet** current_anim_array = idle_anims;
+		// pointer to AnimationEngine
+		AnimationEngine* animEngine = NULL;
 		
 		// registered listener
 		SpriteListener* listener = NULL;
 		
 	public: // TODO: MAKE SOME PRIVATE/PROTECTED
-		// pointer to animation that's currently playing
-		Spritesheet *current_anim = NULL;
-		// initializes arrays of Spritesheets
-		void init();
+		// create sprite of given type (see AnimationEngine)
+		Sprite(SPRITE_TYPE spriteType, AnimationEngine* animEngine);
+		// type of sprite this is
+		int spriteType = 0;
 		// offset of start of hitbox, from sprite's x and y (x + hitboxOffsetX = hitbox.x)
 		int hitboxOffsetX, hitboxOffsetY;
 		// offset of start of lineOfSight, from sprite's x and y
@@ -53,6 +40,9 @@ class Sprite
 		
 		// MAP_POSITION HITBOX? DRAW_POSITION?
 	
+		// animation player used by sprite TODO: MAKE PROTECTED, ADD DRAWTO()
+		AnimationPlayer* animPlayer = NULL;
+		
 		// virtual coordinates
 		float x = -1, y = -1;
 		// virtual coordinates at last frame
@@ -104,6 +94,8 @@ class Sprite
 		void addHealth(float amount);
 		// subtracts given amount from sprite's currHp
 		void loseHealth(float amount);
+		
+		//void drawTo(SDL_Renderer* renderer, x, y);
 		
 };
 
