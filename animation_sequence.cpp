@@ -10,5 +10,10 @@ AnimationSequence::AnimationSequence(Spritesheet* right, Spritesheet* left, Spri
 
 bool AnimationSequence::hasDir(int dir)
 {
-	return anims[dir];	
+	return anims[dir];
+}
+
+void AnimationSequence::printDebug()
+{
+	printf("AnimSequence With Spritesheets %d %d %d %d %d\n", anims[0], anims[1], anims[2], anims[3], anims[4]);
 }

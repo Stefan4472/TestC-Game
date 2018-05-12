@@ -2,12 +2,14 @@
 
 Sprite::Sprite(int spriteType, float x, float y, AnimationEngine* animEngine)
 {
+	printf("Sprite received animEngine %d\n", animEngine);
+	printf("Creating Sprite of type %d at %f, %f...\n", spriteType, x, y);
 	this->spriteType = spriteType;
 	this->x = x;
 	this->y = y;
 	this->animEngine = animEngine;
 	animPlayer = new AnimationPlayer(animEngine->textureAtlas);
-	
+
 	if (spriteType == SPRITE_TYPE_CIVILIAN)
 	{
 		walkSpeed = 0.1f;
@@ -29,16 +31,24 @@ Sprite::Sprite(int spriteType, float x, float y, AnimationEngine* animEngine)
 		hitbox.h = 13;
 
 		fullHp = 100;
-		currHp = 100;	
+		currHp = 100;
 	}
+	else
+	{
+		printf("EXCEPTION: Invalid Sprite Type %d\n", spriteType);
+	}
+
+	//printf(animEngine->get(spriteType, SPRITE_IDLE, NULL)->toString());
+	animPlayer->setAnimSequence(animEngine->get(spriteType, SPRITE_IDLE, NULL));
 	setDir(DIRECTION_DOWN);
+	printf("Done\n");
 }
-	
+
 SDL_Point Sprite::getRightHandPosition() // todo: standardize for all sprites
 {
-	// TODO: JUST USE ON SPRITE MODEL SO THIS WORKS FOR ALL (CURRENTLY WILL BE OFF FOR CIVILIAN)	
-	switch (facingDir) 
-	{	
+	// TODO: JUST USE ON SPRITE MODEL SO THIS WORKS FOR ALL (CURRENTLY WILL BE OFF FOR CIVILIAN)
+	switch (facingDir)
+	{
 		case DIRECTION_RIGHT:
 			return SDL_Point { x + 24, y + 44 };
 
@@ -61,30 +71,30 @@ void Sprite::move(int ms) {
 	// save current position
 	lastX = x;
 	lastY = y;
-	
+
 	x += ms * speedX;
 	y += ms * speedY;
-	
-	// adjust hitbox and line of sight. 
+
+	// adjust hitbox and line of sight.
 	// they use integer coordinates so we can't simply add to them
 	hitbox.x = x + hitboxOffsetX;
 	hitbox.y = y + hitboxOffsetY;
-	
+
 	lineOfSight.x = x + lineOfSightOffsetX;
-	lineOfSight.y = y + lineOfSightOffsetY;	
-	
+	lineOfSight.y = y + lineOfSightOffsetY;
+
 }
 
 void Sprite::startWalking()
 {
 	animPlayer->setAnimSequence(animEngine->get(spriteType, SPRITE_WALK, NULL));
 
-	switch( facingDir ) 
-	{ 
+	switch( facingDir )
+	{
 		case DIRECTION_RIGHT:
 			speedX = walkSpeed;
 			speedY = 0;
-			break;					
+			break;
 
 		case DIRECTION_UP:
 			speedX = 0;
@@ -100,7 +110,7 @@ void Sprite::startWalking()
 			speedX = 0;
 			speedY = walkSpeed;
 			break;
-			
+
 		default:
 			printf("Sprite::startMoving received invalid facingDir! %d\n", facingDir);
 	}
@@ -109,13 +119,13 @@ void Sprite::startWalking()
 void Sprite::startRunning()
 {
 	animPlayer->setAnimSequence(animEngine->get(spriteType, SPRITE_RUN, NULL));
-								
-	switch( facingDir ) 
-	{ 
+
+	switch( facingDir )
+	{
 		case DIRECTION_RIGHT:
 			speedX = runSpeed;
 			speedY = 0;
-			break;					
+			break;
 
 		case DIRECTION_UP:
 			speedX = 0;
@@ -131,7 +141,7 @@ void Sprite::startRunning()
 			speedX = 0;
 			speedY = runSpeed;
 			break;
-			
+
 		default:
 			printf("Sprite::startRunning received unkown facingDir! %d\n", facingDir);
 	}
@@ -140,12 +150,12 @@ void Sprite::startRunning()
 void Sprite::stopMoving()
 {
 	animPlayer->setAnimSequence(animEngine->get(spriteType, SPRITE_IDLE, NULL));
-								
+
 	speedX = 0;
 	speedY = 0;
 }
 
-void Sprite::moveBack() 
+void Sprite::moveBack()
 {
 	x = lastX;
 	y = lastY;
@@ -158,10 +168,10 @@ void Sprite::setDir(int dir)
 {
 	// change of direction: queue animPlayer TODO: MAKE SURE THE DIRECTION IS SUPPORTED
 	animPlayer->setDir(dir);
-	
+
 	// set animation, direction, and lineOfSight
-	switch (facingDir) 
-	{	
+	switch (dir)
+	{
 		case DIRECTION_RIGHT:
 			facingDir = DIRECTION_RIGHT;
 			lineOfSightOffsetX = hitbox.w;
@@ -211,11 +221,11 @@ void Sprite::setListener(SpriteListener* listener)
 
 void Sprite::addHealth(float amount)
 {
-	currHp += amount;	
+	currHp += amount;
 	// norm to fullHp
 	currHp = currHp > fullHp ? fullHp : currHp;
 	printf("Sprite received %f health to hit %f hp\n", amount, currHp);
-	
+
 	if (listener)
 	{
 		listener->onSpriteHealthChanged(amount, currHp);
@@ -225,16 +235,16 @@ void Sprite::addHealth(float amount)
 void Sprite::loseHealth(float amount)
 {
 	currHp -= amount;
-	
+
 	// sprite dies if hp hits zero
 	if (currHp < 0)
 	{
 		currHp = 0;
-		dead = true;	
+		dead = true;
 		printf("Sprite died\n");
 	}
 	printf("Sprite lost %f health to hit %f hp\n", amount, currHp);
-	
+
 	if (listener)
 	{
 		listener->onSpriteHealthChanged(-amount, currHp);

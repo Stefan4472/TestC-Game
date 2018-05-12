@@ -18,15 +18,15 @@ class AnimationPlayer
 		// current Spritesheet being played
 		Spritesheet* currAnim = NULL;
 		// direction currently set to
-		int dir = 0;
+		int dir = DIRECTION_NONE;
 		// frame index currently on
 		int frameCounter;
 		// number of milliseconds this frame should keep playing for
 		int msLeftThisFrame;
-		
+
 	public:
 		AnimationPlayer(TextureAtlas* textureAtlas);
-		// sets sequence to play 
+		// sets sequence to play
 		void setAnimSequence(AnimationSequence* sequence);
 		// sets direction
 		void setDir(int dir);

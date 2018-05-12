@@ -7,7 +7,7 @@ SpriteController::SpriteController(Sprite* sprite)
 
 void SpriteController::onInHandItemChanged(Item* newItem)
 {
-	inHand = newItem;	
+	inHand = newItem;
 }
 
 void SpriteController::onSpriteHealthChanged(int amount, int currHp)
@@ -26,7 +26,7 @@ void SpriteController::handleSpriteCollision(Sprite* other)
 {
 	sprite->moveBack(); // TODO: SEND TO CURRENT ACTION, IF ANY
 }
-			
+
 void SpriteController::update(int ms)
 {
 	// update attacks, removing those that are finished
@@ -40,17 +40,17 @@ void SpriteController::update(int ms)
 		}
 		else
 		{
-			i++;	
+			i++;
 		}
 	}
-	
+
 	// apply buffs, if any, and removes those that are finished
 	for (int i = 0; i < buffs.size();)
 	{
 		if (buffs[i]->apply(sprite, ms))
 		{
 			printf("Applying buff to %d\n", sprite);
-			i++;	
+			i++;
 		}
 		else
 		{
@@ -59,7 +59,7 @@ void SpriteController::update(int ms)
 			buffs.erase(buffs.begin() + i);
 		}
 	}
-	
+
 	// update in-hand item, if any, and delete if requested
 	if (inHand && inHand->destroy)
 	{
@@ -69,7 +69,7 @@ void SpriteController::update(int ms)
 	{
 		inHand->update(ms);
 	}
-	
+
 	// decrement remaining time to show health bar (if any)
 	showHealthbarMs = (showHealthbarMs > ms ? showHealthbarMs - ms : 0);
 }
@@ -93,16 +93,16 @@ void SpriteController::drawTo(SDL_Renderer* renderer, TextureAtlas* textureAtlas
 {
 	// draw sprite's current animation
 	sprite->animPlayer->drawTo(renderer, sprite->x - offsetX, sprite->y - offsetY);
-	
+
 	// draw in-hand
-	if (inHand)
+	if (inHand) // TODO: THIS SHOULD BE TAKEN CARE OF BY THE ANIMATION ENGINE
 	{
 		SDL_Point hand_location = sprite->getRightHandPosition();
 		textureAtlas->draw(renderer, inHand->textureId, (int) (hand_location.x - offsetX), (int) (hand_location.y - offsetY));
 		//inHand->drawTo(renderer, (int) (hand_location.x - offsetX), (int) (hand_location.y - offsetY));
 	}
-	
-	// draw health bar 
+
+	// draw health bar
 	if (showHealthbarMs)
 	{
 		healthbar->drawTo(renderer, sprite->x - offsetX, sprite->y - offsetY);

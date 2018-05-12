@@ -5,27 +5,29 @@ Map::Map(SDL_Renderer* renderer, TextureAtlas* textureAtlas, SoundAtlas* soundAt
 	this->textureAtlas = textureAtlas;
 	this->soundAtlas = soundAtlas;
 	this->fontAtlas = fontAtlas;
+
+	printf("Creating Animation Engine...");
 	animEngine = new AnimationEngine(textureAtlas);
-	
+	printf("Done\n");
+
 	printf("Creating Map...");
 	mapChunk = new MapChunk(textureAtlas, 10);
 	printf("Done\n");
-	
-	printf("HI");
-	addControlledSprite(new CivilianSpriteController(new Sprite(SPRITE_TYPE_CIVILIAN, 32 * 4, 32 * 4, animEngine), this)); 
+
 	printf("Creating Player Sprite...");
 	playerSpriteController = new PlayerSpriteController(new Sprite(SPRITE_TYPE_PLAYER, 100.0f, 140.0f, animEngine), this, textureAtlas);
 	printf("Done\n");
+
 	addControlledSprite(playerSpriteController);
-	
-	
+	/*addControlledSprite(new CivilianSpriteController(new Sprite(SPRITE_TYPE_CIVILIAN, 32 * 4, 32 * 4, animEngine), this));
+
 	// arm the civilian!!!!
 	Gun* pistol = new Gun(ITEM_PISTOL);
 	for (int i = 0; i < 5; i++)
 	{
 		pistol->load(new PistolAmmo());
 	}
-	sprites[1]->inventory->addItem(pistol);
+	sprites[1]->inventory->addItem(pistol);*/
 
 	addDrop(new ItemDrop(new Consumable(ITEM_BREAD_LOAF), 100, 200));
 	addDrop(new ItemDrop(new Consumable(ITEM_BEER_MUG), 132, 200));
@@ -39,25 +41,26 @@ Map::Map(SDL_Renderer* renderer, TextureAtlas* textureAtlas, SoundAtlas* soundAt
 
 void Map::run()
 {
+	printf("Running Game\n");
 	// main loop flags
 	bool quit = false;
 	bool paused = false;
-	
+
 	Uint32 last_time = SDL_GetTicks();
 	Uint32 curr_time;
 	Uint32 ticks_since_last_frame;
 	int frames = 0;
-	
+
 	SDL_Event e;
 
 	// main loop
 	while( !quit )
 	{
 		frames++;
-		// calculate number of milliseconds since last frame was rendered 
+		// calculate number of milliseconds since last frame was rendered
 		curr_time = SDL_GetTicks();
 		ticks_since_last_frame = curr_time - last_time;
-		
+
 		//Handle events on queue
 		while( SDL_PollEvent( &e ) != 0 )
 		{
@@ -67,15 +70,15 @@ void Map::run()
 				quit = true;
 			}
 			// send event to playerSprite, which will handle it in almost all cases.
-			else if (playerSpriteController->handleKeyEvent(e)) 
+			else if (playerSpriteController->handleKeyEvent(e))
 			{
-				
+
 			}
 			// handle event on base window level  TODO: GUI ELEMENTS/MENUS
 			else if (e.type == SDL_KEYDOWN)
 			{
 				switch( e.key.keysym.sym )
-				{ 
+				{
 					// show exit menu
 					case SDLK_ESCAPE:
 						quit = true;
@@ -84,34 +87,38 @@ void Map::run()
 			}
 		}
 
+		// printf("Updating...");
 		update(ticks_since_last_frame);
-		
+		// printf("Done\n");
+
 		// center map on playerSprite and draw
+		// printf("Centering...");
 		centerTo(playerSpriteController->sprite->hitbox);
-		
+		// printf("Done\n");
+
+		// printf("Drawing...");
 		drawTo(renderer);
-		
+		// printf("Done\n");
+
 		// update screen
 		SDL_RenderPresent(renderer);
-		
+
 		// update last_frame_ticks
 		last_time = curr_time;
 	}
 }
 
-void Map::update(int ms) 
+void Map::update(int ms)
 {
-	// temporarily push player sprite to sprite list
-	
 	int num_sprites = sprites.size();
 	int num_sounds = 0; // TODO
 	SDL_Rect attack_pos;
-	
+
 	// check for trigger conditions
 	for (int i = 0; i < num_sprites; i++)
 	{
 		// check sprite's attacks against other sprite hitboxes
-		for (int j = 0; j < sprites[i]->attacks.size(); j++) 
+		for (int j = 0; j < sprites[i]->attacks.size(); j++)
 		{
 			attack_pos = sprites[i]->attacks[j]->position;
 			// check against other sprites
@@ -126,7 +133,7 @@ void Map::update(int ms)
 			}
 			// check against map objects TODO
 		}
-		
+
 		// check distance to sounds that were created the previous frame
 		for (int j = 0; j < num_sounds; j++)
 		{
@@ -135,17 +142,17 @@ void Map::update(int ms)
 				sprites[i]->handleSoundHeard(sounds[j]);
 			}
 		}
-		
+
 		// check sprite's line of sight against other sprites
-		for (int j = 0; j < num_sprites; j++) 
+		for (int j = 0; j < num_sprites; j++)
 		{
 			if (i != j && checkCollision(sprites[i]->sprite->lineOfSight, sprites[j]->sprite->hitbox)) // TODO: IGNORES BLOCKAGES OF LINE-OF-SIGHT
 			{
-				sprites[i]->handleSpriteSeen(sprites[j]->sprite);	
+				sprites[i]->handleSpriteSeen(sprites[j]->sprite);
 			}
 		}
 	}
-	
+
 	// no other triggers will be checked this frame
 	// update and move each sprite
 	for (int i = 0; i < num_sprites; i++)
@@ -153,7 +160,7 @@ void Map::update(int ms)
 		sprites[i]->sprite->move(ms);
 		sprites[i]->update(ms);
 	}
-	
+
 	// check that sprite is in a valid position and not colliding with any others
 	for (int i = 0; i < num_sprites; i++)
 	{
@@ -174,7 +181,7 @@ void Map::update(int ms)
 			}
 		}
 	}
-	
+
 	// "pick up" any items dropped by the sprite
 	for (int i = 0; i < num_sprites; i++)
 	{
@@ -185,14 +192,14 @@ void Map::update(int ms)
 			sprites[i]->drops.pop_back();
 		}
 	}
-	
+
 	// clear list of sounds, so that new ones can be added
 	for (int i = 0; i < num_sounds; i++)
 	{
-		delete sounds[i];	
+		delete sounds[i];
 	}
 	sounds.clear();
-				
+
 	// fetch sounds requested by sprites, play them, and store them in the map
 	for (int i = 0; i < num_sprites; i++)
 	{
@@ -200,17 +207,17 @@ void Map::update(int ms)
 		{
 			printf("Playing Sound %d from Sprite %d\n", sprites.at(i)->sounds.back(), sprites.at(i)->sprite);
 			sounds.push_back(new Sound(sprites.at(i)->sounds.back(), sprites[i]->sprite->x, sprites[i]->sprite->y, sprites[i]->sprite));
-			Mix_PlayChannel( -1, soundAtlas->getSound(sprites.at(i)->sounds.back()), 0 ); // TODO: SEEMS INEFFICIENT 
+			Mix_PlayChannel( -1, soundAtlas->getSound(sprites.at(i)->sounds.back()), 0 ); // TODO: SEEMS INEFFICIENT
 			sprites.at(i)->sounds.pop_back();
 		}
 	}
-	
+
 	// handle dead sprites
 	/*for (int i = 0; i < num_sprites; i++)
 	{
 		if (sprites[i]->sprite->dead)
 		{
-			
+
 		}
 	}
 	// destroy sprites that request it
@@ -223,10 +230,10 @@ void Map::update(int ms)
 		}
 		else
 		{
-			i++;	
+			i++;
 		}
 	}*/
-	
+
 	// handle playerSprite wanting to interact: delegate to handlePlayerInteract()
 	if (playerSpriteController->interactPressed && !playerSpriteController->interactHandled)
 	{
@@ -237,15 +244,15 @@ void Map::update(int ms)
 
 void Map::handlePlayerInteract(PlayerSpriteController* playerSpriteController)
 {
-	// check tile first, then hitboxes of sprites, then hitboxes of objects	
+	// check tile first, then hitboxes of sprites, then hitboxes of objects
 	printf("Handling Player Interact\n");
-	
+
 	// TODO: INTERACTIBLE TILES
-	
+
 	SDL_Rect player_hitbox = playerSpriteController->sprite->hitbox; // TODO: PLAYERSPRITE INTERACT_POSITION
-	
+
 	// check player hitbox against other sprite hitboxes
-	for (int i = 1; i < sprites.size(); i++) 
+	for (int i = 1; i < sprites.size(); i++)
 	{
 		if (checkCollision(player_hitbox, sprites[i]->sprite->hitbox))
 		{
@@ -254,12 +261,12 @@ void Map::handlePlayerInteract(PlayerSpriteController* playerSpriteController)
 			return;
 		}
 	}
-	for (int i = 0; i < itemDrops.size(); i++) 
+	for (int i = 0; i < itemDrops.size(); i++)
 	{
 		if (checkCollision(player_hitbox, itemDrops[i]->position))
 		{
 			printf("Collision with object at %f, %f\n", itemDrops[i]->position.x, itemDrops[i]->position.y);
-			
+
 			// add ItemDrop to inventory
 			if (playerSpriteController->inventory->addItemStack(itemDrops[i]->getStack()))
 			{
@@ -289,86 +296,86 @@ bool Map::isWalkable(int x, int y) // todo: check x >= 0 && y >= 0 && x <= SCREE
 
 void Map::addControlledSprite(SpriteController* spriteController)
 {
-	sprites.push_back(spriteController);	
+	sprites.push_back(spriteController);
 }
 
 void Map::addDrop(ItemDrop* itemDrop)
 {
 	printf("Map::addDrop. Adding Drop %d of %s\n", itemDrop->getStack()->size(), itemDrop->getStack()->peekNext()->name.c_str());
-	itemDrops.push_back(itemDrop);	
+	itemDrops.push_back(itemDrop);
 }
 
-void Map::centerTo(SDL_Rect center) 
+void Map::centerTo(SDL_Rect center)
 {
 	camera.x = center.x - (SCREEN_WIDTH - center.w) / 2;
 	camera.y = center.y - (SCREEN_HEIGHT - center.h) / 2;
 	// TODO: DON'T ALLOW NEGATIVE?
 }
 
-void Map::drawTo(SDL_Renderer* renderer) 
+void Map::drawTo(SDL_Renderer* renderer)
 {
 	// offsets from tile borders on x and y
 	int offset_x = camera.x % TILE_WIDTH;
 	int offset_y = camera.y % TILE_HEIGHT;
-	
+
 	// calculate # of tiles to render on width and height of screen (todo: make const)
 	int tiles_wide = (SCREEN_WIDTH / TILE_WIDTH) + 1;
 	int tiles_tall = (SCREEN_HEIGHT / TILE_HEIGHT) + 1;
-	
+
 	// row and col of top-left tile to render
 	int start_tile_x = camera.x / TILE_WIDTH;
 	int start_tile_y = camera.y / TILE_HEIGHT;
-	
+
 	// set color to black
 	SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
 
 	// render tiles to canvas, using offsets to get physical coordinates
-	for (int i = 0; i < tiles_tall; i++) 
+	for (int i = 0; i < tiles_tall; i++)
 	{
 		dest.y = i * TILE_HEIGHT - offset_y;
-		for (int j = 0; j < tiles_wide; j++) 
+		for (int j = 0; j < tiles_wide; j++)
 		{
 			dest.x = j * TILE_WIDTH - offset_x;
-			
+
 			// out of range: draw black
-			if (start_tile_y + i < 0 || start_tile_x + j < 0 || start_tile_y + i >= mapChunk->mapRows || start_tile_x + j >= mapChunk->mapCols) 
+			if (start_tile_y + i < 0 || start_tile_x + j < 0 || start_tile_y + i >= mapChunk->mapRows || start_tile_x + j >= mapChunk->mapCols)
 			{
 				SDL_RenderFillRect( renderer, &dest );
 			}
-			else 
+			else
 			{
 				textureAtlas->draw(renderer, mapChunk->mapTiles[start_tile_y + i][start_tile_x + j], dest.x, dest.y);
 				SDL_RenderDrawRect( renderer, &dest );
 			}
 		}
 	}
-	
+
 	// outline square player is aiming at, if any
 	if (playerSpriteController->sprite->aiming)
 	{
 		SDL_SetRenderDrawColor(renderer, 0, 0, 255, SDL_ALPHA_OPAQUE);
 		SDL_RenderFillRect(renderer, &playerSpriteController->sprite->aimRect);
 	}
-	
+
 	// render map objects
 	for (int i = 0; i < mapChunk->objects.size(); i++)
 	{
-		textureAtlas->draw(renderer, mapChunk->objects[i].textureId, mapChunk->objects[i].x - camera.x, mapChunk->objects[i].y - camera.y);	
+		textureAtlas->draw(renderer, mapChunk->objects[i].textureId, mapChunk->objects[i].x - camera.x, mapChunk->objects[i].y - camera.y);
 	}
-	
+
 	// render item drops
-	for (int i = 0; i < itemDrops.size(); i++) 
+	for (int i = 0; i < itemDrops.size(); i++)
 	{
-		itemDrops[i]->drawToMap(renderer, textureAtlas, camera.x, camera.y);	
+		itemDrops[i]->drawToMap(renderer, textureAtlas, camera.x, camera.y);
 	}
 	// draw sprites
-	for (int i = 0; i < sprites.size(); i++) 
+	for (int i = 0; i < sprites.size(); i++)
 	{
 		sprites[i]->drawTo(renderer, textureAtlas, camera.x, camera.y);
 	}
 	// draw hitboxes in red
 	SDL_SetRenderDrawColor(renderer, 255, 0, 0, SDL_ALPHA_OPAQUE);
-	for (int i = 0; i < sprites.size(); i++) 
+	for (int i = 0; i < sprites.size(); i++)
 	{
 		sprites[i]->sprite->hitbox.x -= camera.x;
 		sprites[i]->sprite->hitbox.y -= camera.y;
@@ -378,7 +385,7 @@ void Map::drawTo(SDL_Renderer* renderer)
 	}
 	// draw line of sight in blue
 	SDL_SetRenderDrawColor(renderer, 0, 0, 255, SDL_ALPHA_OPAQUE);
-	for (int i = 0; i < sprites.size(); i++) 
+	for (int i = 0; i < sprites.size(); i++)
 	{
 		sprites[i]->sprite->lineOfSight.x -= camera.x;
 		sprites[i]->sprite->lineOfSight.y -= camera.y;
@@ -387,9 +394,9 @@ void Map::drawTo(SDL_Renderer* renderer)
 		sprites[i]->sprite->lineOfSight.y += camera.y;
 	}
 	// draw attack hitboxes in blue
-	for (int i = 0; i < playerSpriteController->attacks.size(); i++) 
+	for (int i = 0; i < playerSpriteController->attacks.size(); i++)
 	{
-		SDL_RenderDrawRect(renderer, &playerSpriteController->attacks[i]->position);	
+		SDL_RenderDrawRect(renderer, &playerSpriteController->attacks[i]->position);
 		playerSpriteController->attacks[i]->drawToMap(renderer, textureAtlas, camera.x, camera.y);
 	}
 	// draw player's hotbar
@@ -400,15 +407,15 @@ bool Map::checkCollision(SDL_Rect a, SDL_Rect b)
 {
 	return a.y + a.h > b.y && a.y < b.y + b.h && a.x + a.w > b.x && a.x < b.x + b.w;
 }
-		
+
 ItemStack* Map::createItemStack(int itemId, int quantity)
 {
 	printf("Map: Creating %d Items with Id %d\n", quantity, itemId);
 	// bound quantity to stack size of requested items TODO: DESIRED BEHAVIOR?
 	quantity = (quantity > getStackSize(itemId) ? getStackSize(itemId) : quantity);
-	
+
 	std::vector<Item*> items(quantity);
-	
+
 	switch (itemId) // TODO: OTHER WAY TO DO THIS?
 	{
 		// consumables
@@ -416,41 +423,41 @@ ItemStack* Map::createItemStack(int itemId, int quantity)
 		case ITEM_CHICKEN_LEG:
 		case ITEM_BEER_MUG:
 		case ITEM_GREEN_POTION:
-			for (int i = 0; i < quantity; i++) 
+			for (int i = 0; i < quantity; i++)
 			{
 				items[i] = new Consumable(itemId);
-			}		
+			}
 			break;
-			
+
 		case ITEM_PISTOL:
 		case ITEM_SHOTGUN:
 		case ITEM_TOMMYGUN:
-			for (int i = 0; i < quantity; i++) 
+			for (int i = 0; i < quantity; i++)
 			{
 				items[i] = new Gun(itemId);
 			}
 			break;
-			
+
 		case ITEM_PISTOL_AMMO:
 		case ITEM_SHOTGUN_AMMO:
 		case ITEM_RIFLE_AMMO:
-			for (int i = 0; i < quantity; i++) 
+			for (int i = 0; i < quantity; i++)
 			{
 				items[i] = new PistolAmmo();
 			}
 			break;
-			
+
 		case ITEM_SCROLL:
 			break;
-			
+
 		case ITEM_SWORD:
-			for (int i = 0; i < quantity; i++) 
+			for (int i = 0; i < quantity; i++)
 			{
 				items[i] = new Sword();
 			}
 			break;
-	
-		default: 
+
+		default:
 			printf("ERROR: Don't recognize itemId %d\n", itemId);
 			break;
 	}
@@ -461,20 +468,20 @@ FollowPathAction* Map::findPath(float startX, float startY, float endX, float en
 {
 	// TODO: A* SEARCH
 	std::vector<MoveInDirAction*> moves;
-	
+
 	printf("Path from %f, %f to %f, %f queried\n", startX, startY, endX, endY);
 	// determine movement along X
 	if (endX > startX)
 	{
 		printf("move right %f\n", endX - startX);
 		moves.push_back(new MoveInDirAction(DIRECTION_RIGHT, endX - startX, false));
-	} 
+	}
 	else if (endX < startX)
 	{
 		printf("move left %f\n", startX - endX);
 		moves.push_back(new MoveInDirAction(DIRECTION_LEFT, startX - endX, false));
 	}
-	
+
 	// determine movement along Y
 	if (endY > startY)
 	{
@@ -489,14 +496,14 @@ FollowPathAction* Map::findPath(float startX, float startY, float endX, float en
 	printf("Done\n");
 	return new FollowPathAction(moves);;
 }
- 
+
 FollowPathAction* Map::findRandomPath(float startX, float startY, int numTiles) // todo: running? more sophisticated options
 {
 	// TODO: A* SEARCH
 	std::vector<MoveInDirAction*> moves;
-	
+
 	moves.push_back(new MoveInDirAction(rand() % 4 + 1, numTiles * TILE_WIDTH, false));
-					 
+
 	return new FollowPathAction(moves);
 }
 
@@ -505,11 +512,11 @@ SDL_Point Map::screenToWorld(int screenX, int screenY)
 	// offsets from tile borders on x and y
 	int offset_x = camera.x % TILE_WIDTH;
 	int offset_y = camera.y % TILE_HEIGHT;
-	
+
 	// row and col of top-left tile to render
 	int start_tile_x = camera.x / TILE_WIDTH;
 	int start_tile_y = camera.y / TILE_HEIGHT;
-	
+
 	return SDL_Point { camera.x + screenX, camera.y + screenY };
 	//return SDL_Point { start_tile_x + (screenX - offset_x) / TILE_WIDTH, start_tile_y + (screenY - offset_y) / TILE_HEIGHT };
 }
@@ -519,14 +526,14 @@ SDL_Rect Map::worldToScreen(SDL_Rect worldRect)
 	// offsets from tile borders on x and y
 	int offset_x = camera.x % TILE_WIDTH;
 	int offset_y = camera.y % TILE_HEIGHT;
-	
+
 	// row and col of top-left tile to render
 	int start_tile_x = camera.x / TILE_WIDTH;
 	int start_tile_y = camera.y / TILE_HEIGHT;
-	
+
 	//int offset_x = worldRect.x - camera.x;
-	//return SDL_Rect { 
-	
+	//return SDL_Rect {
+
 	return SDL_Rect { worldRect.x - camera.x, worldRect.y - camera.y, worldRect.w, worldRect.h };
 }
 

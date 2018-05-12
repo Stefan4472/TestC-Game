@@ -2,8 +2,9 @@
 #define ANIMATION_SEQUENCE_H
 
 #include <vector>
+#include <stdio.h>
 #include "constants.h"
-#include "spritesheet.h" 
+#include "spritesheet.h"
 
 // Defines how to draw an animation. TODO: Can include multiple spritesheets at different offsets.
 // Contains one spritesheet for each direction. May be null if that direction is not permitted.
@@ -13,7 +14,7 @@ class AnimationSequence // TODO: ADD COMPLEXITY AS NECESSASRY
 {
 	// spritesheets to be played
 	//std::vector<Spritesheet*> spritesheets;
-	
+
 	public:
 		AnimationSequence(Spritesheet* right, Spritesheet* left, Spritesheet* up, Spritesheet* down);
 		// spritesheets, indexed by direction
@@ -22,7 +23,9 @@ class AnimationSequence // TODO: ADD COMPLEXITY AS NECESSASRY
 		SDL_Point offset = SDL_Point { 0, 0 };
 		// returns whether the sequence has an animation for the given direction
 		bool hasDir(int dir);
-		
+		// prints information for debugging
+		void printDebug();
+
 		// adds spritesheet to the sequence
 		//void addAnim(Spritesheet* right, Spritesheet* left, Spritesheet* up, Spritesheet* down);
 };
