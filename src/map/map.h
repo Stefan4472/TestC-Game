@@ -10,7 +10,7 @@
 #include "sound_atlas.h"
 #include "font_atlas.h"
 #include "sound.h"
-#include "animation_engine.h"
+#include "engine/animation_engine.h"
 #include "map_chunk.h"
 #include "item_drop.h"
 #include "attack.h"
@@ -35,53 +35,53 @@ const int TILE_HEIGHT = 32;
 // for sprites.
 
 class Map : public PathFinder // TODO: IMPLEMENTATION OF MAP, AND GAME DRIVER, SHOULD BE SEPARATE.
-{	
+{
 	// defines the tiles that make up the terrain and map
 	MapChunk* mapChunk = NULL;
-	
+
 	// virtual coordinates defining view field
 	SDL_Rect camera = { 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT };
-	
+
 	// source and destination rects for drawing
 	SDL_Rect src = {0, 0, TILE_WIDTH, TILE_HEIGHT}, dest = {0, 0, TILE_WIDTH, TILE_HEIGHT};
-	
+
 	// renderer used for drawing to screen
 	SDL_Renderer* renderer = NULL;
-	
+
 	// pointer to TextureAtlas used for drawing images
 	TextureAtlas* textureAtlas = NULL;
-	
+
 	// pointer to SoundAtlas used to play sounds
 	SoundAtlas* soundAtlas = NULL;
-	
-	// available fonts 
+
+	// available fonts
 	FontAtlas* fontAtlas = NULL;
-	
+
 	// used to create animations
 	AnimationEngine* animEngine = NULL;
-	
+
 	// pointer to player's sprite
 	PlayerSpriteController* playerSpriteController = NULL;
-	
+
 	// controllers for sprites managed by map
 	std::vector<SpriteController*> sprites;
-	
+
 	// item drops generated and managed by map
 	std::vector<ItemDrop*> itemDrops;
-	
+
 	// sounds created by sprites, and the map
 	std::vector<Sound*> sounds;
-	
+
 	// handles player request to interact with the map
 	void handlePlayerInteract(PlayerSpriteController* playerSpriteController);
-	
+
 	// returns whether the given region of map is a valid position for a sprite to be.
 	// In order to be valid, all four corners must be on walkable tiles.
 	bool isValidPosition(SDL_Rect position); // TODO: USAGE OF 4 CALLS TO isWalkable() MAY INTRODUCE OVERHEAD. THIS WILL FOR EACH SPRITE, EACH FRAME
-	
+
 	// returns whether the given point is on a "walkable" tile
 	bool isWalkable(int x, int y);
-	
+
 	public:
 		// init tile images
 		Map(SDL_Renderer* renderer, TextureAtlas* textureAtlas, SoundAtlas* soundAtlas, FontAtlas* fontAtlas);
@@ -99,10 +99,10 @@ class Map : public PathFinder // TODO: IMPLEMENTATION OF MAP, AND GAME DRIVER, S
 		void drawTo(SDL_Renderer* renderer);
 		// returns whether the two rectangles have any intersection
 		bool checkCollision(SDL_Rect a, SDL_Rect b);
-		
+
 		// creates stack of items with given id and quantity
 		ItemStack* createItemStack(int itemId, int quantity);
-	
+
 		// returns an action (list of MoveToActions, each of which define a direction and distance)
 		// than a sprite can follow to get from (startX, startY) to (endX, endY)
 		FollowPathAction* findPath(float startX, float startY, float endX, float endY);

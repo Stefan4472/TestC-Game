@@ -30,7 +30,7 @@ SDL_Texture* loadTexture( std::string path );
 
 //The window we'll be rendering to
 SDL_Window* gWindow = NULL;
-	
+
 // renderer for the window
 SDL_Renderer* gRenderer = NULL;
 
@@ -45,13 +45,13 @@ bool init()
 		printf( "SDL could not initialize! SDL Error: %s\n", SDL_GetError() );
 		return false;
 	}
-	
+
 	// set texture filtering to linear
 	if( !SDL_SetHint( SDL_HINT_RENDER_SCALE_QUALITY, "1" ) )
 	{
 		printf( "Warning: Linear texture filtering not enabled!" );
 	}
-		
+
 	// create window
 	gWindow = SDL_CreateWindow( "Stefan's C++ Game", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN );
 	if( gWindow == NULL )
@@ -59,32 +59,32 @@ bool init()
 		printf( "Window could not be created! SDL Error: %s\n", SDL_GetError() );
 		return false;
 	}
-	
-	// create renderer for window 
+
+	// create renderer for window
 	gRenderer = SDL_CreateRenderer( gWindow, -1, SDL_RENDERER_ACCELERATED );
 	if( gRenderer == NULL )
 	{
 		printf( "Renderer could not be created! SDL Error: %s\n", SDL_GetError() );
 		return false;
 	}
-		
+
 	// initialize renderer color
 	SDL_SetRenderDrawColor( gRenderer, 0x00, 0x00, 0x00, 0x00 );
-	
+
 	// initialize fonts
 	if( TTF_Init() == -1 )
 	{
 		printf( "SDL_ttf could not initialize! SDL_ttf Error: %s\n", TTF_GetError() );
 		return false;
 	}
-	
+
 	 // initialize sound mixer
 	if( Mix_OpenAudio( 44100, MIX_DEFAULT_FORMAT, 2, 2048 ) < 0 )
 	{
 		printf( "SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError() );
 		return false;
 	}
-	
+
 	// initialize PNG loading
 	int imgFlags = IMG_INIT_PNG;
 	if( !( IMG_Init( imgFlags ) & imgFlags ) )
@@ -97,11 +97,11 @@ bool init()
 
 bool loadMedia()
 {
-	texture_atlas_img = loadTexture("graphics/texture_atlas.png");
+	texture_atlas_img = loadTexture("../graphics/texture_atlas.png");
 	if (texture_atlas_img == NULL)
 	{
 		printf("Failed to load texture image!\n");
-		return false;	
+		return false;
 	}
 	return true;
 }
@@ -115,16 +115,16 @@ SDL_Texture* loadTexture( std::string path )
 		printf( "Unable to load image %s! SDL Error: %s\n", path.c_str(), SDL_GetError() );
 		return NULL;
 	}
-	
+
 	SDL_Texture* new_texture = SDL_CreateTextureFromSurface(gRenderer, loadedSurface);
 	if (new_texture == NULL)
 	{
-		printf("Unable to create texture from %s! SDL Error: %s\n", path.c_str());	
+		printf("Unable to create texture from %s! SDL Error: %s\n", path.c_str());
 	}
-	
+
 	// free loaded surface (no longer necessary)
 	SDL_FreeSurface(loadedSurface);
-	
+
 	return new_texture;
 }
 
@@ -133,29 +133,29 @@ void close()
 	printf("Close function reached\n");
 	SDL_DestroyTexture(texture_atlas_img);
 	texture_atlas_img = NULL;
-	
+
 	printf("Destroyed texture atlas\n");
-	
+
 	// destroy renderer
 	SDL_DestroyRenderer( gRenderer );
 	gRenderer = NULL;
-	
+
 	printf("Destroyed renderer\n");
-	
+
 	// destroy window
 	SDL_DestroyWindow( gWindow );
 	gWindow = NULL;
 
 	printf("Destroyed Window\n");
-	
+
 	// quit SDL subsystems
 	TTF_Quit();
 	printf("Quit TTF\n");
 	IMG_Quit();
 	printf("Quit IMG\n");
-	
+
 	printf("QUITING WITHOUT FULL CLEANUP\n");
-	
+
 	//SDL_Quit();
 	//printf("Quit SDL\n");
 }
@@ -169,13 +169,13 @@ int main( int argc, char* args[] )
 	FontAtlas fontAtlas = FontAtlas();
 	Map map = Map(gRenderer, &textureAtlas, &soundAtlas, &fontAtlas);
 	map.run();
-		
+
 	/*
 	// pointer to current Window active on screen
 	Window* currWindow = NULL;
 	// window showing player or sprite inventory
 	Window* invWindow = NULL;
-	
+
 	// window showing pause menu
 	Window* pauseWindow = new Window(100, 300, SCREEN_WIDTH, SCREEN_HEIGHT);;
 
@@ -193,21 +193,21 @@ int main( int argc, char* args[] )
 	imgButton->setImage(SWORD_1);
 	imgButton->setHint(gRenderer, "This is an Image");
 	pauseWindow->addWidget(imgButton);
-	
+
 	// window showing quit menu
 	//Window* quitWindow = new Window(300, 300, SCREEN_WIDTH, SCREEN_HEIGHT);;
-	
+
 	printf("Created windows\n");
-	
+
 	//Main loop flag
 	bool quit = false;
 	bool paused = false;
-	
+
 	Uint32 last_time = SDL_GetTicks();
 	Uint32 curr_time;
 	Uint32 ticks_since_last_frame;
 	int frames = 0;
-	
+
 	//Event handler
 	SDL_Event e;
 
@@ -215,11 +215,11 @@ int main( int argc, char* args[] )
 	while( !quit )
 	{
 		frames++;
-		// calculate number of milliseconds since last frame was rendered 
+		// calculate number of milliseconds since last frame was rendered
 		curr_time = SDL_GetTicks();
 		//printf("Curr time is %d\n", curr_time);
 		ticks_since_last_frame = curr_time - last_time;
-		
+
 		//printf("%u\n", ticks_since_last_frame);
 		//Handle events on queue
 		while( SDL_PollEvent( &e ) != 0 )
@@ -232,27 +232,27 @@ int main( int argc, char* args[] )
 			// send event to currWindow, if active
 			else if (currWindow && currWindow->active && currWindow->handleInputEvent(e))
 			{
-				
+
 			}
 			// send event to playerSprite, which will handle it in almost all cases.
-			else if (playerController->handleKeyEvent(e)) 
+			else if (playerController->handleKeyEvent(e))
 			{
-				
+
 			}
 			// handle event on base window level
 			else if (e.type == SDL_KEYDOWN)
 			{
 				switch( e.key.keysym.sym )
-				{ 
+				{
 					// show player's inventory in window
-					case SDLK_e: 
+					case SDLK_e:
 						invWindow = playerController->inventory->getWindow(gRenderer, &textureAtlas, &fontAtlas); // TODO: SHOULDN'T CREATE A NEW WINDOW EVERY TIME
 						invWindow->active = true;
 						currWindow = invWindow;
 						break;
 
 					// show pause menu
-					case SDLK_p: 
+					case SDLK_p:
 						printf("Pausing\n");
 						paused = true;
 						pauseWindow->active = true;
@@ -270,12 +270,12 @@ int main( int argc, char* args[] )
 		}
 
 		map.update(ticks_since_last_frame);
-		
+
 		// center map on playerSprite and draw
 		map.centerTo(playerController->player->hitbox);
-		
+
 		map.drawTo(gRenderer);
-		
+
 		// handle current window: draw if active, set to NULL if inactive
 		if (currWindow)
 		{
@@ -289,10 +289,10 @@ int main( int argc, char* args[] )
 				currWindow = NULL;
 			}
 		}
-		
+
 		// update screen
 		SDL_RenderPresent(gRenderer);
-		
+
 		// update last_frame_ticks
 		last_time = curr_time;
 	}

@@ -1,8 +1,9 @@
-#include "animation_player.h"frameCounter = 0;
+#include "animation_player.h"
 
 AnimationPlayer::AnimationPlayer(TextureAtlas* textureAtlas) // TODO: PROVIDE INIT DIRECTION AND ANIMATION
 {
 	this->textureAtlas = textureAtlas;
+	frameCounter = 0;
 }
 
 void AnimationPlayer::setAnimSequence(AnimationSequence* sequence)
