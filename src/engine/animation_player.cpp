@@ -21,8 +21,7 @@ void AnimationPlayer::setAnimSequence(AnimationSequence* sequence)
 
 void AnimationPlayer::setDir(int newDir)
 {
-	printf("AnimPlayer setting direction %d\n", newDir);
-	printf("AnimSequence is %d\n", animSequence);
+	printf("AnimPlayer setting direction %d, old was %d\n", newDir, dir);
 
 	// animSequence must be set before direction can be set
 	assert(animSequence);
@@ -53,6 +52,7 @@ void AnimationPlayer::setDir(int newDir)
 
 void AnimationPlayer::update(int ms)
 {
+	assert(currAnim);
 	// more time passed than is left for the frame--show next frame
 	while (ms > msLeftThisFrame)
 	{
@@ -66,6 +66,7 @@ void AnimationPlayer::update(int ms)
 
 void AnimationPlayer::drawTo(SDL_Renderer* renderer, float x, float y)
 {
+	assert(currAnim);
 	dest.x = x;
 	dest.y = y;
 	textureAtlas->drawSubimg(renderer, currAnim->sheetImageId, src, x, y); // TODO: OFFSETS?

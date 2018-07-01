@@ -31,15 +31,10 @@ int main()
   AnimationPlayer civ_anim_player = AnimationPlayer(&t_atlas);
   AnimationPlayer pla_anim_player = AnimationPlayer(&t_atlas);
 
-  AnimationSequence* civ_idle = anim_eng.get(SPRITE_TYPE::SPRITE_TYPE_CIVILIAN,
-    SPRITE_ACTIONS::SPRITE_IDLE, 0);
-  AnimationSequence* civ_walk = anim_eng.get(SPRITE_TYPE::SPRITE_TYPE_CIVILIAN,
-    SPRITE_ACTIONS::SPRITE_WALK, 0);
-  AnimationSequence* civ_anims[2] = { civ_idle, civ_walk };
-  int civ_anim_index = 0;
-  int num_civ_anims = sizeof(civ_anims) / sizeof(AnimationSequence*);
-
-  civ_anim_player.setAnimSequence(civ_anims[civ_anim_index]);
+  civ_anim_player.setAnimSequence(anim_eng.get(SPRITE_TYPE::SPRITE_TYPE_CIVILIAN,
+    SPRITE_ACTIONS::SPRITE_IDLE, 0));
+  pla_anim_player.setAnimSequence(anim_eng.get(SPRITE_TYPE::SPRITE_TYPE_PLAYER,
+    SPRITE_ACTIONS::SPRITE_IDLE, 0));
 
   Uint32 last_time = SDL_GetTicks();
 	Uint32 curr_time, ticks_since_last_frame;
@@ -63,45 +58,58 @@ int main()
 			{
 				quit = true;
 			}
-			else if (e.type == SDL_KEYDOWN)
+			else if (e.type == SDL_KEYDOWN && !e.key.repeat)
 			{
 				switch( e.key.keysym.sym )
 				{
           // change current animation
           case SDLK_w:
-            civ_anim_index = (civ_anim_index + 1) % num_civ_anims;
-            printf("Setting anim sequence %d\n", civ_anim_index);
-            civ_anim_player.setAnimSequence(civ_anims[civ_anim_index]);
+            civ_anim_player.setAnimSequence(anim_eng.get(SPRITE_TYPE::SPRITE_TYPE_CIVILIAN,
+              SPRITE_ACTIONS::SPRITE_WALK, 0));
+            pla_anim_player.setAnimSequence(anim_eng.get(SPRITE_TYPE::SPRITE_TYPE_PLAYER,
+              SPRITE_ACTIONS::SPRITE_WALK, 0));
+            break;
+          case SDLK_r:
+            civ_anim_player.setAnimSequence(anim_eng.get(SPRITE_TYPE::SPRITE_TYPE_CIVILIAN,
+              SPRITE_ACTIONS::SPRITE_RUN, 0));
+            pla_anim_player.setAnimSequence(anim_eng.get(SPRITE_TYPE::SPRITE_TYPE_PLAYER,
+              SPRITE_ACTIONS::SPRITE_RUN, 0));
+            break;
+          case SDLK_i:
+            civ_anim_player.setAnimSequence(anim_eng.get(SPRITE_TYPE::SPRITE_TYPE_CIVILIAN,
+              SPRITE_ACTIONS::SPRITE_IDLE, 0));
+            pla_anim_player.setAnimSequence(anim_eng.get(SPRITE_TYPE::SPRITE_TYPE_PLAYER,
+              SPRITE_ACTIONS::SPRITE_IDLE, 0));
             break;
 					case SDLK_UP:
             civ_anim_player.setDir(DIRECTION::DIRECTION_UP);
-            // pla_anim_player.setDir(DIRECTION::DIRECTION_UP);
+            pla_anim_player.setDir(DIRECTION::DIRECTION_UP);
         		break;
           case SDLK_DOWN:
             civ_anim_player.setDir(DIRECTION::DIRECTION_DOWN);
-            // pla_anim_player.setDir(DIRECTION::DIRECTION_DOWN);
+            pla_anim_player.setDir(DIRECTION::DIRECTION_DOWN);
         		break;
           case SDLK_LEFT:
             civ_anim_player.setDir(DIRECTION::DIRECTION_LEFT);
-            // pla_anim_player.setDir(DIRECTION::DIRECTION_LEFT);
+            pla_anim_player.setDir(DIRECTION::DIRECTION_LEFT);
             break;
           case SDLK_RIGHT:
             civ_anim_player.setDir(DIRECTION::DIRECTION_RIGHT);
-            // pla_anim_player.setDir(DIRECTION::DIRECTION_RIGHT);
+            pla_anim_player.setDir(DIRECTION::DIRECTION_RIGHT);
             break;
 				}
 			}
 		}
 
     civ_anim_player.update(ticks_since_last_frame);
-    // pla_anim_player.update(ticks_since_last_frame);
+    pla_anim_player.update(ticks_since_last_frame);
 
     SDL_Rect screen_background { 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT };
     SDL_SetRenderDrawColor(gRenderer, 0x00, 0x00, 0x00, 0x00);
-    SDL_RenderDrawRect(gRenderer, &screen_background);
+    SDL_RenderFillRect(gRenderer, &screen_background);
 
     civ_anim_player.drawTo(gRenderer, 100, 100);
-    // pla_anim_player.drawTo(gRenderer, 200, 100);
+    pla_anim_player.drawTo(gRenderer, 200, 100);
 
 		// update screen
 		SDL_RenderPresent(gRenderer);
