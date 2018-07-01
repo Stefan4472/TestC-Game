@@ -2,6 +2,7 @@
 #define ANIMATION_PLAYER_H
 
 #include <SDL2/SDL.h>
+#include <assert.h>
 #include "animation_sequence.h"
 
 // Plays an AnimationSequence. Set the AnimationSequence through the set() method, and call
@@ -17,8 +18,8 @@ class AnimationPlayer
 		AnimationSequence* animSequence = NULL;
 		// current Spritesheet being played
 		Spritesheet* currAnim = NULL;
-		// direction currently set to
-		int dir = DIRECTION_NONE;
+		// direction currently set to. defaults to DOWN
+		int dir = DIRECTION::DIRECTION_NONE;
 		// frame index currently on
 		int frameCounter;
 		// number of milliseconds this frame should keep playing for
@@ -32,7 +33,7 @@ class AnimationPlayer
 		void setDir(int dir);
 		// increments duration by given number of milliseconds
 		void update(int ms);
-		// draws current AnimationSequences to given renderer
+		// draws current AnimationSequence to given renderer (via currAnim)
 		void drawTo(SDL_Renderer* renderer, float x, float y);
 };
 
