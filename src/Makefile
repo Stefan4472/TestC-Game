@@ -17,7 +17,7 @@ LINKER_FLAGS = -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer
 OBJ_NAME = test_c_game
 
 #This is the target that compiles our executable
-all : main_game test_anim test_keymap
+all : main_game test_anim test_keymap test_sound
 
 main_game: $(OBJS)
 	$(CC) test_c_game.cpp $(OBJS) $(COMPILER_FLAGS) $(INCLUDE) $(LINKER_FLAGS) -o $(OBJ_NAME)
@@ -27,3 +27,6 @@ test_anim: $(OBJS)
 
 test_keymap: $(OBJS)
 	$(CC) test/test_controller_adapter.cpp $(OBJS) $(COMPILER_FLAGS) $(INCLUDE) $(LINKER_FLAGS) -o test_keymap
+
+test_sound: $(OBJS)
+	$(CC) test/test_sound.cpp $(OBJS) $(COMPILER_FLAGS) $(INCLUDE) $(LINKER_FLAGS) -o test_sound

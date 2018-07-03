@@ -9,14 +9,14 @@ CivilianSpriteController::CivilianSpriteController(Sprite* sprite, PathFinder* p
 
 	inventory = new Inventory(sprite, 5);
 	inventory->setListener(this);
-	
+
 	healthbar = new SpriteHealthBar(32, sprite->currHp, sprite->fullHp);
 }
 
 void CivilianSpriteController::update(int ms)
 {
 	SpriteController::update(ms);
-	
+
 	if (!currAction->apply(sprite, ms))
 	{
 		delete currAction;
@@ -29,7 +29,7 @@ void CivilianSpriteController::update(int ms)
 			if (attackOrder)
 			{
 				printf("Attacking %d\n", attackOrder);
-				currAction = new FollowSpriteAction(pathFinder, attackOrder, 64);	
+				currAction = new FollowSpriteAction(pathFinder, attackOrder, 64);
 				//currAction = new MoveInDirAction(DIRECTION_LEFT, 96, false);
 			}
 			else if (fleeOrder)
@@ -40,7 +40,7 @@ void CivilianSpriteController::update(int ms)
 			else
 			{
 				printf("Resuming default action\n");
-				currAction = new IdleAction(ACTION_LOOPING, 2000);	
+				currAction = new IdleAction(ACTION_LOOPING, 2000);
 			}
 		}
 		else
@@ -49,7 +49,7 @@ void CivilianSpriteController::update(int ms)
 			attackOrder = NULL;
 			fleeOrder = NULL;
 			printf("New default action\n");
-			currAction = new IdleAction(ACTION_LOOPING, 2000);	
+			currAction = new IdleAction(ACTION_LOOPING, 2000);
 		}
 		currAction->init(sprite);
 	}
@@ -65,14 +65,14 @@ void CivilianSpriteController::update(int ms)
 void CivilianSpriteController::handleAttacked(Attack* attack)
 {
 	printf("Civilian Attacked by %d!!\n", attack->attacker);
-	
+
 	// add attacker to list of enemies
 	enemies.push_back(attack->attacker);
-	
+
 	// handle loss of hp
 	sprite->loseHealth(attack->damage);
 	healthbar->changeHealth(-attack->damage);
-		
+
 	// add action to follow attacker
 	//actionStack.push(new FollowSpriteAction(pathFinder, 10, attack->attacker)); // TODO: WON'T THIS RESULT IN A BUNCH OF REPEATING FOLLOW ACTIONS?
 	//actionStack.push(new MoveInDirAction(DIRECTION_RIGHT, 96, false));
@@ -82,7 +82,7 @@ void CivilianSpriteController::handleAttacked(Attack* attack)
 		fleeOrder = attack->attacker;
 		attackOrder = NULL;
 	}
-	else 
+	else
 	{
 		attackOrder = attack->attacker;
 		fleeOrder = NULL;
@@ -97,9 +97,9 @@ void CivilianSpriteController::handleAttacked(Attack* attack)
 		currAction = result;
 		currAction->init(sprite);
 	}
-	
+
 	// add sound
-	sounds.push_back(SOUND_2);
+	//sounds.push_back(SOUND_2);
 }
 
 void CivilianSpriteController::handleSoundHeard(Sound* sound)
@@ -111,16 +111,16 @@ void CivilianSpriteController::handleSpriteSeen(Sprite* sprite)
 {
 	for (int i = 0; i < enemies.size(); i++)
 	{
-		//printf("Sprite sees an enemy\n");	
+		//printf("Sprite sees an enemy\n");
 		// attack
 		if (sprite->currHp > 10)
 		{
-			
+
 		}
 		// run away
-		else 
+		else
 		{
-				
+
 		}
 	}
 }

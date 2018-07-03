@@ -7,27 +7,27 @@ PlayerSpriteController::PlayerSpriteController(Sprite* playerSprite, PathFinder*
 	inventory = new Inventory(sprite, 30);  // TODO: SHOULD PROBABLY BE CREATED IN SPRITE_CONTROLLER CLASS
 	inventory->setListener(this);
 	hud = new PlayerHUD(sprite->currHp, sprite->fullHp, inventory, 640, 480, textureAtlas);
-	
+
 	printf("Created Player Controller\n");
 }
 
-bool PlayerSpriteController::handleKeyEvent(SDL_Event e) 
+bool PlayerSpriteController::handleKeyEvent(SDL_Event e)
 {
 	// don't handle input if there is an action to be carried out first (blocking action)
 	if (actionStack.size())
 	{
-		return false; // TODO: PROPER RETURN?	
+		return false; // TODO: PROPER RETURN?
 	}
-	
+
 	// player pressed a key TODO: ALLOW CERTAIN REPEATED SIGNALS
 	if (e.type == SDL_KEYDOWN && !e.key.repeat)  // todo: E: inventory, R reload, F action, Q drop
 	{
 		switch( e.key.keysym.sym )
-		{ 
+		{
 			case SDLK_RIGHT:
 				sprite->setDir(DIRECTION_RIGHT);
 				sprite->startWalking();
-				return true;					
+				return true;
 
 			case SDLK_UP:
 				sprite->setDir(DIRECTION_UP);
@@ -43,7 +43,7 @@ bool PlayerSpriteController::handleKeyEvent(SDL_Event e)
 				sprite->setDir(DIRECTION_DOWN);
 				sprite->startWalking();
 				return true;
-				
+
 			// interact key
 			case SDLK_f:
 				if (!interactPressed)
@@ -74,21 +74,21 @@ bool PlayerSpriteController::handleKeyEvent(SDL_Event e)
 				if (attack)
 				{
 					printf("Adding attack\n");
-					attacks.push_back(attack);	
+					attacks.push_back(attack);
 				}
 				return true;
 			}
-				
+
 			// attempts to reload in-hand item
-			case SDLK_r:	
+			case SDLK_r:
 				inventory->loadInHand();
 				return true;
-			
+
 			// cycle in-hand inventory item forward and update HUD
 			case SDLK_TAB:
 				inventory->cycleInHandFwd(); // TODO: NEED A LISTENER FOR INVENTORY IN-HAND CHANGES
 				return true;
-				
+
 			// drops item in-hand
 			case SDLK_q: {
 				Item* drop = inventory->removeInHand();
@@ -96,7 +96,7 @@ bool PlayerSpriteController::handleKeyEvent(SDL_Event e)
 				drops.push_back(drop);
 				return true;
 			}
-				
+
 			default:
 				return false;
 		}
@@ -104,7 +104,7 @@ bool PlayerSpriteController::handleKeyEvent(SDL_Event e)
 	// player released a key
 	else if (e.type == SDL_KEYUP)
 	{
-		switch (e.key.keysym.sym) 
+		switch (e.key.keysym.sym)
 		{
 			case SDLK_RIGHT: // todo: support bi-directionality
 			case SDLK_UP:
@@ -117,7 +117,7 @@ bool PlayerSpriteController::handleKeyEvent(SDL_Event e)
 				interactPressed = false;
 				printf("Stopped Interaction Request \n");
 				return true;
-				
+
 			default:
 				return false;
 		}
@@ -155,7 +155,7 @@ bool PlayerSpriteController::handleKeyEvent(SDL_Event e)
 			inHand = inventory->getInHand();
 		}
 		// user scrolled down: cycle in-hand inventory item backward
-		else 
+		else
 		{
 			inventory->cycleInHandBck();
 			inHand = inventory->getInHand();
@@ -201,7 +201,7 @@ void PlayerSpriteController::update(int ms) // TODO: UPDATE IN-HAND ITEM, BUFFS,
 			printf("Action finished, deleting\n");
 			delete actionStack.top();
 			actionStack.pop();
-			
+
 			// handle another action on the stack
 			if (actionStack.size())
 			{
@@ -211,7 +211,7 @@ void PlayerSpriteController::update(int ms) // TODO: UPDATE IN-HAND ITEM, BUFFS,
 	}
 	else
 	{
-		// follow 
+		// follow
 		SpriteController::update(ms);
 	}
 }
@@ -225,10 +225,10 @@ void PlayerSpriteController::handleAttacked(Attack* attack)
 		result->init(sprite);
 		actionStack.push(result);
 	}
-	
+
 	// handle loss of hp
 	sprite->loseHealth(attack->damage);
-	
+
 	// add sound
-	sounds.push_back(SOUND_2);
+	//sounds.push_back(SOUND_2);
 }
