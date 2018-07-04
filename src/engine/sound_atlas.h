@@ -2,6 +2,7 @@
 #define SOUND_ATLAS
 
 #include <SDL2/SDL_mixer.h>
+#include <random>
 #include <assert.h>
 //#include <vector>
 
@@ -65,12 +66,39 @@ class SoundAtlas
 	Mix_Chunk* loadedSounds[NUM_SOUNDS]; // TODO: USE VECTOR?
 
 	public:
-		//static const Sounds[] FOOTSTEP_GRASS_RUN_SOUNDS;
+		static const Sounds FOOTSTEP_GRASS_RUN_SOUNDS[];
+		static const int NUM_FOOTSTEP_GRASS_RUN_SOUNDS;
+		static const Sounds FOOTSTEP_GRASS_WALK_SOUNDS[];
+		static const int NUM_FOOTSTEP_GRASS_WALK_SOUNDS;
+		static const Sounds FOOTSTEP_WOOD_WALK_SOUNDS[];
+		static const int NUM_FOOTSTEP_WOOD_WALK_SOUNDS;
+		static const Sounds GUN_PISTOL_SHOT_SOUNDS[];
+		static const int NUM_GUN_PISTOL_SHOT_SOUNDS;
+		static const Sounds GUN_PISTOL_SHOT_SILENCED_SOUNDS[];
+		static const int NUM_GUN_PISTOL_SHOT_SILENCED_SOUNDS;
+		static const Sounds GUN_RIFLE_SHOT_SOUNDS[];
+		static const int NUM_GUN_RIFLE_SHOT_SOUNDS;
+		static const Sounds GUN_SHOTGUN_SAWED_OFF_SHOT_SOUNDS[]; // TODO: POTENTIALLY RENAME
+		static const int NUM_GUN_SHOTGUN_SAWED_OFF_SHOT_SOUNDS;
+		static const Sounds GUN_SHOTGUN_SHOT_SOUNDS[];
+		static const int NUM_GUN_SHOTGUN_SHOT_SOUNDS;
+
 		SoundAtlas();
 		// returns loaded audio for given soundId from the Sounds enum
 		Mix_Chunk* getSound(int soundId);
 		// plays the given soundId
 		void playSound(int soundId);
+
+		// the following return a randomly-chosen sound that matches the criteria
+		Sounds getFootstepGrassRunSound();
+		Sounds getFootstepGrassWalkSound();
+		Sounds getFootstepWoodWalkSound();
+		Sounds getPistolShotSound();
+		Sounds getPistolShotSilencedSound();
+		Sounds getRifleShotSound();
+		Sounds getShotgunSawedOffShotSound();
+		Sounds getShotgunShotSound();
+
 		// frees all loaded audio
 		~SoundAtlas();
 };

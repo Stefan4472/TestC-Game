@@ -20,10 +20,12 @@ int main()
 	SDL_Event e;
   bool quit = false;
 
-  for (int i = 1; i < Sounds::NUM_SOUNDS; i++)
+  for (int i = 1; i < 10; i++)
   {
-    soundAtlas.playSound(i);
-    usleep(500000);
+    int sound_id = soundAtlas.getFootstepGrassRunSound();
+    printf("Playing sound %d\n", sound_id);
+    soundAtlas.playSound(sound_id);
+    usleep(1000000);
   }
 
 	// main loop
@@ -82,6 +84,7 @@ void close()
 	gWindow = NULL;
 	printf("Destroyed Window\n");
 
+  Mix_Quit();
   // TODO: NEED TO QUIT AUDIO SUBSYSTEM?
   printf("NOT QUITTING AUDIO SUBSYSTEM\n");
   SDL_Quit();

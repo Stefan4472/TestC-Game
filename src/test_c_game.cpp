@@ -153,7 +153,7 @@ void close()
 	printf("Quit TTF\n");
 	IMG_Quit();
 	printf("Quit IMG\n");
-
+	Mix_Quit();
 	printf("QUITING WITHOUT FULL CLEANUP\n");
 
 	//SDL_Quit();
