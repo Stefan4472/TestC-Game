@@ -97,8 +97,13 @@ class Map : public PathFinder // TODO: IMPLEMENTATION OF MAP, AND GAME DRIVER, S
 		void centerTo(SDL_Rect center);
 		// draws map, sprites, objects. Use center() to center the background to a virtual rectangle
 		void drawTo(SDL_Renderer* renderer);
+		// decides which in-game Sounds can be heard, and plays them out loud
+		// plays audio from the sounds vector, which should be cleared every update()
+		void playAudio();
 		// returns whether the two rectangles have any intersection
 		bool checkCollision(SDL_Rect a, SDL_Rect b);
+		// returns whether the given sprite can hear the given sound
+		bool canHear(Sprite* sprite, Sound* sound);
 
 		// creates stack of items with given id and quantity
 		ItemStack* createItemStack(int itemId, int quantity);

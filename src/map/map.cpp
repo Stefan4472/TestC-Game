@@ -206,8 +206,8 @@ void Map::update(int ms)
 		while(!sprites.at(i)->sounds.empty())
 		{
 			printf("Playing Sound %d from Sprite %d\n", sprites.at(i)->sounds.back(), sprites.at(i)->sprite);
-			sounds.push_back(new Sound(sprites.at(i)->sounds.back(), sprites[i]->sprite->x, sprites[i]->sprite->y, sprites[i]->sprite));
-			Mix_PlayChannel( -1, soundAtlas->getSound(sprites.at(i)->sounds.back()), 0 ); // TODO: SEEMS INEFFICIENT
+			//sounds.push_back(new Sound(sprites.at(i)->sounds.back(), sprites[i]->sprite->x, sprites[i]->sprite->y, sprites[i]->sprite));
+			//Mix_PlayChannel( -1, soundAtlas->getSound(sprites.at(i)->sounds.back()), 0 ); // TODO: SEEMS INEFFICIENT
 			sprites.at(i)->sounds.pop_back();
 		}
 	}
@@ -403,9 +403,21 @@ void Map::drawTo(SDL_Renderer* renderer)
 	playerSpriteController->hud->drawTo(renderer);
 }
 
+void Map::playAudio()
+{
+	// TODO
+}
+
 bool Map::checkCollision(SDL_Rect a, SDL_Rect b)
 {
 	return a.y + a.h > b.y && a.y < b.y + b.h && a.x + a.w > b.x && a.x < b.x + b.w;
+}
+
+bool Map::canHear(Sprite* sprite, Sound* sound)
+{
+	// use Euclidean distance squared
+	return (sprite->x - sound->x) * (sprite->x - sound->x) +
+		(sprite->y - sound->y) * (sprite->y - sound->y) < sound->radiusSquared;
 }
 
 ItemStack* Map::createItemStack(int itemId, int quantity)
