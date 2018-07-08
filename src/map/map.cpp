@@ -5,6 +5,8 @@ Map::Map(SDL_Renderer* renderer, TextureAtlas* textureAtlas, SoundAtlas* soundAt
 	this->textureAtlas = textureAtlas;
 	this->soundAtlas = soundAtlas;
 	this->fontAtlas = fontAtlas;
+	// TODO: SEND IN CONTROLLERADAPTER OBJ
+	controllerAdapter = new ControllerAdapter;
 
 	printf("Creating Animation Engine...");
 	animEngine = new AnimationEngine(textureAtlas);
@@ -15,7 +17,8 @@ Map::Map(SDL_Renderer* renderer, TextureAtlas* textureAtlas, SoundAtlas* soundAt
 	printf("Done\n");
 
 	printf("Creating Player Sprite...");
-	playerSpriteController = new PlayerSpriteController(new Sprite(SPRITE_TYPE_PLAYER, 100.0f, 140.0f, animEngine), this, textureAtlas);
+	playerSpriteController = new PlayerSpriteController(
+		new Sprite(SPRITE_TYPE_PLAYER, 100.0f, 140.0f, animEngine), this, textureAtlas);
 	printf("Done\n");
 
 	addControlledSprite(playerSpriteController);
@@ -45,6 +48,8 @@ void Map::run()
 	// main loop flags
 	bool quit = false;
 	bool paused = false;
+	// set ControllerAdapter target to PlayerSpriteController
+	controllerAdapter->setListener(playerSpriteController);
 
 	Uint32 last_time = SDL_GetTicks();
 	Uint32 curr_time;
@@ -70,7 +75,7 @@ void Map::run()
 				quit = true;
 			}
 			// send event to playerSprite, which will handle it in almost all cases.
-			else if (playerSpriteController->handleKeyEvent(e))
+			else if (controllerAdapter->handleKeyEvent(e))
 			{
 
 			}

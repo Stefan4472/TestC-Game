@@ -11,6 +11,16 @@ PlayerSpriteController::PlayerSpriteController(Sprite* playerSprite, PathFinder*
 	printf("Created Player Controller\n");
 }
 
+void PlayerSpriteController::onControlStart(GAME_CONTROLS gameControl)
+{
+	printf("player received %d on\n", gameControl);
+}
+
+void PlayerSpriteController::onControlEnd(GAME_CONTROLS gameControl)
+{
+	printf("player received %d off\n", gameControl);
+}
+/*
 bool PlayerSpriteController::handleKeyEvent(SDL_Event e)
 {
 	// don't handle input if there is an action to be carried out first (blocking action)
@@ -161,7 +171,7 @@ bool PlayerSpriteController::handleKeyEvent(SDL_Event e)
 			inHand = inventory->getInHand();
 		}
 	}
-}
+}*/
 
 void PlayerSpriteController::setAim(int mouseX, int mouseY)
 {

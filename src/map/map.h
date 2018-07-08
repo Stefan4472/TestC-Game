@@ -9,6 +9,7 @@
 #include "texture_atlas.h"
 #include "sound_atlas.h"
 #include "font_atlas.h"
+#include "controller_adapter.h"
 #include "sound.h"
 #include "engine/animation_engine.h"
 #include "map_chunk.h"
@@ -57,6 +58,8 @@ class Map : public PathFinder // TODO: IMPLEMENTATION OF MAP, AND GAME DRIVER, S
 	// available fonts
 	FontAtlas* fontAtlas = NULL;
 
+	// key mapper and event handler
+	ControllerAdapter* controllerAdapter = NULL;
 	// used to create animations
 	AnimationEngine* animEngine = NULL;
 
