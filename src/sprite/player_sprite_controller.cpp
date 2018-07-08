@@ -13,125 +13,119 @@ PlayerSpriteController::PlayerSpriteController(Sprite* playerSprite, PathFinder*
 
 void PlayerSpriteController::onControlStart(GAME_CONTROLS gameControl)
 {
-	printf("player received %d on\n", gameControl);
+	// don't handle input if there is an action to be carried out first (blocking action)
+	if (actionStack.size())
+	{
+		return;
+	}
+
+	switch (gameControl)
+	{
+		case GAME_CONTROLS::CONTROLLER_RIGHT:
+			sprite->setDir(DIRECTION_RIGHT);
+			sprite->startWalking();
+			return;
+
+		case GAME_CONTROLS::CONTROLLER_UP:
+			sprite->setDir(DIRECTION_UP);
+			sprite->startWalking();
+			return;
+
+		case GAME_CONTROLS::CONTROLLER_LEFT:
+			sprite->setDir(DIRECTION_LEFT);
+			sprite->startWalking();
+			return;
+
+		case GAME_CONTROLS::CONTROLLER_DOWN:
+			sprite->setDir(DIRECTION_DOWN);
+			sprite->startWalking();
+			return;
+
+		// interact key
+		/*case GAME_CONTROLS::INTERACT:
+			if (!interactPressed)
+			{
+				interactPressed = true;
+				interactHandled = false;
+				printf("Started Interact Request\n");
+			}
+			return;*/
+
+		// use in-hand inventory item
+		case GAME_CONTROLS::CONTROLLER_USE_ITEM: {
+			inventory->useInHand();
+			SpriteAction* action = inventory->getAction();
+			if (action)
+			{
+				printf("Received action\n");
+				// put resulting action on the stack, which will block further input until finished
+				actionStack.push(action);
+			}
+			SpriteAction* buff = inventory->getBuff();
+			if (buff)
+			{
+				printf("Received buff\n");
+				buffs.push_back(buff);
+			}
+			Attack* attack = inventory->getAttack();
+			if (attack)
+			{
+				printf("Adding attack\n");
+				attacks.push_back(attack);
+			}
+			return;
+		}
+
+		// attempts to reload in-hand item
+		case GAME_CONTROLS::CONTROLLER_RELOAD:
+			inventory->loadInHand();
+			return;
+
+		// cycle in-hand inventory item forward and update HUD
+		case GAME_CONTROLS::CONTROLLER_CYCLE_INVENTORY_FWD:
+			inventory->cycleInHandFwd(); // TODO: NEED A LISTENER FOR INVENTORY IN-HAND CHANGES
+			return;
+
+			// drops item in-hand
+		case GAME_CONTROLS::CONTROLLER_DROP_ITEM: {
+			Item* drop = inventory->removeInHand();
+			inHand = inventory->getInHand(); // TODO: MAY BE REDUNDANT
+			drops.push_back(drop);
+			return;
+		}
+
+		default:
+			return;
+	}
 }
 
 void PlayerSpriteController::onControlEnd(GAME_CONTROLS gameControl)
 {
-	printf("player received %d off\n", gameControl);
-}
-/*
-bool PlayerSpriteController::handleKeyEvent(SDL_Event e)
-{
 	// don't handle input if there is an action to be carried out first (blocking action)
 	if (actionStack.size())
 	{
-		return false; // TODO: PROPER RETURN?
+		return;
 	}
 
-	// player pressed a key TODO: ALLOW CERTAIN REPEATED SIGNALS
-	if (e.type == SDL_KEYDOWN && !e.key.repeat)  // todo: E: inventory, R reload, F action, Q drop
-	{
-		switch( e.key.keysym.sym )
+		switch (gameControl)
 		{
-			case SDLK_RIGHT:
-				sprite->setDir(DIRECTION_RIGHT);
-				sprite->startWalking();
-				return true;
-
-			case SDLK_UP:
-				sprite->setDir(DIRECTION_UP);
-				sprite->startWalking();
-				return true;
-
-			case SDLK_LEFT:
-				sprite->setDir(DIRECTION_LEFT);
-				sprite->startWalking();
-				return true;
-
-			case SDLK_DOWN:
-				sprite->setDir(DIRECTION_DOWN);
-				sprite->startWalking();
-				return true;
-
-			// interact key
-			case SDLK_f:
-				if (!interactPressed)
-				{
-					interactPressed = true;
-					interactHandled = false;
-					printf("Started Interact Request\n");
-				}
-				return true;
-
-			// use in-hand inventory item
-			case SDLK_SPACE: {
-				inventory->useInHand();
-				SpriteAction* action = inventory->getAction();
-				if (action)
-				{
-					printf("Received action\n");
-					// put resulting action on the stack, which will block further input until finished
-					actionStack.push(action);
-				}
-				SpriteAction* buff = inventory->getBuff();
-				if (buff)
-				{
-					printf("Received buff\n");
-					buffs.push_back(buff);
-				}
-				Attack* attack = inventory->getAttack();
-				if (attack)
-				{
-					printf("Adding attack\n");
-					attacks.push_back(attack);
-				}
-				return true;
-			}
-
-			// attempts to reload in-hand item
-			case SDLK_r:
-				inventory->loadInHand();
-				return true;
-
-			// cycle in-hand inventory item forward and update HUD
-			case SDLK_TAB:
-				inventory->cycleInHandFwd(); // TODO: NEED A LISTENER FOR INVENTORY IN-HAND CHANGES
-				return true;
-
-			// drops item in-hand
-			case SDLK_q: {
-				Item* drop = inventory->removeInHand();
-				inHand = inventory->getInHand(); // TODO: MAY BE REDUNDANT
-				drops.push_back(drop);
-				return true;
-			}
-
-			default:
-				return false;
-		}
-	}
-	// player released a key
-	else if (e.type == SDL_KEYUP)
-	{
-		switch (e.key.keysym.sym)
-		{
-			case SDLK_RIGHT: // todo: support bi-directionality
-			case SDLK_UP:
-			case SDLK_LEFT:
-			case SDLK_DOWN:
+			case GAME_CONTROLS::CONTROLLER_UP:
+		  case GAME_CONTROLS::CONTROLLER_DOWN:
+		  case GAME_CONTROLS::CONTROLLER_LEFT:
+		  case GAME_CONTROLS::CONTROLLER_RIGHT:
 				sprite->stopMoving();
-				return true;
+				return;
 
-			case SDLK_f:
+			/*case SDLK_f:
 				interactPressed = false;
 				printf("Stopped Interaction Request \n");
 				return true;
-
+			*/
 			default:
-				return false;
+				return;
 		}
 	}
+	/* TODO: ADD SUPPORT FOR MOUSE IN CONTROLLER_ADAPTER
 	// player moved mouse
 	else if (e.type == SDL_MOUSEBUTTONDOWN)
 	{
