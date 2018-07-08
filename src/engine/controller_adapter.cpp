@@ -13,24 +13,42 @@ ControllerAdapter::ControllerAdapter()
   keyMap[SDLK_i] = CONTROLLER_CYCLE_INVENTORY_FWD;
   keyMap[SDLK_o] = CONTROLLER_CYCLE_INVENTORY_BWD;
   keyMap[SDLK_ESCAPE] = CONTROLLER_ESCAPE;
+
+  for (int i = 0; i < sizeof(state); i++)
+  {
+    state[i] = false;
+  }
+}
+
+void ControllerAdapter::setListener(ControllerListener* listener)
+{
+  this->listener = listener;
 }
 
 bool ControllerAdapter::handleKeyEvent(SDL_Event e)
 {
-
   if ((e.type == SDL_KEYDOWN || e.type == SDL_KEYUP) && !e.key.repeat)
   {
-    std::unordered_map<int, int>::const_iterator got = keyMap.find(e.key.keysym.sym);
+    std::unordered_map<int, GAME_CONTROLS>::const_iterator got = keyMap.find(e.key.keysym.sym);
     if (got == keyMap.end())
     {
-      printf("No mapping available\n");
       return false;
     }
     else
     {
-      printf("Mapped to %d\n", got->second);
+      printf("Got event for control %d, whose state is %d\n", got->second, state[got->second]);
       state[got->second] = !state[got->second];
-      printf("state is %s\n", state[got->second] ? "ON" : "OFF");
+      if (listener)
+      {
+        if (state[got->second])
+        {
+          listener->onControlStart(got->second);
+        }
+        else
+        {
+          listener->onControlEnd(got->second);
+        }
+      }
       return true;
     }
   }

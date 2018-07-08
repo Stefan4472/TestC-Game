@@ -12,10 +12,27 @@ SDL_Window* gWindow = NULL;
 const int SCREEN_WIDTH = 640;
 const int SCREEN_HEIGHT = 480;
 
+// test listener class
+class TestControlReceiver : public ControllerListener
+{
+  void onControlStart(GAME_CONTROLS gameControl)
+  {
+    printf("Control %d started\n", gameControl);
+  }
+
+  void onControlEnd(GAME_CONTROLS gameControl)
+  {
+    printf("Control %d ended\n", gameControl);
+  }
+};
+
 int main()
 {
   init();
   ControllerAdapter control_adapter;
+  TestControlReceiver receiver;
+  control_adapter.setListener(&receiver);
+
 	SDL_Event e;
   bool quit = false;
 
@@ -35,7 +52,7 @@ int main()
 			}
       else
       {
-        printf("Returned false\n");
+
       }
 		}
 	}
@@ -63,8 +80,6 @@ bool init()
 	}
   return true;
 }
-
-
 
 void close()
 {
