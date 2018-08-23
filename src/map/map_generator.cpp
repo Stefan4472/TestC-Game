@@ -34,7 +34,7 @@ MapChunk MapGenerator::generate(int chunkX, int chunkY)
 MapChunk MapGenerator::readChunkFile(FILE* file)
 {
   // read the file into the buffer
-  size_t bytes_read = fread(chunkBuffer, CHUNK_BUFFER_SIZE, 1, file);
+  size_t bytes_read = fread(chunkBuffer, 1, CHUNK_BUFFER_SIZE, file);
   printf("Read %d bytes\n", bytes_read);
 
   // make sure the file had the correct amount of data
@@ -63,5 +63,34 @@ MapChunk MapGenerator::readChunkFile(FILE* file)
 
 void MapGenerator::writeChunkFile(int chunkX, int chunkY, MapChunk chunk)
 {
+  // create cstring with file path to the chunk file
+  snprintf(filepathBuffer, FILEPATH_BUFFER_SIZE, "%s\%d_%d.chunk", mapDir.c_str(),
+    chunkX, chunkY);
+  printf("Generated file path to write chunk is %s\n", filepathBuffer);
 
+  // attempt to open file in byte mode
+  FILE* file_handle = fopen(filepathBuffer, "rb");
+
+  if (!file_handle)  // create the chunk
+  {
+    throw runtime_error("Couldn't create chunk save file");
+  }
+
+  // copy terrain to buffer
+  for (int i = 0; i < MapChunk::TILE_ROWS; i++)
+  {
+    for (int j = 0; j < MapChunk::TILE_COLS; j++)
+    {
+      chunkBuffer[i * MapChunk::TILE_ROWS + j] = read_chunk.terrain[i][j];
+    }
+  }
+
+  printf("Writing... %s\n", chunkBuffer);
+
+  // write to file
+  fwrite(chunkBuffer, 1, CHUNK_BUFFER_SIZE, file_handle);
+
+  fclose(file_handle);
+
+  printf("Done\n");
 }

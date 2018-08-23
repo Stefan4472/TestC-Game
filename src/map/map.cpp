@@ -296,7 +296,7 @@ bool Map::isValidPosition(SDL_Rect position)
 bool Map::isWalkable(int x, int y) // todo: check x >= 0 && y >= 0 && x <= SCREEN_WIDTH && y <= SCREEN_HEIGHT ??
 {
 	//printf("%d\n", mapChunk->walkableTiles[y / TILE_HEIGHT][x / TILE_WIDTH]);
-	return mapChunk->walkableTiles[y / TILE_HEIGHT][x / TILE_WIDTH];
+	return mapChunk->terrain[y / TILE_HEIGHT][x / TILE_WIDTH].walkable;
 }
 
 void Map::addControlledSprite(SpriteController* spriteController)

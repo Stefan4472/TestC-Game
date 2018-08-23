@@ -1,6 +1,7 @@
 #ifndef MAP_TERRAIN_H
 #define MAP_TERRAIN_H
 
+#include <stdexcept>
 #include "texture_atlas.h"
 
 // the available types of MapTerrain
@@ -40,7 +41,7 @@ public:
   static const MapTerrain[] MAP_TERRAINS;
 
   // returns a terrain object of the given type
-  static MapTerrain getTerrain(TerrainType type);
+  static const MapTerrain getTerrain(TerrainType type);
 };
 
 #endif
