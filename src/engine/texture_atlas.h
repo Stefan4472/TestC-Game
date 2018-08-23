@@ -16,18 +16,18 @@
 
 // call draw(textureId, ...) functions to draw the desired texture to the screen
 
-enum Textures 
+enum TextureId
 {
-	TEXTURE_NONE,
+	TEXTURE_NONE,  // actually a black square
 	TILE_GRASS,
 	TILE_BROWN_BRICK,
 	TILE_DARK_BRICK,
 	TILE_WHITE_BRICK,
 	TILE_WATER,
 	OBJECT_TREE_1,
-	OBJECT_TREE_2, 
+	OBJECT_TREE_2,
 	OBJECT_ROCK_1,
-	OBJECT_ROCK_2, 
+	OBJECT_ROCK_2,
 	OBJECT_WOODEN_FENCE_LEFT,
 	OBJECT_WOODEN_FENCE_POST,
 	OBJECT_WOODEN_FENCE_VERT,
@@ -72,9 +72,9 @@ enum Textures
 	TEXTURE_MUZZLE_FLASH
 };
 
-const SDL_Rect textureRegions[51] = 
+const SDL_Rect textureRegions[51] =
 {
-	SDL_Rect { 0, 0, 0, 0 }, // todo: don't allow texture zero to be called, or give some hint it's null
+	SDL_Rect { 64, 64, 32, 32 }, 
 	SDL_Rect { 64, 32, 32, 32 },
 	SDL_Rect { 0, 0, 32, 32 },
 	SDL_Rect { 64, 0, 32, 32 },
@@ -102,7 +102,7 @@ const SDL_Rect textureRegions[51] =
 	SDL_Rect { 416, 72, 102, 34 },
 	SDL_Rect { 416, 108, 100, 36 },
 	SDL_Rect { 416, 146, 99, 34 },
-	// player idling 
+	// player idling
 	SDL_Rect { 416, 408, 52, 59 },
 	SDL_Rect { 416, 330, 52, 59 },
 	SDL_Rect { 416, 258, 52, 59 },
@@ -120,7 +120,7 @@ const SDL_Rect textureRegions[51] =
 	// objects
 	SDL_Rect { 284, 0, 26, 19 },
 	SDL_Rect { 284, 21, 19, 15 },
-	SDL_Rect { 284, 38, 25, 14 }, 
+	SDL_Rect { 284, 38, 25, 14 },
 	SDL_Rect { 284, 53, 16, 21 },
 	SDL_Rect { 284, 76, 32, 32 },
 	SDL_Rect { 284, 108, 32, 32 },
@@ -134,15 +134,15 @@ const SDL_Rect textureRegions[51] =
 	SDL_Rect { 284, 231, 23, 11 }
 };
 
-class TextureAtlas 
+class TextureAtlas
 {
 	SDL_Texture* atlas;
 	SDL_Rect src, dest;
-	
+
 	public:
 		// init with full atlas image
 		TextureAtlas(SDL_Texture* atlas);
-		// draws image given by textureId to given SDL_Surface at x,y 
+		// draws image given by textureId to given SDL_Surface at x,y
 		void draw(SDL_Renderer* renderer, int textureId, float x, float y);
 		// draws subimage defined by src from specified image to coordinates x,y on renderer
 		void drawSubimg(SDL_Renderer* renderer, int textureId, SDL_Rect src, float x, float y);

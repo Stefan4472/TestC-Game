@@ -29,6 +29,9 @@ void SpriteController::handleSpriteCollision(Sprite* other)
 
 void SpriteController::update(int ms)
 {
+	// update animation
+	sprite->animPlayer->update(ms);
+	
 	// update attacks, removing those that are finished
 	for (int i = 0; i < attacks.size(); )
 	{

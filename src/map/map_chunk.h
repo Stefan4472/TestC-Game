@@ -2,44 +2,30 @@
 #define MAP_CHUNK_H
 
 #include "texture_atlas.h"
+#include "map_terrain.h"
 #include <vector>
 #include <cmath>
 
-class MapObject
-{
-	public:
-		MapObject(TextureAtlas* textureAtlas, int textureId, int x, int y);
-		int x, y, w, h;
-		int textureId;
-};
-
-// a chunk defines a 16x16 tile section of Map. This includes the tiles for the terrain,
-// tile-based objects, pick-ups, and sprites. Chunks have their own coordinate system 
-// defining how they fit into the Map as a whole, which works with an x- and y-coordinate.
+/*
+A chunk defines a 16x16 tile section of Map. This includes the tiles for the terrain,
+tile-based objects, pick-ups, and sprites. Chunks have their own coordinate system
+defining how they fit into the Map as a whole, which works with an x- and y-coordinate.
+TODO: CURRENTLY ONLY HAVE TERRAIN
+*/
 class MapChunk
 {
-	private:
-		// renders the chunk given seed
-		void render(int seed);
-		
 	public:
-		int mapRows = 24;
-		int mapCols = 24;
+		static const int TILE_ROWS = 16;
+		static const int TILE_COLS = 16;
 
-		// tile grid
-		char mapTiles[24][24];
+		// map chunk with all terrain set to MapTerrain::NONE
+		static const MapChunk NONE = getNullChunk();
+		// returns a new MapChunk with all terrain set to NONE
+		static MapChunk getNullChunk();
 
-		std::vector<MapObject> objects;
+		// terrain tile grid
+		MapTerrain terrain[TILE_ROWS][TILE_COLS];
 
-		// grid of tiles that are walkable--generated based on mapTiles and objectTiles
-		bool walkableTiles[24][24]; 
-		
-		// grid of tiles that a bullet can fly in
-		bool flyableTiles[24][24];
-		
-		// instantiates procedurally-generated chunk, using seed for random number generation
-		MapChunk(TextureAtlas* textureAtlas, int seed);
-		// loads chunk from given file
-		//MapChunk load(
+		//std::vector<MapObject> objects;
 };
 #endif
