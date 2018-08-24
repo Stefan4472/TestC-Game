@@ -9,7 +9,7 @@ MapGenerator(string mapDir, int mapSeed)
 MapChunk MapGenerator::generate(int chunkX, int chunkY)
 {
   // create cstring with file path to the chunk file
-  snprintf(filepathBuffer, FILEPATH_BUFFER_SIZE, "%s\%d_%d.chunk", mapDir.c_str(),
+  snprintf(filepathBuffer, FILEPATH_BUFFER_SIZE, "%s/%d_%d.chunk", mapDir.c_str(),
     chunkX, chunkY);
   printf("Generated file path is %s\n", filepathBuffer);
 
@@ -64,7 +64,7 @@ MapChunk MapGenerator::readChunkFile(FILE* file)
 void MapGenerator::writeChunkFile(int chunkX, int chunkY, MapChunk chunk)
 {
   // create cstring with file path to the chunk file
-  snprintf(filepathBuffer, FILEPATH_BUFFER_SIZE, "%s\%d_%d.chunk", mapDir.c_str(),
+  snprintf(filepathBuffer, FILEPATH_BUFFER_SIZE, "%s/%d_%d.chunk", mapDir.c_str(),
     chunkX, chunkY);
   printf("Generated file path to write chunk is %s\n", filepathBuffer);
 

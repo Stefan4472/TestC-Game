@@ -4,6 +4,8 @@
 #include <stdexcept>
 #include "texture_atlas.h"
 
+using namespace std;
+
 // the available types of MapTerrain
 enum TerrainType
 {
@@ -25,23 +27,25 @@ TODO: ANIMATION SUPPORT? INTERACTION SUPPORT?
 class MapTerrain
 {
 public:
-  TextureId textureId = TextureId:TEXTURE_NONE;
+  MapTerrain(TextureId textureId, bool walkable);
+  
+  TextureId textureId = TextureId::TEXTURE_NONE;
   bool walkable = false;
 
   // pre-defined MapTerrain types. Defined in map_terrain.cpp
-  static const NONE;
-  static const GRASS;
-  static const BROWN_BRICK;
-  static const DARK_BRICK;
-  static const WHITE_BRICK;
-  static const WATER;
+  static const MapTerrain NONE;
+  static const MapTerrain GRASS;
+  static const MapTerrain BROWN_BRICK;
+  static const MapTerrain DARK_BRICK;
+  static const MapTerrain WHITE_BRICK;
+  static const MapTerrain WATER;
 
   // array linking TerrainType to MapTerrain object
   // defined in map_terrain.cpp
-  static const MapTerrain[] MAP_TERRAINS;
+  static const MapTerrain MAP_TERRAINS[];
 
   // returns a terrain object of the given type
-  static const MapTerrain getTerrain(TerrainType type);
+  static const MapTerrain getTerrain(int terrainType);
 };
 
 #endif

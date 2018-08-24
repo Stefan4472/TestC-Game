@@ -19,8 +19,6 @@ class MapChunk
 		static const int TILE_ROWS = 16;
 		static const int TILE_COLS = 16;
 
-		// map chunk with all terrain set to MapTerrain::NONE
-		static const MapChunk NONE = getNullChunk();
 		// returns a new MapChunk with all terrain set to NONE
 		static MapChunk getNullChunk();
 		// returns a MapChunk with terrain set randomly
@@ -30,7 +28,7 @@ class MapChunk
 		const MapTerrain terrain[TILE_ROWS][TILE_COLS];
 
 		void printDebug();
-		
+
 		//std::vector<MapObject> objects;
 };
 #endif

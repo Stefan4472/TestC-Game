@@ -1,15 +1,15 @@
 #include "map_terrain.h"
 
 // pre-defined terrain types
-MapTerrain::NONE = MapTerrain(TextureId:TEXTURE_NONE, false);
-MapTerrain::GRASS = MapTerrain(TextureId:TILE_GRASS, false);
-MapTerrain::BROWN_BRICK = MapTerrain(TextureId:TILE_BROWN_BRICK, false);
-MapTerrain::DARK_BRICK = MapTerrain(TextureId:TILE_DARK_BRICK, false);
-MapTerrain::WHITE_BRICK = MapTerrain(TextureId:TILE_WHITE_BRICK, false);
-MapTerrain::WATER = MapTerrain(TextureId:TILE_WATER, false);
+MapTerrain const MapTerrain::NONE = MapTerrain(TextureId::TEXTURE_NONE, false);
+MapTerrain const MapTerrain::GRASS = MapTerrain(TextureId::TILE_GRASS, false);
+MapTerrain const MapTerrain::BROWN_BRICK = MapTerrain(TextureId::TILE_BROWN_BRICK, false);
+MapTerrain const MapTerrain::DARK_BRICK = MapTerrain(TextureId::TILE_DARK_BRICK, false);
+MapTerrain const MapTerrain::WHITE_BRICK = MapTerrain(TextureId::TILE_WHITE_BRICK, false);
+MapTerrain const MapTerrain::WATER = MapTerrain(TextureId::TILE_WATER, false);
 
 // array mapping TerrainType to MapTerrain object
-MapTerrain::MAP_TERRAINS =
+MapTerrain const MapTerrain::MAP_TERRAINS[] =
 {
   MapTerrain::NONE,
   MapTerrain::GRASS,
@@ -19,12 +19,18 @@ MapTerrain::MAP_TERRAINS =
   MapTerrain::WATER
 };
 
-static const MapTerrain getTerrain(TerrainType type)
+MapTerrain::MapTerrain(TextureId textureId, bool walkable)
 {
-  if (type >= TerrainType::NUM_TYPES)
+    this->textureId = textureId;
+    this->walkable = walkable;
+}
+
+static const MapTerrain MapTerrain::getTerrain(int terrainType)
+{
+  if (terrainType < 0 || terrainType >= TerrainType::NUM_TYPES)
   {
     throw runtime_error("Terraintype out of bounds");
   }
 
-  return MAP_TERRAINS[type];
+  return MAP_TERRAINS[terrainType];
 }

@@ -13,6 +13,8 @@
 #include "sound.h"
 #include "engine/animation_engine.h"
 #include "map_chunk.h"
+#include "chunk_coordinate.h"
+#include "map_generator.h"
 #include "item_drop.h"
 #include "attack.h"
 #include "consumable.h"
@@ -37,9 +39,6 @@ const int TILE_HEIGHT = 32;
 
 class Map : public PathFinder // TODO: IMPLEMENTATION OF MAP, AND GAME DRIVER, SHOULD BE SEPARATE.
 {
-	// defines the tiles that make up the terrain and map
-	MapChunk* mapChunk = NULL;
-
 	// virtual coordinates defining view field
 	SDL_Rect camera = { 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT };
 
@@ -60,11 +59,18 @@ class Map : public PathFinder // TODO: IMPLEMENTATION OF MAP, AND GAME DRIVER, S
 
 	// key mapper and event handler
 	ControllerAdapter* controllerAdapter = NULL;
+
 	// used to create animations
 	AnimationEngine* animEngine = NULL;
 
+	// used to generate MapChunks
+	MapGenerator* mapGenerator = NULL;
+
 	// pointer to player's sprite
 	PlayerSpriteController* playerSpriteController = NULL;
+
+	// mapping of coordinates to loaded chunks
+	std::unordered_map<ChunkCoordinate, MapChunk> chunkCache;
 
 	// controllers for sprites managed by map
 	std::vector<SpriteController*> sprites;
@@ -98,11 +104,17 @@ class Map : public PathFinder // TODO: IMPLEMENTATION OF MAP, AND GAME DRIVER, S
 		void addDrop(ItemDrop* itemDrop);
 		// center background to given rect, updating camera
 		void centerTo(SDL_Rect center);
-		// draws map, sprites, objects. Use center() to center the background to a virtual rectangle
+		// draws map, sprites, objects. Use center() to center the background to a
+		// virtual rectangle
 		void drawTo(SDL_Renderer* renderer);
 		// decides which in-game Sounds can be heard, and plays them out loud
 		// plays audio from the sounds vector, which should be cleared every update()
 		void playAudio();
+		// returns the loaded chunk at the given coordinates.
+		// uses the chunkCache to store loaded chunks. Makes calls to the set
+		// MapGenerator object if the chunk is not in the cache
+		MapChunk getChunk(int chunkX, int chunkY);
+
 		// returns whether the two rectangles have any intersection
 		bool checkCollision(SDL_Rect a, SDL_Rect b);
 		// returns whether the given sprite can hear the given sound

@@ -1,6 +1,6 @@
 #include "map_chunk.h"
 
-MapChunk getNullChunk()
+MapChunk MapChunk::getNullChunk()
 {
 	MapChunk null_chunk;
 	for (int i = 0; i < TILE_ROWS; i++)
@@ -13,7 +13,7 @@ MapChunk getNullChunk()
 	return null_chunk;
 }
 
-MapChunk getRandomChunk()
+MapChunk MapChunk::getRandomChunk()
 {
 	MapChunk rand_chunk;
 	for (int i = 0; i < TILE_ROWS; i++)

@@ -8,12 +8,14 @@ Map::Map(SDL_Renderer* renderer, TextureAtlas* textureAtlas, SoundAtlas* soundAt
 	// TODO: SEND IN CONTROLLERADAPTER OBJ
 	controllerAdapter = new ControllerAdapter;
 
+	// TODO: SEND IN MAPGENERATOR OBJ
+	mapGenerator = new MapGenerator("maps/map1", 0);
+
 	printf("Creating Animation Engine...");
 	animEngine = new AnimationEngine(textureAtlas);
 	printf("Done\n");
 
-	printf("Creating Map...");
-	mapChunk = new MapChunk(textureAtlas, 10);
+	printf("Creating Map..."); // TODO: CREATE MAPGENERATOR AND STORE CHUNKS
 	printf("Done\n");
 
 	printf("Creating Player Sprite...");
@@ -343,7 +345,7 @@ void Map::drawTo(SDL_Renderer* renderer)
 			dest.x = j * TILE_WIDTH - offset_x;
 
 			// out of range: draw black
-			if (start_tile_y + i < 0 || start_tile_x + j < 0 || start_tile_y + i >= mapChunk->mapRows || start_tile_x + j >= mapChunk->mapCols)
+			/*if (start_tile_y + i < 0 || start_tile_x + j < 0 || start_tile_y + i >= mapChunk->mapRows || start_tile_x + j >= mapChunk->mapCols)
 			{
 				SDL_RenderFillRect( renderer, &dest );
 			}
@@ -351,7 +353,7 @@ void Map::drawTo(SDL_Renderer* renderer)
 			{
 				textureAtlas->draw(renderer, mapChunk->mapTiles[start_tile_y + i][start_tile_x + j], dest.x, dest.y);
 				SDL_RenderDrawRect( renderer, &dest );
-			}
+			}*/
 		}
 	}
 
@@ -363,10 +365,10 @@ void Map::drawTo(SDL_Renderer* renderer)
 	}
 
 	// render map objects
-	for (int i = 0; i < mapChunk->objects.size(); i++)
+	/*for (int i = 0; i < mapChunk->objects.size(); i++)
 	{
 		textureAtlas->draw(renderer, mapChunk->objects[i].textureId, mapChunk->objects[i].x - camera.x, mapChunk->objects[i].y - camera.y);
-	}
+	}*/
 
 	// render item drops
 	for (int i = 0; i < itemDrops.size(); i++)
@@ -411,6 +413,30 @@ void Map::drawTo(SDL_Renderer* renderer)
 void Map::playAudio()
 {
 	// TODO
+}
+
+MapChunk Map::getChunk(int chunkX, int chunkY)
+{
+	printf("Request for chunk %d, %d\n", chunkX, chunkY);
+
+	// lookup using ChunkCoordinate
+	unordered_map<ChunkCoordinate, int>::iterator iterator =
+		chunkCache.find(ChunkCoordinate(chunkX, chunkY));
+
+	// not found: call MapGenerator.generate() and add to cache
+	if (iterator == chunkCache.end())
+	{
+		printf("Not found in cache: generating...\n");
+		MapChunk generated = mapGenerator.generate(chunkX, chunkY);
+		chunkCache.insert(ChunkCoordinate(chunkX, chunkY), generated);
+		return generated;
+	}
+	// found: return
+	else
+	{
+		printf("Found in cache: returning...\n");
+		return iterator->second;
+	}
 }
 
 bool Map::checkCollision(SDL_Rect a, SDL_Rect b)
