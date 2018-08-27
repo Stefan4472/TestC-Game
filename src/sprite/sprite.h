@@ -24,7 +24,7 @@ class Sprite
 		// registered listener
 		SpriteListener* listener = NULL;
 
-	public: // TODO: MAKE SOME PRIVATE/PROTECTED
+	public: // TODO: MAKE SOME PRIVATE/PROTECTED. MAKE COORDINATES DOUBLE
 		// create sprite of given type (see AnimationEngine)
 		Sprite(int spriteType, float x, float y, AnimationEngine* animEngine);
 		// type of sprite this is

@@ -1,6 +1,6 @@
 #include "map_generator.h"
 
-MapGenerator(string mapDir, int mapSeed)
+MapGenerator::MapGenerator(string mapDir, int mapSeed)
 {
   this->mapDir = mapDir;
   this->mapSeed = mapSeed;
@@ -18,16 +18,16 @@ MapChunk MapGenerator::generate(int chunkX, int chunkY)
 
   if (file_handle)  // create the chunk
   {
-    return readChunkFile(filepathBuffer);
+    return readChunkFile(file_handle);
   }
   else if (mapSeed)  // no chunk exists: generate it
   {
-    // TODO: CHUNK GENERATION
-    return MapChunk::NONE;
+    // TODO: CHUNK GENERATION, MapChunk::NULL_CHUNK
+    return MapChunk::getNullChunk();
   }
   else  // no chunk exists, and no seed set: return NULL chunk
   {
-    return MapChunk::NONE;
+    return MapChunk::getNullChunk();
   }
 }
 
@@ -52,7 +52,7 @@ MapChunk MapGenerator::readChunkFile(FILE* file)
     {
       // TODO: ERROR CHECKING?
       read_chunk.terrain[i][j] =
-        MapTerrain::getTerrain(chunkBuffer[i * MapChunk::TILE_ROWS + j])
+        MapTerrain::getTerrain(chunkBuffer[i * MapChunk::TILE_ROWS + j]);
     }
   }
 
@@ -81,7 +81,7 @@ void MapGenerator::writeChunkFile(int chunkX, int chunkY, MapChunk chunk)
   {
     for (int j = 0; j < MapChunk::TILE_COLS; j++)
     {
-      chunkBuffer[i * MapChunk::TILE_ROWS + j] = read_chunk.terrain[i][j];
+      chunkBuffer[i * MapChunk::TILE_ROWS + j] = chunk.terrain[i][j].typeId;
     }
   }
 

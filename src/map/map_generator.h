@@ -29,7 +29,7 @@ public:
   // buffer size for reading in a chunk
   static const size_t CHUNK_BUFFER_SIZE = MapChunk::TILE_ROWS * MapChunk::TILE_COLS + 1;
   // buffer for reading in a chunk file
-  char chunkBuffer[BUFFER_SIZE];
+  char chunkBuffer[CHUNK_BUFFER_SIZE];
   // size of the buffer used to generate file paths for reading map files
   static const size_t FILEPATH_BUFFER_SIZE = 400;
   // buffer used for generating file paths

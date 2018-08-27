@@ -1,18 +1,18 @@
-#ifndef CHUNK_COORDINATE_H
-#define CHUNK_COORDINATE_H
+#ifndef CHUNK_ID_H
+#define CHUNK_ID_H
 
 /*
 Struct that holds the x- and y- coordinates of a chunk, both of which are ints.
 Used for storing chunks in a hashmap. Provides hashing and equals functions.
 */
-struct ChunkCoordinate
+struct ChunkId
 {
 public:
   int x, y;
 
-  ChunkCoordinate(int x, int y);
+  ChunkId(int x, int y);
 
-  bool operator==(const ChunkCoordinate &other) const
+  bool operator==(const ChunkId &other) const
   {
     return x == other.x && y == other.y;
   }
@@ -23,11 +23,11 @@ public:
 namespace std {
 
   template <>
-  struct hash<ChunkCoordinate>
+  struct hash<ChunkId>
   {
-    std::size_t operator()(const ChunkCoordinate& coord) const
+    size_t operator()(const ChunkId& coord) const
     {
-      return coord.x + 39 * coord.y;
+      return coord->x + 39 * coord->y;
     }
   };
 

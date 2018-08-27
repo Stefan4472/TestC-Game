@@ -27,25 +27,28 @@ TODO: ANIMATION SUPPORT? INTERACTION SUPPORT?
 class MapTerrain
 {
 public:
-  MapTerrain(TextureId textureId, bool walkable);
-  
+  MapTerrain(TextureId textureId, bool walkable, TerrainType typeId);
+
   TextureId textureId = TextureId::TEXTURE_NONE;
   bool walkable = false;
+  TerrainType typeId = TerrainType::NONE;
+
+  // returns a terrain object of the given type
+  const static MapTerrain getTerrain(int terrainType);
+
+  // const static MapTerrain TEST;
 
   // pre-defined MapTerrain types. Defined in map_terrain.cpp
-  static const MapTerrain NONE;
-  static const MapTerrain GRASS;
-  static const MapTerrain BROWN_BRICK;
-  static const MapTerrain DARK_BRICK;
-  static const MapTerrain WHITE_BRICK;
-  static const MapTerrain WATER;
+  const static MapTerrain NONE;
+  const static MapTerrain GRASS;
+  const static MapTerrain BROWN_BRICK;
+  const static MapTerrain DARK_BRICK;
+  const static MapTerrain WHITE_BRICK;
+  const static MapTerrain WATER;
 
   // array linking TerrainType to MapTerrain object
   // defined in map_terrain.cpp
-  static const MapTerrain MAP_TERRAINS[];
-
-  // returns a terrain object of the given type
-  static const MapTerrain getTerrain(int terrainType);
+  const static MapTerrain MAP_TERRAINS[];
 };
 
 #endif

@@ -13,7 +13,7 @@
 #include "sound.h"
 #include "engine/animation_engine.h"
 #include "map_chunk.h"
-#include "chunk_coordinate.h"
+#include "chunk_id.h"
 #include "map_generator.h"
 #include "item_drop.h"
 #include "attack.h"
@@ -70,7 +70,7 @@ class Map : public PathFinder // TODO: IMPLEMENTATION OF MAP, AND GAME DRIVER, S
 	PlayerSpriteController* playerSpriteController = NULL;
 
 	// mapping of coordinates to loaded chunks
-	std::unordered_map<ChunkCoordinate, MapChunk> chunkCache;
+	std::unordered_map<ChunkId, MapChunk> chunkCache;
 
 	// controllers for sprites managed by map
 	std::vector<SpriteController*> sprites;
@@ -110,10 +110,13 @@ class Map : public PathFinder // TODO: IMPLEMENTATION OF MAP, AND GAME DRIVER, S
 		// decides which in-game Sounds can be heard, and plays them out loud
 		// plays audio from the sounds vector, which should be cleared every update()
 		void playAudio();
-		// returns the loaded chunk at the given coordinates.
+		// returns the loaded chunk at the given chunk coordinates.
 		// uses the chunkCache to store loaded chunks. Makes calls to the set
 		// MapGenerator object if the chunk is not in the cache
 		MapChunk getChunk(int chunkX, int chunkY);
+		// returns the loaded chunk at the given map coordinates
+		// makes a call to getChunk(), which uses a cache
+		MapChunk getChunkByCoords(int x, int y); 
 
 		// returns whether the two rectangles have any intersection
 		bool checkCollision(SDL_Rect a, SDL_Rect b);

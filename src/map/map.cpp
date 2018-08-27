@@ -298,7 +298,7 @@ bool Map::isValidPosition(SDL_Rect position)
 bool Map::isWalkable(int x, int y) // todo: check x >= 0 && y >= 0 && x <= SCREEN_WIDTH && y <= SCREEN_HEIGHT ??
 {
 	//printf("%d\n", mapChunk->walkableTiles[y / TILE_HEIGHT][x / TILE_WIDTH]);
-	return mapChunk->terrain[y / TILE_HEIGHT][x / TILE_WIDTH].walkable;
+	return getChunkByCoords(x, y)->terrain[y / TILE_HEIGHT][x / TILE_WIDTH].walkable;
 }
 
 void Map::addControlledSprite(SpriteController* spriteController)
@@ -316,44 +316,67 @@ void Map::centerTo(SDL_Rect center)
 {
 	camera.x = center.x - (SCREEN_WIDTH - center.w) / 2;
 	camera.y = center.y - (SCREEN_HEIGHT - center.h) / 2;
-	// TODO: DON'T ALLOW NEGATIVE?
 }
 
 void Map::drawTo(SDL_Renderer* renderer)
 {
-	// offsets from tile borders on x and y
-	int offset_x = camera.x % TILE_WIDTH;
-	int offset_y = camera.y % TILE_HEIGHT;
+	// row and col of top-left chunk to render
+	int start_chunk_x = camera.x / MapChunk::CHUNK_WIDTH;
+	int start_chunk_y = camera.y / MapChunk::CHUNK_HEIGHT;
 
-	// calculate # of tiles to render on width and height of screen (todo: make const)
-	int tiles_wide = (SCREEN_WIDTH / TILE_WIDTH) + 1;
-	int tiles_tall = (SCREEN_HEIGHT / TILE_HEIGHT) + 1;
+	// offsets from chunk borders on x and y
+	int offset_x = camera.x % MapChunk::CHUNK_WIDTH;
+	int offset_y = camera.y % MapChunk::CHUNK_HEIGHT;
 
-	// row and col of top-left tile to render
-	int start_tile_x = camera.x / TILE_WIDTH;
-	int start_tile_y = camera.y / TILE_HEIGHT;
+	// int tiles_wide = (SCREEN_WIDTH / TILE_WIDTH) + 1;
+	// int tiles_tall = (SCREEN_HEIGHT / TILE_HEIGHT) + 1;
+
+	// calculate # of chunks to render on width and height of screen (todo: make const)
+	int chunks_wide = (SCREEN_WIDTH / MapChunk::CHUNK_WIDTH) + 1;
+	int chunks_tall = (SCREEN_HEIGHT / MapChunk::CHUNK_HEIGHT) + 1;
+
+	// check if we need an extra chunk rendered to cover the rest of the screen
+	if (MapChunk::CHUNK_WIDTH - offset_x < camera.w)
+	{
+		chunks_wide++;
+	}
+	if (MapChunk::CHUNK_HEIGHT - offset_y < camera.h)
+	{
+		chunks_tall++;
+	}
+
+	// int start_tile_x = camera.x / TILE_WIDTH;
+	// int start_tile_y = camera.y / TILE_HEIGHT;
 
 	// set color to black
-	SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
+	// SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
 
-	// render tiles to canvas, using offsets to get physical coordinates
-	for (int i = 0; i < tiles_tall; i++)
+	// coordinates of chunk top-left being drawn
+	int chunk_x, chunk_y;
+	MapChunk chunk;
+
+	// render chunks to canvas, using offsets to get physical coordinates
+	for (int chunk_i = 0; chunk_i < chunks_tall; chunk_i++)
 	{
-		dest.y = i * TILE_HEIGHT - offset_y;
-		for (int j = 0; j < tiles_wide; j++)
+		chunk_y = start_chunk_y + chunk_i;
+		for (int chunk_j = 0; chunk_j < chunks_wide; chunk_j++)
 		{
-			dest.x = j * TILE_WIDTH - offset_x;
+			chunk_x = start_chunk_x + chunk_j;
 
-			// out of range: draw black
-			/*if (start_tile_y + i < 0 || start_tile_x + j < 0 || start_tile_y + i >= mapChunk->mapRows || start_tile_x + j >= mapChunk->mapCols)
+			// get the requested MapChunk
+			chunk = getChunk(chunk_x, chunk_y);
+
+			// draw each tile from the chunk, at offsets
+			for (int i = 0; i < MapChunk::TILE_ROWS; i++)
 			{
-				SDL_RenderFillRect( renderer, &dest );
+				dest.y = chunk_i * MapChunk::CHUNK_HEIGHT + i * TILE_HEIGHT - offset_y;
+				for (int j = 0; j < MapChunk::TILE_COLS; j++)
+				{
+					dest.x = chunk_j * MapChunk::CHUNK_WIDTH + j * TILE_WIDTH - offset_x;
+					textureAtlas->draw(renderer, chunk.terrain[i][j].textureId, dest.x, dest.y);
+				}
 			}
-			else
-			{
-				textureAtlas->draw(renderer, mapChunk->mapTiles[start_tile_y + i][start_tile_x + j], dest.x, dest.y);
-				SDL_RenderDrawRect( renderer, &dest );
-			}*/
+				// textureAtlas->draw(renderer, mapChunk->mapTiles[start_tile_y + i][start_tile_x + j], dest.x, dest.y);
 		}
 	}
 
@@ -417,18 +440,18 @@ void Map::playAudio()
 
 MapChunk Map::getChunk(int chunkX, int chunkY)
 {
-	printf("Request for chunk %d, %d\n", chunkX, chunkY);
+	printf("Map: Request for chunk %d, %d\n", chunkX, chunkY);
 
-	// lookup using ChunkCoordinate
-	unordered_map<ChunkCoordinate, int>::iterator iterator =
-		chunkCache.find(ChunkCoordinate(chunkX, chunkY));
+	// lookup using ChunkId
+	unordered_map<ChunkId, MapChunk>::iterator iterator =
+		chunkCache.find(ChunkId(chunkX, chunkY));
 
 	// not found: call MapGenerator.generate() and add to cache
 	if (iterator == chunkCache.end())
 	{
 		printf("Not found in cache: generating...\n");
-		MapChunk generated = mapGenerator.generate(chunkX, chunkY);
-		chunkCache.insert(ChunkCoordinate(chunkX, chunkY), generated);
+		MapChunk generated = mapGenerator->generate(chunkX, chunkY);
+		chunkCache.emplace(ChunkId(chunkX, chunkY), generated);
 		return generated;
 	}
 	// found: return
@@ -437,6 +460,11 @@ MapChunk Map::getChunk(int chunkX, int chunkY)
 		printf("Found in cache: returning...\n");
 		return iterator->second;
 	}
+}
+
+MapChunk Map::getChunkByCoords(int x, int y)
+{
+	return getChunk(x / MapChunk::CHUNK_WIDTH, y / MapChunk::CHUNK_HEIGHT);
 }
 
 bool Map::checkCollision(SDL_Rect a, SDL_Rect b)

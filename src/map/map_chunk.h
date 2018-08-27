@@ -16,8 +16,12 @@ TODO: CURRENTLY ONLY HAVE TERRAIN
 class MapChunk
 {
 	public:
+		// number of rows and columns of tiles in the chunk
 		static const int TILE_ROWS = 16;
 		static const int TILE_COLS = 16;
+		// calculated width and height of the chunk, in pixels
+		static const int CHUNK_WIDTH = TILE_ROWS * 32; // TODO: DON'T HARDCODE TILE WIDTH/HEIGHT
+		static const int CHUNK_HEIGHT = TILE_COLS * 32;
 
 		// returns a new MapChunk with all terrain set to NONE
 		static MapChunk getNullChunk();
@@ -25,7 +29,7 @@ class MapChunk
 		static MapChunk getRandomChunk();
 
 		// terrain tile grid
-		const MapTerrain terrain[TILE_ROWS][TILE_COLS];
+		MapTerrain const terrain[TILE_ROWS][TILE_COLS];
 
 		void printDebug();
 
