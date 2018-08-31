@@ -4,6 +4,7 @@
 #include <stdexcept>
 #include "sprite_buff.h"
 #include "item.h"
+#include "spritesheet.h"
 
 // Health regen buff given by a potion item. Amount of HP regen and duration
 // depends on potion type. TODO: SUPPORT MORE POTION TYPES
@@ -29,6 +30,7 @@ public:
 
   bool apply(Sprite* sprite, int ms);
 
+  void drawTo(SDL_Renderer* renderer, TextureAtlas* textureAtlas, Sprite* sprite);
   void getAndClearSounds(vector<Sounds> sounds);
 };
 #endif

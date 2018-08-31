@@ -23,7 +23,9 @@ class SpriteBuff
   // frame.
   virtual void getAndClearSounds(vector<Sounds> sounds) = 0;
 
-  // TODO: DRAWTO() METHOD
+  // draw the buff over the sprite
+  virtual void drawTo(SDL_Renderer* renderer, TextureAtlas* textureAtlas,
+    Sprite* sprite) = 0;
 };
 
 #endif

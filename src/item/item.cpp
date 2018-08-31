@@ -17,14 +17,14 @@ bool Item::load(Item* item)
 	return false;
 }
 
-void Item::update(int ms)
-{
-	return;	
-}
-
 void Item::use(const Sprite* actor)
 {
-	return;	
+	return;
+}
+
+void Item::update(int ms)
+{
+	return;
 }
 
 SpriteAction* Item::getAction()
@@ -32,7 +32,7 @@ SpriteAction* Item::getAction()
 	return NULL;
 }
 
-SpriteAction* Item::getBuff()
+SpriteBuff* Item::getBuff()
 {
 	return NULL;
 }
@@ -42,12 +42,20 @@ Attack* Item::getAttack()
 	return NULL;
 }
 
-int getStackSize(int itemId) 
+int Item::getStackSize(int itemId)
 {
-	return ITEM_STACKSIZES[itemId];	
+	if (itemId < 1 || itemId >= ItemType::NUM_ITEMS)
+	{
+		throw runtime_error("Invalid itemId");
+	}
+	return ITEM_STACKSIZES[itemId];
 }
 
-int getTextureId(int itemId)
+TextureId Item::getTextureId(int itemId)
 {
-	return ITEM_TEXTURES[itemId];	
+	if (itemId < 1 || itemId >= ItemType::NUM_ITEMS)
+	{
+		throw runtime_error("Invalid itemId");
+	}
+	return ITEM_TEXTURES[itemId];
 }
