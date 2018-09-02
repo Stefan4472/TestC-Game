@@ -31,7 +31,7 @@ enum ItemType
 	NUM_ITEMS
 };
 
-// TextureAtlas image ids, mapped by ItemType id
+// TextureAtlas image ids, mapped by ItemType id TODO: MOVE THIS STUFF OUT TO A .CPP FILE
 const TextureId ITEM_TEXTURES[13] =
 {
 	TextureId::TEXTURE_NONE,
@@ -144,7 +144,6 @@ class Item
 		std::string description;
 		int stackSize = 0;
 		TextureId textureId = TextureId::TEXTURE_NONE;
-		// ItemType ammunitionId = ItemType::NONE; // TODO: IMPLEMENT ONLY IN GUN CLASS??
 
 		// whether item should be destroyed (removed from inventory and deleted)
 		bool destroy = false;

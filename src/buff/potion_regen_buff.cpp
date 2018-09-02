@@ -41,3 +41,8 @@ void getAndClearSounds(vector<Sounds> sounds)
     //sounds.push_back()
   }
 }
+
+void drawTo(SDL_Renderer* renderer, TextureAtlas* textureAtlas, Sprite* sprite)
+{
+  
+}

@@ -21,17 +21,31 @@ TODO: NOTE, CURRENT IMPLEMENTATION ASSIGNS DAMAGE BASED ON BULLET TYPE ONLY
 class Gun : public Item
 {
 	protected:
-		// Item type used to load the gun NOTE: IMPLEMENTED IN ITEM CLASS
-		//ItemType ammunitionId = ItemType::NONE;
+		// Item type used to load the gun
+		ItemType ammunitionId;
 		// max. number of bullets that can be loaded at one time
 		int magSize;
-		// num milliseconds before gun can be fired again
-		int coolOff;
 		// number of bullets in magazine
 		int bulletsLoaded;
+		// num milliseconds before gun can be fired again
+		int coolOff;
 		// num milliseconds since gun was last fired
 		int msSinceShot;
-		Soun
+		// offsets added to sprite's hand position to get coordinates where bullet
+		// is shot. TODO: MAKE ARRAY?
+		int muzzleOffsetX, muzzleOffsetY;
+		// damage this bullet does when it hits a player/NPC/object
+		int bulletDamage;
+		// time it takes to reload TODO?
+		int reloadTime;
+		// number of pixels firing the gun sends the shooter back TODO: MAKE MORE SOPHISTICATED?
+		int recoilAmountPx;
+		// the type of sound this gun makes when shot
+		SoundType shotSoundType;
+		// the type of sound this gun makes when reloaded
+		SoundType reloadSoundType;
+		// the type of sound this gun makes when equipped TODO
+		SoundType equipSoundType;
 
 		// bullet created when gun was last fired
 		// consumed when getAttack() is called

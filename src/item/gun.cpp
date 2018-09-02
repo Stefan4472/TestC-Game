@@ -3,26 +3,46 @@
 Gun::Gun(int itemId) : Item(itemId)
 {
 	printf("Creating gun with id %d (%s)\n", itemId, name.c_str());
+	bulletsLoaded = 0;
+
 	switch (itemId)
 	{
 		case ItemType::PISTOL:
-			magSize = 10;
+			magSize = 8;
 			coolOff = 300;
+			muzzleOffsetX = 12;
+			muzzleOffsetY = -5;
+			bulletDamage = 10;
+			shotSoundType = SoundType::PISTOL_SHOT;
+			recoilAmountPx = 10;
 			break;
 
 		case ItemType::SHOTGUN:
 			magSize = 2;
 			coolOff = 500;
+			muzzleOffsetX = 24;
+			muzzleOffsetY = -5;
+			bulletDamage = 40;
+			shotSoundType = SoundType::SHOTGUN_SAWED_OFF_SHOT;
+			recoilAmountPx = 40;
 			break;
 
 		case ItemType::TOMMYGUN:
 			magSize = 24;
 			coolOff = 30;
+			muzzleOffsetX = 24;
+			muzzleOffsetY = -5;
+			bulletDamage = 15;
+			shotSoundType = SoundType::RIFLE_SHOT;
+			recoilAmountPx = 8;
 			break;
 
 		default:
 			raise runtime_error("Invalid ItemId, does not correspond to a gun");
 	}
+
+	// allow gun to be fired immediately
+	msSinceShot = coolOff;
 }
 
 void Gun::update(int ms)
