@@ -9,6 +9,7 @@
 #include "texture_atlas.h"
 #include "attack.h"
 #include "sprite_buff.h"
+#include "sound.h"
 class SpriteAction;
 
 // Items in the game. These are used as keys to retrieve name and description from the const arrays
@@ -143,7 +144,7 @@ class Item
 		std::string description;
 		int stackSize = 0;
 		TextureId textureId = TextureId::TEXTURE_NONE;
-		ItemType ammunitionId = ItemType::NONE; // TODO: IMPLEMENT ONLY IN GUN CLASS
+		// ItemType ammunitionId = ItemType::NONE; // TODO: IMPLEMENT ONLY IN GUN CLASS??
 
 		// whether item should be destroyed (removed from inventory and deleted)
 		bool destroy = false;
@@ -154,10 +155,10 @@ class Item
 		// attempts to load this item with the given Item, which may be consumed
 		// (setting the item's delete = true). Returns whether the given was
 		// successfully loaded into the current item.
-		virtual bool load(Item* item);
+		virtual bool load(Item* item);  // TODO: TAKE ITEMSTACK PARAMETER
 
 		// called when the Item is used. By default, doesn't do anything. Meant to
-		// be overridden by Items that create some action or consequence when used. 
+		// be overridden by Items that create some action or consequence when used.
 		// May trigger change of state.
 		// Actor is the sprite that's using the item
 		virtual void use(const Sprite* actor);
@@ -172,6 +173,9 @@ class Item
 		virtual SpriteBuff* getBuff();
 		// returns Attack created when this sprite is used. Default NULL
 		virtual Attack* getAttack();
+		// consumes the sounds created by the item (if any) and adds them to the
+		// given list
+		virtual void getAndClearSounds(vector<Sound*> sounds) = 0;
 
 		// returns stack size of given item id
 		static int getStackSize(int itemId);

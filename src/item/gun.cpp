@@ -5,29 +5,29 @@ Gun::Gun(int itemId) : Item(itemId)
 	printf("Creating gun with id %d (%s)\n", itemId, name.c_str());
 	switch (itemId)
 	{
-		case ITEM_PISTOL:		
+		case ItemType::PISTOL:
 			magSize = 10;
+			coolOff = 300;
+			break;
+
+		case ItemType::SHOTGUN:
+			magSize = 2;
 			coolOff = 500;
 			break;
-			
-		case ITEM_SHOTGUN:
-			magSize = 2;
-			coolOff = 100;
-			break;
-			
-		case ITEM_TOMMYGUN:
+
+		case ItemType::TOMMYGUN:
 			magSize = 24;
 			coolOff = 30;
 			break;
-			
+
 		default:
-			printf("ERROR: ItemID %d is not a gun! There may be unexpected behavior\n", itemId);
+			raise runtime_error("Invalid ItemId, does not correspond to a gun");
 	}
 }
 
 void Gun::update(int ms)
 {
-	msSinceShot += ms;	
+	msSinceShot += ms;
 }
 
 void Gun::use(Sprite* actor)
@@ -41,17 +41,20 @@ void Gun::use(Sprite* actor)
 		//position.y = handPos.y;
 		//position.w = 32;
 		//position.h = 32;
-		
+
+// TODO: ADD THE GIVEN PARAMETERS
+		lastSound = new Sound(shotSoundId, hand_pos.x, hand_pos.y, shotSoundRadius, actor);
+
 		printf("Sprite is using Gun\n");
-		
-		lastFiredBullet = new FiredBullet(actor, this);	
-		
+
+		lastFiredBullet = new FiredBullet(actor, this);
+
 		switch (actor->facingDir)
 		{
 			case DIRECTION_RIGHT:
 				lastRecoilAction = new KnockbackAction(DIRECTION_LEFT);
 				break;
-				
+
 			case DIRECTION_UP:
 				lastRecoilAction = new KnockbackAction(DIRECTION_DOWN);
 				break;
@@ -64,7 +67,7 @@ void Gun::use(Sprite* actor)
 				lastRecoilAction = new KnockbackAction(DIRECTION_UP);
 				break;
 		}
-		
+
 		bulletsLoaded--;
 	}
 	else
@@ -84,16 +87,25 @@ bool Gun::load(Item* item)
 	return false;
 }
 
-Attack* Gun::getAttack() 
+Attack* Gun::getAttack()
 {
 	Attack* bullet = lastFiredBullet;
 	lastFiredBullet = NULL;
 	return bullet;
 }
 
-SpriteAction* Gun::getAction() 
+SpriteAction* Gun::getAction()
 {
 	SpriteAction* recoil = lastRecoilAction;
 	lastRecoilAction = NULL;
 	return recoil;
+}
+
+void Gun::getAndClearSounds(vector<Sounds> sounds)
+{
+	if (lastSound)
+	{
+		sounds.push_back(lastSound);
+		lastSound = NULL;
+	}
 }

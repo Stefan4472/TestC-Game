@@ -42,6 +42,11 @@ Attack* Item::getAttack()
 	return NULL;
 }
 
+void Item::getAndClearSounds(vector<Sound*> sounds)
+{
+		return;
+}
+
 int Item::getStackSize(int itemId)
 {
 	if (itemId < 1 || itemId >= ItemType::NUM_ITEMS)
