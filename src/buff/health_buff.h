@@ -6,6 +6,7 @@
 #include "item.h"
 #include "spritesheet.h"
 #include "sound.h"
+#include "simple_animation.h"
 
 /*
 Changes the sprite's health by the given amount over the given time. Also allows
@@ -26,14 +27,15 @@ private:
   bool startSoundPlayed = false;
 	// sound to play at start, and then at end
 	SoundType startSoundType, endSoundType;
-
+	// animation to be drawn to the sprite during the buff
+	SimpleAnimation* spriteAnimation = NULL;
 	// last sound created by this buff
 	Sound* lastSound = NULL;
 
 public:
   // construct with the given item type. Throws runtime_error if the item type
   // is not a potion.
-  HealthBuff(int healthChange, int durationMs, AnimationType animation,
+  HealthBuff(int healthChange, int durationMs, AnimationId animationId,
 		SoundType startSoundType, SoundType endSoundType);
 	// starts tracking time and applying health
   void init(Sprite* sprite);

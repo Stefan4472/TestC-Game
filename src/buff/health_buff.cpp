@@ -1,9 +1,15 @@
 #include "health_buff.h"
 
-HealthBuff::HealthBuff(int healthChange, int durationMs, AnimationType animation,
+HealthBuff::HealthBuff(int healthChange, int durationMs, AnimationId animationId,
   SoundType startSoundType, SoundType endSoundType)
 {
   amountPerMs = healthChange / (float) durationMs;
+
+  if (animationId != AnimationId::NONE)
+  {
+    spriteAnim = new SimpleAnimation(animationId);
+  }
+
   this->startSoundType = startSoundType;
   this->endSoundType = endSoundType;
 }
@@ -59,5 +65,11 @@ void getAndClearSounds(vector<Sound*> sounds)
 
 void drawToSprite(SDL_Renderer* renderer, TextureAtlas* textureAtlas, Sprite* sprite)
 {
-
+  if (spriteAnim)
+  {
+    spriteAnim->x = sprite->x;
+    spriteAnim->y = sprite->y;
+    spriteAnim->elapsedTimeMs = elapsedTime;
+    textureAtlas->drawAnim(renderer, spriteAnim, sprite->x, sprite->y);
+  }
 }
