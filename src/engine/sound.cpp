@@ -1,11 +1,9 @@
 #include "sound.h"
 
-Sound::Sound(Sounds soundId, float x, float y, int radius, Sprite* creator)
+Sound::Sound(SoundType soundType, float x, float y, Sprite* creator)
 {
-	this->soundId = soundId;
+	this->soundType = soundType;
 	this->x = x;
 	this->y = y;
-  this->radius = radius;
-  radiusSquared = radius * radius;
 	this->creator = creator;
 }

@@ -116,6 +116,8 @@ SoundId getSoundByType(int soundType)
 {
 		switch (soundType)
 		{
+			case SoundType::NONE:
+				return SoundId::NO_SOUND;
 			case SoundType::FOOTSTEP_GRASS_RUN:
 				return getFootstepGrassRunSound();
 			case SoundType::FOOTSTEP_GRASS_WALK:

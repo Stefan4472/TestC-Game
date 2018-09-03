@@ -58,6 +58,7 @@ enum SoundId
 // categories the individual sounds are grouped into
 enum SoundType
 {
+  NONE,
   FOOTSTEP_GRASS_RUN,
   FOOTSTEP_GRASS_WALK,
   FOOTSTEP_WOOD_WALK,
