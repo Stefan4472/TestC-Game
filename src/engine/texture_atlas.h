@@ -74,7 +74,7 @@ enum TextureId
 
 const SDL_Rect textureRegions[51] =
 {
-	SDL_Rect { 64, 64, 32, 32 }, 
+	SDL_Rect { 64, 64, 32, 32 },
 	SDL_Rect { 64, 32, 32, 32 },
 	SDL_Rect { 0, 0, 32, 32 },
 	SDL_Rect { 64, 0, 32, 32 },
@@ -150,5 +150,8 @@ class TextureAtlas
 		int getWidth(int textureId);
 		// returns height (px) of specified Texture image
 		int getHeight(int textureId);
+
+		void drawAnim(SDL_Renderer* renderer, SimpleAnimation anim, float mapOffsetX,
+			float mapOffsetY);
 };
 #endif

@@ -5,8 +5,8 @@
 #include <stdexcept>
 #include "texture_atlas.h"
 #include "item.h"
-#include "sprite_action.h"
-#include "health_regen_action.h"
+#include "sprite_buff.h"
+#include "health_buff.h"
 
 // HP healed by each item when consumed, and time it takes for that healing to
 // happen. Defined in consumable.cpp

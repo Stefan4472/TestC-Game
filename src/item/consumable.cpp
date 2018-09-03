@@ -41,18 +41,18 @@ SpriteAction* Consumable::getBuff()
 		// return buff depending on ItemType
 		switch (itemType)
 		{
-			case ITEM_BREAD_LOAF:
-				return new ; // TODO
+			case ItemType::BREAD_LOAF:
+				return new HealthBuff(BREAD_HEALING_HP, BREAD_HEALING_MS, ); // TODO
 
-			case ITEM_CHICKEN_LEG:
-				return new;
+			case ItemType::CHICKEN_LEG:
+				return new HealthBuff(CHICKENLEG_HEALING_HP, CHICKENLEG_HEALING_MS, );
 
-			case ITEM_BEER_MUG:
-				return new;
+			case ItemType::BEER_MUG:
+				return new HealthBuff(BEERMUG_HEALING_HP, BEERMUG_HEALING_MS, );
 
-			case ITEM_GREEN_POTION:
-				return new;
-				
+			case ItemType::GREEN_POTION:
+				return new HealthBuff(GREENPOTION_HEALING_HP, GREENPOTION_HEALING_MS, )
+
 			default:
 				throw runtime_error("Invalid itemType. This should never happen");
 		}
