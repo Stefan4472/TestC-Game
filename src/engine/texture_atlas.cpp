@@ -63,31 +63,29 @@ const SDL_Rect textureRegions[51] =
 	SDL_Rect { 284, 231, 23, 11 }
 };
 
+// TODO: USE ACTUAL TEXTURES
+const TextureId[] ANIM_GREEN_POTION_BUFF_FRAMES = {
+	TextureId::TILE_GRASS,
+	TextureId::TILE_BROWN_BRICK,
+	TextureId::TILE_DARK_BRICK,
+	TextureId::TILE_WHITE_BRICK
+};
+
+const int *animationFrames[] =
+{
+	{},
+	ANIM_GREEN_POTION_BUFF_FRAMES
+};
+
+const int animationFrameCounts[] =
+{
+	0,
+	sizeof(animationFrames[1]) / sizeof(TextureId);
+};
+
 TextureAtlas::TextureAtlas(SDL_Texture* atlas)
 {
 	this->atlas = atlas;
-}
-
-void TextureAtlas::draw(SDL_Renderer* renderer, int textureId, float x, float y)
-{
-	dest.x = x;
-	dest.y = y;
-	dest.w = textureRegions[textureId].w;
-	dest.h = textureRegions[textureId].h;
-	// draw from atlas
-	SDL_RenderCopy(renderer, atlas, &textureRegions[textureId], &dest);
-}
-
-void TextureAtlas::drawSubimg(SDL_Renderer* renderer, int textureId, SDL_Rect src, float x, float y)
-{
-	// adjust source coordinates to get coordinate in full atlas
-	src.x = src.x + textureRegions[textureId].x;
-	src.y = src.y + textureRegions[textureId].y;
-	dest.x = x;
-	dest.y = y;
-	dest.w = src.w;
-	dest.h = src.h;
-	SDL_RenderCopy(renderer, atlas, &src, &dest);
 }
 
 int TextureAtlas::getWidth(int textureId)
@@ -98,4 +96,46 @@ int TextureAtlas::getWidth(int textureId)
 int TextureAtlas::getHeight(int textureId)
 {
 	return textureRegions[textureId].h;
+}
+
+void TextureAtlas::draw(SDL_Renderer* renderer, int textureId, float x, float y)
+{
+	if (textureId < 1 || textureId > TextureId::NUM_TEXTURES)
+	{
+		throw runtime_error("TextureId out of bounds");
+	}
+
+	dest.x = x;
+	dest.y = y;
+	dest.w = textureRegions[textureId].w;
+	dest.h = textureRegions[textureId].h;
+	// draw from atlas
+	SDL_RenderCopy(renderer, atlas, &textureRegions[textureId], &dest);
+}
+
+void TextureAtlas::drawSubimg(SDL_Renderer* renderer, int textureId, SDL_Rect src, float x, float y)
+{
+	if (textureId < 1 || textureId > TextureId::NUM_TEXTURES)
+	{
+		throw runtime_error("TextureId out of bounds");
+	}
+
+	// adjust source coordinates to get coordinate in full atlas
+	src.x = src.x + textureRegions[textureId].x;
+	src.y = src.y + textureRegions[textureId].y;
+	dest.x = x;
+	dest.y = y;
+	dest.w = src.w;
+	dest.h = src.h;
+	SDL_RenderCopy(renderer, atlas, &src, &dest);
+}
+
+void TextureAtlas::drawAnim(SDL_Renderer* renderer, SimpleAnimation* anim)
+{
+	int frame_num = anim->elapsedTimeMs / ANIMATION_FRAME_DURATION;
+
+	if (frame_num < animationFrameCounts[anim->animationId])
+	{
+		drawImg(renderer, animationFrames[anim->animationId][frame_num], anim->x, anim->y);
+	}
 }

@@ -2,6 +2,7 @@
 #define TEXTURE_ATLAS_H
 
 #include <SDL2/SDL.h>
+#include <stdexcept>
 #include "texture_ids.h"
 
 /*
@@ -12,6 +13,8 @@ full atlas image with pre-determined, known SDL_Rects.
 The TextureId enum, defined in texture_ids.h, provides image identifiers.
 The textureRegions array defines the bounds of the corresponding textures in
 the atlas.
+
+The TextureAtlas also provides support for drawing SimpleAnimation types. TODO: EXPLAIN
 */
 
 // note: this animations were not implemented.
@@ -24,6 +27,14 @@ the atlas.
 // defined in texture_atlas.cpp
 const SDL_Rect textureRegions[51];
 
+// 2-d array defining the TextureIds in the known animations.
+// The first index corresponds to the AnimationId, and the second lists the
+// frames of the animation, in order
+const int *animationFrames[];
+// defines the number of frames for each corresponding AnimationId
+const int animationFrameCounts[];
+const int ANIMATION_FRAME_DURATION = 50; // TODO: FIND A BETTER WAY
+
 class TextureAtlas
 {
 	SDL_Texture* atlas;
@@ -32,16 +43,17 @@ class TextureAtlas
 	public:
 		// init with full atlas image
 		TextureAtlas(SDL_Texture* atlas);
-		// draws image given by textureId to given SDL_Surface at x,y
-		void draw(SDL_Renderer* renderer, int textureId, float x, float y);
-		// draws subimage defined by src from specified image to coordinates x,y on renderer
-		void drawSubimg(SDL_Renderer* renderer, int textureId, SDL_Rect src, float x, float y);
+
 		// returns width (px) of specified Texture image
 		int getWidth(int textureId);
 		// returns height (px) of specified Texture image
 		int getHeight(int textureId);
 
-		void drawAnim(SDL_Renderer* renderer, SimpleAnimation* anim, float mapOffsetX,
-			float mapOffsetY);  // TODO: TAKE MAP OFFSET AS A PARAMETER? OR JUST USE ANIM COORDINATES?
+		// draws image given by textureId to given SDL_Surface at x,y
+		void draw(SDL_Renderer* renderer, int textureId, float x, float y);
+		// draws subimage defined by src from specified image to coordinates x,y on renderer
+		void drawSubimg(SDL_Renderer* renderer, int textureId, SDL_Rect src, float x, float y);
+		// draws the frame from the given SimpleAnimation TODO: TAKE MAP OFFSET AS A PARAMETER? OR JUST USE ANIM COORDINATES?
+		void drawAnim(SDL_Renderer* renderer, SimpleAnimation* anim);
 };
 #endif

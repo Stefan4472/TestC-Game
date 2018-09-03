@@ -4,6 +4,7 @@
 enum AnimationId
 {
   NONE,
+  GREEN_POTION_BUFF,
   NUM_ANIMATIONS
 };
 
