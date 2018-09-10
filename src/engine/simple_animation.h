@@ -1,7 +1,7 @@
 #ifndef SIMPLE_ANIMATION_H
 #define SIMPLE_ANIMATION_H
 
-enum AnimationId
+enum class AnimationId
 {
   NONE,
   GREEN_POTION_BUFF,

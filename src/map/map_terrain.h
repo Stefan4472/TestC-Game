@@ -27,28 +27,31 @@ TODO: ANIMATION SUPPORT? INTERACTION SUPPORT?
 class MapTerrain
 {
 public:
+  // default constructor: creates NONE MapTerrain TODO: SHOULD THIS EVEN BE NECESSARY?
+  MapTerrain();
+  //
   MapTerrain(TextureId textureId, bool walkable, TerrainType typeId);
 
-  TextureId textureId = TextureId::TEXTURE_NONE;
-  bool walkable = false;
-  TerrainType typeId = TerrainType::NONE;
+  TextureId textureId;
+  bool walkable;
+  TerrainType typeId;
 
   // returns a terrain object of the given type
-  const static MapTerrain getTerrain(int terrainType);
+  static MapTerrain getTerrain(int terrainType);
 
   // const static MapTerrain TEST;
 
-  // pre-defined MapTerrain types. Defined in map_terrain.cpp
-  const static MapTerrain NONE;
-  const static MapTerrain GRASS;
-  const static MapTerrain BROWN_BRICK;
-  const static MapTerrain DARK_BRICK;
-  const static MapTerrain WHITE_BRICK;
-  const static MapTerrain WATER;
+  // pre-defined MapTerrain types. Defined in map_terrain.cpp TODO: MAKE CONST
+  static MapTerrain NONE;
+  static MapTerrain GRASS;
+  static MapTerrain BROWN_BRICK;
+  static MapTerrain DARK_BRICK;
+  static MapTerrain WHITE_BRICK;
+  static MapTerrain WATER;
 
   // array linking TerrainType to MapTerrain object
   // defined in map_terrain.cpp
-  const static MapTerrain MAP_TERRAINS[];
+  static MapTerrain MAP_TERRAINS[];
 };
 
 #endif

@@ -1,14 +1,19 @@
 // tests loading and drawing a map
-
-// g++ engine/texture_atlas.cpp map/map_generator.cpp map/map_chunk.cpp map/map_terrain.cpp map/chunk_id.cpp -w -std=c++11 -Iengine -Imap -I.-lSDL2 -lSDL2_image
+// g++ test/test_map.cpp engine/texture_atlas.cpp map/map_generator.cpp map/map_chunk.cpp map/map_terrain.cpp map/chunk_id.cpp -w -std=c++11 -Iengine -Imap -I. -lSDL2 -lSDL2_image -o test_map
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <stdio.h>
 #include <string>
+#include <unordered_map>
 #include "texture_atlas.h"
 #include "map_generator.h"
+#include "chunk_id.h"
 
+using namespace std;
+
+MapChunk getChunk(int chunkX, int chunkY);
+void drawMap();
 bool init();
 bool loadMedia();
 SDL_Texture* loadTexture(std::string path);
@@ -17,6 +22,7 @@ void close();
 SDL_Window* gWindow = NULL;
 SDL_Renderer* gRenderer = NULL;
 SDL_Texture* textureAtlasImg = NULL;
+TextureAtlas* textureAtlas = NULL;
 
 const int SCREEN_WIDTH = 640;
 const int SCREEN_HEIGHT = 480;
@@ -24,6 +30,11 @@ const int SCREEN_HEIGHT = 480;
 // camera coordinates
 int cameraX = -SCREEN_WIDTH / 2;
 int cameraY = -SCREEN_HEIGHT / 2;
+
+// mapping of coordinates to loaded chunks
+unordered_map<ChunkId, MapChunk> chunkCache;
+
+MapGenerator mapGenerator;
 
 int main(int argc, char* argv[])
 {
@@ -37,11 +48,11 @@ int main(int argc, char* argv[])
   printf("Running on map directory '%s'\n", map_dir.c_str());
 
   // create the map generator with the given file path
-  MapGenerator map_generator(map_dir, 0);
+  mapGenerator(map_dir, 0);
 
   init();
   loadMedia();
-  TextureAtlas t_atlas = TextureAtlas(textureAtlasImg);
+  textureAtlas = TextureAtlas(textureAtlasImg);
 
   Uint32 last_time = SDL_GetTicks();
 	Uint32 curr_time, ticks_since_last_frame;
@@ -88,60 +99,11 @@ int main(int argc, char* argv[])
             break;
 				}
 			}
-		}
+    }
 
-    // draw the terrain
-    // row and col of top-left chunk to render
-  	int start_chunk_x = cameraX / MapChunk::CHUNK_WIDTH;
-  	int start_chunk_y = cameraY / MapChunk::CHUNK_HEIGHT;
+    drawMap();
 
-  	// offsets from chunk borders on x and y
-  	int offset_x = cameraX % MapChunk::CHUNK_WIDTH;
-  	int offset_y = cameraY % MapChunk::CHUNK_HEIGHT;
-
-  	// calculate # of chunks to render on width and height of screen (todo: make const)
-  	int chunks_wide = (SCREEN_WIDTH / MapChunk::CHUNK_WIDTH) + 1;
-  	int chunks_tall = (SCREEN_HEIGHT / MapChunk::CHUNK_HEIGHT) + 1;
-
-  	// check if we need an extra chunk rendered to cover the rest of the screen
-  	if (MapChunk::CHUNK_WIDTH - offset_x < camera.w)
-  	{
-  		chunks_wide++;
-  	}
-  	if (MapChunk::CHUNK_HEIGHT - offset_y < camera.h)
-  	{
-  		chunks_tall++;
-  	}
-
-  	// coordinates of chunk top-left being drawn
-  	int chunk_x, chunk_y;
-  	MapChunk chunk;
-
-  	// render chunks to canvas, using offsets to get physical coordinates
-  	for (int chunk_i = 0; chunk_i < chunks_tall; chunk_i++)
-  	{
-  		chunk_y = start_chunk_y + chunk_i;
-  		for (int chunk_j = 0; chunk_j < chunks_wide; chunk_j++)
-  		{
-  			chunk_x = start_chunk_x + chunk_j;
-
-  			// get the requested MapChunk
-  			chunk = getChunk(chunk_x, chunk_y);
-
-  			// draw each tile from the chunk, at offsets
-  			for (int i = 0; i < MapChunk::TILE_ROWS; i++)
-  			{
-  				dest.y = chunk_i * MapChunk::CHUNK_HEIGHT + i * TILE_HEIGHT - offset_y;
-  				for (int j = 0; j < MapChunk::TILE_COLS; j++)
-  				{
-  					dest.x = chunk_j * MapChunk::CHUNK_WIDTH + j * TILE_WIDTH - offset_x;
-  					textureAtlas->draw(renderer, chunk.terrain[i][j].textureId, dest.x, dest.y);
-  				}
-  			}
-  		}
-  	}
-
-		// // update screen
+		// render screen
 		SDL_RenderPresent(gRenderer);
 
 		// update last_frame_ticks
@@ -149,6 +111,84 @@ int main(int argc, char* argv[])
 	}
 
   close();
+}
+
+MapChunk getChunk(int chunkX, int chunkY)
+{
+	printf("Map: Request for chunk %d, %d\n", chunkX, chunkY);
+
+	// lookup using ChunkId
+	unordered_map<ChunkId, MapChunk>::iterator iterator =
+		chunkCache.find(ChunkId(chunkX, chunkY));
+
+	// not found: call MapGenerator.generate() and add to cache
+	if (iterator == chunkCache.end())
+	{
+		printf("Not found in cache: generating...\n");
+		MapChunk generated = mapGenerator->generate(chunkX, chunkY);
+		chunkCache.emplace(ChunkId(chunkX, chunkY), generated);
+		return generated;
+	}
+	// found: return
+	else
+	{
+		printf("Found in cache: returning...\n");
+		return iterator->second;
+	}
+}
+
+void drawMap()
+{
+  // draw the terrain
+  // row and col of top-left chunk to render
+  int start_chunk_x = cameraX / MapChunk::CHUNK_WIDTH;
+  int start_chunk_y = cameraY / MapChunk::CHUNK_HEIGHT;
+
+  // offsets from chunk borders on x and y
+  int offset_x = cameraX % MapChunk::CHUNK_WIDTH;
+  int offset_y = cameraY % MapChunk::CHUNK_HEIGHT;
+
+  // calculate # of chunks to render on width and height of screen (todo: make const)
+  int chunks_wide = (SCREEN_WIDTH / MapChunk::CHUNK_WIDTH) + 1;
+  int chunks_tall = (SCREEN_HEIGHT / MapChunk::CHUNK_HEIGHT) + 1;
+
+  // check if we need an extra chunk rendered to cover the rest of the screen
+  if (MapChunk::CHUNK_WIDTH - offset_x < SCREEN_WIDTH)
+  {
+    chunks_wide++;
+  }
+  if (MapChunk::CHUNK_HEIGHT - offset_y < SCREEN_HEIGHT)
+  {
+    chunks_tall++;
+  }
+
+  // coordinates of chunk top-left being drawn
+  int chunk_x, chunk_y;
+  MapChunk chunk;
+
+  // render chunks to canvas, using offsets to get physical coordinates
+  for (int chunk_i = 0; chunk_i < chunks_tall; chunk_i++)
+  {
+    chunk_y = start_chunk_y + chunk_i;
+    for (int chunk_j = 0; chunk_j < chunks_wide; chunk_j++)
+    {
+      chunk_x = start_chunk_x + chunk_j;
+
+      // get the requested MapChunk
+      chunk = map_generator.(chunk_x, chunk_y);
+
+      // draw each tile from the chunk, at offsets
+      for (int i = 0; i < MapChunk::TILE_ROWS; i++)
+      {
+        dest.y = chunk_i * MapChunk::CHUNK_HEIGHT + i * TILE_HEIGHT - offset_y;
+        for (int j = 0; j < MapChunk::TILE_COLS; j++)
+        {
+          dest.x = chunk_j * MapChunk::CHUNK_WIDTH + j * TILE_WIDTH - offset_x;
+          textureAtlas->draw(gRenderer, chunk.terrain[i][j].textureId, dest.x, dest.y);
+        }
+      }
+    }
+  }
 }
 
 bool init()

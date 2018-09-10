@@ -141,9 +141,9 @@ void TextureAtlas::drawAnim(SDL_Renderer* renderer, SimpleAnimation* anim,
 {
 	int frame_num = anim->elapsedTimeMs / ANIMATION_FRAME_DURATION;
 
-	if (frame_num < animationFrameCounts[anim->animId])
+	if (frame_num < animationFrameCounts[int(anim->animId)])
 	{
-		drawImg(renderer, animationFrames[anim->animId][frame_num],
+		drawImg(renderer, animationFrames[int(anim->animId)][frame_num],
 			useMapOffset ? anim->x - mapOffsetX : anim->x,
 			useMapOffset ? anim->y - mapOffsetY : anim->y);
 	}

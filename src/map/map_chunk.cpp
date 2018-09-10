@@ -1,5 +1,10 @@
 #include "map_chunk.h"
 
+MapChunk::MapChunk()
+{
+
+}
+
 MapChunk MapChunk::getNullChunk()
 {
 	MapChunk null_chunk;

@@ -28,8 +28,10 @@ class MapChunk
 		// returns a MapChunk with terrain set randomly
 		static MapChunk getRandomChunk();
 
+		MapChunk();
+		
 		// terrain tile grid
-		MapTerrain const terrain[TILE_ROWS][TILE_COLS];
+		MapTerrain terrain[TILE_ROWS][TILE_COLS];
 
 		void printDebug();
 

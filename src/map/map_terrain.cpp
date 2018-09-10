@@ -3,15 +3,15 @@
 // static MapTerrain MapTerrain::TEST = MapTerrain(TextureId::TEXTURE_NONE, true)
 
 // pre-defined terrain types
-const MapTerrain MapTerrain::NONE = MapTerrain(TextureId::TEXTURE_NONE, false, TerrainType::NONE);
-const MapTerrain MapTerrain::GRASS = MapTerrain(TextureId::TILE_GRASS, true, TerrainType::GRASS);
-const MapTerrain MapTerrain::BROWN_BRICK = MapTerrain(TextureId::TILE_BROWN_BRICK, true, TerrainType::BROWN_BRICK);
-const MapTerrain MapTerrain::DARK_BRICK = MapTerrain(TextureId::TILE_DARK_BRICK, true, TerrainType::DARK_BRICK);
-const MapTerrain MapTerrain::WHITE_BRICK = MapTerrain(TextureId::TILE_WHITE_BRICK, true, TerrainType::WHITE_BRICK);
-const MapTerrain MapTerrain::WATER = MapTerrain(TextureId::TILE_WATER, true, TerrainType::WATER);
+MapTerrain MapTerrain::NONE = MapTerrain(TextureId::TEXTURE_NONE, false, TerrainType::NONE);
+MapTerrain MapTerrain::GRASS = MapTerrain(TextureId::TILE_GRASS, true, TerrainType::GRASS);
+MapTerrain MapTerrain::BROWN_BRICK = MapTerrain(TextureId::TILE_BROWN_BRICK, true, TerrainType::BROWN_BRICK);
+MapTerrain MapTerrain::DARK_BRICK = MapTerrain(TextureId::TILE_DARK_BRICK, true, TerrainType::DARK_BRICK);
+MapTerrain MapTerrain::WHITE_BRICK = MapTerrain(TextureId::TILE_WHITE_BRICK, true, TerrainType::WHITE_BRICK);
+MapTerrain MapTerrain::WATER = MapTerrain(TextureId::TILE_WATER, true, TerrainType::WATER);
 
 // array mapping TerrainType to MapTerrain object
-const MapTerrain MapTerrain::MAP_TERRAINS[] =
+MapTerrain MapTerrain::MAP_TERRAINS[] =
 {
   MapTerrain::NONE,
   MapTerrain::GRASS,
@@ -21,6 +21,13 @@ const MapTerrain MapTerrain::MAP_TERRAINS[] =
   MapTerrain::WATER
 };
 
+MapTerrain::MapTerrain()
+{
+  textureId = TextureId::TEXTURE_NONE;
+  walkable = false;
+  typeId = TerrainType::NONE;
+}
+
 MapTerrain::MapTerrain(TextureId textureId, bool walkable, TerrainType typeId)
 {
     this->textureId = textureId;
@@ -28,7 +35,7 @@ MapTerrain::MapTerrain(TextureId textureId, bool walkable, TerrainType typeId)
     this->typeId = typeId;
 }
 
-const MapTerrain MapTerrain::getTerrain(int terrainType)
+MapTerrain MapTerrain::getTerrain(int terrainType)
 {
   if (terrainType < 0 || terrainType >= TerrainType::NUM_TYPES)
   {

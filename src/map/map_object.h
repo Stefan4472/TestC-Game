@@ -14,13 +14,12 @@ using namespace std;
 Basically, anything on the map that isn't a terrain tile, a drop, or an NPC.
 Usually interactible. TODO: WILL BE USED SOON
 */
-
 class MapObject
 {
 	public:
 		SDL_Rect drawRegion;
 		SDL_Rect mapHitbox;  // TODO: TILE-BASED HITBOX
-		
+
 		virtual void update(int ms) = 0;
 		virtual void onInteract(Sprite* sprite, Item* inHand) = 0;
 		virtual void getAndClearDrops(vector<ItemDrop> drops) = 0;
