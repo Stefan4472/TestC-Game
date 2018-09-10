@@ -83,9 +83,9 @@ const int animationFrameCounts[] =
 	sizeof(animationFrames[1]) / sizeof(TextureId);
 };
 
-TextureAtlas::TextureAtlas(SDL_Texture* atlas)
+TextureAtlas::TextureAtlas(SDL_Texture* atlasImg)
 {
-	this->atlas = atlas;
+	this->atlasImg = atlasImg;
 }
 
 int TextureAtlas::getWidth(int textureId)
@@ -98,24 +98,25 @@ int TextureAtlas::getHeight(int textureId)
 	return textureRegions[textureId].h;
 }
 
-void TextureAtlas::draw(SDL_Renderer* renderer, int textureId, float x, float y)
+void TextureAtlas::drawImg(SDL_Renderer* renderer, int textureId, float x, float y)
 {
-	if (textureId < 1 || textureId > TextureId::NUM_TEXTURES)
+	if (textureId < 0 || textureId > TextureId::NUM_TEXTURES)
 	{
 		throw runtime_error("TextureId out of bounds");
 	}
 
-	dest.x = x;
-	dest.y = y;
+	dest.x = x - mapOffsetX;
+	dest.y = y - mapOffsetY;
 	dest.w = textureRegions[textureId].w;
 	dest.h = textureRegions[textureId].h;
+
 	// draw from atlas
-	SDL_RenderCopy(renderer, atlas, &textureRegions[textureId], &dest);
+	SDL_RenderCopy(renderer, atlasImg, &textureRegions[textureId], &dest);
 }
 
 void TextureAtlas::drawSubimg(SDL_Renderer* renderer, int textureId, SDL_Rect src, float x, float y)
 {
-	if (textureId < 1 || textureId > TextureId::NUM_TEXTURES)
+	if (textureId < 0 || textureId > TextureId::NUM_TEXTURES)
 	{
 		throw runtime_error("TextureId out of bounds");
 	}
@@ -123,11 +124,13 @@ void TextureAtlas::drawSubimg(SDL_Renderer* renderer, int textureId, SDL_Rect sr
 	// adjust source coordinates to get coordinate in full atlas
 	src.x = src.x + textureRegions[textureId].x;
 	src.y = src.y + textureRegions[textureId].y;
-	dest.x = x;
-	dest.y = y;
+
+	dest.x = x - mapOffsetX;
+	dest.y = y - mapOffsetY;
 	dest.w = src.w;
 	dest.h = src.h;
-	SDL_RenderCopy(renderer, atlas, &src, &dest);
+
+	SDL_RenderCopy(renderer, atlasImg, &src, &dest);
 }
 
 void TextureAtlas::drawAnim(SDL_Renderer* renderer, SimpleAnimation* anim)
@@ -136,6 +139,7 @@ void TextureAtlas::drawAnim(SDL_Renderer* renderer, SimpleAnimation* anim)
 
 	if (frame_num < animationFrameCounts[anim->animationId])
 	{
-		drawImg(renderer, animationFrames[anim->animationId][frame_num], anim->x, anim->y);
+		drawImg(renderer, animationFrames[anim->animationId][frame_num],
+			anim->x - mapOffsetX, anim->y - mapOffsetY);
 	}
 }

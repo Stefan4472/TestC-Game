@@ -37,12 +37,17 @@ const int ANIMATION_FRAME_DURATION = 50; // TODO: FIND A BETTER WAY
 
 class TextureAtlas
 {
-	SDL_Texture* atlas;
+	SDL_Texture* atlasImg;
 	SDL_Rect src, dest;
 
 	public:
 		// init with full atlas image
-		TextureAtlas(SDL_Texture* atlas);
+		TextureAtlas(SDL_Texture* atlasImg);
+
+		// map coordinates of top-left of the screen. Subtracted from given draw
+		// coordinates to convert map coordinates to physical (screen) coordinates.
+		// Should be set by the Map/game engine
+		float mapOffsetX = 0, mapOffsetY = 0;
 
 		// returns width (px) of specified Texture image
 		int getWidth(int textureId);
@@ -50,7 +55,7 @@ class TextureAtlas
 		int getHeight(int textureId);
 
 		// draws image given by textureId to given SDL_Surface at x,y
-		void draw(SDL_Renderer* renderer, int textureId, float x, float y);
+		void drawImg(SDL_Renderer* renderer, int textureId, float x, float y);
 		// draws subimage defined by src from specified image to coordinates x,y on renderer
 		void drawSubimg(SDL_Renderer* renderer, int textureId, SDL_Rect src, float x, float y);
 		// draws the frame from the given SimpleAnimation TODO: TAKE MAP OFFSET AS A PARAMETER? OR JUST USE ANIM COORDINATES?
