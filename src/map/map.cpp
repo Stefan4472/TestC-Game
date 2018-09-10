@@ -314,8 +314,13 @@ void Map::addDrop(ItemDrop* itemDrop)
 
 void Map::centerTo(SDL_Rect center)
 {
+	// calculate screen top-left
 	camera.x = center.x - (SCREEN_WIDTH - center.w) / 2;
 	camera.y = center.y - (SCREEN_HEIGHT - center.h) / 2;
+
+	// update textureAtlas mapOffset
+	textureAtlas->mapOffsetX = camera.x;
+	textureAtlas->mapOffsetY = camera.y;
 }
 
 void Map::drawTo(SDL_Renderer* renderer)

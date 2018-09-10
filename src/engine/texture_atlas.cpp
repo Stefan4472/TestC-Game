@@ -98,15 +98,16 @@ int TextureAtlas::getHeight(int textureId)
 	return textureRegions[textureId].h;
 }
 
-void TextureAtlas::drawImg(SDL_Renderer* renderer, int textureId, float x, float y)
+void TextureAtlas::drawImg(SDL_Renderer* renderer, int textureId, float x,
+	float y, bool useMapOffset)
 {
 	if (textureId < 0 || textureId > TextureId::NUM_TEXTURES)
 	{
 		throw runtime_error("TextureId out of bounds");
 	}
 
-	dest.x = x - mapOffsetX;
-	dest.y = y - mapOffsetY;
+	dest.x = useMapOffset ? x - mapOffsetX : x;
+	dest.y = useMapOffset ? y - mapOffsetY : y;
 	dest.w = textureRegions[textureId].w;
 	dest.h = textureRegions[textureId].h;
 
@@ -114,7 +115,8 @@ void TextureAtlas::drawImg(SDL_Renderer* renderer, int textureId, float x, float
 	SDL_RenderCopy(renderer, atlasImg, &textureRegions[textureId], &dest);
 }
 
-void TextureAtlas::drawSubimg(SDL_Renderer* renderer, int textureId, SDL_Rect src, float x, float y)
+void TextureAtlas::drawSubimg(SDL_Renderer* renderer, int textureId, SDL_Rect src,
+	float x, float y, bool useMapOffset)
 {
 	if (textureId < 0 || textureId > TextureId::NUM_TEXTURES)
 	{
@@ -125,21 +127,23 @@ void TextureAtlas::drawSubimg(SDL_Renderer* renderer, int textureId, SDL_Rect sr
 	src.x = src.x + textureRegions[textureId].x;
 	src.y = src.y + textureRegions[textureId].y;
 
-	dest.x = x - mapOffsetX;
-	dest.y = y - mapOffsetY;
+	dest.x = useMapOffset ? x - mapOffsetX : x;
+	dest.y = useMapOffset ? y - mapOffsetY : y;
 	dest.w = src.w;
 	dest.h = src.h;
 
 	SDL_RenderCopy(renderer, atlasImg, &src, &dest);
 }
 
-void TextureAtlas::drawAnim(SDL_Renderer* renderer, SimpleAnimation* anim)
+void TextureAtlas::drawAnim(SDL_Renderer* renderer, SimpleAnimation* anim,
+	bool useMapOffset)
 {
 	int frame_num = anim->elapsedTimeMs / ANIMATION_FRAME_DURATION;
 
 	if (frame_num < animationFrameCounts[anim->animationId])
 	{
 		drawImg(renderer, animationFrames[anim->animationId][frame_num],
-			anim->x - mapOffsetX, anim->y - mapOffsetY);
+			useMapOffset ? anim->x - mapOffsetX : anim->x,
+			useMapOffset ? anim->y - mapOffsetY : anim->y);
 	}
 }

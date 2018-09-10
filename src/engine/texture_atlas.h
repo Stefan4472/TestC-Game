@@ -55,10 +55,13 @@ class TextureAtlas
 		int getHeight(int textureId);
 
 		// draws image given by textureId to given SDL_Surface at x,y
-		void drawImg(SDL_Renderer* renderer, int textureId, float x, float y);
+		void drawImg(SDL_Renderer* renderer, int textureId, float x, float y,
+			bool useMapOffset=true);
 		// draws subimage defined by src from specified image to coordinates x,y on renderer
-		void drawSubimg(SDL_Renderer* renderer, int textureId, SDL_Rect src, float x, float y);
+		void drawSubimg(SDL_Renderer* renderer, int textureId, SDL_Rect src, float x,
+			float y, bool useMapOffset=true);
 		// draws the frame from the given SimpleAnimation TODO: TAKE MAP OFFSET AS A PARAMETER? OR JUST USE ANIM COORDINATES?
-		void drawAnim(SDL_Renderer* renderer, SimpleAnimation* anim);
+		void drawAnim(SDL_Renderer* renderer, SimpleAnimation* anim,
+			bool useMapOffset=true);
 };
 #endif

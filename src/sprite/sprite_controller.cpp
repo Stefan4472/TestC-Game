@@ -31,7 +31,7 @@ void SpriteController::update(int ms)
 {
 	// update animation
 	sprite->animPlayer->update(ms);
-	
+
 	// update attacks, removing those that are finished
 	for (int i = 0; i < attacks.size(); )
 	{
@@ -92,16 +92,16 @@ void SpriteController::handleSpriteSeen(Sprite* sprite)
 	return;
 }
 
-void SpriteController::drawTo(SDL_Renderer* renderer, TextureAtlas* textureAtlas, int offsetX, int offsetY)
+void SpriteController::drawTo(SDL_Renderer* renderer, TextureAtlas* textureAtlas)
 {
 	// draw sprite's current animation
-	sprite->animPlayer->drawTo(renderer, sprite->x - offsetX, sprite->y - offsetY);
+	sprite->animPlayer->drawTo(renderer, sprite->x, sprite->y);
 
 	// draw in-hand
 	if (inHand) // TODO: THIS SHOULD BE TAKEN CARE OF BY THE ANIMATION ENGINE
 	{
 		SDL_Point hand_location = sprite->getRightHandPosition();
-		textureAtlas->draw(renderer, inHand->textureId, (int) (hand_location.x - offsetX), (int) (hand_location.y - offsetY));
+		textureAtlas->draw(renderer, inHand->textureId, (int) (hand_location.x), (int) (hand_location.y));
 		//inHand->drawTo(renderer, (int) (hand_location.x - offsetX), (int) (hand_location.y - offsetY));
 	}
 

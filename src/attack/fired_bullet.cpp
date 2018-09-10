@@ -8,13 +8,13 @@ FiredBullet::FiredBullet(Sprite* attacker, Gun* gun) : Attack(SDL_Rect { attacke
 			damage = 10;
 			break;
 	}
-	
+
 	// sprite is aiming
 	if (attacker->aiming)
 	{
 		SDL_Rect target = attacker->aimRect;
 		//printf("Firing from %d, %d to %d, %d\n", position.x, position.y, target.x + target.w / 2, target.y + target.h / 2);
-	
+
 		// calculate point bullet will travel to based on center of target plus some small random amount NOTE: NOT A GREAT WAY TO DO THIS (PUNISHED CLOSE TARGETS MORE THAN FAR ONES)
 		int aim_x = target.x + target.w / 2 + (rand() % 2 ? 1 : -1) * (rand() % 16);
 		int aim_y = target.y + target.h / 2 + (rand() % 2 ? 1 : -1) * (rand() % 16);
@@ -55,17 +55,17 @@ FiredBullet::FiredBullet(Sprite* attacker, Gun* gun) : Attack(SDL_Rect { attacke
 				//speedY = randomization;
 				break;
 		}
-	}	
+	}
 }
 
 void FiredBullet::update(int ms)
 {
 	elapsedTime += ms;
-	
+
 	// move bullet
 	position.x += speedX * ms;
 	position.y += speedY * ms;
-	
+
 	if (elapsedTime > MAX_DURATION)
 	{
 		finished = true;
@@ -73,7 +73,7 @@ void FiredBullet::update(int ms)
 	}
 }
 
-void FiredBullet::drawToMap(SDL_Renderer* renderer, TextureAtlas* textureAtlas, float offsetX, float offsetY)
+void FiredBullet::drawToMap(SDL_Renderer* renderer, TextureAtlas* textureAtlas)
 {
-	textureAtlas->draw(renderer, MOVING_BULLET, position.x - offsetX, position.y - offsetY);
+	textureAtlas->draw(renderer, MOVING_BULLET, position.x, position.y);
 }
