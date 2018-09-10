@@ -63,24 +63,25 @@ const SDL_Rect textureRegions[51] =
 	SDL_Rect { 284, 231, 23, 11 }
 };
 
+const TextureId ANIM_NONE_FRAMES[] = {};
 // TODO: USE ACTUAL TEXTURES
-const TextureId[] ANIM_GREEN_POTION_BUFF_FRAMES = {
+const TextureId ANIM_GREEN_POTION_BUFF_FRAMES[] = {
 	TextureId::TILE_GRASS,
 	TextureId::TILE_BROWN_BRICK,
 	TextureId::TILE_DARK_BRICK,
 	TextureId::TILE_WHITE_BRICK
 };
 
-const int *animationFrames[] =
+const TextureId *animationFrames[] =
 {
-	{},
+	ANIM_NONE_FRAMES,
 	ANIM_GREEN_POTION_BUFF_FRAMES
 };
 
 const int animationFrameCounts[] =
 {
 	0,
-	sizeof(animationFrames[1]) / sizeof(TextureId);
+	sizeof(animationFrames[1]) / sizeof(TextureId)
 };
 
 TextureAtlas::TextureAtlas(SDL_Texture* atlasImg)
@@ -140,9 +141,9 @@ void TextureAtlas::drawAnim(SDL_Renderer* renderer, SimpleAnimation* anim,
 {
 	int frame_num = anim->elapsedTimeMs / ANIMATION_FRAME_DURATION;
 
-	if (frame_num < animationFrameCounts[anim->animationId])
+	if (frame_num < animationFrameCounts[anim->animId])
 	{
-		drawImg(renderer, animationFrames[anim->animationId][frame_num],
+		drawImg(renderer, animationFrames[anim->animId][frame_num],
 			useMapOffset ? anim->x - mapOffsetX : anim->x,
 			useMapOffset ? anim->y - mapOffsetY : anim->y);
 	}

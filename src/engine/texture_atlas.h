@@ -4,6 +4,9 @@
 #include <SDL2/SDL.h>
 #include <stdexcept>
 #include "texture_ids.h"
+#include "simple_animation.h"
+
+using namespace std;
 
 /*
 Provides access to game graphics via a single "atlas" image. All used graphics
@@ -25,14 +28,14 @@ The TextureAtlas also provides support for drawing SimpleAnimation types. TODO: 
 
 // SDL_Rects defining the regions on the atlas that correspond to the TextureIds.
 // defined in texture_atlas.cpp
-const SDL_Rect textureRegions[51];
+extern const SDL_Rect textureRegions[51];
 
 // 2-d array defining the TextureIds in the known animations.
 // The first index corresponds to the AnimationId, and the second lists the
 // frames of the animation, in order
-const int *animationFrames[];
+extern const TextureId *animationFrames[2];
 // defines the number of frames for each corresponding AnimationId
-const int animationFrameCounts[];
+extern const int animationFrameCounts[2];
 const int ANIMATION_FRAME_DURATION = 50; // TODO: FIND A BETTER WAY
 
 class TextureAtlas

@@ -32,4 +32,4 @@ test_sound: $(OBJS)
 	$(CC) test/test_sound.cpp $(OBJS) $(COMPILER_FLAGS) $(INCLUDE) $(LINKER_FLAGS) -o test_sound
 
 test_map: $(OBJS)
-	$(CC) test/test_map.cpp $(OBJS) $(COMPILER_FLAGS) $(INCLUDE) $(LINKER_FLAGS) -o test_sound
+	$(CC) test/test_map.cpp $(OBJS) $(COMPILER_FLAGS) $(INCLUDE) $(LINKER_FLAGS) -o test_map
