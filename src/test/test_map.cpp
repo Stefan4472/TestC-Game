@@ -15,6 +15,7 @@ using namespace std;
 
 MapChunk getChunk(int chunkX, int chunkY);
 void drawMap();
+void saveMap();
 bool init();
 bool loadMedia();
 SDL_Texture* loadTexture(std::string path);
@@ -52,7 +53,7 @@ int main(int argc, char* argv[])
   printf("Running on map directory '%s'\n", map_dir.c_str());
 
   // create the map generator with the given file path
-  mapGenerator = new MapGenerator(map_dir, 0);
+  mapGenerator = new MapGenerator(map_dir, 100);
 
   init();
   loadMedia();
@@ -134,6 +135,8 @@ MapChunk getChunk(int chunkX, int chunkY)
 		printf("Not found in cache: generating...\n");
 		MapChunk generated = mapGenerator->generate(chunkX, chunkY);
 		chunkCache.emplace(ChunkId(chunkX, chunkY), generated);
+    generated.printDebug();
+    printf("-----\n");
 		return generated;
 	}
 	// found: return
@@ -196,6 +199,18 @@ void drawMap()
         }
       }
     }
+  }
+}
+
+void saveMap()
+{
+  // iterate over stored chunks
+  for (pair<ChunkId, MapChunk> chunk_pair : chunkCache)
+  {
+    int chunk_x = chunk_pair.first.x;
+    int chunk_y = chunk_pair.first.y;
+    printf("Saving Chunk %d, %d\n", chunk_x, chunk_y);
+    mapGenerator->writeChunkFile(chunk_x, chunk_y, chunk_pair.second);
   }
 }
 
@@ -281,6 +296,11 @@ SDL_Texture* loadTexture(std::string path)
 void close()
 {
 	printf("Close function reached\n");
+
+  printf("Saving Map...");
+  saveMap();
+  printf("Done\n");
+
 	SDL_DestroyTexture(textureAtlasImg);
 	textureAtlasImg = NULL;
 

@@ -7,6 +7,7 @@ MapChunk::MapChunk()
 
 MapChunk MapChunk::getNullChunk()
 {
+	printf("MapChunk: generating NULL Chunk\n");
 	MapChunk null_chunk;
 	for (int i = 0; i < TILE_ROWS; i++)
 	{
@@ -20,13 +21,15 @@ MapChunk MapChunk::getNullChunk()
 
 MapChunk MapChunk::getRandomChunk()
 {
+	printf("MapChunk: generating random Chunk\n");
 	MapChunk rand_chunk;
 	for (int i = 0; i < TILE_ROWS; i++)
 	{
 		for (int j = 0; j < TILE_COLS; j++)
 		{
-			// generate a random number within the terrain types
-			rand_chunk.terrain[i][j] = MapTerrain::getTerrain(rand() % TerrainType::NUM_TYPES);
+			// generate a random number 0 < n < num_terrain_types
+			rand_chunk.terrain[i][j] =
+				MapTerrain::getTerrain(1 + rand() % (TerrainType::NUM_TYPES - 1));
 		}
 	}
 	return rand_chunk;

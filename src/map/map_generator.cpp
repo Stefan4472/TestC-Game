@@ -22,8 +22,7 @@ MapChunk MapGenerator::generate(int chunkX, int chunkY)
   }
   else if (mapSeed)  // no chunk exists: generate it
   {
-    // TODO: CHUNK GENERATION, MapChunk::NULL_CHUNK
-    return MapChunk::getNullChunk();
+    return MapChunk::getRandomChunk();
   }
   else  // no chunk exists, and no seed set: return NULL chunk
   {
@@ -69,7 +68,8 @@ void MapGenerator::writeChunkFile(int chunkX, int chunkY, MapChunk chunk)
   printf("Generated file path to write chunk is %s\n", filepathBuffer);
 
   // attempt to open file in byte mode
-  FILE* file_handle = fopen(filepathBuffer, "rb");
+  // FILE* file_handle = fopen(filepathBuffer, "rb");
+  FILE* file_handle = fopen(filepathBuffer, "wb");
 
   if (!file_handle)  // create the chunk
   {
@@ -85,7 +85,12 @@ void MapGenerator::writeChunkFile(int chunkX, int chunkY, MapChunk chunk)
     }
   }
 
-  printf("Writing... %s\n", chunkBuffer);
+  printf("Writing... ");
+  for (int i = 0; i < CHUNK_BUFFER_SIZE; i++)
+  {
+    printf("%d", chunkBuffer[i]);
+  }
+  printf("\n");
 
   // write to file
   fwrite(chunkBuffer, 1, CHUNK_BUFFER_SIZE, file_handle);
