@@ -27,10 +27,17 @@ Usually interactible. TODO: WILL BE USED SOON
 class MapObject
 {
 	public:
-		// coordinates RELATIVE TO CHUNK TOP-LEFT
+		// coordinates RELATIVE TO CHUNK TOP-LEFT. These coordinates specify the
+		// top-left of the terrain tile where this object is "planted". The object
+		// may plan its drawing around this point.
 		int x, y;
 		MapObjectType objectType;
 		bool walkable;
+		SDL_Rect drawRegion;
+		int hitChunksWide, hitChunksTall;
+
+		// TODO: WHAT KIND OF CONSTRUCTOR MAKES SENSE?
+		MapObject();
 
 		// draw object to the renderer. Passes (x,y) map coordinates of chunk
 		// top-left. This is because MapObjects store their location relative to

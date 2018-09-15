@@ -2,7 +2,7 @@
 
 MapChunk::MapChunk()
 {
-
+	objects.push_back(new Tree1(100, 100));
 }
 
 MapChunk MapChunk::getNullChunk()

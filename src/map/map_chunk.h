@@ -8,6 +8,7 @@
 #include "texture_atlas.h"
 #include "map_terrain.h"
 #include "map_object.h"
+#include "tree_1.h" // TODO: REMOVE THIS IMPORT
 
 using namespace std;
 
@@ -23,7 +24,7 @@ class MapChunk
 		// number of rows and columns of tiles in the chunk
 		static const int TILE_ROWS = 16;
 		static const int TILE_COLS = 16;
-		
+
 		// calculated width and height of the chunk, in pixels
 		static const int CHUNK_WIDTH = TILE_ROWS * 32; // TODO: DON'T HARDCODE TILE WIDTH/HEIGHT
 		static const int CHUNK_HEIGHT = TILE_COLS * 32;
