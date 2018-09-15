@@ -27,7 +27,7 @@ int Tree1::saveToByteStream(char bytes[], size_t maxSize)
 
 }
 
-bool Tree1::restoreFromByteStream(char bytes[], size_t numBytes)
+MapObject* Tree1::restoreFromByteStream(char bytes[], size_t numBytes)
 {
-
+  return NULL;
 }

@@ -12,7 +12,7 @@ class Tree1 : public MapObject
       int chunkOriginX, int chunkOriginY);
 
     int saveToByteStream(char bytes[], size_t maxSize);
-		bool restoreFromByteStream(char bytes[], size_t numBytes);
+		static MapObject* restoreFromByteStream(char bytes[], size_t numBytes);
 };
 
 #endif

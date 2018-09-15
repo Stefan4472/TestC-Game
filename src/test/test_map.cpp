@@ -1,5 +1,5 @@
 // tests loading and drawing a map
-// g++ test/test_map.cpp engine/texture_atlas.cpp map/map_generator.cpp map/map_chunk.cpp map/map_terrain.cpp map/map_object.cpp map/chunk_id.cpp map/tree_1.cpp -w -std=c++11 -Iengine -Imap -I. -lSDL2 -lSDL2_image -o test_map
+// g++ test/test_map.cpp engine/texture_atlas.cpp map/map_generator.cpp map/map_chunk.cpp map/map_terrain.cpp map/map_object.cpp map/chunk_id.cpp map/tree_1.cpp util/file_io_util.cpp -w -std=c++11 -Iengine -Imap -Iutil -I. -lSDL2 -lSDL2_image -o test_map
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>

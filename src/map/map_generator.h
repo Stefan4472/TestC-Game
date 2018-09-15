@@ -8,6 +8,7 @@
 #include <stdio.h>
 #include "map_chunk.h"
 #include "map_terrain.h"
+#include "tree_1.h" // TODO: IDEALLY THIS SHOULDN'T BE NECESSARY--NEED ABSTRACT STATIC METHODS
 
 using namespace std;
 
@@ -19,7 +20,7 @@ will return a chunk of empty terrain (MapTerrain::NONE).
 THe MapGenerator does not cache rendered chunks--that is the responsibility of
 the implementing object.
 
-DESIRED IMPLEMENTATION:
+DESIRED IMPLEMENTATION: TODO: CHUNK FILE FORMAT SPECIFICATION
 A MAP IS DEFINED BY A DIRECTORY
 EACH CHUNK IS STORED IN A SEPERATE FILE, "[x]_[y].chunk"
 */

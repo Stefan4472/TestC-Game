@@ -49,7 +49,7 @@ class MapObject
 		// from index zero
 		virtual int saveToByteStream(char bytes[], size_t maxSize) = 0;
 		// populate object TODO: THESE WILL NEED TO BE STATIC FACTORY METHODS
-		virtual bool restoreFromByteStream(char bytes[], size_t numBytes) = 0;
+		// virtual bool restoreFromByteStream(char bytes[], size_t numBytes) = 0;
 
 	/*	SDL_Rect drawRegion;
 		SDL_Rect mapHitbox;  // TODO: TILE-BASED HITBOX

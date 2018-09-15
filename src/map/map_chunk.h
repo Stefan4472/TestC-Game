@@ -8,6 +8,7 @@
 #include "texture_atlas.h"
 #include "map_terrain.h"
 #include "map_object.h"
+#include "file_io_util.h"
 
 using namespace std;
 
