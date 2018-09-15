@@ -68,7 +68,6 @@ void MapGenerator::writeChunkFile(int chunkX, int chunkY, MapChunk chunk)
   printf("Generated file path to write chunk is %s\n", filepathBuffer);
 
   // attempt to open file in byte mode
-  // FILE* file_handle = fopen(filepathBuffer, "rb");
   FILE* file_handle = fopen(filepathBuffer, "wb");
 
   if (!file_handle)  // create the chunk

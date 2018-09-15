@@ -1,6 +1,7 @@
 #ifndef MAP_CHUNK_H
 #define MAP_CHUNK_H
 
+#include <SDL2/SDL.h>
 #include <stdio.h>
 #include <vector>
 #include <cmath>
@@ -29,9 +30,13 @@ class MapChunk
 		static MapChunk getRandomChunk();
 
 		MapChunk();
-		
+
 		// terrain tile grid
 		MapTerrain terrain[TILE_ROWS][TILE_COLS];
+
+		// draws this chunk's terrain (TODO: AND OBJECTS) to the given renderer, with the
+		// top-left starting at (x,y)
+		void drawTo(SDL_Renderer* renderer, TextureAtlas* textureAtlas, int x, int y);
 
 		void printDebug();
 

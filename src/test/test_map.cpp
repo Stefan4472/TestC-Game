@@ -91,19 +91,19 @@ int main(int argc, char* argv[])
           // move camera position
 					case SDLK_UP:
           case SDLK_w:
-            cameraY -= 2;
+            cameraY -= 32;
             break;
           case SDLK_DOWN:
           case SDLK_s:
-            cameraY += 2;
+            cameraY += 32;
         		break;
           case SDLK_LEFT:
           case SDLK_a:
-            cameraX -= 2;
+            cameraX -= 32;
             break;
           case SDLK_RIGHT:
           case SDLK_d:
-            cameraX += 2;
+            cameraX += 32;
             break;
 				}
 			}
@@ -150,13 +150,18 @@ MapChunk getChunk(int chunkX, int chunkY)
 void drawMap()
 {
   // draw the terrain
+
+  printf("camera coordinates are %d, %d\n", cameraX, cameraY);
+
   // row and col of top-left chunk to render
   int start_chunk_x = cameraX / MapChunk::CHUNK_WIDTH;
   int start_chunk_y = cameraY / MapChunk::CHUNK_HEIGHT;
 
   // offsets from chunk borders on x and y
-  int offset_x = cameraX % MapChunk::CHUNK_WIDTH;
-  int offset_y = cameraY % MapChunk::CHUNK_HEIGHT;
+  int offset_x = abs(cameraX % MapChunk::CHUNK_WIDTH);
+  int offset_y = abs(cameraY % MapChunk::CHUNK_HEIGHT);
+
+  printf("Offsets are %d, %d\n", offset_x, offset_y);
 
   // calculate # of chunks to render on width and height of screen (todo: make const)
   int chunks_wide = (SCREEN_WIDTH / MapChunk::CHUNK_WIDTH) + 1;
@@ -172,10 +177,12 @@ void drawMap()
     chunks_tall++;
   }
 
+  printf("Need to generate %d chunks left-to-right and %d top-to-bottom\n",
+   chunks_wide, chunks_tall);
+
   // coordinates of chunk top-left being drawn
   int chunk_x, chunk_y;
   MapChunk chunk;
-  SDL_Rect src, dest;
 
   // render chunks to canvas, using offsets to get physical coordinates
   for (int chunk_i = 0; chunk_i < chunks_tall; chunk_i++)
@@ -188,16 +195,10 @@ void drawMap()
       // get the requested MapChunk
       chunk = getChunk(chunk_x, chunk_y);
 
-      // draw each tile from the chunk, at offsets
-      for (int i = 0; i < MapChunk::TILE_ROWS; i++)
-      {
-        dest.y = chunk_i * MapChunk::CHUNK_HEIGHT + i * TILE_HEIGHT - offset_y;
-        for (int j = 0; j < MapChunk::TILE_COLS; j++)
-        {
-          dest.x = chunk_j * MapChunk::CHUNK_WIDTH + j * TILE_WIDTH - offset_x;
-          textureAtlas->drawImg(gRenderer, chunk.terrain[i][j].textureId, dest.x, dest.y);
-        }
-      }
+      // draw the chunk to a calculated offset
+      chunk.drawTo(gRenderer, textureAtlas,
+        -offset_x +   chunk_j * MapChunk::CHUNK_WIDTH,
+        -offset_y + chunk_i * MapChunk::CHUNK_HEIGHT);
     }
   }
 }

@@ -35,6 +35,27 @@ MapChunk MapChunk::getRandomChunk()
 	return rand_chunk;
 }
 
+void MapChunk::drawTo(SDL_Renderer* renderer, TextureAtlas* textureAtlas, int x, int y)
+{  // TODO: CLIP BOUNDARIES
+	// CLIP BOUNDARIES: FIGURE OUT STARTING I,J (INSTEAD OF USING 0, 0)
+
+	printf("Drawing MapChunk to %d, %d\n", x, y);
+	// drawing coordinates
+	int draw_x, draw_y = y;
+
+	// draw each tile from the chunk
+	for (int i = 0; i < MapChunk::TILE_ROWS; i++)
+	{
+		draw_x = x;
+		for (int j = 0; j < MapChunk::TILE_COLS; j++)
+		{
+			textureAtlas->drawImg(renderer, terrain[i][j].textureId, draw_x, draw_y);
+			draw_x += 32;
+		}
+		draw_y += 32; // TODO: DON'T HARDCODE TILE WIDTH/HEIGHT
+	}
+}
+
 void MapChunk::printDebug()
 {
 	for (int i = 0; i < TILE_ROWS; i++)
