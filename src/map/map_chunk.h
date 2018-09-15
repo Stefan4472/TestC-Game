@@ -8,7 +8,6 @@
 #include "texture_atlas.h"
 #include "map_terrain.h"
 #include "map_object.h"
-#include "tree_1.h" // TODO: REMOVE THIS IMPORT
 
 using namespace std;
 

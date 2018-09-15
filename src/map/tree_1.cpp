@@ -21,3 +21,13 @@ void Tree1::drawTo(SDL_Renderer* renderer, TextureAtlas* textureAtlas,
   textureAtlas->drawImg(renderer, TextureId::OBJECT_TREE_1,
     drawRegion.x, drawRegion.y);
 }
+
+int Tree1::saveToByteStream(char bytes[], size_t maxSize)
+{
+
+}
+
+bool Tree1::restoreFromByteStream(char bytes[], size_t numBytes)
+{
+
+}

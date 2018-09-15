@@ -44,8 +44,12 @@ class MapObject
 		// the top-left cornder of the chunk they are in.
 		virtual void drawTo(SDL_Renderer* renderer, TextureAtlas* textureAtlas,
 			int chunkOriginX, int chunkOriginY) = 0;
-		// virtual int saveToByteStream(char bytes[], int maxSize)
-		// virtual void restoreFromByteStream(char bytes[])
+		// save object to given byte buffer. maxSize is the maximum number of bytes_
+		// the representation can take, Return the number of bytes written, starting
+		// from index zero
+		virtual int saveToByteStream(char bytes[], size_t maxSize) = 0;
+		// populate object TODO: THESE WILL NEED TO BE STATIC FACTORY METHODS
+		virtual bool restoreFromByteStream(char bytes[], size_t numBytes) = 0;
 
 	/*	SDL_Rect drawRegion;
 		SDL_Rect mapHitbox;  // TODO: TILE-BASED HITBOX

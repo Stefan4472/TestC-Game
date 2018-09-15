@@ -10,6 +10,9 @@ class Tree1 : public MapObject
     // draw tree to the renderer, given coordinates of chunk's top-left
     void drawTo(SDL_Renderer* renderer, TextureAtlas* textureAtlas,
       int chunkOriginX, int chunkOriginY);
+
+    int saveToByteStream(char bytes[], size_t maxSize);
+		bool restoreFromByteStream(char bytes[], size_t numBytes);
 };
 
 #endif
