@@ -5,6 +5,7 @@
 #include <SDL2/SDL_image.h>
 #include <stdio.h>
 #include <string>
+#include <unistd.h>
 #include <unordered_map>
 #include "texture_atlas.h"
 #include "map_generator.h"
@@ -27,6 +28,9 @@ TextureAtlas* textureAtlas = NULL;
 const int SCREEN_WIDTH = 640;
 const int SCREEN_HEIGHT = 480;
 
+const int TILE_WIDTH = 32;
+const int TILE_HEIGHT = 32;
+
 // camera coordinates
 int cameraX = -SCREEN_WIDTH / 2;
 int cameraY = -SCREEN_HEIGHT / 2;
@@ -34,7 +38,7 @@ int cameraY = -SCREEN_HEIGHT / 2;
 // mapping of coordinates to loaded chunks
 unordered_map<ChunkId, MapChunk> chunkCache;
 
-MapGenerator mapGenerator;
+MapGenerator* mapGenerator = NULL;
 
 int main(int argc, char* argv[])
 {
@@ -48,11 +52,11 @@ int main(int argc, char* argv[])
   printf("Running on map directory '%s'\n", map_dir.c_str());
 
   // create the map generator with the given file path
-  mapGenerator(map_dir, 0);
+  mapGenerator = new MapGenerator(map_dir, 0);
 
   init();
   loadMedia();
-  textureAtlas = TextureAtlas(textureAtlasImg);
+  textureAtlas = new TextureAtlas(textureAtlasImg);
 
   Uint32 last_time = SDL_GetTicks();
 	Uint32 curr_time, ticks_since_last_frame;
@@ -65,7 +69,10 @@ int main(int argc, char* argv[])
 	{
     frames++;
 
-		// calculate number of milliseconds since last frame was rendered
+    // slow down framerate
+    sleep(1);
+
+    // calculate number of milliseconds since last frame was rendered
 		curr_time = SDL_GetTicks();
 		ticks_since_last_frame = curr_time - last_time;
 
@@ -165,6 +172,7 @@ void drawMap()
   // coordinates of chunk top-left being drawn
   int chunk_x, chunk_y;
   MapChunk chunk;
+  SDL_Rect src, dest;
 
   // render chunks to canvas, using offsets to get physical coordinates
   for (int chunk_i = 0; chunk_i < chunks_tall; chunk_i++)
@@ -175,7 +183,7 @@ void drawMap()
       chunk_x = start_chunk_x + chunk_j;
 
       // get the requested MapChunk
-      chunk = map_generator.(chunk_x, chunk_y);
+      chunk = getChunk(chunk_x, chunk_y);
 
       // draw each tile from the chunk, at offsets
       for (int i = 0; i < MapChunk::TILE_ROWS; i++)
@@ -184,7 +192,7 @@ void drawMap()
         for (int j = 0; j < MapChunk::TILE_COLS; j++)
         {
           dest.x = chunk_j * MapChunk::CHUNK_WIDTH + j * TILE_WIDTH - offset_x;
-          textureAtlas->draw(gRenderer, chunk.terrain[i][j].textureId, dest.x, dest.y);
+          textureAtlas->drawImg(gRenderer, chunk.terrain[i][j].textureId, dest.x, dest.y);
         }
       }
     }
