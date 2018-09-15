@@ -148,8 +148,8 @@ void MapGenerator::writeChunkFile(int chunkX, int chunkY, MapChunk chunk)
   fwrite(chunkBuffer, 1, CHUNK_BUFFER_SIZE, file_handle);
 
   int num_objs = chunk.objects.size();
-  printf("Writing %d objects\n"):
-  
+  printf("Writing %d objects\n");
+
   // write number of objects
   chunkBuffer[0] = (char) num_objs;
   fwrite(chunkBuffer, 1, 1, file_handle);

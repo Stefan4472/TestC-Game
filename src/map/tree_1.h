@@ -1,7 +1,9 @@
 #ifndef MAP_OBJECT_TREE_1_H
 #define MAP_OBJECT_TREE_1_H
 
+#include <stdexcept>
 #include "map_object.h"
+#include "file_io_util.h"
 
 class Tree1 : public MapObject
 {

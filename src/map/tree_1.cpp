@@ -24,10 +24,29 @@ void Tree1::drawTo(SDL_Renderer* renderer, TextureAtlas* textureAtlas,
 
 int Tree1::saveToByteStream(char bytes[], size_t maxSize)
 {
+  int reqd_bytes = 4;
+  if (maxSize < reqd_bytes)
+  {
+    throw runtime_error("Not enough bytes to write Tree1");
+  }
 
+  // write x, y coordinates, two bytes each, base 128
+  FileUtil::writeToBuffer(bytes, 0, 2, x, 128);
+  FileUtil::writeToBuffer(bytes, 2, 2, y, 128);
+
+  return 4;
 }
 
 MapObject* Tree1::restoreFromByteStream(char bytes[], size_t numBytes)
 {
-  return NULL;
+  if (numBytes != 4)
+  {
+    throw runtime_error("Not enough bytes to read Tree1");
+  }
+
+  // read x and y, 2 bytes each, base-128
+  int x = FileUtil::readFromBuffer(bytes, 0, 2, 128);
+  int y = FileUtil::readFromBuffer(bytes, 2, 2, 128);
+
+  return new Tree1(x, y);
 }

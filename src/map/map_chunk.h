@@ -9,6 +9,7 @@
 #include "map_terrain.h"
 #include "map_object.h"
 #include "file_io_util.h"
+#include "tree_1.h" // TODO: REMOVE
 
 using namespace std;
 

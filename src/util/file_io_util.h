@@ -5,9 +5,9 @@
 
 namespace FileUtil
 {
-    static int readFromBuffer(char buffer[], int startIndex, int numDigits,
+    int readFromBuffer(char buffer[], int startIndex, int numDigits,
       int base=128);
-    static void writeToBuffer(char buffer[], int startIndex, int numDigits,
+    void writeToBuffer(char buffer[], int startIndex, int numDigits,
       int value, int base=128);
 }
 

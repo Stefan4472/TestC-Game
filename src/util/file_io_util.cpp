@@ -10,12 +10,12 @@ int FileUtil::readFromBuffer(char buffer[], int startIndex, int numDigits, int b
   // read from least-significant to most-significant digit
   for (int i = startIndex + numDigits - 1; i >= startIndex; i--)
   {
-    printf("%d", buffer[i]);
+    printf("%d-", buffer[i]);
     result = buffer[i] * multiplier;
     multiplier *= base;
   }
 
-  printf(" = %d\n", result);
+  printf(" IN BASE %d = %d\n", base, result);
   return result;
 }
 
@@ -33,7 +33,7 @@ void FileUtil::writeToBuffer(char buffer[], int startIndex, int numDigits,
     buffer[i] = value / place_val;
     value = value % place_val;
     place_val /= base;
-    printf("%d", buffer[i]);
+    printf("%d-", buffer[i]);
   }
   printf("\n");
 }

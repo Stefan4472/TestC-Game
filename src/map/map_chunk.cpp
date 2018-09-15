@@ -32,6 +32,12 @@ MapChunk MapChunk::getRandomChunk()
 				MapTerrain::getTerrain(1 + rand() % (TerrainType::NUM_TYPES - 1));
 		}
 	}
+
+	// add a few trees to test out
+	rand_chunk.objects.push_back(new Tree1(100, 200));
+	rand_chunk.objects.push_back(new Tree1(200, 200));
+	rand_chunk.objects.push_back(new Tree1(300, 250));
+
 	return rand_chunk;
 }
 
