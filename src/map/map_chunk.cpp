@@ -43,7 +43,7 @@ void MapChunk::drawTo(SDL_Renderer* renderer, TextureAtlas* textureAtlas, int x,
 	// drawing coordinates
 	int draw_x, draw_y = y;
 
-	// draw each tile from the chunk
+	// draw terrain tiles
 	for (int i = 0; i < MapChunk::TILE_ROWS; i++)
 	{
 		draw_x = x;
@@ -53,6 +53,12 @@ void MapChunk::drawTo(SDL_Renderer* renderer, TextureAtlas* textureAtlas, int x,
 			draw_x += 32;
 		}
 		draw_y += 32; // TODO: DON'T HARDCODE TILE WIDTH/HEIGHT
+	}
+
+	// draw map objects
+	for (int i = 0; i < objects.size(); i++)
+	{
+		objects[i]->drawTo(renderer, textureAtlas, x, y);
 	}
 }
 
