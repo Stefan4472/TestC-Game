@@ -45,11 +45,34 @@ bool MapChunk::addObject(MapObject* object)
 {
 	printf("Adding a %s at %d, %d\n", MapObject::getName(object).c_str(),
 		object->x, object->y);
+
+	// calculate tile the top-left of the object sits on
+	int tile_i = object->x / 32;
+	int tile_j = object->y / 32;
+
+	// check that the object can be placed without overlapping another object
+	for (int i = 0; i < object->hitChunksTall; i++)
+	{
+		for (int j = 0; j < object->hitChunksWide; j++)
+		{
+			if (objectHitTiles[tile_i + i][tile_j + j])
+			{
+				return false;
+			}
+		}
+	}
+
+	// no overlap: add object and update mappings
 	objects.push_back(object);
-	// TODO: THIS IS OVERKILL. DO SOMETHING MORE EFFICIENT (CHECK ONLY THE ACTUAL
-	// HIT TILES OF THE OBJECT)
-	updateObjectHitTiles();
-	updateWalkableMap();
+
+	for (int i = 0; i < object->hitChunksTall; i++)
+	{
+		for (int j = 0; j < object->hitChunksWide; j++)
+		{
+			objectHitTiles[tile_i + i][tile_j + j] = object;
+			walkable[tile_i + i][tile_j + j] = object;
+		}
+	}
 }
 
 int MapChunk::numObjects()

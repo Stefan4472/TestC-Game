@@ -124,13 +124,15 @@ int main(int argc, char* argv[])
     MapChunk curr_chunk = getChunk(curr_chunk_x, curr_chunk_y);
 
     // calculate position in chunk
-    int chunk_offset_x = testHitbox.x % MapChunk::CHUNK_WIDTH;
-    int chunk_offset_y = testHitbox.y % MapChunk::CHUNK_HEIGHT;
+    int chunk_offset_x = abs(testHitbox.x) % MapChunk::CHUNK_WIDTH;
+    int chunk_offset_y = abs(testHitbox.y) % MapChunk::CHUNK_HEIGHT;
 
     // calculate tile index in the chunk
     int chunk_tile_x = chunk_offset_x / 32;
     int chunk_tile_y = chunk_offset_y / 32;
 
+    printf("Chunk %d, %d. Offset %d, %d = tile %d, %d\n", curr_chunk_x,
+      curr_chunk_y, chunk_offset_x, chunk_offset_y, chunk_tile_x, chunk_tile_y);
     bool can_walk = curr_chunk.walkable[chunk_tile_x][chunk_tile_y];
 
     // set color to blue if can_walk = true, else red
