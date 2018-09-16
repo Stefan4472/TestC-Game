@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <vector>
 #include <cmath>
+#include <stdexcept>
 #include "texture_atlas.h"
 #include "map_terrain.h"
 #include "map_object.h"
@@ -37,10 +38,21 @@ class MapChunk
 
 		MapChunk();
 
+		// adds object to the current list of objects. Updates objectHitTiles[][]
+		// and walkable[][] mappings. Returns if the object was successfully added--
+		// TODO: to do so, it cannot overlap with an already-existing object
+		bool addObject(MapObject* object);
+		int numObjects();
+		MapObject* getObject(int index);
+
+		// the following arrays store values based on chunk row/column:
+
 		// terrain tile grid
 		MapTerrain terrain[TILE_ROWS][TILE_COLS];
-		// MapObjects present in the chunk
-		vector<MapObject*> objects;
+		// map objects TODO: EXPLAIN
+		MapObject* objectHitTiles[TILE_ROWS][TILE_COLS];
+		// whether a tile can be walked on TODO: EXPLAIN
+		bool walkable[TILE_ROWS][TILE_COLS];
 
 		// draws this chunk's terrain (TODO: AND OBJECTS) to the given renderer, with the
 		// top-left starting at (x,y)
@@ -48,5 +60,14 @@ class MapChunk
 
 		void printDebug();
 
+	private:
+		// MapObjects present in the chunk
+		vector<MapObject*> objects;
+
+		// iterates through current objects and updates the objectHitTiles mapping
+		void updateObjectHitTiles();
+		// checks current state of terrain and objectHitTiles to mark which tiles
+		// can be walked on
+		void updateWalkableMap();
 };
 #endif

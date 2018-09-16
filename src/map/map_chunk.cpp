@@ -34,11 +34,38 @@ MapChunk MapChunk::getRandomChunk()
 	}
 
 	// add a few trees to test out
-	rand_chunk.objects.push_back(new Tree1(100, 200));
-	rand_chunk.objects.push_back(new Tree1(200, 200));
-	rand_chunk.objects.push_back(new Tree1(300, 250));
+	rand_chunk.addObject(new Tree1(100, 200));
+	rand_chunk.addObject(new Tree1(200, 200));
+	rand_chunk.addObject(new Tree1(300, 250));
 
 	return rand_chunk;
+}
+
+bool MapChunk::addObject(MapObject* object)
+{
+	printf("Adding a %s at %d, %d\n", MapObject::getName(object).c_str(),
+		object->x, object->y);
+	objects.push_back(object);
+	// TODO: THIS IS OVERKILL. DO SOMETHING MORE EFFICIENT (CHECK ONLY THE ACTUAL
+	// HIT TILES OF THE OBJECT)
+	updateObjectHitTiles();
+	updateWalkableMap();
+}
+
+int MapChunk::numObjects()
+{
+	return objects.size();
+}
+MapObject* MapChunk::getObject(int index)
+{
+	if (index > -1 && index < objects.size())
+	{
+		return objects[index];
+	}
+	else
+	{
+		throw runtime_error("Index Out of Bounds");
+	}
 }
 
 void MapChunk::drawTo(SDL_Renderer* renderer, TextureAtlas* textureAtlas, int x, int y)
@@ -77,5 +104,52 @@ void MapChunk::printDebug()
 			printf("%d ", terrain[i][j]);
 		}
 		printf("\n");
+	}
+}
+
+void MapChunk::updateObjectHitTiles()
+{
+	// clear current mapping
+	for (int i = 0; i < MapChunk::TILE_ROWS; i++)
+	{
+		for (int j = 0; j < MapChunk::TILE_COLS; j++)
+		{
+			objectHitTiles[i][j] = NULL;
+		}
+	}
+
+	// for each object:
+	// - determine tile its top left is in
+	// - check hitChunksWide and hitChunksTall
+	// - set the tiles in that range to the object's pointer
+	int tile_x, tile_y;
+	MapObject* obj = NULL;
+	for (int obj_index = 0; obj_index < objects.size(); obj_index++)
+	{
+		obj = objects[obj_index];
+
+		tile_x = obj->x / 32;  // TODO: DON'T HARDCODE TILE WIDTH/height
+		tile_y = obj->y / 32;
+
+		for (int i = 0; i < obj->hitChunksWide; i++)
+		{
+			for (int j = 0; j < obj->hitChunksTall; j++)
+			{
+				objectHitTiles[tile_x + i][tile_y + j] = obj;
+			}
+		}
+	}
+}
+
+void MapChunk::updateWalkableMap()
+{
+	// a tile is walkable if the terrain is walkable and has no pointer to
+	// a MapObject
+	for (int i = 0; i < MapChunk::TILE_ROWS; i++)
+	{
+		for (int j = 0; j < MapChunk::TILE_COLS; j++)
+		{
+			walkable[i][j] = terrain[i][j].walkable && !objectHitTiles[i][j];
+		}
 	}
 }

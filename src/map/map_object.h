@@ -20,6 +20,10 @@ enum class MapObjectType
 	ROCK_2
 };
 
+// corresponding names of MapObjectTypes. Defined in map_object.cpp
+// used for debugging
+extern const string OBJECT_NAMES[5];
+
 /*
 Basically, anything on the map that isn't a terrain tile, a drop, or an NPC.
 Usually interactible. TODO: WILL BE USED SOON
@@ -35,6 +39,9 @@ class MapObject
 		bool walkable;
 		SDL_Rect drawRegion;
 		int hitChunksWide, hitChunksTall;
+
+    // returns name of the given object. Looks up MapObjectType in OBJECT_NAMES
+    static string getName(MapObject* object);
 
 		// TODO: WHAT KIND OF CONSTRUCTOR MAKES SENSE?
 		MapObject();

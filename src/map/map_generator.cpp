@@ -104,7 +104,7 @@ MapChunk MapGenerator::readChunkFile(FILE* file)
     if (restored)
     {
       printf("Object successfully recovered\n");
-      read_chunk.objects.push_back(restored);
+      read_chunk.addObject(restored);
       restored = NULL;
     }
   }
@@ -147,7 +147,7 @@ void MapGenerator::writeChunkFile(int chunkX, int chunkY, MapChunk chunk)
   // write to file
   fwrite(chunkBuffer, 1, CHUNK_BUFFER_SIZE, file_handle);
 
-  int num_objs = chunk.objects.size();
+  int num_objs = chunk.numObjects();
   printf("Writing %d objects\n");
 
   // write number of objects
@@ -161,7 +161,7 @@ void MapGenerator::writeChunkFile(int chunkX, int chunkY, MapChunk chunk)
   for (int i = 0; i < num_objs; i++)
   {
     printf("Writing object %d\n", i);
-    map_obj = chunk.objects[i];
+    map_obj = chunk.getObject(i);
 
     // write objectType id
     chunkBuffer[0] = char(MapObjectType(map_obj->objectType));
