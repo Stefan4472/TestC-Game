@@ -32,9 +32,13 @@ const int SCREEN_HEIGHT = 480;
 const int TILE_WIDTH = 32;
 const int TILE_HEIGHT = 32;
 
-// camera coordinates
-int cameraX = -SCREEN_WIDTH / 2;
-int cameraY = -SCREEN_HEIGHT / 2;
+// movable hitbox used to test walkable terrain
+// the hitbox will move one tile per tick when the user presses an arrow key
+// it will be blue when in a walkable tile, and red when in a not-walkable tile
+SDL_Rect testHitbox = SDL_Rect { 0, 0, 32, 32 };
+
+// world-coordinates of top-left of screen
+int cameraX, cameraY;
 
 // mapping of coordinates to loaded chunks
 unordered_map<ChunkId, MapChunk> chunkCache;
@@ -91,19 +95,19 @@ int main(int argc, char* argv[])
           // move camera position
 					case SDLK_UP:
           case SDLK_w:
-            cameraY -= 32;
+            testHitbox.y += 32;
             break;
           case SDLK_DOWN:
           case SDLK_s:
-            cameraY += 32;
+            testHitbox.y -= 32;
         		break;
           case SDLK_LEFT:
           case SDLK_a:
-            cameraX -= 32;
+            testHitbox.x += 32;
             break;
           case SDLK_RIGHT:
           case SDLK_d:
-            cameraX += 32;
+            testHitbox.x -= 32;
             break;
 				}
 			}
@@ -111,7 +115,45 @@ int main(int argc, char* argv[])
 
     drawMap();
 
-		// render screen
+    // determine whether hitbox is in a walkable tile, and draw
+
+    // retrieve chunk hitbox is in
+    int curr_chunk_x = testHitbox.x / MapChunk::CHUNK_WIDTH;
+    int curr_chunk_y = testHitbox.y / MapChunk::CHUNK_HEIGHT;
+
+    MapChunk curr_chunk = getChunk(curr_chunk_x, curr_chunk_y);
+
+    // calculate position in chunk
+    int chunk_offset_x = testHitbox.x % MapChunk::CHUNK_WIDTH;
+    int chunk_offset_y = testHitbox.y % MapChunk::CHUNK_HEIGHT;
+
+    // calculate tile index in the chunk
+    int chunk_tile_x = chunk_offset_x / 32;
+    int chunk_tile_y = chunk_offset_y / 32;
+
+    bool can_walk = curr_chunk.walkable[chunk_tile_x][chunk_tile_y];
+
+    // set color to blue if can_walk = true, else red
+    if (can_walk)
+    {
+      SDL_SetRenderDrawColor(gRenderer, 0x00, 0x00, 0xFF, 0xFF);
+    }
+    else
+    {
+      SDL_SetRenderDrawColor(gRenderer, 0xFF, 0x00, 0x00, 0xFF);
+    }
+
+    // calculate physical hitbox coordinates
+    SDL_Rect hitbox_real = SDL_Rect { testHitbox.x - cameraX, testHitbox.y - cameraY,
+      32, 32 };
+
+    printf("testHitbox is at %d, %d\n", testHitbox.x, testHitbox.y);
+    printf("Physical coordinates are %d, %d\n", hitbox_real.x, hitbox_real.y);
+    // draw hitbox using physical coordinates
+    SDL_RenderFillRect(gRenderer, &hitbox_real);
+
+
+    // render screen
 		SDL_RenderPresent(gRenderer);
 
 		// update last_frame_ticks
@@ -150,6 +192,8 @@ MapChunk getChunk(int chunkX, int chunkY)
 void drawMap()
 {
   // draw the terrain
+  cameraX = testHitbox.x - (SCREEN_WIDTH - testHitbox.w) / 2;
+  cameraY = testHitbox.y - (SCREEN_HEIGHT - testHitbox.h) / 2;
 
   printf("camera coordinates are %d, %d\n", cameraX, cameraY);
 
@@ -197,7 +241,7 @@ void drawMap()
 
       // draw the chunk to a calculated offset
       chunk.drawTo(gRenderer, textureAtlas,
-        -offset_x +   chunk_j * MapChunk::CHUNK_WIDTH,
+        -offset_x + chunk_j * MapChunk::CHUNK_WIDTH,
         -offset_y + chunk_i * MapChunk::CHUNK_HEIGHT);
     }
   }
