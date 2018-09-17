@@ -108,6 +108,33 @@ MapChunk MapGenerator::readChunkFile(FILE* file)
       restored = NULL;
     }
   }
+
+  // read in saved item drops
+  // each is 6 bytes: 1 byte specifies item id, 1 byte specifies stack size,
+  // 2 bytes specify x (base-128), 2 bytes specify y (base-128)
+  if (fread(chunkBuffer, 1, 1, file) != 1)
+  {
+    // TODO: THROW EXCEPTION
+    return;
+  }
+
+  int num_drops = chunkBuffer[1];
+  printf("Reading %d drops\n", num_drops);
+
+  for (int i = 0; i < num_drops; i++)
+  {
+    if (fread(chunkBuffer, 1, 6, file) != 6)
+    {
+      throw runtime_error("Not enough bytes to specify all drops");
+    }
+
+    int item_type = chunkBuffer[0];
+    int stack_size = chunkBuffer[1];
+    int x = FileUtil::readFromBuffer(chunkBuffer, 2, 2, 128);
+    int y = FileUtil::readFromBuffer(chunkBuffer, 4, 2, 128);
+    addDrop(new ItemDrop(ItemStack::createStack(item_type, stack_size, x, y)));
+  }
+
   fclose(file);
 
   return read_chunk;
@@ -173,6 +200,27 @@ void MapGenerator::writeChunkFile(int chunkX, int chunkY, MapChunk chunk)
     fwrite(num_buffer, 1, 1, file_handle);
     fwrite(chunkBuffer, 1, num_bytes, file_handle);
   }
+
+  int num_drops = chunk.numDrops();
+  printf("Writing %d drops\n", num_drops);
+
+  ItemDrop* drop = NULL;
+
+  for (int i = 0; i < num_drops; i++)
+  {
+    drop = chunk.getDrop(i);
+    chunkBuffer[0] = char(drop->itemType);
+    chunkBuffer[1] = char(drop->size());
+    FileIO::writeToBuffer(chunkBuffer, 2, 2, drop->x, 128);
+    FileIO::writeToBuffer(chunkBuffer, 4, 2, drop->y, 128);
+
+    int item_type = chunkBuffer[0];
+    int stack_size = chunkBuffer[1];
+    int x = FileUtil::readFromBuffer(chunkBuffer, 2, 2, 128);
+    int y = FileUtil::readFromBuffer(chunkBuffer, 4, 2, 128);
+    addDrop(new ItemDrop(ItemStack::createStack(item_type, stack_size, x, y)));
+  }
+
   fclose(file_handle);
 
   printf("Done\n");

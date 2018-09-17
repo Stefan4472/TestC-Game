@@ -11,6 +11,7 @@
 #include "map_object.h"
 #include "file_io_util.h"
 #include "tree_1.h" // TODO: REMOVE
+//#include "item_drop.h"
 
 using namespace std;
 
@@ -45,6 +46,10 @@ class MapChunk
 		int numObjects();
 		MapObject* getObject(int index);
 
+		// bool addDrop()
+		// int numDrops()
+		// ItemDrop* getDrop()
+		
 		// the following arrays store values based on chunk row/column:
 
 		// terrain tile grid
@@ -63,6 +68,8 @@ class MapChunk
 	private:
 		// MapObjects present in the chunk
 		vector<MapObject*> objects;
+		// drops present in the chunk TOOD: MORE NATURAL DATA REPRESENTATION
+		//vector<ItemDrop*> drops;
 
 		// iterates through current objects and updates the objectHitTiles mapping
 		void updateObjectHitTiles();
