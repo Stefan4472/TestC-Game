@@ -37,7 +37,7 @@ class ItemDrop {
 
 		// draws item drop to map (uses position)
 		void drawToMap(SDL_Renderer* renderer, TextureAtlas* textureAtlas,
-			int offsetX, int offsetY);
+			int chunkStartX, int chunkStartY);
 
 	// prepares for destruction: sets ItemStack to NULL. The ItemStack itself must
 		// be

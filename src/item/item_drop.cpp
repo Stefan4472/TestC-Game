@@ -37,7 +37,9 @@ ItemStack* ItemDrop::getStack()
 }
 
 // TODO: CLEAN UP
-void ItemDrop::drawToMap(SDL_Renderer* renderer, TextureAtlas* textureAtlas)
+void ItemDrop::drawToMap(SDL_Renderer* renderer, TextureAtlas* textureAtlas,
+	int chunkStartX, int chunkStartY)
 {
-	textureAtlas->draw(renderer, getTextureId(items->itemId), position.x, position.y);
+	textureAtlas->draw(renderer, getTextureId(items->itemId),
+		chunkStartX + position.x, chunkStartY + position.y);
 }

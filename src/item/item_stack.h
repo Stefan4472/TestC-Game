@@ -28,7 +28,7 @@ class ItemStack
 		ItemStack(std::vector<Item*> items);
 
 		// id of items in stack
-		int itemId = ItemType::NONE;
+		ItemType itemId = ItemType::NONE;
 		// returns whether stack is empty (has no items)
 		bool isEmpty();
 		// return number of elements in the stack

@@ -3,7 +3,7 @@
 Item::Item(int itemId)
 {
 	printf("Creating Item with id %d...", itemId);
-	this->itemId = itemId;
+	this->itemId = ItemType(itemId);
 	name = ITEM_NAMES[itemId];
 	description = ITEM_DESCRIPTIONS[itemId];
 	stackSize = ITEM_STACKSIZES[itemId];
@@ -47,9 +47,9 @@ void Item::getAndClearSounds(vector<Sound*> sounds)
 		return;
 }
 
-int Item::getStackSize(int itemId)
+int Item::getStackSize(int itemId)  // TODO: TAKE iTEMtYPE AS ARG
 {
-	if (itemId < 1 || itemId >= ItemType::NUM_ITEMS)
+	if (itemId < 1 || itemId >= int(ItemType::NUM_ITEMS))
 	{
 		throw runtime_error("Invalid itemId");
 	}
@@ -58,7 +58,7 @@ int Item::getStackSize(int itemId)
 
 TextureId Item::getTextureId(int itemId)
 {
-	if (itemId < 1 || itemId >= ItemType::NUM_ITEMS)
+	if (itemId < 1 || itemId >= int(ItemType::NUM_ITEMS))
 	{
 		throw runtime_error("Invalid itemId");
 	}

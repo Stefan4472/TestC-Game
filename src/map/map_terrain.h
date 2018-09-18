@@ -7,7 +7,7 @@
 using namespace std;
 
 // the available types of MapTerrain
-enum TerrainType
+enum class TerrainType
 {
   NONE,
   GRASS,

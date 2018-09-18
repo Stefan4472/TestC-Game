@@ -16,7 +16,7 @@ class SoundAtlas
 {
 	// stores loaded sounds corresponding to Sounds enum
 	//std::vector<Mix_Chunk*> loadedSounds;
-	Mix_Chunk* loadedSounds[NUM_SOUNDS]; // TODO: USE VECTOR?
+	Mix_Chunk* loadedSounds[int(SoundId::NUM_SOUNDS)]; // TODO: USE VECTOR?
 
 	public:
 		static const SoundId FOOTSTEP_GRASS_RUN_SOUNDS[];

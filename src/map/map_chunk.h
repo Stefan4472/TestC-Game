@@ -4,14 +4,15 @@
 #include <SDL2/SDL.h>
 #include <stdio.h>
 #include <vector>
+#include <list>
 #include <cmath>
 #include <stdexcept>
 #include "texture_atlas.h"
 #include "map_terrain.h"
 #include "map_object.h"
+#include "item_drop.h"
 #include "file_io_util.h"
 #include "tree_1.h" // TODO: REMOVE
-//#include "item_drop.h"
 
 using namespace std;
 
@@ -46,10 +47,10 @@ class MapChunk
 		int numObjects();
 		MapObject* getObject(int index);
 
-		// bool addDrop()
-		// int numDrops()
-		// ItemDrop* getDrop()
-		
+		void addDrop(ItemDrop* drop);
+		int numDrops();
+		ItemDrop* getDrop(int tileX, int tileY);
+
 		// the following arrays store values based on chunk row/column:
 
 		// terrain tile grid
@@ -58,6 +59,8 @@ class MapChunk
 		MapObject* objectHitTiles[TILE_ROWS][TILE_COLS];
 		// whether a tile can be walked on TODO: EXPLAIN
 		bool walkable[TILE_ROWS][TILE_COLS];
+		// list of drops, indexed by tile. Top of list = more recently dropped
+		list<ItemDrop*> dropTiles[TILE_ROWS][TILE_COLS];
 
 		// draws this chunk's terrain (TODO: AND OBJECTS) to the given renderer, with the
 		// top-left starting at (x,y)

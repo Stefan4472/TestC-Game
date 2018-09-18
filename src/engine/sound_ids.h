@@ -7,7 +7,7 @@ Used with the SoundAtlas.
 */
 
 // individual sound identifiers
-enum SoundId
+enum class SoundId
 {
 	NO_SOUND,
 	FOOTSTEP_GRASS_RUN_01,

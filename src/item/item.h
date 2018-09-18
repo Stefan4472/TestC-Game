@@ -13,7 +13,7 @@
 class SpriteAction;
 
 // Items in the game. These are used as keys to retrieve name and description from the const arrays
-enum ItemType
+enum class ItemType
 {
 	NONE,
 	BREAD_LOAF,

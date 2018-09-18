@@ -79,6 +79,7 @@ int MapChunk::numObjects()
 {
 	return objects.size();
 }
+
 MapObject* MapChunk::getObject(int index)
 {
 	if (index > -1 && index < objects.size())
@@ -89,6 +90,22 @@ MapObject* MapChunk::getObject(int index)
 	{
 		throw runtime_error("Index Out of Bounds");
 	}
+}
+
+void MapChunk::addDrop(ItemDrop* drop)
+{
+
+}
+
+int MapChunk::numDrops()
+{
+	printf("Using numDrops(), which hasn't been implemented yet\n");
+	return 0;
+}
+
+ItemDrop* getDrop(int tileX, int tileY)
+{
+
 }
 
 void MapChunk::drawTo(SDL_Renderer* renderer, TextureAtlas* textureAtlas, int x, int y)
@@ -116,6 +133,9 @@ void MapChunk::drawTo(SDL_Renderer* renderer, TextureAtlas* textureAtlas, int x,
 	{
 		objects[i]->drawTo(renderer, textureAtlas, x, y);
 	}
+
+	// TODO: draw map drops 
+
 }
 
 void MapChunk::printDebug()

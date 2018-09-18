@@ -9,6 +9,7 @@
 #include "map_chunk.h"
 #include "map_terrain.h"
 #include "tree_1.h" // TODO: IDEALLY THIS SHOULDN'T BE NECESSARY--NEED ABSTRACT STATIC METHODS
+#include "file_io_util.h"
 
 using namespace std;
 

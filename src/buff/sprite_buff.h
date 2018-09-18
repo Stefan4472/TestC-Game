@@ -1,7 +1,10 @@
 #ifndef SPRITE_BUFF_H
 #define SPRITE_BUFF_H
 
+#include <SDL2/SDL.h>
 #include "sound_atlas.h"
+#include "texture_atlas.h"
+#include "sound.h"
 
 class Sprite;
 
@@ -20,7 +23,7 @@ class SpriteBuff
     // queries the SpriteBuff to add its sounds to the given vector and clear its
     // internal queue. The sounds added the vector will be played in the current
     // frame.
-    virtual void getAndClearSounds(vector<Sounds> sounds) = 0;
+    virtual void getAndClearSounds(vector<Sound> sounds) = 0;
     // draw the buff over the sprite
     virtual void drawToSprite(SDL_Renderer* renderer, TextureAtlas* textureAtlas,
       Sprite* sprite) = 0;
