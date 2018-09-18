@@ -5,8 +5,10 @@
 #include <stdexcept>
 #include "item.h"
 
+using namespace std;
+
 /*
-The itemStack is a container for one or more of the same itemType, and is used
+A container for a "stack" of items (one or more of the same itemType), and is used
 to represent inventory slots, or item drops. It is essentially a vector which
 enforces the item's stack size.
 */
@@ -14,12 +16,12 @@ class ItemStack
 {
 	private:
 		// items in the stack
-		std::vector<Item*> items;
+		vector<Item*> items;  // TODO: iMPLEMENTING USING AN ACTUAL LIST OR STACK 
 		// capacity of the stack for the given item
-		int capacity = 0;
+		int maxStackSize;
 
 	public:
-		// creates empty stack
+		// creates empty stack of ItemType::NONE
 		ItemStack();
 		// creates stack with the given Item
 		ItemStack(Item* item);
@@ -28,14 +30,16 @@ class ItemStack
 		ItemStack(std::vector<Item*> items);
 
 		// id of items in stack
-		ItemType itemId = ItemType::NONE;
+		ItemType itemType;
+		//
+
 		// returns whether stack is empty (has no items)
 		bool isEmpty();
 		// return number of elements in the stack
 		int size();
 		// returns whether the given item could be added to the stack
 		bool canAdd(Item* item);
-		// attempts to add given item to this stack.
+		// attempts to add the given item to the stack.
 		// returns whether it was successfully added
 		bool addItem(Item* toAdd);
 		// returns top item in the stack without removing it (can be null)

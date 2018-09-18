@@ -2,25 +2,30 @@
 
 ItemStack::ItemStack()
 {
-
+	itemType = ItemType::NONE;
+	maxStackSize = 0;
 }
 
 ItemStack::ItemStack(Item* item)
 {
-	itemId = item->itemId;
-	capacity = item->stackSize;
-	items.push_back(item);
+	itemType = item->itemType;
+	maxStackSize = Item::getStackSize(itemType);
+	addItem(item);
 }
 
-ItemStack::ItemStack(std::vector<Item*> items) // NOTE: BETTER WAY TO COPY??
+ItemStack::ItemStack(vector<Item*> items) // NOTE: BETTER WAY TO COPY??
 {
 	printf("Creating ItemStack from vector of items...");
-	itemId = items[0]->itemId;
-	capacity = items[0]->stackSize;
-	// copy items over to internal list
+	itemType = items[0]->itemType;
+	maxStackSize = Item::getStackSize(itemType);
+
+	// add Items, one by one
 	for (int i = 0; i < items.size(); i++)
 	{
-		this->items.push_back(items[i]);
+		if (!addItem(items[i]))
+		{
+			throw runtime_error("Cannot create stack from given vector");
+		}
 	}
 	printf("Id %d Cap%d... Done\n", itemId, capacity);
 }
@@ -39,22 +44,23 @@ bool ItemStack::canAdd(Item* item)
 {
 	// can be added if stack is empty or uninitialized, or if stack contains same
 	// itemType and is below capacity
-	return (item->itemId == itemId && items.size() < capacity) ||
-		itemId == ItemType::NONE || items.size() == 0;
+	return (item->itemType == itemType && items.size() < maxStackSize) ||
+		itemType == ItemType::NONE || items.empty();
 }
 
 bool ItemStack::addItem(Item* toAdd)
 {
-	if (toAdd->itemId == itemId && items.size() < capacity)
+	// matching ItemType, and size is below stack size: add
+	if (toAdd->itemType == itemType && items.size() < maxStackSize)
 	{
 		items.push_back(toAdd);
 		return true;
 	}
 	// no items in stack: set id to given item's id and add
-	else if (itemId == ItemType::NONE || items.size() == 0)
+	else if (itemType == ItemType::NONE || items.empty())
 	{
-		itemId = toAdd->itemId;
-		capacity = toAdd->stackSize;
+		itemType = toAdd->itemType;
+		maxStackSize = Item::getStackSize(itemType);
 		items.push_back(toAdd);
 		return true;
 	}
@@ -88,7 +94,7 @@ Item* ItemStack::popNext()
 		{
 			itemId = ItemType::NONE;
 		}
-		
+
 		return item;
 	}
 	else
