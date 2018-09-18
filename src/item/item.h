@@ -30,21 +30,11 @@ enum class ItemType
 	SHOTGUN_AMMO,
 	RIFLE_AMMO,
 	SHOTGUN,
-	TOMMYGUN,
-	NUM_ITEMS
+	TOMMYGUN
 };
 
-// TODO: THESE DON'T EVEN NEED TO BE DEFINED IN THE HEADER! THEY ARE ONLY USED IN ITEM.CPP
-// TextureAtlas image ids, mapped by ItemType id. Defined in item.cpp
-extern const TextureId ITEM_TEXTURES[int(ItemType::NUM_ITEMS)];
-// In-game item names, mapped by ItemType id. Defined in item.cpp
-extern const std::string ITEM_NAMES[int(ItemType::NUM_ITEMS)];
-// Item descriptions, mapped by ItemType id. Defined in item.cpp
-extern const std::string ITEM_DESCRIPTIONS[int(ItemType::NUM_ITEMS)];
-// Maximum allowed ItemStack sizes, mapped by ItemType id. Defined in item.cpp
-extern const int ITEM_STACKSIZES[int(ItemType::NUM_ITEMS)];
-// ItemIds of ammunition the given Item takes (NONE = cannot be reloaded)
-extern const ItemType ITEM_AMMUNITIONS[int(ItemType::NUM_ITEMS)];
+// number of ItemTypes, includeing ItemType::NONE
+const int NUM_ITEM_TYPES = 13;
 
 // TODO: UPDATE/REWRITE
 // Item provides basic functionality for anything that can be picked up, used, and kept
@@ -66,7 +56,7 @@ class Item
 		/* Static methods for retrieving properties of a specific ItemType */
 		/* Looks up the ItemType in the relevant property array */
 		static string getName(ItemType itemType);
-		static string getDescription(ItemTYpe itemType);
+		static string getDescription(ItemType itemType);
 		static int getStackSize(ItemType itemType);
 		static TextureId getTextureId(ItemType itemType);
 		static ItemType getAmmunitionType(ItemType itemType);
@@ -82,6 +72,7 @@ class Item
 		// creates item with given Type
 		Item(ItemType itemType);
 
+		// TODO: MAKE THESE NECESSARY 
 		// attempts to load this item with the given Item, which may be consumed
 		// (setting the item's delete = true). Returns whether the given Item was
 		// successfully loaded into the current item.

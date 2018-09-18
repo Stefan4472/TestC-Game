@@ -1,7 +1,7 @@
 #include "item.h"
 
 // TextureIds corresponding to ItemType enum
-const TextureId ITEM_TEXTURES[] =
+const TextureId ITEM_TEXTURES[NUM_ITEM_TYPES] =
 {
 	TextureId::TEXTURE_NONE,
 	TextureId::BREAD_LOAF,
@@ -11,7 +11,6 @@ const TextureId ITEM_TEXTURES[] =
 	TextureId::SCROLL_1,
 	TextureId::SWORD_1,
 	TextureId::OBJECT_PISTOL_1,
-	//PISTOL_BULLET,
 	TextureId::TEXTURE_PISTOL_AMMO,
 	TextureId::TEXTURE_SHOTGUN_AMMO,
 	TextureId::TEXTURE_RIFLE_AMMO,
@@ -19,7 +18,8 @@ const TextureId ITEM_TEXTURES[] =
 	TextureId::TEXTURE_TOMMYGUN
 };
 
-const std::string ITEM_NAMES[] =
+// names of items, corresponding to ItemType enum
+const std::string ITEM_NAMES[NUM_ITEM_TYPES] =
 {
 	"The Null Item",
 	"Bread Loaf",
@@ -36,7 +36,8 @@ const std::string ITEM_NAMES[] =
 	"Tommy Gun"
 };
 
-const std::string ITEM_DESCRIPTIONS[] =
+// descriptions of items, corresponding to ItemType enum
+const std::string ITEM_DESCRIPTIONS[NUM_ITEM_TYPES] =
 {
 	"Nothing. This is probably a bug",
 	"A Loaf of Bread",
@@ -53,7 +54,8 @@ const std::string ITEM_DESCRIPTIONS[] =
 	"Not your grandma's Tommy Gun"
 };
 
-const int ITEM_STACKSIZES[] =
+// item stacksizes, corresponding to ItemType enum
+const int ITEM_STACKSIZES[NUM_ITEM_TYPES] =
 {
 	1,
 	16,
@@ -70,7 +72,8 @@ const int ITEM_STACKSIZES[] =
 	1
 };
 
-const ItemType ITEM_AMMUNITIONS[] =
+// item ammunitionTypes, corresponding to ItemType enum
+const ItemType ITEM_AMMUNITIONS[NUM_ITEM_TYPES] =
 {
 	ItemType::NONE,
 	ItemType::NONE,
@@ -89,7 +92,6 @@ const ItemType ITEM_AMMUNITIONS[] =
 
 string Item::getName(ItemType itemType)
 {
-	// TODO: ENSURE IT IS NOT ITEMTYPE::NUM_ITEMS?
 	return ITEM_NAMES[int(itemType)];
 }
 
