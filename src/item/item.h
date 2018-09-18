@@ -12,7 +12,8 @@
 #include "sound.h"
 class SpriteAction;
 
-// Items in the game. These are used as keys to retrieve name and description from the const arrays
+// Defines the types of items in the game. Indexes used as keys to retrieve
+// properties of the ItemType the const arrays
 enum class ItemType
 {
 	NONE,
@@ -31,97 +32,18 @@ enum class ItemType
 	NUM_ITEMS
 };
 
-// TextureAtlas image ids, mapped by ItemType id TODO: MOVE THIS STUFF OUT TO A .CPP FILE
-const TextureId ITEM_TEXTURES[13] =
-{
-	TextureId::TEXTURE_NONE,
-	TextureId::BREAD_LOAF,
-	TextureId::CHICKEN_LEG,
-	TextureId::BEER_MUG,
-	TextureId::POTION_GREEN,
-	TextureId::SCROLL_1,
-	TextureId::SWORD_1,
-	TextureId::OBJECT_PISTOL_1,
-	//PISTOL_BULLET,
-	TextureId::TEXTURE_PISTOL_AMMO,
-	TextureId::TEXTURE_SHOTGUN_AMMO,
-	TextureId::TEXTURE_RIFLE_AMMO,
-	TextureId::TEXTURE_SHOTGUN,
-	TextureId::TEXTURE_TOMMYGUN
-};
+// TextureAtlas image ids, mapped by ItemType id. Defined in item.cpp
+extern const TextureId ITEM_TEXTURES[int(ItemType::NUM_ITEMS)];
+// In-game item names, mapped by ItemType id. Defined in item.cpp
+extern const std::string ITEM_NAMES[int(ItemType::NUM_ITEMS)];
+// Item descriptions, mapped by ItemType id. Defined in item.cpp
+extern const std::string ITEM_DESCRIPTIONS[int(ItemType::NUM_ITEMS)];
+// Maximum allowed ItemStack sizes, mapped by ItemType id. Defined in item.cpp
+extern const int ITEM_STACKSIZES[int(ItemType::NUM_ITEMS)];
+// ItemIds of ammunition the given Item takes (NONE = cannot be reloaded)
+extern const ItemType ITEM_AMMUNITIONS[int(ItemType::NUM_ITEMS)];
 
-// In-game item names, mapped by ItemType id
-const std::string ITEM_NAMES[13] =
-{
-	"The Null Item",
-	"Bread Loaf",
-	"Chicken Leg",
-	"Beer Mug",
-	"Green Potion",
-	"Scroll",
-	"Sword",
-	"Pistol",
-	"Pistol Bullet",
-	"Shotgun Shell",
-	"Rifle Bullet",
-	"Double-Barelled Shotgun",
-	"Tommy Gun"
-};
-
-// Item descriptions, mapped by ItemType id
-const std::string ITEM_DESCRIPTIONS[13] =
-{
-	"Nothing. This is probably a bug",
-	"A Loaf of Bread",
-	"Chicken Leg. Very tasty",
-	"A big mug o' beer",
-	"Not sure what it does, but it's green",
-	"Some weird crinkled piece of paper with writing on it",
-	"Sharp Steel",
-	"Fancy-looking pistol. Bang bang!",
-	"Small, metallic cylinder. For pistol use only!",
-	"Shell for a shotgun",
-	"Rifle bullet",
-	"Nasty Double-Barelled Shotgun. Might be from the Civil War",
-	"Not your grandma's Tommy Gun"
-};
-
-// Stack amounts, mapped by ItemType id
-const int ITEM_STACKSIZES[13] =
-{
-	1,
-	16,
-	16,
-	4,
-	4,
-	1,
-	1,
-	1,
-	48,
-	24,
-	32,
-	1,
-	1
-};
-
-// ItemIds of ammunition given Item takes
-const ItemType ITEM_AMMUNITIONS[13] =
-{
-	ItemType::NONE,
-	ItemType::NONE,
-	ItemType::NONE,
-	ItemType::NONE,
-	ItemType::NONE,
-	ItemType::NONE,
-	ItemType::NONE,
-	ItemType::PISTOL_AMMO,
-	ItemType::NONE,
-	ItemType::NONE,
-	ItemType::NONE,
-	ItemType::SHOTGUN_AMMO,
-	ItemType::RIFLE_AMMO
-};
-
+// TODO: UPDATE/REWRITE
 // Item provides basic functionality for anything that can be picked up, used, and kept
 // in inventory. Each Item must have certain fields, such as a texture, name, description,
 // and stack size (number of items that can be stacked in one inventory slot). As these
@@ -140,10 +62,11 @@ class Item
 
 		// id of the item
 		ItemType itemId;
-		std::string name;
+		std::string name;  // TODO: HOW OFTEN ARE THESE NEEDED? CAN WE REPLACE THEM WITH GET() METHODS
 		std::string description;
 		int stackSize = 0;
 		TextureId textureId = TextureId::TEXTURE_NONE;
+		ItemType ammunitionType = ItemType::NONE;
 
 		// whether item should be destroyed (removed from inventory and deleted)
 		bool destroy = false;

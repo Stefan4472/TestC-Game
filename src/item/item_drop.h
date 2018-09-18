@@ -32,6 +32,9 @@ class ItemDrop {
 		// creates drop from existing ItemStack, and map coordinates
 		ItemDrop(ItemStack* itemStack, float x, float y);
 
+		// ItemType this drop contains
+		ItemType itemType = ItemType::NONE;
+		
 		// returns ItemStack contained by the drop
 		ItemStack* getStack();
 

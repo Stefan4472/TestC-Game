@@ -4,7 +4,8 @@ ItemDrop::ItemDrop(Item* item, float x, float y)
 {
 	printf("Creating ItemDrop from %s at %f, %f...", item->name.c_str(), x, y);
 	items = new ItemStack(item);
-
+	itemType = item->itemType;
+	
 	hitbox.w = HITBOX_WIDTH;
 	hitbox.h = HITBOX_HEIGHT;
 
