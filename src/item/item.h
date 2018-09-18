@@ -12,6 +12,8 @@
 #include "sound.h"
 class SpriteAction;
 
+using namespace std;
+
 // Defines the types of items in the game. Indexes used as keys to retrieve
 // properties of the ItemType the const arrays
 enum class ItemType
@@ -32,6 +34,7 @@ enum class ItemType
 	NUM_ITEMS
 };
 
+// TODO: THESE DON'T EVEN NEED TO BE DEFINED IN THE HEADER! THEY ARE ONLY USED IN ITEM.CPP
 // TextureAtlas image ids, mapped by ItemType id. Defined in item.cpp
 extern const TextureId ITEM_TEXTURES[int(ItemType::NUM_ITEMS)];
 // In-game item names, mapped by ItemType id. Defined in item.cpp
@@ -60,24 +63,29 @@ class Item
 
 	public:
 
-		// id of the item
-		ItemType itemId;
-		std::string name;  // TODO: HOW OFTEN ARE THESE NEEDED? CAN WE REPLACE THEM WITH GET() METHODS
-		std::string description;
-		int stackSize = 0;
-		TextureId textureId = TextureId::TEXTURE_NONE;
-		ItemType ammunitionType = ItemType::NONE;
+		/* Static methods for retrieving properties of a specific ItemType */
+		/* Looks up the ItemType in the relevant property array */
+		static string getName(ItemType itemType);
+		static string getDescription(ItemTYpe itemType);
+		static int getStackSize(ItemType itemType);
+		static TextureId getTextureId(ItemType itemType);
+		static ItemType getAmmunitionType(ItemType itemType);
+
+		// type of the item: should be all that is needed to define the functionality
+		// of the Item object
+		ItemType itemType;
 
 		// whether item should be destroyed (removed from inventory and deleted)
+		// usually set by the Item itself once it has been used up
 		bool destroy = false;
 
-		// creates item with given ID
-		Item(int itemId);
+		// creates item with given Type
+		Item(ItemType itemType);
 
 		// attempts to load this item with the given Item, which may be consumed
-		// (setting the item's delete = true). Returns whether the given was
+		// (setting the item's delete = true). Returns whether the given Item was
 		// successfully loaded into the current item.
-		virtual bool load(Item* item);  // TODO: TAKE ITEMSTACK PARAMETER
+		virtual bool load(Item* item);
 
 		// called when the Item is used. By default, doesn't do anything. Meant to
 		// be overridden by Items that create some action or consequence when used.
@@ -85,24 +93,21 @@ class Item
 		// Actor is the sprite that's using the item
 		virtual void use(const Sprite* actor);
 
-		// updates state of item by given number of milliseconds. Meant for when
-		// item is in the sprite's hand. By default does nothing.
+		// updates state of item by given number of milliseconds. Does not need to
+		// do anything
 		virtual void update(int ms);
 
-		// returns SpriteAction created when this sprite is used. Default NULL
+		// returns SpriteAction created when this sprite was last used. May be NULL
 		virtual SpriteAction* getAction();
-		// returns Buff created when this sprite is used. Default NULL
+		// returns Buff created when this item was last used. May be NULL
 		virtual SpriteBuff* getBuff();
-		// returns Attack created when this sprite is used. Default NULL
+		// returns Attack created when this item was last used. May be NULL
 		virtual Attack* getAttack();
+
 		// consumes the sounds created by the item (if any) and adds them to the
 		// given list
 		virtual void getAndClearSounds(vector<Sound*> sounds) = 0;
 
-		// returns stack size of given item id
-		static int getStackSize(int itemId);
-		// returns texture id of given item id
-		static TextureId getTextureId(int itemId);
 };
 
 

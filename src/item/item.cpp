@@ -70,15 +70,53 @@ const int ITEM_STACKSIZES[] =
 	1
 };
 
-Item::Item(int itemId)
+const ItemType ITEM_AMMUNITIONS[] =
 {
-	printf("Creating Item with id %d...", itemId);
-	this->itemId = ItemType(itemId);
-	name = ITEM_NAMES[itemId];
-	description = ITEM_DESCRIPTIONS[itemId];
-	stackSize = ITEM_STACKSIZES[itemId];
-	textureId = ITEM_TEXTURES[itemId];
-	ammunitionId = ITEM_AMMUNITIONS[itemId];
+	ItemType::NONE,
+	ItemType::NONE,
+	ItemType::NONE,
+	ItemType::NONE,
+	ItemType::NONE,
+	ItemType::NONE,
+	ItemType::NONE,
+	ItemType::PISTOL_AMMO,
+	ItemType::NONE,
+	ItemType::NONE,
+	ItemType::NONE,
+	ItemType::SHOTGUN_AMMO,
+	ItemType::RIFLE_AMMO
+};
+
+string Item::getName(ItemType itemType)
+{
+	// TODO: ENSURE IT IS NOT ITEMTYPE::NUM_ITEMS?
+	return ITEM_NAMES[int(itemType)];
+}
+
+string Item::getDescription(ItemType itemType)
+{
+	return ITEM_DESCRIPTIONS[int(itemType)];
+}
+
+int Item::getStackSize(ItemType itemType)
+{
+	return ITEM_STACKSIZES[int(itemType)];
+}
+
+TextureId Item::getTextureId(ItemType itemType)
+{
+	return ITEM_TEXTURES[int(itemType)];
+}
+
+ItemType Item::getAmmunitionType(ItemType itemType)
+{
+	return ITEM_AMMUNITIONS[int(ItemType)];
+}
+
+Item::Item(ItemType itemType)
+{
+	printf("Creating Item with id %d...", int(itemType));
+	this->itemType = itemType;
 	printf("Done\n");
 }
 
@@ -115,22 +153,4 @@ Attack* Item::getAttack()
 void Item::getAndClearSounds(vector<Sound*> sounds)
 {
 		return;
-}
-
-int Item::getStackSize(int itemId)  // TODO: TAKE iTEMtYPE AS ARG
-{
-	if (itemId < 1 || itemId >= int(ItemType::NUM_ITEMS))
-	{
-		throw runtime_error("Invalid itemId");
-	}
-	return ITEM_STACKSIZES[itemId];
-}
-
-TextureId Item::getTextureId(int itemId)
-{
-	if (itemId < 1 || itemId >= int(ItemType::NUM_ITEMS))
-	{
-		throw runtime_error("Invalid itemId");
-	}
-	return ITEM_TEXTURES[itemId];
 }
