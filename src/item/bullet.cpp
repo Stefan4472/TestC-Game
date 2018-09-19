@@ -1,4 +1,4 @@
-#include "pistol_ammo.h"
+#include "bullet.h"
 
 Bullet::Bullet(ItemType itemType) : Item(itemType)
 {
@@ -7,4 +7,9 @@ Bullet::Bullet(ItemType itemType) : Item(itemType)
 	{
 		throw runtime_error("Invalid Id for Bullet given");
 	}
+}
+
+void Bullet::getAndClearSounds(vector<Sound*> sounds)
+{
+	return;
 }

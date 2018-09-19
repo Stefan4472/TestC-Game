@@ -10,14 +10,14 @@ const int BEERMUG_HEALING_MS = 500;
 const int GREENPOTION_HEALING_HP = 60;
 const int GREENPOTION_HEALING_MS = 100;
 
-Consumable::Consumable(int itemType) : Item(itemType)
+Consumable::Consumable(ItemType itemType) : Item(itemType)
 {
 	switch (itemType)
 	{
-		case ITEM_BREAD_LOAF:
-		case ITEM_CHICKEN_LEG:
-		case ITEM_BEER_MUG:
-		case ITEM_GREEN_POTION:
+		case ItemType::BREAD_LOAF:
+		case ItemType::CHICKEN_LEG:
+		case ItemType::BEER_MUG:
+		case ItemType::GREEN_POTION:
 			break;
 
 		default:
@@ -30,7 +30,7 @@ void Consumable::use(Sprite* actor)
 	used = true;
 }
 
-SpriteAction* Consumable::getBuff()
+SpriteBuff* Consumable::getBuff()
 {
 	if (used && !buffConsumed)
 	{
@@ -39,22 +39,28 @@ SpriteAction* Consumable::getBuff()
 		destroy = true;
 
 		// return buff depending on ItemType
-		switch (itemType)
-		{
-			case ItemType::BREAD_LOAF:
-				return new HealthBuff(BREAD_HEALING_HP, BREAD_HEALING_MS, ); // TODO
-
-			case ItemType::CHICKEN_LEG:
-				return new HealthBuff(CHICKENLEG_HEALING_HP, CHICKENLEG_HEALING_MS, );
-
-			case ItemType::BEER_MUG:
-				return new HealthBuff(BEERMUG_HEALING_HP, BEERMUG_HEALING_MS, );
-
-			case ItemType::GREEN_POTION:
-				return new HealthBuff(GREENPOTION_HEALING_HP, GREENPOTION_HEALING_MS, )
-
-			default:
-				throw runtime_error("Invalid itemType. This should never happen");
-		}
+		// switch (itemType)
+		// {
+		// 	case ItemType::BREAD_LOAF:
+		// 		return new HealthBuff(BREAD_HEALING_HP, BREAD_HEALING_MS, ); // TODO
+		//
+		// 	case ItemType::CHICKEN_LEG:
+		// 		return new HealthBuff(CHICKENLEG_HEALING_HP, CHICKENLEG_HEALING_MS, );
+		//
+		// 	case ItemType::BEER_MUG:
+		// 		return new HealthBuff(BEERMUG_HEALING_HP, BEERMUG_HEALING_MS, );
+		//
+		// 	case ItemType::GREEN_POTION:
+		// 		return new HealthBuff(GREENPOTION_HEALING_HP, GREENPOTION_HEALING_MS, )
+		//
+		// 	default:
+		// 		throw runtime_error("Invalid itemType. This should never happen");
+		// }
+		return NULL; // TODO: BUFFS
 	}
+}
+
+void Consumable::getAndClearSounds(vector<Sound*> sounds)
+{
+	return;
 }

@@ -21,12 +21,12 @@ TODO: NOTE, CURRENT IMPLEMENTATION ASSIGNS DAMAGE BASED ON BULLET TYPE ONLY
 class Gun : public Item
 {
 	protected:
-		// Item type used to load the gun
-		ItemType ammunitionId;
 		// max. number of bullets that can be loaded at one time
 		int magSize;
 		// number of bullets in magazine
 		int bulletsLoaded;
+		// type of ammunition this gun accepts
+		ItemType ammunitionType;
 		// num milliseconds before gun can be fired again
 		int coolOff;
 		// num milliseconds since gun was last fired
@@ -59,7 +59,7 @@ class Gun : public Item
 
 	public:
 		// creates a gun from the given ItemId, which must correspond to a gun type
-		Gun(int itemId);
+		Gun(ItemType itemType);
 		// updates gun state, adding to msSinceShot (which allows the gun to cool off)
 		void update(int ms);
 		// attempts to load given item into the gun. Returns true if item is the
@@ -74,7 +74,7 @@ class Gun : public Item
 		// lastRecoilAction
 		SpriteAction* getAction();
 		// adds lastSound to the list if it exists, and resets
-		void getAndClearSounds(vector<Sounds> sounds);
+		void getAndClearSounds(vector<Sound*> sounds);
 };
 
 #endif

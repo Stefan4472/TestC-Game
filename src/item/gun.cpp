@@ -1,11 +1,10 @@
 #include "gun.h"
 
-Gun::Gun(int itemId) : Item(itemId)
+Gun::Gun(ItemType itemType) : Item(itemType)
 {
-	printf("Creating gun with id %d (%s)\n", itemId, name.c_str());
 	bulletsLoaded = 0;
 
-	switch (itemId)
+	switch (itemType)
 	{
 		case ItemType::PISTOL:
 			magSize = 8;
@@ -38,11 +37,13 @@ Gun::Gun(int itemId) : Item(itemId)
 			break;
 
 		default:
-			raise runtime_error("Invalid ItemId, does not correspond to a gun");
+			throw runtime_error("Invalid ItemId, does not correspond to a gun");
 	}
 
 	// allow gun to be fired immediately
 	msSinceShot = coolOff;
+	// get the type of ammunition this gun takes
+	ammunitionType = Item::getAmmunitionType(itemType);
 }
 
 void Gun::update(int ms)
@@ -63,7 +64,7 @@ void Gun::use(Sprite* actor)
 		//position.h = 32;
 
 // TODO: ADD THE GIVEN PARAMETERS
-		lastSound = new Sound(shotSoundId, hand_pos.x, hand_pos.y, shotSoundRadius, actor);
+		lastSound = new Sound(shotSoundType, hand_pos.x, hand_pos.y, actor);
 
 		printf("Sprite is using Gun\n");
 
@@ -98,7 +99,7 @@ void Gun::use(Sprite* actor)
 
 bool Gun::load(Item* item)
 {
-	if (bulletsLoaded < magSize && item->itemId == ammunitionId)
+	if (bulletsLoaded < magSize && item->itemType == ammunitionType)
 	{
 		printf("Loading bullet into Gun\n");
 		bulletsLoaded++;
@@ -121,7 +122,7 @@ SpriteAction* Gun::getAction()
 	return recoil;
 }
 
-void Gun::getAndClearSounds(vector<Sounds> sounds)
+void Gun::getAndClearSounds(vector<Sound*> sounds)
 {
 	if (lastSound)
 	{

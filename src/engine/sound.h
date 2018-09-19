@@ -21,7 +21,7 @@ class Sound
     // coordinates of sound's center
     float x, y;
     // radius in which the sound can be heard from center
-    int radius = 0;
+    int radius = 0;  // TODO: MAKE TILE-BASED?
     // radius squared. makes distance calculations easier
     int radiusSquared = 0;
     // reference to sprite that the sound originates from

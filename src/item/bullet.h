@@ -10,5 +10,6 @@ class Bullet : public Item
 {
 	public:
 		Bullet(ItemType bulletType);
+		void getAndClearSounds(vector<Sound*> sounds);
 };
 #endif

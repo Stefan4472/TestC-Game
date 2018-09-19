@@ -8,17 +8,6 @@
 #include "sprite_buff.h"
 #include "health_buff.h"
 
-// HP healed by each item when consumed, and time it takes for that healing to
-// happen. Defined in consumable.cpp
-const int BREAD_HEALING_HP;
-const int BREAD_HEALING_MS;
-const int CHICKENLEG_HEALING_HP;
-const int CHICKENLEG_HEALING_MS;
-const int BEERMUG_HEALING_HP;
-const int BEERMUG_HEALING_MS;
-const int GREENPOTION_HEALING_HP;
-const int GREENPOTION_HEALING_MS;
-
 /*
 A consumable is a type of Item that, when used, gives the consuming sprite a
 buff and ceases to exist. A Consumable is defined by the Item is represents.
@@ -36,11 +25,12 @@ class Consumable : public Item
 
 	public:
 		// create consumable of the given itemType
-		Consumable(int itemType);
+		Consumable(ItemType itemType);
 		// handle item being "consumed" by the given sprite
 		void use(Sprite* actor);
 		// returns buff created by using the Item
-		SpriteAction* getBuff();
+		SpriteBuff* getBuff();
+		void getAndClearSounds(vector<Sound*> sounds);
 };
 
 #endif

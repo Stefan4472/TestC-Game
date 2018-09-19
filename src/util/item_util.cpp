@@ -2,10 +2,10 @@
 
 ItemStack* ItemUtil::createStack(ItemType itemType, int quantity)
 {
-	printf("ItemUtil: Creating %d Items with Id %d\n", quantity, itemId);
+  int max_stack_size = Item::getStackSize(itemType);
 
   // bound quantity to stack size of requested items
-	quantity = (quantity > getStackSize(itemId) ? getStackSize(itemId) : quantity);
+	quantity = (quantity > max_stack_size ? max_stack_size : quantity);
 
 	ItemStack* stack = new ItemStack();
 
@@ -18,7 +18,7 @@ ItemStack* ItemUtil::createStack(ItemType itemType, int quantity)
 		case ItemType::GREEN_POTION:
 			for (int i = 0; i < quantity; i++)
 			{
-				stack->addItem(new Consumable(itemId));
+				stack->addItem(new Consumable(itemType));
 			}
 			break;
 
@@ -28,7 +28,7 @@ ItemStack* ItemUtil::createStack(ItemType itemType, int quantity)
 		case ItemType::TOMMYGUN:
 			for (int i = 0; i < quantity; i++)
 			{
-				stack->addItem(new Gun(itemId));
+				stack->addItem(new Gun(itemType));
 			}
 			break;
 

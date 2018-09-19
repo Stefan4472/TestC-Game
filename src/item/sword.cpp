@@ -1,6 +1,6 @@
 #include "sword.h"
 
-Sword::Sword() : Item(ITEM_SWORD)
+Sword::Sword() : Item(ItemType::SWORD)
 {
 	damage = 10;
 }

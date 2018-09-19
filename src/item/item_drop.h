@@ -27,7 +27,7 @@ class ItemDrop
 		// wraps Item in an ItemStack and sets coordinates
 		ItemDrop(Item* item, int x, int y);
 		// wraps ItemStack and sets coordinates
-		ItemDrop(ItemStack* itemStack, int x, int y
+		ItemDrop(ItemStack* itemStack, int x, int y);
 
 		// returns ItemStack contained by the drop
 		ItemStack* getStack();  // TODO: CONSUMESTACK METHOD?
