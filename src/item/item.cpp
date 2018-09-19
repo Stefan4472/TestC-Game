@@ -112,7 +112,7 @@ TextureId Item::getTextureId(ItemType itemType)
 
 ItemType Item::getAmmunitionType(ItemType itemType)
 {
-	return ITEM_AMMUNITIONS[int(ItemType)];
+	return ITEM_AMMUNITIONS[int(itemType)];
 }
 
 Item::Item(ItemType itemType)

@@ -1,5 +1,5 @@
 // tests inventory and item/item stack/item drop mechanisms
-// g++ test/test_inventory.cpp item/item.cpp attack/attack.cpp engine/texture_atlas.cpp action/sprite_action.cpp sprite/sprite.cpp buff/sprite_buff.cpp -o test_inventory -Iitem -Iattack -Iaction -Isprite -Ibuff -Iengine -I. -lSDL2 -lSDL2_image -std=c++11
+// g++ test/test_inventory.cpp item/item.cpp attack/attack.cpp engine/texture_atlas.cpp action/sprite_action.cpp sprite/sprite.cpp buff/sprite_buff.cpp engine/animation_engine.cpp engine/animation_player.cpp engine/animation_sequence.cpp engine/spritesheet.cpp item/consumable.cpp item/gun.cpp item/bullet.cpp item/sword.cpp util/item_util.cpp -o test_inventory -Iitem -Iattack -Iaction -Isprite -Ibuff -Iengine -Iutil -I. -lSDL2 -lSDL2_image -std=c++11
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
@@ -8,6 +8,8 @@
 #include <unistd.h>
 #include "texture_atlas.h"
 #include "item.h"
+#include "item_stack.h"
+#include "item_drop.h"
 
 using namespace std;
 
@@ -29,6 +31,7 @@ const int TILE_HEIGHT = 32;
 
 int main(int argc, char* argv[])
 {
+
   init();
   loadMedia();
   textureAtlas = new TextureAtlas(textureAtlasImg);
