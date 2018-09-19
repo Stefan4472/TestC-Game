@@ -4,12 +4,14 @@ ItemStack::ItemStack()
 {
 	itemType = ItemType::NONE;
 	maxStackSize = 0;
+	itemTexture = Item::getTextureId(itemType);
 }
 
 ItemStack::ItemStack(Item* item)
 {
 	itemType = item->itemType;
 	maxStackSize = Item::getStackSize(itemType);
+	itemTexture = Item::getTextureId(itemType);
 	addItem(item);
 }
 
@@ -18,6 +20,7 @@ ItemStack::ItemStack(vector<Item*> items) // NOTE: BETTER WAY TO COPY??
 	printf("Creating ItemStack from vector of items...");
 	itemType = items[0]->itemType;
 	maxStackSize = Item::getStackSize(itemType);
+	itemTexture = Item::getTextureId(itemType);
 
 	// add Items, one by one
 	for (int i = 0; i < items.size(); i++)
@@ -32,7 +35,7 @@ ItemStack::ItemStack(vector<Item*> items) // NOTE: BETTER WAY TO COPY??
 
 bool ItemStack::isEmpty()
 {
-	return items.size() == 0;
+	return items.empty();
 }
 
 int ItemStack::size()

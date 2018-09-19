@@ -1,7 +1,7 @@
 #ifndef ITEM_STACK_H
 #define ITEM_STACK_H
 
-#include <vector>
+#include <list>
 #include <stdexcept>
 #include "item.h"
 
@@ -16,7 +16,7 @@ class ItemStack
 {
 	private:
 		// items in the stack
-		vector<Item*> items;  // TODO: iMPLEMENTING USING AN ACTUAL LIST OR STACK 
+		vector<Item*> items;
 		// capacity of the stack for the given item
 		int maxStackSize;
 
@@ -27,11 +27,12 @@ class ItemStack
 		ItemStack(Item* item);
 		// creates stack with the given items. Throws runtime_error if stacksize
 		// limit is violated, or if there are multiple item types in the list
-		ItemStack(std::vector<Item*> items);
+		ItemStack(vector<Item*> items);
 
 		// id of items in stack
 		ItemType itemType;
-		//
+		// itemType's texture
+		TextureId itemTexture;
 
 		// returns whether stack is empty (has no items)
 		bool isEmpty();
