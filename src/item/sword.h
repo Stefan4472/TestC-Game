@@ -16,11 +16,12 @@ class Sword : public Item
 	int damage = 10;
 	// attack created when sword was last swung
 	Attack* lastAttack = NULL;
-	
+
 	public: // TODO: COOL-OFF PERIOD
 		Sword();
 		void use(Sprite* actor);
 		Attack* getAttack();
+		void getAndClearSounds(vector<Sound*> sounds);
 };
 
 

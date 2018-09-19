@@ -18,17 +18,17 @@ void Sword::use(Sprite* actor) // TODO: REFACTORING, ADDITIONS, CLEAN UP
 			position.x = handPos.x;
 			position.y = handPos.y - 16;
 			break;
-			
+
 		case DIRECTION_LEFT:
 			position.x = handPos.x - 32;
 			position.y = handPos.y - 16;
 			break;
-			
+
 		case DIRECTION_UP:
 			position.x = handPos.x - 16;
 			position.y = handPos.y - 32;
 			break;
-			
+
 		case DIRECTION_DOWN:
 			position.x = handPos.x - 16;
 			position.y = handPos.y;
@@ -42,4 +42,9 @@ Attack* Sword::getAttack()
 	Attack* copy = lastAttack;
 	lastAttack = NULL;
 	return copy;
+}
+
+void Sword::getAndClearSounds(vector<Sound*> sounds)
+{
+	return;
 }
