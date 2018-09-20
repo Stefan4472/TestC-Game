@@ -17,6 +17,7 @@
 #include "item_stack.h"
 #include "sprite.h"
 #include "punch.h"
+#include "sprite_buff.h"
 
 using namespace std;
 
@@ -77,9 +78,9 @@ class Inventory // TODO: SEPARATE CLASS FOR NON-SPRITE INVENTORIES
 		InventoryListener* inventoryListener = NULL;
 
 		// searches for stack of items with given id. May return Null
-		InvCoordinate findItemSlot(ItemType, InvCoordinate& slot);
+		// InvCoordinate findItemSlot(ItemType, InvCoordinate& slot);
 		// searches inventory for an ItemStack that can accept the given item, if any (may be NULL)
-		InvCoordinate findEmptySlot(Item* item);
+		// InvCoordinate findEmptySlot(Item* item);
 
 	public:
 		// creates an inventory with the given number of rows and columns and a
@@ -120,7 +121,7 @@ class Inventory // TODO: SEPARATE CLASS FOR NON-SPRITE INVENTORIES
 		// retrieve *AND CONSUME* Action, Buff, and/or Attack that may have been
 		// created by last-used item. CAN BE NULL
 		SpriteAction* getAction();
-		SpriteAction* getBuff();
+		SpriteBuff* getBuff();
 		Attack* getAttack();
 
 		// sets in hand item to the proceeding one in inventory, wrapping around.
