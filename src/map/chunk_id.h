@@ -16,7 +16,7 @@ public:
 
   ChunkId(int x, int y);
 
-  bool operator==(const ChunkId &other) const
+  bool operator==(const ChunkId& other) const
   {
     return x == other.x && y == other.y;
   }
@@ -24,8 +24,8 @@ public:
 
 // TODO: DEFINE IN CPP FILE
 // define hashing function in std namespace
-namespace std {
-
+namespace std
+{
   template <>
   struct hash<ChunkId>
   {

@@ -1,21 +1,73 @@
 #include "inventory.h"
 
-Inventory::Inventory(Sprite* owner, int capacity)
+Inventory::Inventory(Sprite* owner, int rows, int cols, int hotbarSize,
+	InventoryListener* listener))
 {
 	this->owner = owner;
-	hotbarSize = 10;
-	// fill hotbar
-	for (int i = 0; i < hotbarSize; i++)
-	{
-		hotbar.push_back(new ItemStack());
-	}
-	inventorySize = capacity;
-	// fill inventory
-	for (int i = 0; i < inventorySize; i++) // TODO: MORE EFFICIENT
-	{
-		inventory.push_back(new ItemStack());
-	}
+	mainInvRows = rows;
+	mainInvCols = cols;
+	this->hotbarSize = hotbarSize;
+	inventoryListener = listener;
+
 	inHandIndex = 0;
+
+	// set up datastructures
+	hotbar.resize(hotbarSize);
+
+	mainInventory.resize(mainInvRows);
+	for (int i = 0; i < mainInvRows; i++)
+	{
+		mainInventory[i].resize(cols);
+	}
+
+	for (int i = 0; i < mainInvRows; i++)
+	{
+		for (int j = 0; j < mainInvCols; j++)
+		{
+			emptyMainSlots.push_back(InvCoordinate(i, j, false));
+		}
+	}
+
+	for (int j = 0; j < hotbarSize; j++)
+	{
+		emptyHotbarSlots.push_back(InvCoordinate(0, j, true));
+	}
+}
+
+void Inventory::setListener(InventoryListener* listener)
+{
+	inventoryListener = listener;
+}
+
+ItemStack* Inventory::addStack(ItemStack* stack, int row, int col, bool hotbar)
+{
+	ItemStack* to_replace = NULL;
+
+	if (hotbar)
+	{
+		if (col < 0 || col >= hotbarSize)
+		{
+			throw runtime_error("Hotbar index out of bounds");
+		}
+		to_replace = hotbar[col];
+		hotbar[col] = stack;
+	}
+	else
+	{
+		if (col < 0 || col >= mainInvCols || row < 0 || row >= mainInvRows))
+		{
+			throw runtime_error("Main Inventory index out of bounds");
+		}
+		to_replace = mainInvItems[row][col];
+		mainInvItems[row][col] = stack;
+	}
+
+	return to_replace;
+}
+
+bool Inventory::autoAddStack(ItemStack* stack)
+{
+
 }
 
 bool Inventory::addItem(Item* item)
@@ -190,11 +242,6 @@ Item* Inventory::removeInHand()
 		return in_hand;
 	}
 	return NULL;
-}
-
-void Inventory::setListener(InventoryListener* listener)
-{
-	inventoryListener = listener;
 }
 
 void Inventory::drawHotbarTo(SDL_Renderer* renderer, TextureAtlas* textureAtlas, FontAtlas* fontAtlas, int x, int y)

@@ -19,7 +19,7 @@ struct InvCoordinate
     int row, col; // TODO: COULD BE CHAR
     bool hotbar;
 
-    InvCoordinate(int x, int y);
+    InvCoordinate(int x, int y, bool hotbar);
 
     bool operator==(const InvCoordinate& other) const
     {
