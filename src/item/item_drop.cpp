@@ -26,6 +26,6 @@ void ItemDrop::drawToMap(SDL_Renderer* renderer, TextureAtlas* textureAtlas,
 {
 	if (items)
 	{
-		textureAtlas->draw(renderer, items->itemTexture, chunkStartX + x, chunkStartY + y);
+		textureAtlas->drawImg(renderer, items->itemTexture, chunkStartX + x, chunkStartY + y);
 	}
 }

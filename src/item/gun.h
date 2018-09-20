@@ -25,8 +25,6 @@ class Gun : public Item
 		int magSize;
 		// number of bullets in magazine
 		int bulletsLoaded;
-		// type of ammunition this gun accepts
-		ItemType ammunitionType;
 		// num milliseconds before gun can be fired again
 		int coolOff;
 		// num milliseconds since gun was last fired
@@ -58,6 +56,8 @@ class Gun : public Item
 		Sound* lastSound = NULL;
 
 	public:
+		// type of ammunition this gun accepts
+		ItemType ammunitionType;
 		// creates a gun from the given ItemId, which must correspond to a gun type
 		Gun(ItemType itemType);
 		// updates gun state, adding to msSinceShot (which allows the gun to cool off)

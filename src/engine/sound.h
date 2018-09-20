@@ -1,6 +1,7 @@
 #ifndef SOUND_H
 #define SOUND_H
 
+#include <cstddef>
 #include "sound_ids.h"
 
 class Sprite;

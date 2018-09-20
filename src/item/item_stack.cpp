@@ -30,7 +30,6 @@ ItemStack::ItemStack(vector<Item*> items) // NOTE: BETTER WAY TO COPY??
 			throw runtime_error("Cannot create stack from given vector");
 		}
 	}
-	printf("Id %d Cap%d... Done\n", itemId, capacity);
 }
 
 bool ItemStack::isEmpty()
@@ -95,7 +94,7 @@ Item* ItemStack::popNext()
 		// set id to NONE if stack is now empty
 		if (!items.size())
 		{
-			itemId = ItemType::NONE;
+			itemType = ItemType::NONE;
 		}
 
 		return item;

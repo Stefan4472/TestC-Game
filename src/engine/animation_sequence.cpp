@@ -15,5 +15,5 @@ bool AnimationSequence::hasDir(int dir)
 
 void AnimationSequence::printDebug()
 {
-	printf("AnimSequence With Spritesheets %d %d %d %d %d\n", anims[0], anims[1], anims[2], anims[3], anims[4]);
+	printf("AnimSequence With Spritesheets %lu %lu %lu %lu %d\n", anims[0], anims[1], anims[2], anims[3], anims[4]);
 }

@@ -2,11 +2,22 @@
 
 FiredBullet::FiredBullet(Sprite* attacker, Gun* gun) : Attack(SDL_Rect { attacker->x, attacker->y, 32, 32 }/*attacker->getRightHandPosition()*/, attacker)
 {
-	switch (gun->ammunitionId)
+	switch (gun->ammunitionType)
 	{
-		case ITEM_PISTOL_AMMO:
+		case ItemType::PISTOL_AMMO:
 			damage = 10;
 			break;
+
+		case ItemType::SHOTGUN_AMMO:
+			damage = 40;
+			break;
+
+		case ItemType::RIFLE_AMMO:
+			damage = 15;
+			break;
+
+		default:
+			throw runtime_error("Invalid ItemType for a FiredBullet");
 	}
 
 	// sprite is aiming
@@ -73,7 +84,8 @@ void FiredBullet::update(int ms)
 	}
 }
 
-void FiredBullet::drawToMap(SDL_Renderer* renderer, TextureAtlas* textureAtlas)
+void FiredBullet::drawToMap(SDL_Renderer* renderer, TextureAtlas* textureAtlas,
+	float offsetX, float offsetY)
 {
-	textureAtlas->draw(renderer, MOVING_BULLET, position.x, position.y);
+	textureAtlas->drawImg(renderer, MOVING_BULLET, position.x - offsetX, position.y - offsetY);
 }
