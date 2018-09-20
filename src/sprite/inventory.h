@@ -7,13 +7,14 @@
 #include "constants.h"
 #include "texture_atlas.h"
 #include "font_atlas.h"
-#include "gui_window.h"
-#include "gui_img_button.h"
+// #include "gui_window.h"
+// #include "gui_img_button.h"
 #include "item.h"
 #include "item_stack.h"
 #include "sprite.h"
 #include "punch.h"
 
+// TODO: UPDATE
 // An inventory manages the Items a Sprite has and can use. It also manages the usage and effects of
 // those items.
 // Items are stored as pointers in a vector, so memory deallocation should not be done to live items.
@@ -25,9 +26,9 @@
 // Example usage: Call inventory->useInHand(), then store inventory->getAction(), getBuff(), getAttack().
 // Store those which are non-null.
 
-// An InventoryListener is an interface that allows callbacks from an Inventory. The implementing object 
+// An InventoryListener is an interface that allows callbacks from an Inventory. The implementing object
 // must register itself via setInventoryListener().
-class InventoryListener 
+class InventoryListener
 {
 	public:
 		virtual void onInHandItemChanged(Item* newItem) = 0;
@@ -62,25 +63,25 @@ class Inventory // TODO: SEPARATE CLASS FOR NON-SPRITE INVENTORIES
 		ItemStack* getItemStack(int id);
 		// searches inventory for an ItemStack that can accept the given item, if any (may be NULL)
 		ItemStack* getAvailStack(Item* item);
-	
+
 	public:
 		// creates enough space for the given number of items. Item uses are attributed to given owner
 		Inventory(Sprite* owner, int capacity);
 		// attempts to add an item to inventory. Returns false if inventory is full
 		bool addItem(Item* item);
 		// attempts to add stack of items to inventory. Returns false if inventory is full
-		bool addItemStack(ItemStack* stack); 
+		bool addItemStack(ItemStack* stack);
 		// index of Item that's currently in hand (in hotbar)
 		int inHandIndex = -1;
-		// returns pointer to the Item that's currently in hand. Null if empty 
+		// returns pointer to the Item that's currently in hand. Null if empty
 		Item* getInHand();
 		// handles all logic for using whatever item is currently in hand. Should be followed up with           TODO: HOW TO HANDLE CONSUMMABLES?
 		// getAction(), getBuff(), and getAttack(), one or more of which may be NULL.
-		void useInHand(); 
-		// attempts to load whatever item is in hand. Will only do something if that item can be reloaded, and 
+		void useInHand();
+		// attempts to load whatever item is in hand. Will only do something if that item can be reloaded, and
 		// the correct ammunition is in inventory.
 		void loadInHand();
-		// retrieve *AND CONSUME* Action, Buff, and/or Attack that may have been created by last-used item. 
+		// retrieve *AND CONSUME* Action, Buff, and/or Attack that may have been created by last-used item.
 		SpriteAction* getAction();
 		SpriteAction* getBuff();
 		Attack* getAttack();
@@ -94,7 +95,11 @@ class Inventory // TODO: SEPARATE CLASS FOR NON-SPRITE INVENTORIES
 		void setListener(InventoryListener* listener);
 		// draws hotbar items to the screen at x, y
 		void drawHotbarTo(SDL_Renderer* renderer, TextureAtlas* textureAtlas, FontAtlas* fontAtlas, int x, int y);
+
+		// simple drawing for debugging
+		void drawDebugTo(SDL_Renderer* renderer, TextureAtlas* textureAtlas,
+			FontAtlas* fontAtlas);
 		// opens a Window with inventory displayed
-		Window* getWindow(SDL_Renderer* renderer, TextureAtlas* textureAtlas, FontAtlas* fontAtlas);
+		// Window* getWindow(SDL_Renderer* renderer, TextureAtlas* textureAtlas, FontAtlas* fontAtlas);
 };
 #endif

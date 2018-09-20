@@ -25,7 +25,7 @@ bool Inventory::addItem(Item* item)
 	return receiver->addItem(item);
 }
 
-bool Inventory::addItemStack(ItemStack* stack) 
+bool Inventory::addItemStack(ItemStack* stack)
 {
 	printf("Adding ItemStack of %d %s to Inventory...\n", stack->size(), stack->peekNext()->name.c_str());
 	ItemStack* receiver = NULL;
@@ -81,7 +81,7 @@ ItemStack* Inventory::getItemStack(int id)
 	{
 		if (hotbar[i]->itemId == id)
 		{
-			return hotbar[i];	
+			return hotbar[i];
 		}
 	}
 	// search inventory for matches
@@ -89,7 +89,7 @@ ItemStack* Inventory::getItemStack(int id)
 	{
 		if (inventory[i]->itemId == id)
 		{
-			return inventory[i];	
+			return inventory[i];
 		}
 	}
 	return NULL;
@@ -128,7 +128,7 @@ void Inventory::loadInHand()
 			// feed ammunition to item, deleting it as it is used
 			while (ammo_stack && ammo_stack->size() && in_hand->load(ammo_stack->peekNext())) // TODO: WHAT IF GIVEN STACK DOESN'T FILL AMMO?
 			{
-				delete ammo_stack->popNext();	
+				delete ammo_stack->popNext();
 			}
 		}
 	}
@@ -161,17 +161,17 @@ void Inventory::cycleInHandFwd()
 	inHandIndex = (inHandIndex + 1) % hotbarSize;
 	if (inventoryListener)
 	{
-		inventoryListener->onInHandItemChanged(hotbar[inHandIndex]->peekNext());	
+		inventoryListener->onInHandItemChanged(hotbar[inHandIndex]->peekNext());
 	}
 }
 
 void Inventory::cycleInHandBck()
 {
 	// cycle to the left, wrapping around
-	inHandIndex = inHandIndex ? inHandIndex - 1 : hotbarSize - 1; 	
+	inHandIndex = inHandIndex ? inHandIndex - 1 : hotbarSize - 1;
 	if (inventoryListener)
 	{
-		inventoryListener->onInHandItemChanged(hotbar[inHandIndex]->peekNext());	
+		inventoryListener->onInHandItemChanged(hotbar[inHandIndex]->peekNext());
 	}
 }
 
@@ -181,11 +181,11 @@ Item* Inventory::removeInHand()
 	{
 		Item* in_hand = hotbar[inHandIndex]->popNext();
 		printf("Removed %s from Inventory\n", in_hand->name);
-		
-		// handle special case: dropped last item. Notify listener 
+
+		// handle special case: dropped last item. Notify listener
 		if (inventoryListener && !hotbar[inHandIndex]->size())
 		{
-			inventoryListener->onInHandItemChanged(NULL);	
+			inventoryListener->onInHandItemChanged(NULL);
 		}
 		return in_hand;
 	}
@@ -194,7 +194,7 @@ Item* Inventory::removeInHand()
 
 void Inventory::setListener(InventoryListener* listener)
 {
-	inventoryListener = listener;	
+	inventoryListener = listener;
 }
 
 void Inventory::drawHotbarTo(SDL_Renderer* renderer, TextureAtlas* textureAtlas, FontAtlas* fontAtlas, int x, int y)
@@ -203,29 +203,35 @@ void Inventory::drawHotbarTo(SDL_Renderer* renderer, TextureAtlas* textureAtlas,
 	{
 		if (hotbar[i]->size())
 		{
-			textureAtlas->draw(renderer, hotbar[i]->peekNext()->textureId, x + i * 32, y);	
+			textureAtlas->draw(renderer, hotbar[i]->peekNext()->textureId, x + i * 32, y);
 		}
 	}
 }
 
-Window* Inventory::getWindow(SDL_Renderer* renderer, TextureAtlas* textureAtlas, FontAtlas* fontAtlas)
+// Window* Inventory::getWindow(SDL_Renderer* renderer, TextureAtlas* textureAtlas, FontAtlas* fontAtlas)
+// {
+// 	// calculate number of rows and columns of items (each row has 10 items)
+// 	int rows = capacity < 10 ? 1 : capacity / 10;
+// 	int cols = capacity < 10 ? capacity : 10;
+//
+// 	Window* window = new Window(cols * 32, rows * 32, 640, 480);// todo: know screen width and height, or find a better way
+//
+// 	for (int i = 0; i < items.size(); i++)
+// 	{
+// 		int row = i / 10;
+// 		int col = i % 10;
+//
+// 		ImageButton* item_btn = new ImageButton(i, SDL_Rect { col * 32, row * 32, 32, 32 }, textureAtlas, fontAtlas);
+// 		item_btn->setImage(items[i]->textureId);
+// 		item_btn->setHint(renderer, items[i]->name.c_str());
+//
+// 		window->addWidget(item_btn);
+// 	}
+// 	return window;
+// }
+
+void Inventory::drawDebugTo(SDL_Renderer* renderer, TextureAtlas* textureAtlas,
+	FontAtlas* fontAtlas)
 {
-	// calculate number of rows and columns of items (each row has 10 items)
-	int rows = capacity < 10 ? 1 : capacity / 10;
-	int cols = capacity < 10 ? capacity : 10;
-	
-	Window* window = new Window(cols * 32, rows * 32, 640, 480);// todo: know screen width and height, or find a better way
-	
-	for (int i = 0; i < items.size(); i++)
-	{
-		int row = i / 10;
-		int col = i % 10;
-		
-		ImageButton* item_btn = new ImageButton(i, SDL_Rect { col * 32, row * 32, 32, 32 }, textureAtlas, fontAtlas);
-		item_btn->setImage(items[i]->textureId);
-		item_btn->setHint(renderer, items[i]->name.c_str());
-		
-		window->addWidget(item_btn);
-	}
-	return window;
+
 }
