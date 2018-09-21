@@ -1,8 +1,8 @@
 #include "inventory_coordinate.h"
 
-InvCoordinate::InvCoordinate(int x, int y, bool hotbar)
+InvCoordinate::InvCoordinate(int row, int col, bool hotbar)
 {
-  this->x = x;
-  this->y = y;
+  this->row = row;
+  this->col = col;
   this->hotbar = hotbar;
 }

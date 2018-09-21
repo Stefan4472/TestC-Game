@@ -72,6 +72,14 @@ const TextureId ANIM_GREEN_POTION_BUFF_FRAMES[] = {
 	TextureId::TILE_WHITE_BRICK
 };
 
+// const TextureId ANIM_PLAYER_WALK_RIGHT_FRAMES[] =
+// {
+// 	TextureId::PLAYER_WALK_RIGHT,
+// 	TextureId::PLAYER_WALK_RIGHT, // TODO: JUST USE SPRITSHEETS?
+// 	TextureId::PLAYER_WALK_RIGHT,
+// 	TextureId::PLAYER_WALK_RIGHT
+// }
+
 const TextureId *animationFrames[] =
 {
 	ANIM_NONE_FRAMES,
@@ -146,5 +154,9 @@ void TextureAtlas::drawAnim(SDL_Renderer* renderer, SimpleAnimation* anim,
 		drawImg(renderer, animationFrames[int(anim->animId)][frame_num],
 			useMapOffset ? anim->x - mapOffsetX : anim->x,
 			useMapOffset ? anim->y - mapOffsetY : anim->y);
+	}
+	else
+	{
+		anim->finished = true; // TODO: SHOULD PROBABLY BE DONE IN THE ANIM CODE
 	}
 }

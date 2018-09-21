@@ -12,12 +12,12 @@ Inventory::Inventory(Sprite* owner, int rows, int cols, int hotbarSize,
 	inHandIndex = 0;
 
 	// set up datastructures
-	hotbar.resize(hotbarSize);
+	hotbarItems.resize(hotbarSize);
 
-	mainInventory.resize(mainInvRows);
+	mainInvItems.resize(mainInvRows);
 	for (int i = 0; i < mainInvRows; i++)
 	{
-		mainInventory[i].resize(cols);
+		mainInvItems[i].resize(cols);
 	}
 
 	for (int i = 0; i < mainInvRows; i++)

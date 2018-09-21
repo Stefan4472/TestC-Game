@@ -5,6 +5,7 @@ enum class AnimationId
 {
   NONE,
   GREEN_POTION_BUFF,
+  PLAYER_WALK_RIGHT,
   NUM_ANIMATIONS
 };
 

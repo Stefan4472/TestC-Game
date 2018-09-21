@@ -104,3 +104,15 @@ Item* ItemStack::popNext()
 		return NULL;
 	}
 }
+
+void ItemStack::copyTo(ItemStack* other)
+{
+	other->itemType = itemType;
+	other->itemTexture = itemTexture;
+	other->maxStackSize = maxStackSize;
+	other->items.resize(items.size());
+	for (int i = 0; i < items.size(); i++)
+	{
+		other->items[i] = items[i];
+	}
+}

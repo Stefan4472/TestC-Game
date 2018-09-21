@@ -47,6 +47,9 @@ class ItemStack
 		Item* peekNext();
 		// removes top item in the stack and returns it (can be null)
 		Item* popNext();
+		// copies the Items contained in this stack to the other stack, OVERWRITING
+		// the Items in the other stack. Does not delete any items.
+		void copyTo(ItemStack* other);
 };
 
 #endif

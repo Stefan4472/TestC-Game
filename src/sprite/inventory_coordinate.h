@@ -23,7 +23,7 @@ struct InvCoordinate
 
     bool operator==(const InvCoordinate& other) const
     {
-      return row == other.row && col = other.col && hotbar == other.hotbar;
+      return row == other.row && col == other.col && hotbar == other.hotbar;
     }
 };
 
@@ -37,8 +37,9 @@ namespace std
     size_t operator()(const InvCoordinate& coord) const
     {
       // TODO: TEST, IMPROVE. SHOULD HAVE NO COLLISIONS
-      return coord.x + 39 * coord.y + 39 * (hotbar ? 1 : 0);
+      return coord.row + 39 * coord.col + 39 * (coord.hotbar ? 1 : 0);
     }
-  }
+  };
 }
+
 #endif
