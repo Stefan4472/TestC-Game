@@ -33,6 +33,19 @@ enum class ItemType
 	TOMMYGUN
 };
 
+// hashing function for ItemType
+namespace std {
+
+  template <>
+  struct hash<ItemType>
+  {
+    size_t operator()(const ItemType& i) const
+    {
+			return int(i); // TODO: IMPROVE??
+    }
+  };
+
+}
 // number of ItemTypes, includeing ItemType::NONE
 const int NUM_ITEM_TYPES = 13;
 
@@ -72,7 +85,7 @@ class Item
 		// creates item with given Type
 		Item(ItemType itemType);
 
-		// TODO: MAKE THESE NECESSARY 
+		// TODO: MAKE THESE NECESSARY
 		// attempts to load this item with the given Item, which may be consumed
 		// (setting the item's delete = true). Returns whether the given Item was
 		// successfully loaded into the current item.

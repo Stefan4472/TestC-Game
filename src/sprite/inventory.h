@@ -70,7 +70,7 @@ class Inventory // TODO: SEPARATE CLASS FOR NON-SPRITE INVENTORIES
 
 		// stored Action, Buff, and Attack (if any) from last-used Item
 		SpriteAction* resultingAction = NULL;
-		SpriteAction* resultingBuff = NULL;
+		SpriteBuff* resultingBuff = NULL;
 		Attack* resultingAttack = NULL;
 		// TODO: STORE CREATED SOUNDS
 
