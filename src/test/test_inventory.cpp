@@ -1,12 +1,14 @@
 // tests inventory and item/item stack/item drop mechanisms
-// g++ test/test_inventory.cpp sprite/inventory.cpp item/item.cpp item/item_stack.cpp item/item_drop.cpp sprite/inventory_coordinate.cpp attack/attack.cpp engine/texture_atlas.cpp action/sprite_action.cpp sprite/sprite.cpp buff/sprite_buff.cpp engine/animation_engine.cpp engine/animation_player.cpp engine/animation_sequence.cpp engine/spritesheet.cpp item/consumable.cpp item/gun.cpp item/bullet.cpp item/sword.cpp util/item_util.cpp engine/sound.cpp attack/fired_bullet.cpp action/knockback_action.cpp attack/sword_swing.cpp attack/punch.cpp -o test_inventory -Iitem -Iattack -Iaction -Isprite -Ibuff -Iengine -Iutil -I. -lSDL2 -lSDL2_image -std=c++11
+// g++ test/test_inventory.cpp sprite/inventory.cpp item/item.cpp item/item_stack.cpp item/item_drop.cpp sprite/inventory_coordinate.cpp attack/attack.cpp engine/texture_atlas.cpp action/sprite_action.cpp sprite/sprite.cpp buff/sprite_buff.cpp engine/animation_engine.cpp engine/animation_player.cpp engine/animation_sequence.cpp engine/spritesheet.cpp item/consumable.cpp item/gun.cpp item/bullet.cpp item/sword.cpp util/item_util.cpp engine/sound.cpp attack/fired_bullet.cpp action/knockback_action.cpp attack/sword_swing.cpp attack/punch.cpp engine/font_atlas.cpp -o test_inventory -Iitem -Iattack -Iaction -Isprite -Ibuff -Iengine -Iutil -I. -lSDL2 -lSDL2_image -lSDL2_ttf -std=c++11
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+#include <SDL2/SDL_ttf.h>
 #include <stdio.h>
 #include <string>
 #include <unistd.h>
 #include "texture_atlas.h"
+#include "inventory.h"
 #include "item.h"
 #include "item_stack.h"
 #include "item_drop.h"
@@ -23,6 +25,7 @@ SDL_Window* gWindow = NULL;
 SDL_Renderer* gRenderer = NULL;
 SDL_Texture* textureAtlasImg = NULL;
 TextureAtlas* textureAtlas = NULL;
+FontAtlas* fontAtlas = NULL;
 
 const int SCREEN_WIDTH = 640;
 const int SCREEN_HEIGHT = 480;
@@ -36,6 +39,7 @@ int main(int argc, char* argv[])
   init();
   loadMedia();
   textureAtlas = new TextureAtlas(textureAtlasImg);
+  fontAtlas = new FontAtlas();
 
   Uint32 last_time = SDL_GetTicks();
 	Uint32 curr_time, ticks_since_last_frame;
@@ -43,17 +47,24 @@ int main(int argc, char* argv[])
   bool quit = false;
 	SDL_Event e;
 
-  ItemStack* bread_stack = ItemUtil::createStack(ItemType::BREAD_LOAF, 12);
-  while (!bread_stack->isEmpty())
-  {
-    printf("There is a stack of %s with size %d\n",
-      Item::getName(bread_stack->itemType).c_str(), bread_stack->size());
-    Item* top = bread_stack->popNext();
-    printf("Popped off a %s item\n", Item::getName(top->itemType).c_str());
-  }
+  // ItemStack* bread_stack = ItemUtil::createStack(ItemType::BREAD_LOAF, 12);
+  // while (!bread_stack->isEmpty())
+  // {
+  //   printf("There is a stack of %s with size %d\n",
+  //     Item::getName(bread_stack->itemType).c_str(), bread_stack->size());
+  //   Item* top = bread_stack->popNext();
+  //   printf("Popped off a %s item\n", Item::getName(top->itemType).c_str());
+  // }
+
+  Inventory inventory(NULL, 3, 8, 10);
+  inventory.addStack(ItemUtil::createStack(ItemType::BREAD_LOAF, 12), 0, 0, false);
+  inventory.addStack(ItemUtil::createStack(ItemType::BREAD_LOAF, 12), 1, 0, false);
+  inventory.addStack(ItemUtil::createStack(ItemType::BREAD_LOAF, 12), 2, 0, false);
+  
 	// main loop
 	while (!quit)
 	{
+    sleep(1);
     frames++;
 
     // calculate number of milliseconds since last frame was rendered
@@ -75,6 +86,13 @@ int main(int argc, char* argv[])
         }
 			}
     }
+
+    // black out the screen
+    SDL_Rect screen_dim = SDL_Rect { 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT };
+    SDL_SetRenderDrawColor(gRenderer, 0x00, 0x00, 0x00, 0xFF);
+    SDL_RenderFillRect(gRenderer, &screen_dim);
+
+    inventory.drawDebugTo(gRenderer, textureAtlas, fontAtlas);
 
     // render screen
 		SDL_RenderPresent(gRenderer);
@@ -102,7 +120,7 @@ bool init()
 	}
 
 	// create window
-  gWindow = SDL_CreateWindow("MapChunk Test", SDL_WINDOWPOS_UNDEFINED,
+  gWindow = SDL_CreateWindow("Inventory Test", SDL_WINDOWPOS_UNDEFINED,
     SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
 
   if (!gWindow)
@@ -117,6 +135,13 @@ bool init()
   if(!gRenderer)
 	{
 		printf("Renderer could not be created! SDL Error: %s\n", SDL_GetError());
+		return false;
+	}
+
+  // initialize fonts
+	if( TTF_Init() == -1 )
+	{
+		printf( "SDL_ttf could not initialize! SDL_ttf Error: %s\n", TTF_GetError() );
 		return false;
 	}
 
@@ -189,6 +214,9 @@ void close()
 	// quit SDL subsystems
 	IMG_Quit();
 	printf("Quit IMG\n");
+
+  TTF_Quit();
+  printf("Quit TTF\n");
 
   SDL_Quit();
 	printf("Quit SDL\n");

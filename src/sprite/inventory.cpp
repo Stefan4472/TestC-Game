@@ -33,6 +33,8 @@ Inventory::Inventory(Sprite* owner, int rows, int cols, int hotbarSize,
 			emptyMainSlots.push_back(InvCoordinate(i, j, false));
 		}
 	}
+
+	printf("Created inventory with %d rows, %d cols, and a hotbar of %d\n", rows, cols, hotbarSize);
 }
 
 void Inventory::rangeCheck(int row, int col, bool hotbar)
@@ -220,7 +222,7 @@ void Inventory::loadInHand()
 		ItemType ammo_type = Item::getAmmunitionType(in_hand->itemType);
 		if (ammo_type != ItemType::NONE)
 		{
-			// TODO: 
+			// TODO:
 			// ItemStack* ammo_stack = getStack(ammo_type);
 			// printf("Stack of %d pointer is %d\n", ammo_type, ammo_stack);
 			// // feed ammunition to item, deleting it as it is used
@@ -333,7 +335,7 @@ void Inventory::drawDebugTo(SDL_Renderer* renderer, TextureAtlas* textureAtlas,
 	SDL_Rect outer_bounds = SDL_Rect { 0, 0, mainInvCols * 64, (mainInvRows + 1) * 64 };
 
 	// draw filled gray background rectangle
-	SDL_SetRenderDrawColor(renderer, 0xDD, 0xDD, 0xDD, 0xFF);
+	SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
 	SDL_RenderFillRect(renderer, &outer_bounds);
 
 	int x, y;
@@ -344,7 +346,10 @@ void Inventory::drawDebugTo(SDL_Renderer* renderer, TextureAtlas* textureAtlas,
 		x = 0;
 		for (int j = 0; j < mainInvCols; j++)
 		{
-			textureAtlas->drawImg(renderer, mainInvItems[i][j]->itemTexture, x, y, false);
+			if (!mainInvItems[i][j]->isEmpty())
+			{
+				textureAtlas->drawImg(renderer, mainInvItems[i][j]->itemTexture, x, y, false);
+			}
 			x += 64;
 		}
 		y += 64;
@@ -355,7 +360,10 @@ void Inventory::drawDebugTo(SDL_Renderer* renderer, TextureAtlas* textureAtlas,
 	// draw hotbar items
 	for (int j = 0; j < hotbarSize; j++)
 	{
-		textureAtlas->drawImg(renderer, hotbarItems[j]->itemTexture, x, y, false);
+		if (!hotbarItems[j]->isEmpty())
+		{
+			textureAtlas->drawImg(renderer, hotbarItems[j]->itemTexture, x, y, false);
+		}
 		x += 64;
 	}
 }
