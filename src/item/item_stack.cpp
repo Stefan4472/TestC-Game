@@ -105,6 +105,14 @@ Item* ItemStack::popNext()
 	}
 }
 
+void ItemStack::clearItems()
+{
+	itemType = ItemType::NONE;
+	maxStackSize = 0;
+	itemTexture = Item::getTextureId(itemType);
+	// TODO: NEED TO CLEAR THE ITEMS VECTOR?
+}
+
 void ItemStack::copyTo(ItemStack* other)
 {
 	other->itemType = itemType;

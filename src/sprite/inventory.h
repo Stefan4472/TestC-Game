@@ -74,9 +74,16 @@ class Inventory // TODO: SEPARATE CLASS FOR NON-SPRITE INVENTORIES
 		Attack* resultingAttack = NULL;
 		// TODO: STORE CREATED SOUNDS
 
+		// checks if the given slot exists in inventory. Throws runtime_error if
+		// out of range.
+		void rangeCheck(int row, int col, bool hotbar);
+
 		// pointer to listener, if any
 		InventoryListener* inventoryListener = NULL;
 
+		// returns the stack at the given InvCoordinate. Throws runtime_error if
+		// InvCoordinate is out of bounds
+		ItemStack* getStack(InvCoordinate stackCoord);
 		// searches for stack of items with given id. May return Null
 		// InvCoordinate findItemSlot(ItemType, InvCoordinate& slot);
 		// searches inventory for an ItemStack that can accept the given item, if any (may be NULL)
@@ -116,7 +123,7 @@ class Inventory // TODO: SEPARATE CLASS FOR NON-SPRITE INVENTORIES
 		// ammunition is in inventory.
 		void loadInHand();
 		// removes and returns the ItemStack currently selected in the hotbar
-		ItemStack* dropInHand();
+		Item* dropInHand();
 
 		// retrieve *AND CONSUME* Action, Buff, and/or Attack that may have been
 		// created by last-used item. CAN BE NULL

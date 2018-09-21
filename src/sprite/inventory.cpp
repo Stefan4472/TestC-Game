@@ -1,7 +1,7 @@
 #include "inventory.h"
 
 Inventory::Inventory(Sprite* owner, int rows, int cols, int hotbarSize,
-	InventoryListener* listener))
+	InventoryListener* listener)
 {
 	this->owner = owner;
 	mainInvRows = rows;
@@ -13,30 +13,64 @@ Inventory::Inventory(Sprite* owner, int rows, int cols, int hotbarSize,
 
 	// set up datastructures
 	hotbarItems.resize(hotbarSize);
+	for (int j = 0; j < hotbarSize; j++)
+	{
+		hotbarItems[i] = new ItemStack();
+		emptyHotbarSlots.push_back(InvCoordinate(0, j, true));
+	}
 
 	mainInvItems.resize(mainInvRows);
 	for (int i = 0; i < mainInvRows; i++)
 	{
-		mainInvItems[i].resize(cols);
+		mainInvItems[i].resize(mainInvCols);
 	}
 
 	for (int i = 0; i < mainInvRows; i++)
 	{
 		for (int j = 0; j < mainInvCols; j++)
 		{
+			mainInvItems[i][j] = new ItemStack();
 			emptyMainSlots.push_back(InvCoordinate(i, j, false));
 		}
 	}
+}
 
-	for (int j = 0; j < hotbarSize; j++)
+void Inventory::rangeCheck(int row, int col, bool hotbar)
+{
+	if (hotbar && (row != 0 || col < 0 || col >= hotbarSize))
 	{
-		emptyHotbarSlots.push_back(InvCoordinate(0, j, true));
+		throw runtime_error("Hotbar index out of bounds");
+	}
+	else if (row >= mainInvRows || col >= mainInvCols || row < 0 || col < 0)
+	{
+		throw runtime_error("Main Inventory index out of bounds"0;)
 	}
 }
 
 void Inventory::setListener(InventoryListener* listener)
 {
 	inventoryListener = listener;
+}
+
+ItemStack* Inventory::getStack(InvCoordinate stackCoord)
+{
+	if (stackCoord.hotbar)
+	{
+		if (stackCoord.col < 0 || stackCoord.col >= hotbarSize)
+		{
+			throw runtime_error("Hotbar index out of bounds");
+		}
+		return hotbarItems[stackCoord.col];
+	}
+	else
+	{
+		if (stackCoord.col < 0 || stackCoord.col >= mainInvCols ||
+			stackCoord.row < 0 || stackCoord.row >= mainInvRows))
+		{
+			throw runtime_error("Main Inventory index out of bounds");
+		}
+		return mainInvItems[stackCoord.row][stackCoord.col];
+	}
 }
 
 ItemStack* Inventory::addStack(ItemStack* stack, int row, int col, bool hotbar)
@@ -49,7 +83,7 @@ ItemStack* Inventory::addStack(ItemStack* stack, int row, int col, bool hotbar)
 		{
 			throw runtime_error("Hotbar index out of bounds");
 		}
-		to_replace = hotbar[col]; // TODO: COPY ITEMS IN?
+		to_replace = hotbar[col];
 		hotbar[col] = stack;
 	}
 	else
@@ -65,39 +99,52 @@ ItemStack* Inventory::addStack(ItemStack* stack, int row, int col, bool hotbar)
 	return to_replace;
 }
 
-bool Inventory::autoAddStack(ItemStack* stack) // TODO: DELETE STACK IF EMPTIED?
+bool Inventory::autoAddStack(ItemStack* stack)
 {
-	// first, attempt to fill in any matching stacks in hotbar, and inventory
+	// first, attempt to fill in any matching stacks in hotbar
 	unordered_map<ItemType, list<InvCoordinate>>::iterator map_iter =
 		hotbarMappings.find(stack->itemType);
 
 	// found at least one hotbar slot of same type
 	if (iterator != hotbarMappings.end())
 	{
-		list<InvCoordinate>::const_iterator hotbar_iterator = map_iter->second.begin();
+		list<InvCoordinate> slot_matches = map_iter->second;
+		list<InvCoordinate>::const_iterator hotbar_iterator = slot_matches.begin();
 		// TODO: REMEMBER, THIS RETURNS INVCOORDINATES
-		while (!stack->isEmpty() && hotbar_iterator != map_iter->second.end())
+
+		// iterate over InvCoordinates that have the given ItemType
+		while (!stack->isEmpty() && hotbar_iterator != slot_matches.end())
 		{
-			while (!stack->isEmpty() && hotbar_iterator->canAdd(stack->peekNext()))
+			// retrieve the stack at the specified InvCoordinate
+			ItemStack* found_stack = getStack(*hotbar_iterator);
+
+			// loop while the stack at the InvCoordinate can accept items
+			while (!stack->isEmpty() && found_stack->canAdd(stack->peekNext()))
 			{
-				hotbar_iterator->addItem(stack->popNext());
+				found_stack->addItem(stack->popNext());
 			}
-			map_iter++;
+			hotbar_iterator++;
 		}
 	}
+
+	// TODO; AUTO-ADD TO MAIN INVENTORY
 
 	// attempt to fill in an empty hotbar slot
 	if (!stack->isEmpty() && !emptyHotbarSlots.empty())
 	{
 		InvCoordinate empty_slot = emptyHotbarSlots.front();
-		// TODO: COPY OVER ITEMS FROM STACK INTO EMPTY SLOT
+		// copy contents to requested stack and clear
+		stack->copyTo(getStack(empty_slot));
+		stack->clearItems();
+
+		emptyHotbarSlots.popFront();
 	}
+
 	// TODO: DO THE SAME FOR MAIN INVENTORY
 	return stack->isEmpty();
 }
 
-
-ItemStack* Inventory::rmvStack(int row, int col, bool hotbar)
+ItemStack* Inventory::rmvStack(int row, int col, bool hotbar) // TODO: NEED TO UPDATE TRACKING STUFF
 {
 	ItemStack* copied = NULL;
 
@@ -125,10 +172,16 @@ ItemStack* Inventory::rmvStack(int row, int col, bool hotbar)
 void Inventory::swapStacks(int row, int col, bool hotbar, int swapRow,
 	int swapCol, bool swapHotbar)
 {
+	// assert indexes are in range
+	rangeCheck(row, col, hotbar);
+	rangeCheck(swapRow, swapCol, swapHotbar);
+
+	// retrieve the stacks
+	ItemStack* stack_1 = getStack(InvCoordinate(row, col, hotbar));
+	ItemStack* stack_2 = getStack(InvCoordinate(swapRow, swapCol, swapHotbar));
+
+	// perform the swap
 	ItemStack* temp = NULL;
-	// TODO: RANGE CHECK
-	// TODO: GETTER METHOD
-	ItemStack* stack_1, stack_2;
 	stack_1->copyTo(temp);
 	stack_2->copyTo(stack_1);
 	temp->copyTo(stack_2);
@@ -194,25 +247,25 @@ void Inventory::loadInHand()
 	}
 }
 
-ItemStack* Inventory::dropInHand()  /// TODO: RETURN SHOULD BE ITEM*
+Item* Inventory::dropInHand()
 {
-	// ItemStack* in_hand_copy = NULL;
-	// hotbarItems[inHandIndex]->copyTo(in_hand_copy);
-	// hotbarItems[inHandIndex]->clearItems(); // TODO: CLEAR METHOD AND CALL LISTENER
-	// return in_hand_copy;
-	if (hotbar[inHandIndex]->size())
+	// only return something if the currently-selected hotbar stack has items
+	if (hotbar[inHandIndex]->isEmpty())
+	{
+		return NULL;
+	}
+	else
 	{
 		Item* in_hand = hotbar[inHandIndex]->popNext();
-		printf("Removed %s from Inventory\n", in_hand->name);
 
 		// handle special case: dropped last item. Notify listener
-		if (inventoryListener && !hotbar[inHandIndex]->size())
+		if (inventoryListener && hotbar[inHandIndex]->isEmpty())
 		{
 			inventoryListener->onInHandItemChanged(NULL);
 		}
+
 		return in_hand;
 	}
-	return NULL;
 }
 
 SpriteAction* Inventory::getAction()
@@ -262,7 +315,7 @@ void Inventory::drawHotbarTo(SDL_Renderer* renderer, TextureAtlas* textureAtlas,
 	{
 		if (hotbar[i]->size())
 		{
-			textureAtlas->draw(renderer, hotbar[i]->peekNext()->textureId, x + i * 32, y);
+			textureAtlas->drawImg(renderer, hotbar[i]->itemTexture, x + i * 32, y);
 		}
 	}
 }
@@ -292,5 +345,32 @@ void Inventory::drawHotbarTo(SDL_Renderer* renderer, TextureAtlas* textureAtlas,
 void Inventory::drawDebugTo(SDL_Renderer* renderer, TextureAtlas* textureAtlas,
 	FontAtlas* fontAtlas)
 {
+	SDL_Rect outer_bounds = SDL_Rect { 0, 0, mainInvCols * 64, (mainInvRows + 1) * 64 };
 
+	// draw filled gray background rectangle
+	SDL_SetRenderDrawColor(renderer, 0xDD, 0xDD, 0xDD, 0xFF);
+	SDL_RenderFillRect(renderer, &outer_bounds);
+
+	int x, y;
+
+	// draw main inventory items
+	for (int i = 0; i < mainInvRows; i++)
+	{
+		x = 0;
+		for (int j = 0; j < mainInvCols; j++)
+		{
+			textureAtlas->drawImg(renderer, mainInvItems[i][j]->itemTexture, x, y, false);
+			x += 64;
+		}
+		y += 64;
+	}
+
+	x = 0;
+
+	// draw hotbar items
+	for (int j = 0; j < hotbarSize; j++)
+	{
+		textureAtlas->drawImg(renderer, hotbarItems[j]->itemTexture, x, y, false);
+		x += 64;
+	}
 }
