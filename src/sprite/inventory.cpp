@@ -421,3 +421,93 @@ void Inventory::drawDebugTo(SDL_Renderer* renderer, TextureAtlas* textureAtlas,
 		x += 64;
 	}
 }
+
+int Inventory::saveToByteStream(char bytes[], int maxSize)
+{
+	int reqd_bytes = 300; // TODO: CALCULATE FULL SIZE
+
+	bytes[0] = (char) mainInvRows;
+	bytes[1] = (char) mainInvCols;
+	// fill in bytes[2] later
+
+	int start_index = 3;
+	int stacks_written = 0;
+	int save_index = 3;
+
+	ItemStack* to_save = NULL;
+	for (char i = 0; i < mainInvRows; i++)
+	{
+		for (char j = 0; j < mainInvCols; j++)
+		{
+			to_save = mainInvItems[i][j];
+
+			if (!to_save->isEmpty())
+			{
+				bytes[save_index + 0] = char(to_save->itemType);
+				bytes[save_index + 1] = char(to_save->size());
+				bytes[save_index + 2] = i;
+				bytes[save_index + 3] = j;
+				stacks_written++;
+
+				// calculate next save index
+				save_index = start_index + 4 * stacks_written;
+			}
+		}
+	}
+
+	// now, set bytes[2]
+	bytes[2] = stacks_written;
+
+	// write hotbar, in-order
+	bytes[save_index] = hotbarSize;
+	save_index++;
+
+	for (int j = 0; j < hotbarSize; j++)
+	{
+		bytes[save_index] = char(hotbarItems[j]->itemType);
+		bytes[save_index + 1] = (char) hotbarItems[j]->size();
+		save_index += 2;
+	}
+	return save_index + 1;
+}
+
+static Inventory* restoreFromByteStream(char bytes[], int numBytes)
+{
+	// retrieve data on inventory size, and number of stacks saved
+	int main_rows = bytes[0];
+	int main_cols = bytes[1];
+	int num_stacks = bytes[2];
+
+	// calculate position of hotbarSize and retrieve
+	int hotbar_size = bytes[3 + 4 * num_stacks];
+
+	// TODO: HOW TO RETRIEVE SPRITE OWNER?
+	Inventory* inventory = new Inventory(NULL, main_rows, main_cols, hotbar_size);
+
+	// retrieve stored stacks and add
+	int start_index;
+	for (int i = 0; i < num_stacks; i++)
+	{
+		start_index = 3 + 4 * i;
+		ItemType item_type = ItemType(bytes[start_index]);
+		int stack_size = bytes[start_index + 1];
+		int stack_row = bytes[start_index + 2];
+		int stack_col = bytes[start_index + 3];
+
+		inventory->addStack(ItemUtil::createStack(item_type, stack_size),
+			stack_row, stack_col, false);
+	}
+
+	// restore hotbar
+	start_index = 3 + 4 * num_stacks + 1;
+	for (int j = 0; j < hotbar_size; j++)
+	{
+		ItemType item_type = ItemType(bytes[start_index]);
+		int stack_size = bytes[start_index + 1];
+		inventory->addStack(ItemUtil::createStack(item_type, stack_size),
+			0, j, true);
+		start_index += 2;
+	}
+
+	return inventory;
+}

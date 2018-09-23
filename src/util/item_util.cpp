@@ -11,6 +11,9 @@ ItemStack* ItemUtil::createStack(ItemType itemType, int quantity)
 
 	switch (itemType)
 	{
+    case ItemType::NONE:
+      break;
+      
 		// consumables
 		case ItemType::BREAD_LOAF:
 		case ItemType::CHICKEN_LEG:

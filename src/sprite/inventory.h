@@ -9,6 +9,7 @@
 #include "texture_atlas.h"
 #include "font_atlas.h"
 #include "inventory_coordinate.h"
+#include "item_util.h"
 // #include "gui_window.h"
 // #include "gui_img_button.h"
 #include "item.h"
@@ -39,7 +40,7 @@ class InventoryListener
 		virtual void onInHandItemChanged(Item* newItem) = 0;
 };
 
-class Inventory // TODO: SEPARATE CLASS FOR NON-SPRITE INVENTORIES
+class Inventory // TODO: SEPARATE CLASS FOR NON-SPRITE INVENTORIES, DESTRUCTOR
 {
 	private:
 		// sprite to which this Inventory belongs
@@ -135,5 +136,8 @@ class Inventory // TODO: SEPARATE CLASS FOR NON-SPRITE INVENTORIES
 			FontAtlas* fontAtlas);
 		// opens a Window with inventory displayed
 		// Window* getWindow(SDL_Renderer* renderer, TextureAtlas* textureAtlas, FontAtlas* fontAtlas);
+
+		int saveToByteStream(char bytes[], int maxSize);
+		static Inventory* restoreFromByteStream(char bytes[], int numBytes);
 };
 #endif
