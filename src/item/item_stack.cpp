@@ -62,6 +62,7 @@ bool ItemStack::addItem(Item* toAdd)
 	else if (itemType == ItemType::NONE || items.empty())
 	{
 		itemType = toAdd->itemType;
+		itemTexture = Item::getTextureId(itemType);
 		maxStackSize = Item::getStackSize(itemType);
 		items.push_back(toAdd);
 		return true;

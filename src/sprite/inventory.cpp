@@ -16,7 +16,6 @@ Inventory::Inventory(Sprite* owner, int rows, int cols, int hotbarSize,
 	for (int j = 0; j < hotbarSize; j++)
 	{
 		hotbarItems[j] = new ItemStack();
-		emptyHotbarSlots.push_back(InvCoordinate(0, j, true));
 	}
 
 	mainInvItems.resize(mainInvRows);
@@ -30,7 +29,6 @@ Inventory::Inventory(Sprite* owner, int rows, int cols, int hotbarSize,
 		for (int j = 0; j < mainInvCols; j++)
 		{
 			mainInvItems[i][j] = new ItemStack();
-			emptyMainSlots.push_back(InvCoordinate(i, j, false));
 		}
 	}
 
@@ -69,88 +67,128 @@ ItemStack* Inventory::getStack(InvCoordinate stackCoord)
 	}
 }
 
-ItemStack* Inventory::addStack(ItemStack* stack, int row, int col, bool hotbar)
+void Inventory::setStack(InvCoordinate stackCoord, ItemStack* stack)
 {
-	// assert coordinate is valid
-	rangeCheck(row, col, hotbar);
+	// assert InvCoordinate is valid
+	rangeCheck(stackCoord.row, stackCoord.col, stackCoord.hotbar);
 
-	ItemStack* to_replace = NULL;
-
-	if (hotbar)
+	if (stackCoord.hotbar)
 	{
-		to_replace = hotbarItems[col];
-		hotbarItems[col] = stack;
+		hotbarItems[stackCoord.col] = stack;
 	}
 	else
 	{
-		to_replace = mainInvItems[row][col];
-		mainInvItems[row][col] = stack;
+		mainInvItems[stackCoord.row][stackCoord.col] = stack;
 	}
+}
 
-	return to_replace;
+void Inventory::copyStackTo(InvCoordinate stackCoord, ItemStack* stack)
+{
+	// assert InvCoordinate is valid
+	rangeCheck(stackCoord.row, stackCoord.col, stackCoord.hotbar);
+
+	if (stackCoord.hotbar)
+	{
+		stack->copyTo(hotbarItems[stackCoord.col]);
+	}
+	else
+	{
+		stack->copyTo(mainInvItems[stackCoord.row][stackCoord.col]);
+	}
+}
+
+ItemStack* Inventory::addStack(ItemStack* stack, int row, int col, bool hotbar)
+{
+	InvCoordinate slot(row, col, hotbar);
+
+	ItemStack* replaced = getStack(slot);
+	setStack(slot, stack);
+	return replaced;
 }
 
 bool Inventory::autoAddStack(ItemStack* stack)
 {
+	// track the first empty slot found, in case there is no other way for the
+	// stack to fit
+	bool empty_found = false;
+	InvCoordinate first_empty_found(0, 0, false);
+
 	// first, attempt to fill in any matching stacks in hotbar
-	unordered_map<ItemType, list<InvCoordinate>>::const_iterator map_iter =
-		hotbarMappings.find(stack->itemType);
-
-	// found at least one hotbar slot of same type
-	if (map_iter != hotbarMappings.end())
+	for (int j = 0; j < hotbarSize; j++)
 	{
-		list<InvCoordinate> slot_matches = map_iter->second;
-		list<InvCoordinate>::const_iterator hotbar_iterator = slot_matches.begin();
-		// TODO: REMEMBER, THIS RETURNS INVCOORDINATES
-
-		// iterate over InvCoordinates that have the given ItemType
-		while (!stack->isEmpty() && hotbar_iterator != slot_matches.end())
+		if (hotbarItems[j]->isEmpty() && !empty_found)
 		{
-			// retrieve the stack at the specified InvCoordinate
-			ItemStack* found_stack = getStack(*hotbar_iterator);
+			empty_found = true;
+			first_empty_found = InvCoordinate(0, j, true);
+		}
 
-			// loop while the stack at the InvCoordinate can accept items
-			while (!stack->isEmpty() && found_stack->canAdd(stack->peekNext()))
-			{
-				found_stack->addItem(stack->popNext());
-			}
-			hotbar_iterator++;
+		while (!stack->isEmpty() && hotbarItems[j]->itemType == stack->itemType &&
+			hotbarItems[j]->canAdd(stack->peekNext()))
+		{
+			hotbarItems[j]->addItem(stack->popNext());
+		}
+
+		if (stack->isEmpty())
+		{
+			return true;
 		}
 	}
 
-	// TODO; AUTO-ADD TO MAIN INVENTORY
-
-	// attempt to fill in an empty hotbar slot
-	if (!stack->isEmpty() && !emptyHotbarSlots.empty())
+	// if stack still has items, attempt to add into mainInventory slots
+	for (int i = 0; i < mainInvRows; i++)
 	{
-		InvCoordinate empty_slot = emptyHotbarSlots.front();
-		// copy contents to requested stack and clear
-		stack->copyTo(getStack(empty_slot));
-		stack->clearItems();
+		for (int j = 0; j < mainInvCols; j++)
+		{
+			if (mainInvItems[i][j]->isEmpty() && !empty_found)
+			{
+				empty_found = true;
+				first_empty_found = InvCoordinate(i, j, false);
+			}
 
-		emptyHotbarSlots.pop_front();
+			while (!stack->isEmpty() && mainInvItems[i][j]->itemType == stack->itemType &&
+				mainInvItems[i][j]->canAdd(stack->peekNext()))
+			{
+				mainInvItems[i][j]->addItem(stack->popNext());
+			}
+
+			if (stack->isEmpty())
+			{
+				return true;
+			}
+		}
 	}
 
-	// TODO: DO THE SAME FOR MAIN INVENTORY
-	return stack->isEmpty();
+	// if stack is still not empty, try to assign it to the first empty slot found
+	if (empty_found)
+	{
+		// copy stack items to it and clear them from original stack
+		copyStackTo(first_empty_found, stack);
+		stack->clearItems();
+		return true;
+	}
+	else
+	{
+		return false;
+	}
 }
 
-ItemStack* Inventory::rmvStack(int row, int col, bool hotbar) // TODO: NEED TO UPDATE TRACKING STUFF
+ItemStack* Inventory::rmvStack(int row, int col, bool hotbar)
 {
 	// assert specified slot is valid
 	rangeCheck(row, col, hotbar);
 
 	ItemStack* copied = NULL;
 
+	// TODO: USE GETSTACK()?
 	if (hotbar)
 	{
 		hotbarItems[col]->copyTo(copied);
-		hotbarItems[col] = NULL;
+		hotbarItems[col]->clearItems();
 	}
 	else
 	{
 		mainInvItems[row][col]->copyTo(copied);
-		mainInvItems[row][col] = NULL;
+		mainInvItems[row][col]->clearItems();
 	}
 	return copied;
 }
@@ -167,10 +205,10 @@ void Inventory::swapStacks(int row, int col, bool hotbar, int swapRow,
 	ItemStack* stack_2 = getStack(InvCoordinate(swapRow, swapCol, swapHotbar));
 
 	// perform the swap
-	ItemStack* temp = NULL;
-	stack_1->copyTo(temp);
+	ItemStack temp;
+	stack_1->copyTo(&temp);
 	stack_2->copyTo(stack_1);
-	temp->copyTo(stack_2);
+	temp.copyTo(stack_2);
 }
 
 Item* Inventory::getInHand()
@@ -222,14 +260,30 @@ void Inventory::loadInHand()
 		ItemType ammo_type = Item::getAmmunitionType(in_hand->itemType);
 		if (ammo_type != ItemType::NONE)
 		{
-			// TODO:
-			// ItemStack* ammo_stack = getStack(ammo_type);
-			// printf("Stack of %d pointer is %d\n", ammo_type, ammo_stack);
-			// // feed ammunition to item, deleting it as it is used
-			// while (ammo_stack && ammo_stack->size() && in_hand->load(ammo_stack->peekNext())) // TODO: WHAT IF GIVEN STACK DOESN'T FILL AMMO?
-			// {
-			// 	delete ammo_stack->popNext();
-			// }
+			bool success = false;
+
+			// check hotbar for stacks of the ammo type, and use them to reload
+			for (int j = 0; j < hotbarSize; j++)
+			{
+				if (hotbarItems[j]->itemType == ammo_type)
+				{
+					while (!hotbarItems[j]->isEmpty())
+					{
+						Item* ammo = hotbarItems[j]->peekNext();
+						bool loaded = in_hand->load(ammo); // TODO: CANLOAD() METHOD
+
+						if (loaded)
+						{
+							hotbarItems[j]->popNext();
+						}
+						else
+						{
+							success = true;
+							break;
+						}
+					}
+				}
+			}
 		}
 	}
 }
@@ -338,7 +392,7 @@ void Inventory::drawDebugTo(SDL_Renderer* renderer, TextureAtlas* textureAtlas,
 	SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
 	SDL_RenderFillRect(renderer, &outer_bounds);
 
-	int x, y;
+	int x = 0, y = 0;
 
 	// draw main inventory items
 	for (int i = 0; i < mainInvRows; i++)

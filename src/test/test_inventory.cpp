@@ -60,7 +60,11 @@ int main(int argc, char* argv[])
   inventory.addStack(ItemUtil::createStack(ItemType::BREAD_LOAF, 12), 0, 0, false);
   inventory.addStack(ItemUtil::createStack(ItemType::BREAD_LOAF, 12), 1, 0, false);
   inventory.addStack(ItemUtil::createStack(ItemType::BREAD_LOAF, 12), 2, 0, false);
-  
+  inventory.addStack(ItemUtil::createStack(ItemType::PISTOL, 1), 0, 0, true);
+  inventory.addStack(ItemUtil::createStack(ItemType::PISTOL_AMMO, 32), 0, 1, true);
+  inventory.addStack(ItemUtil::createStack(ItemType::CHICKEN_LEG, 6), 0, 2, true);
+  inventory.swapStacks(0, 0, false, 0, 2, true);
+  inventory.loadInHand();
 	// main loop
 	while (!quit)
 	{

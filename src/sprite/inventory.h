@@ -4,8 +4,6 @@
 #include <stdio.h>
 #include <SDL2/SDL.h>
 #include <vector>
-#include <unordered_map>
-#include <list>
 #include <stdexcept>
 #include "constants.h"
 #include "texture_atlas.h"
@@ -59,15 +57,6 @@ class Inventory // TODO: SEPARATE CLASS FOR NON-SPRITE INVENTORIES
 		int mainInvRows, mainInvCols, mainInvSize;
 		vector<vector<ItemStack*>> mainInvItems;
 
-		// currently empty hotbar slots in the hotbar and main inventory TODO: ORDER FROM TOP TO BOTTOM?
-		list<InvCoordinate> emptyHotbarSlots;
-		list<InvCoordinate> emptyMainSlots;
-
-		// maps an ItemType to a list of locations of stacks of the ItemType.
-		// hotbar and main inventory mappings are stored separately
-		unordered_map<ItemType, list<InvCoordinate>> hotbarMappings;
-		unordered_map<ItemType, list<InvCoordinate>> mainMappings;
-
 		// stored Action, Buff, and Attack (if any) from last-used Item
 		SpriteAction* resultingAction = NULL;
 		SpriteBuff* resultingBuff = NULL;
@@ -84,10 +73,11 @@ class Inventory // TODO: SEPARATE CLASS FOR NON-SPRITE INVENTORIES
 		// returns the stack at the given InvCoordinate. Throws runtime_error if
 		// InvCoordinate is out of bounds
 		ItemStack* getStack(InvCoordinate stackCoord);
-		// searches for stack of items with given id. May return Null
-		// InvCoordinate findItemSlot(ItemType, InvCoordinate& slot);
-		// searches inventory for an ItemStack that can accept the given item, if any (may be NULL)
-		// InvCoordinate findEmptySlot(Item* item);
+		// sets the given inventory slot to the stack. Does not delete or do
+		// anything with the currently-existing stack at that coordinate
+		void setStack(InvCoordinate stackCoord, ItemStack* stack);
+		// copies items out of stack into given slot  TODO: FLIP ARGUMENT ORDER
+		void copyStackTo(InvCoordinate stackCoord, ItemStack* stack);
 
 	public:
 		// creates an inventory with the given number of rows and columns and a
