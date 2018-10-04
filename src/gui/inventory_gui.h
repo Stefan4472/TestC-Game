@@ -23,11 +23,11 @@ class InventoryWindow : public GuiWindowInterface
     EngineGUIInterface* engineInterface = NULL;
     // rect defining size and position of the window
     SDL_Rect windowBounds;
-
+    // rect defining size and position of main inventory and hotbar, respectively
     SDL_Rect mainInvBounds;
     SDL_Rect hotbarBounds;
 
-    SDL_Rect
+    // TODO: BOOL MOUSE_MOVED
 
     // mouse coordinates (top-left)
     int mouseX, mouseY;
@@ -43,15 +43,18 @@ class InventoryWindow : public GuiWindowInterface
     void handleMousePressed();
     void handleMouseReleased();
 
+    SDL_Rect getSlotBounds(InvCoordinate& slot);
+
     // returns if mouse coordinates are hovering over a slot. If so, sets the
     // given InvCoordinate to that slot
     bool isMouseOverSlot(InvCoordinate& slot);
     // returns if the mouse is within the bounds of the inventory window
     bool isMouseInWindow();
 
+
   public:
     InventoryWindow(Inventory* inventory, EngineGUIInterface* engineInterface);  // TODO: NEED A SPRITECONTROLLER FOR DROPPED ITEMS
-    void handleInputEvent();
+    void handleInputEvent(SDL_Event e);
     void drawTo(SDL_Renderer* renderer, TextureAtlas* textureAtlas,
       FontAtlas* fontAtlas);
     void forceClose();

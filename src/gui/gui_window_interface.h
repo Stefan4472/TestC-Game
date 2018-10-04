@@ -5,7 +5,7 @@
 
 class GuiWindowInterface
 {
-  virtual void handleInputEvent() = 0;
+  virtual void handleInputEvent(SDL_Event e) = 0;
   // virtual void handleMouseEvent() = 0;
   // virtual void handleControllerEvent() = 0;
   virtual void drawTo(SDL_Renderer* renderer, TextureAtlas* textureAtlas,
