@@ -37,7 +37,11 @@ using namespace std;
 class InventoryListener
 {
 	public:
+		// user changes item currently equipped (in-hand). May be NULL if no item is
+		// equipped in-hand
 		virtual void onInHandItemChanged(Item* newItem) = 0;
+		// user drops a stack
+		virtual void onStackDropped(ItemStack* stack) = 0;
 };
 
 class Inventory // TODO: SEPARATE CLASS FOR NON-SPRITE INVENTORIES, DESTRUCTOR
@@ -46,17 +50,8 @@ class Inventory // TODO: SEPARATE CLASS FOR NON-SPRITE INVENTORIES, DESTRUCTOR
 		// sprite to which this Inventory belongs
 		Sprite* owner = NULL;
 
-		// size of hotbar
-		int hotbarSize;
-		vector<ItemStack*> hotbarItems;
-
 		// index in hotbar the owner has selected, or "in-hand"
 		int inHandIndex;
-
-		// rows and columns of main inventory (everything besides hotbar),
-		// and total size (rows * cols)
-		int mainInvRows, mainInvCols, mainInvSize;
-		vector<vector<ItemStack*>> mainInvItems;
 
 		// stored Action, Buff, and Attack (if any) from last-used Item
 		SpriteAction* resultingAction = NULL;
@@ -66,14 +61,11 @@ class Inventory // TODO: SEPARATE CLASS FOR NON-SPRITE INVENTORIES, DESTRUCTOR
 
 		// checks if the given slot exists in inventory. Throws runtime_error if
 		// out of range.
-		void rangeCheck(int row, int col, bool hotbar);
+		void rangeCheck(InvCoordinate slot);
 
 		// pointer to listener, if any
 		InventoryListener* inventoryListener = NULL;
 
-		// returns the stack at the given InvCoordinate. Throws runtime_error if
-		// InvCoordinate is out of bounds
-		ItemStack* getStack(InvCoordinate stackCoord);
 		// sets the given inventory slot to the stack. Does not delete or do
 		// anything with the currently-existing stack at that coordinate
 		void setStack(InvCoordinate stackCoord, ItemStack* stack);
@@ -86,20 +78,34 @@ class Inventory // TODO: SEPARATE CLASS FOR NON-SPRITE INVENTORIES, DESTRUCTOR
 		// the owner. Optionally takes an InventoryListener
 		Inventory(Sprite* owner, int rows, int cols, int hotbarSize, InventoryListener* listener=NULL);
 
+		// size of hotbar
+		int hotbarSize;
+		// items in hotbar. NOTE: SHOULD NOT BE MODIFIED EXTERNALLY
+		vector<ItemStack*> hotbarItems;
+
+		// rows and columns of main inventory (everything besides hotbar),
+		// and total size (rows * cols)
+		int mainInvRows, mainInvCols, mainInvSize;
+		// items in inventory (rows * cols). NOTE: SHOULD NOT BE MODIFIED EXTERNALLY
+		vector<vector<ItemStack*>> mainInvItems;
+
 		// sets listener function for in-hand item change
 		void setListener(InventoryListener* listener);
 
+		// returns the stack at the given InvCoordinate. Throws runtime_error if
+		// InvCoordinate is out of bounds
+		ItemStack* getStack(InvCoordinate stackCoord);
 		// add the given stack to the specified inventory slot. Returns the
 		// displaced ItemStack, if any
-		ItemStack* addStack(ItemStack* stack, int row, int col, bool hotbar);
+		ItemStack* addStack(ItemStack* stack, InvCoordinate slot);
 		// attempts to add the stack somewhere in the inventory, prioritizing the
 		// hotbar. Returns whether this was possible. May take items from the given
 		// stack to fill stacks currently in inventory
 		bool autoAddStack(ItemStack* stack);
 		// removes and returns the stack at the given slot. Might not contain an item
-		ItemStack* rmvStack(int row, int col, bool hotbar);
+		ItemStack* rmvStack(InvCoordinate slot);
 		// swaps the stacks at the two given slots
-		void swapStacks(int row, int col, bool hotbar, int swapRow, int swapCol, bool swapHotbar);
+		void swapStacks(InvCoordinate slot1, InvCoordinate slot2);
 
 		// returns pointer to the Item that's currently in hand. Null if empty
 		Item* getInHand();  // TODO: IS THIS USED? SHOULDN'T IT RETURN AN ITEM STACK?

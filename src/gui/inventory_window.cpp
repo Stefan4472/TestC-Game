@@ -18,15 +18,15 @@ InventoryWindow::InventoryWindow(Inventory* inventory, EngineGUIInterface* engin
   // TODO: CONSTRAIN TO SCREEN WIDTH/HEIGHT?
 
   // center window in screen
-  windowBounds = SDL_Rect { (engineInterface->getWidth() - inv_width) / 2,
-    (engineInterface->getHeight() - inv_height) / 2, inv_width, inv_height };
+  windowBounds = SDL_Rect { (engineInterface->getScreenWidth() - inv_width) / 2,
+    (engineInterface->getScreenHeight() - inv_height) / 2, inv_width, inv_height };
 
   // set bounds of main inventory and hotbar
   mainInvBounds = SDL_Rect { windowBounds.x, windowBounds.y,
     inventory->mainInvCols * 64, inventory->mainInvRows * 64 };
 
   hotbarBounds = SDL_Rect {
-    (engineInterface->getWidth() - 64 * inventory->hotbarSize) / 2,
+    (engineInterface->getScreenWidth() - 64 * inventory->hotbarSize) / 2,
     mainInvBounds.y + mainInvBounds.h,
     64 * inventory->hotbarSize, 64 };
 }
@@ -61,14 +61,14 @@ void InventoryWindow::drawTo(SDL_Renderer* renderer, TextureAtlas* textureAtlas,
   SDL_RenderFillRect(renderer, &windowBounds);
 
   // no dragged slot: test for hover
-  if (!slotDragged && isMouseOverSlot(&selectedSlot))
+  if (!slotDragged && isMouseOverSlot(selectedSlot))
   {
     ItemStack* hovered = inventory->getStack(selectedSlot);
     string item_name = Item::getName(hovered->itemType);
     string item_description = Item::getDescription(hovered->itemType);
 
     // color slot darker
-    SDL_Rect slot_bounds = getSlotBounds(&selectedSlot);
+    SDL_Rect slot_bounds = getSlotBounds(selectedSlot);
     SDL_SetRenderDrawColor(renderer, 0xCC, 0xCC, 0xCC, 0xFF);
     SDL_RenderFillRect(renderer, &slot_bounds);
   }
@@ -124,10 +124,10 @@ void InventoryWindow::forceClose()
 void InventoryWindow::handleMousePressed()
 {
   // handle mouse over an inventory slot--"pick up" item
-  if (isMouseOverSlot(&selectedSlot)))
+  if (isMouseOverSlot(selectedSlot))
   {
     // remove stack from inventory (temporarily)
-    selectedStack = inventory->rmvStack(selectedSlot.row, selectedSlot.col, selectedSlot.hotbar);
+    selectedStack = inventory->rmvStack(selectedSlot);
     slotDragged = true;
   }
 }
@@ -168,34 +168,35 @@ void InventoryWindow::handleMouseReleased()
   }
 }
 
-SDL_Rect InventoryWindow::getSlotBounds(InvCoordinate& slot)
+SDL_Rect InventoryWindow::getSlotBounds(InvCoordinate slot)
 {
-  if (slot->hotbar)
+  if (slot.hotbar)
   {
-    return SDL_Rect { hotbarBounds.x + 64 * slot->col, hotbarBounds.y, 64, 64 };
+    return SDL_Rect { hotbarBounds.x + 64 * slot.col,
+      hotbarBounds.y + 64 * slot.row, 64, 64 };
   }
   else
   {
-    return SDL_Rect { mainInvBounds.x + 64 * slot->col,
-      mainInvBounds.y + 64 * slot->row, 64, 64 };
+    return SDL_Rect { mainInvBounds.x + 64 * slot.col,
+      mainInvBounds.y + 64 * slot.row, 64, 64 };
   }
 }
 
-bool InventoryWindow::isMouseOverSlot(InvCoordinate& slot)
+bool InventoryWindow::isMouseOverSlot(InvCoordinate slot)
 {
   // handle mouse over main inventory
   if (pointInRect(mouseX, mouseY, mainInvBounds))
   {
-    slot->row = (mouseY - mainInvBounds.y) / 64;
-    slot->col = (mouseX - mainInvBounds.x) / 64;
-    slot->hotbar = false;
+    slot.row = (mouseY - mainInvBounds.y) / 64;
+    slot.col = (mouseX - mainInvBounds.x) / 64;
+    slot.hotbar = false;
     return true;
   }
   else if (pointInRect(mouseX, mouseY, hotbarBounds))
   {
-    slot->row = 0;
-    slot->col = (mouseX - hotbarBounds.x) / 64;
-    slot->hotbar = true;
+    slot.row = 0;
+    slot.col = (mouseX - hotbarBounds.x) / 64;
+    slot.hotbar = true;
     return true;
   }
   else
@@ -204,7 +205,7 @@ bool InventoryWindow::isMouseOverSlot(InvCoordinate& slot)
   }
 }
 
-bool isMouseInWindow()
+bool InventoryWindow::isMouseInWindow()
 {
   return pointInRect(mouseX, mouseY, windowBounds);
 }

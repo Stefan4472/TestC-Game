@@ -35,14 +35,14 @@ Inventory::Inventory(Sprite* owner, int rows, int cols, int hotbarSize,
 	printf("Created inventory with %d rows, %d cols, and a hotbar of %d\n", rows, cols, hotbarSize);
 }
 
-void Inventory::rangeCheck(int row, int col, bool hotbar)
+void Inventory::rangeCheck(InvCoordinate slot)
 {
-	printf("Range checking %d, %d, %s\n", row, col, hotbar ? "hotbar" : "main");
-	if (hotbar && (row != 0 || col < 0 || col >= hotbarSize))
+	if (slot.hotbar && (slot.row != 0 || slot.col < 0 || slot.col >= hotbarSize))
 	{
 		throw runtime_error("Hotbar index out of bounds");
 	}
-	else if (!hotbar && (row >= mainInvRows || col >= mainInvCols || row < 0 || col < 0))
+	else if (!slot.hotbar && (slot.row >= mainInvRows || slot.col >= mainInvCols ||
+		slot.row < 0 || slot.col < 0))
 	{
 		throw runtime_error("Main Inventory index out of bounds");
 	}
@@ -56,7 +56,7 @@ void Inventory::setListener(InventoryListener* listener)
 ItemStack* Inventory::getStack(InvCoordinate stackCoord)
 {
 	// assert InvCoordinate is valid
-	rangeCheck(stackCoord.row, stackCoord.col, stackCoord.hotbar);
+	rangeCheck(stackCoord);
 
 	if (stackCoord.hotbar)
 	{
@@ -71,7 +71,7 @@ ItemStack* Inventory::getStack(InvCoordinate stackCoord)
 void Inventory::setStack(InvCoordinate stackCoord, ItemStack* stack)
 {
 	// assert InvCoordinate is valid
-	rangeCheck(stackCoord.row, stackCoord.col, stackCoord.hotbar);
+	rangeCheck(stackCoord);
 
 	if (stackCoord.hotbar)
 	{
@@ -86,7 +86,7 @@ void Inventory::setStack(InvCoordinate stackCoord, ItemStack* stack)
 void Inventory::copyStackTo(InvCoordinate stackCoord, ItemStack* stack)
 {
 	// assert InvCoordinate is valid
-	rangeCheck(stackCoord.row, stackCoord.col, stackCoord.hotbar);
+	rangeCheck(stackCoord);
 
 	if (stackCoord.hotbar)
 	{
@@ -98,12 +98,8 @@ void Inventory::copyStackTo(InvCoordinate stackCoord, ItemStack* stack)
 	}
 }
 
-ItemStack* Inventory::addStack(ItemStack* stack, int row, int col, bool hotbar)
+ItemStack* Inventory::addStack(ItemStack* stack, InvCoordinate slot)
 {
-	rangeCheck(row, col, hotbar);  // TODO: NOTE, THIS DOES 3 RANGE CHECKS
-
-	InvCoordinate slot(row, col, hotbar);
-
 	ItemStack* replaced = getStack(slot);
 	setStack(slot, stack);
 	return replaced;
@@ -175,37 +171,32 @@ bool Inventory::autoAddStack(ItemStack* stack)
 	}
 }
 
-ItemStack* Inventory::rmvStack(int row, int col, bool hotbar)
+ItemStack* Inventory::rmvStack(InvCoordinate slot)
 {
 	// assert specified slot is valid
-	rangeCheck(row, col, hotbar);
+	rangeCheck(slot);
 
 	ItemStack* copied = NULL;
 
 	// TODO: USE GETSTACK()?
-	if (hotbar)
+	if (slot.hotbar)
 	{
-		hotbarItems[col]->copyTo(copied);
-		hotbarItems[col]->clearItems();
+		hotbarItems[slot.col]->copyTo(copied);
+		hotbarItems[slot.col]->clearItems();
 	}
 	else
 	{
-		mainInvItems[row][col]->copyTo(copied);
-		mainInvItems[row][col]->clearItems();
+		mainInvItems[slot.row][slot.col]->copyTo(copied);
+		mainInvItems[slot.row][slot.col]->clearItems();
 	}
 	return copied;
 }
 
-void Inventory::swapStacks(int row, int col, bool hotbar, int swapRow,
-	int swapCol, bool swapHotbar)
+void Inventory::swapStacks(InvCoordinate slot1, InvCoordinate slot2)
 {
-	// assert indexes are in range
-	rangeCheck(row, col, hotbar);
-	rangeCheck(swapRow, swapCol, swapHotbar);
-
 	// retrieve the stacks
-	ItemStack* stack_1 = getStack(InvCoordinate(row, col, hotbar));
-	ItemStack* stack_2 = getStack(InvCoordinate(swapRow, swapCol, swapHotbar));
+	ItemStack* stack_1 = getStack(slot1);
+	ItemStack* stack_2 = getStack(slot2);
 
 	// perform the swap
 	ItemStack temp;
@@ -390,7 +381,7 @@ void Inventory::drawDebugTo(SDL_Renderer* renderer, TextureAtlas* textureAtlas,
 	FontAtlas* fontAtlas)
 {
 	SDL_Rect outer_bounds = SDL_Rect { 0, 0, mainInvCols * 64, (mainInvRows + 1) * 64 };
-	// TODO: FIX OUTER BOUNDS SO HOTBAR IS DRAWN CORRECTLY 
+	// TODO: FIX OUTER BOUNDS SO HOTBAR IS DRAWN CORRECTLY
 	// draw filled gray background rectangle
 	SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
 	SDL_RenderFillRect(renderer, &outer_bounds);
@@ -501,7 +492,7 @@ Inventory* Inventory::restoreFromByteStream(char bytes[], int numBytes)
 		printf("Item %d: %d of %s at %d, %d\n", i, stack_size,
 			Item::getName(item_type).c_str(), stack_row, stack_col);
 		inventory->addStack(ItemUtil::createStack(item_type, stack_size),
-			stack_row, stack_col, false);
+			InvCoordinate(stack_row, stack_col, false));
 	}
 
 	// restore hotbar
@@ -512,7 +503,7 @@ Inventory* Inventory::restoreFromByteStream(char bytes[], int numBytes)
 		int stack_size = bytes[start_index + 1];
 		printf("Hotbar %d: %d of %s\n", j, stack_size, Item::getName(item_type).c_str());
 		inventory->addStack(ItemUtil::createStack(item_type, stack_size),
-			0, j, true);
+			InvCoordinate(0, j, true));
 		start_index += 2;
 	}
 	printf("Finished restoring\n");

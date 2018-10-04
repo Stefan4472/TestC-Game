@@ -3,10 +3,11 @@
 
 class EngineGUIInterface
 {
-  virtual void returnControl() = 0;
-  virtual void playSound() = 0;
-  virtual int getScreenWidth() = 0;
-  virtual int getScreenHeight() = 0;
+  public:
+    virtual void returnControl() = 0;
+    virtual void playSound() = 0;
+    virtual int getScreenWidth() = 0;
+    virtual int getScreenHeight() = 0;
 };
 
 #endif

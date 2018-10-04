@@ -19,6 +19,8 @@ struct InvCoordinate
     int row, col; // TODO: COULD BE CHAR
     bool hotbar;
 
+    // creates an uninitialized coordinate. Will be invalid (row -1, col -1)
+    InvCoordinate();
     InvCoordinate(int x, int y, bool hotbar);
 
     bool operator==(const InvCoordinate& other) const

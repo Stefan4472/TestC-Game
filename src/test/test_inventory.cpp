@@ -1,5 +1,5 @@
 // tests inventory and item/item stack/item drop mechanisms
-// g++ test/test_inventory.cpp sprite/inventory.cpp item/item.cpp item/item_stack.cpp item/item_drop.cpp sprite/inventory_coordinate.cpp attack/attack.cpp engine/texture_atlas.cpp action/sprite_action.cpp sprite/sprite.cpp buff/sprite_buff.cpp engine/animation_engine.cpp engine/animation_player.cpp engine/animation_sequence.cpp engine/spritesheet.cpp item/consumable.cpp item/gun.cpp item/bullet.cpp item/sword.cpp util/item_util.cpp engine/sound.cpp attack/fired_bullet.cpp action/knockback_action.cpp attack/sword_swing.cpp attack/punch.cpp engine/font_atlas.cpp -o test_inventory -Iitem -Iattack -Iaction -Isprite -Ibuff -Iengine -Iutil -I. -lSDL2 -lSDL2_image -lSDL2_ttf -std=c++11
+// g++ test/test_inventory.cpp sprite/inventory.cpp gui/inventory_window.cpp item/item.cpp item/item_stack.cpp item/item_drop.cpp sprite/inventory_coordinate.cpp attack/attack.cpp engine/texture_atlas.cpp action/sprite_action.cpp sprite/sprite.cpp buff/sprite_buff.cpp engine/animation_engine.cpp engine/animation_player.cpp engine/animation_sequence.cpp engine/spritesheet.cpp item/consumable.cpp item/gun.cpp item/bullet.cpp item/sword.cpp util/item_util.cpp engine/sound.cpp attack/fired_bullet.cpp action/knockback_action.cpp attack/sword_swing.cpp attack/punch.cpp engine/font_atlas.cpp -o test_inventory -Iitem -Iattack -Iaction -Isprite -Ibuff -Iengine -Iutil -Igui -I. -lSDL2 -lSDL2_image -lSDL2_ttf -std=c++11
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
@@ -116,18 +116,18 @@ int main(int argc, char* argv[])
 Inventory* createInventory()
 {
   Inventory* inventory = new Inventory(NULL, 3, 8, 10);
-  inventory->addStack(ItemUtil::createStack(ItemType::BREAD_LOAF, 12), 0, 0, false);
-  inventory->addStack(ItemUtil::createStack(ItemType::BREAD_LOAF, 12), 1, 0, false);
-  inventory->addStack(ItemUtil::createStack(ItemType::BEER_MUG, 3), 2, 0, false);
-  inventory->addStack(ItemUtil::createStack(ItemType::SHOTGUN_AMMO, 10), 0, 3, false);
-  inventory->addStack(ItemUtil::createStack(ItemType::PISTOL_AMMO, 36), 0, 7, false);
-  inventory->addStack(ItemUtil::createStack(ItemType::BREAD_LOAF, 5), 1, 1, false);
-  inventory->addStack(ItemUtil::createStack(ItemType::BREAD_LOAF, 8), 2, 4, false);
+  inventory->addStack(ItemUtil::createStack(ItemType::BREAD_LOAF, 12), InvCoordinate(0, 0, false));
+  inventory->addStack(ItemUtil::createStack(ItemType::BREAD_LOAF, 12), InvCoordinate(1, 0, false));
+  inventory->addStack(ItemUtil::createStack(ItemType::BEER_MUG, 3), InvCoordinate(2, 0, false));
+  inventory->addStack(ItemUtil::createStack(ItemType::SHOTGUN_AMMO, 10), InvCoordinate(0, 3, false));
+  inventory->addStack(ItemUtil::createStack(ItemType::PISTOL_AMMO, 36), InvCoordinate(0, 7, false));
+  inventory->addStack(ItemUtil::createStack(ItemType::BREAD_LOAF, 5), InvCoordinate(1, 1, false));
+  inventory->addStack(ItemUtil::createStack(ItemType::BREAD_LOAF, 8), InvCoordinate(2, 4, false));
 
-  inventory->addStack(ItemUtil::createStack(ItemType::PISTOL, 1), 0, 0, true);
-  inventory->addStack(ItemUtil::createStack(ItemType::PISTOL_AMMO, 32), 0, 1, true);
-  inventory->addStack(ItemUtil::createStack(ItemType::CHICKEN_LEG, 6), 0, 2, true);
-  inventory->addStack(ItemUtil::createStack(ItemType::SWORD, 1), 2, 0, false);
+  inventory->addStack(ItemUtil::createStack(ItemType::PISTOL, 1), InvCoordinate(0, 0, true));
+  inventory->addStack(ItemUtil::createStack(ItemType::PISTOL_AMMO, 32), InvCoordinate(0, 1, true));
+  inventory->addStack(ItemUtil::createStack(ItemType::CHICKEN_LEG, 6), InvCoordinate(0, 2, true));
+  inventory->addStack(ItemUtil::createStack(ItemType::SWORD, 1), InvCoordinate(2, 0, false));
 
   return inventory;
 }
