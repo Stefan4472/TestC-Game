@@ -59,10 +59,6 @@ class Inventory // TODO: SEPARATE CLASS FOR NON-SPRITE INVENTORIES, DESTRUCTOR
 		Attack* resultingAttack = NULL;
 		// TODO: STORE CREATED SOUNDS
 
-		// checks if the given slot exists in inventory. Throws runtime_error if
-		// out of range.
-		void rangeCheck(InvCoordinate slot);
-
 		// pointer to listener, if any
 		InventoryListener* inventoryListener = NULL;
 
@@ -91,6 +87,10 @@ class Inventory // TODO: SEPARATE CLASS FOR NON-SPRITE INVENTORIES, DESTRUCTOR
 
 		// sets listener function for in-hand item change
 		void setListener(InventoryListener* listener);
+
+		// checks if the given slot exists in inventory. Throws runtime_error if
+		// out of range.
+		void rangeCheck(InvCoordinate slot);
 
 		// returns the stack at the given InvCoordinate. Throws runtime_error if
 		// InvCoordinate is out of bounds

@@ -39,12 +39,14 @@ void Inventory::rangeCheck(InvCoordinate slot)
 {
 	if (slot.hotbar && (slot.row != 0 || slot.col < 0 || slot.col >= hotbarSize))
 	{
-		throw runtime_error("Hotbar index out of bounds");
+		throw runtime_error("Hotbar index out of bounds " +
+			to_string(slot.row) + ", " + to_string(slot.col));
 	}
 	else if (!slot.hotbar && (slot.row >= mainInvRows || slot.col >= mainInvCols ||
 		slot.row < 0 || slot.col < 0))
 	{
-		throw runtime_error("Main Inventory index out of bounds");
+		throw runtime_error("Main Inventory index out of bounds " +
+			to_string(slot.row) + ", " + to_string(slot.col));
 	}
 }
 

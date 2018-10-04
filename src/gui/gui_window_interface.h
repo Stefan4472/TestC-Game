@@ -7,12 +7,13 @@
 
 class GuiWindowInterface
 {
-  virtual void handleInputEvent(SDL_Event e) = 0;
-  // virtual void handleMouseEvent() = 0;
-  // virtual void handleControllerEvent() = 0;
-  virtual void drawTo(SDL_Renderer* renderer, TextureAtlas* textureAtlas,
-    FontAtlas* fontAtlas) = 0;
-  virtual void forceClose() = 0;
+  public:
+    virtual void handleInputEvent(SDL_Event e) = 0;
+    // virtual void handleMouseEvent() = 0;
+    // virtual void handleControllerEvent() = 0;
+    virtual void drawTo(SDL_Renderer* renderer, TextureAtlas* textureAtlas,
+      FontAtlas* fontAtlas) = 0;
+    virtual void forceClose() = 0;
 };
 
 #endif

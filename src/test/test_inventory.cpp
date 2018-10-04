@@ -9,10 +9,12 @@
 #include <unistd.h>
 #include "texture_atlas.h"
 #include "inventory.h"
+#include "inventory_window.h"
 #include "item.h"
 #include "item_stack.h"
 #include "item_drop.h"
 #include "item_util.h"
+#include "engine_gui_interface.h"
 
 using namespace std;
 
@@ -27,6 +29,7 @@ SDL_Renderer* gRenderer = NULL;
 SDL_Texture* textureAtlasImg = NULL;
 TextureAtlas* textureAtlas = NULL;
 FontAtlas* fontAtlas = NULL;
+InventoryWindow* invWindow = NULL;
 
 const int SCREEN_WIDTH = 640;
 const int SCREEN_HEIGHT = 480;
@@ -34,81 +37,127 @@ const int SCREEN_HEIGHT = 480;
 const int TILE_WIDTH = 32;
 const int TILE_HEIGHT = 32;
 
+class MockGameEngine : public EngineGUIInterface
+{
+public:
+
+  bool inventoryOpen = false;
+
+  void run()
+  {
+    Uint32 last_time = SDL_GetTicks();
+  	Uint32 curr_time, ticks_since_last_frame;
+  	int frames = 0;
+    bool quit = false;
+  	SDL_Event e;
+
+  	// main loop
+  	while (!quit)
+  	{
+      frames++;
+
+      // calculate number of milliseconds since last frame was rendered
+  		curr_time = SDL_GetTicks();
+  		ticks_since_last_frame = curr_time - last_time;
+
+  		// handle events on queue
+  		while( SDL_PollEvent( &e ) != 0 )
+  		{
+  			if( e.type == SDL_QUIT )
+  			{
+  				quit = true;
+  			}
+        // route events to InventoryWindow if open
+  			else if (inventoryOpen)
+  			{
+          invWindow->handleInputEvent(e);
+  			}
+        // check if user wants to open inventory
+        else
+        {
+          switch( e.key.keysym.sym )
+  				{
+            case SDLK_e:
+              printf("Opening Inventory\n");
+              inventoryOpen = true;
+              break;
+          }
+        }
+      }
+
+      // black out the screen
+      SDL_Rect screen_dim = SDL_Rect { 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT };
+      SDL_SetRenderDrawColor(gRenderer, 0x00, 0x00, 0x00, 0xFF);
+      SDL_RenderFillRect(gRenderer, &screen_dim);
+
+      if (inventoryOpen)
+      {
+        invWindow->drawTo(gRenderer, textureAtlas, fontAtlas);
+      }
+
+      // render screen
+  		SDL_RenderPresent(gRenderer);
+
+  		// update last_frame_ticks
+  		last_time = curr_time;
+  	}
+  }
+
+  // inventory closed itself
+  void returnControl()
+  {
+    printf("Returning Control\n");
+    inventoryOpen = false;
+  }
+
+  void playSound()
+  {
+    printf("We're supposed to play a sound now\n");
+  }
+
+  int getScreenWidth()
+  {
+    return SCREEN_WIDTH;
+  }
+
+  int getScreenHeight()
+  {
+    return SCREEN_HEIGHT;
+  }
+};
+
 int main(int argc, char* argv[])
 {
-
   init();
   loadMedia();
   textureAtlas = new TextureAtlas(textureAtlasImg);
   fontAtlas = new FontAtlas();
 
-  Uint32 last_time = SDL_GetTicks();
-	Uint32 curr_time, ticks_since_last_frame;
-	int frames = 0;
-  bool quit = false;
-	SDL_Event e;
-
-  Inventory* inventory = createInventory();
-
-  char buffer[400];
-  int size = inventory->saveToByteStream(buffer, 400);
-  printf("Save took %d bytes\n", size);
-  FILE* file_handle = fopen("test_inventory_file", "wb");
-  if (file_handle)
-  {
-    fwrite(buffer, 1, size, file_handle);
-    fclose(file_handle);
-  }
-
-  // printf("Reading inventory from file\n");
+  // Inventory* inventory = createInventory();
   // char buffer[400];
-  // FILE* file_handle = fopen("test_inventory_file", "rb");
-  // fread(buffer, 1, 400, file_handle);
-  // Inventory* inventory = Inventory::restoreFromByteStream(buffer, 400);
-  // printf("Done\n");
+  // int size = inventory->saveToByteStream(buffer, 400);
+  // printf("Save took %d bytes\n", size);
+  // FILE* file_handle = fopen("test_inventory_file", "wb");
+  // if (file_handle)
+  // {
+  //   fwrite(buffer, 1, size, file_handle);
+  //   fclose(file_handle);
+  // }
+
+  printf("Reading inventory from file\n");
+  char buffer[400];
+  FILE* file_handle = fopen("test_inventory_file", "rb");
+  fread(buffer, 1, 400, file_handle);
+  Inventory* inventory = Inventory::restoreFromByteStream(buffer, 400);
+  printf("Done\n");
 
   // inventory.swapStacks(0, 0, false, 0, 2, true);
   // inventory.loadInHand();
 
-	// main loop
-	while (!quit)
-	{
-    sleep(1);
-    frames++;
+  MockGameEngine engine;
+  invWindow = new InventoryWindow(inventory, &engine);
 
-    // calculate number of milliseconds since last frame was rendered
-		curr_time = SDL_GetTicks();
-		ticks_since_last_frame = curr_time - last_time;
-
-		// handle events on queue
-		while( SDL_PollEvent( &e ) != 0 )
-		{
-			if( e.type == SDL_QUIT )
-			{
-				quit = true;
-			}
-			else if (e.type == SDL_KEYDOWN)
-			{
-				switch( e.key.keysym.sym )
-				{
-
-        }
-			}
-    }
-
-    // black out the screen
-    SDL_Rect screen_dim = SDL_Rect { 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT };
-    SDL_SetRenderDrawColor(gRenderer, 0x00, 0x00, 0x00, 0xFF);
-    SDL_RenderFillRect(gRenderer, &screen_dim);
-
-    inventory->drawDebugTo(gRenderer, textureAtlas, fontAtlas);
-
-    // render screen
-		SDL_RenderPresent(gRenderer);
-
-		// update last_frame_ticks
-		last_time = curr_time;
-	}
+  engine.run();
 
   close();
 }
