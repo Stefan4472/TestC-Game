@@ -18,6 +18,7 @@ class SimpleAnimation
     float x, y;
 
     SimpleAnimation(AnimationId animId);
+    // update(int ms);
 };
 
 #endif

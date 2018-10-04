@@ -37,11 +37,12 @@ Inventory::Inventory(Sprite* owner, int rows, int cols, int hotbarSize,
 
 void Inventory::rangeCheck(int row, int col, bool hotbar)
 {
+	printf("Range checking %d, %d, %s\n", row, col, hotbar ? "hotbar" : "main");
 	if (hotbar && (row != 0 || col < 0 || col >= hotbarSize))
 	{
 		throw runtime_error("Hotbar index out of bounds");
 	}
-	else if (row >= mainInvRows || col >= mainInvCols || row < 0 || col < 0)
+	else if (!hotbar && (row >= mainInvRows || col >= mainInvCols || row < 0 || col < 0))
 	{
 		throw runtime_error("Main Inventory index out of bounds");
 	}
@@ -99,6 +100,8 @@ void Inventory::copyStackTo(InvCoordinate stackCoord, ItemStack* stack)
 
 ItemStack* Inventory::addStack(ItemStack* stack, int row, int col, bool hotbar)
 {
+	rangeCheck(row, col, hotbar);  // TODO: NOTE, THIS DOES 3 RANGE CHECKS
+
 	InvCoordinate slot(row, col, hotbar);
 
 	ItemStack* replaced = getStack(slot);
@@ -387,7 +390,7 @@ void Inventory::drawDebugTo(SDL_Renderer* renderer, TextureAtlas* textureAtlas,
 	FontAtlas* fontAtlas)
 {
 	SDL_Rect outer_bounds = SDL_Rect { 0, 0, mainInvCols * 64, (mainInvRows + 1) * 64 };
-
+	// TODO: FIX OUTER BOUNDS SO HOTBAR IS DRAWN CORRECTLY 
 	// draw filled gray background rectangle
 	SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
 	SDL_RenderFillRect(renderer, &outer_bounds);
@@ -471,8 +474,9 @@ int Inventory::saveToByteStream(char bytes[], int maxSize)
 	return save_index + 1;
 }
 
-static Inventory* restoreFromByteStream(char bytes[], int numBytes)
+Inventory* Inventory::restoreFromByteStream(char bytes[], int numBytes)
 {
+	printf("Restoring Inventory...\n");
 	// retrieve data on inventory size, and number of stacks saved
 	int main_rows = bytes[0];
 	int main_cols = bytes[1];
@@ -480,7 +484,8 @@ static Inventory* restoreFromByteStream(char bytes[], int numBytes)
 
 	// calculate position of hotbarSize and retrieve
 	int hotbar_size = bytes[3 + 4 * num_stacks];
-
+	printf("%d rows, %d cols, %d stacks, hotbar %d\n", main_rows, main_cols,
+		num_stacks, hotbar_size);
 	// TODO: HOW TO RETRIEVE SPRITE OWNER?
 	Inventory* inventory = new Inventory(NULL, main_rows, main_cols, hotbar_size);
 
@@ -493,7 +498,8 @@ static Inventory* restoreFromByteStream(char bytes[], int numBytes)
 		int stack_size = bytes[start_index + 1];
 		int stack_row = bytes[start_index + 2];
 		int stack_col = bytes[start_index + 3];
-
+		printf("Item %d: %d of %s at %d, %d\n", i, stack_size,
+			Item::getName(item_type).c_str(), stack_row, stack_col);
 		inventory->addStack(ItemUtil::createStack(item_type, stack_size),
 			stack_row, stack_col, false);
 	}
@@ -504,10 +510,11 @@ static Inventory* restoreFromByteStream(char bytes[], int numBytes)
 	{
 		ItemType item_type = ItemType(bytes[start_index]);
 		int stack_size = bytes[start_index + 1];
+		printf("Hotbar %d: %d of %s\n", j, stack_size, Item::getName(item_type).c_str());
 		inventory->addStack(ItemUtil::createStack(item_type, stack_size),
 			0, j, true);
 		start_index += 2;
 	}
-
+	printf("Finished restoring\n");
 	return inventory;
 }

@@ -16,6 +16,7 @@
 
 using namespace std;
 
+Inventory* createInventory();
 bool init();
 bool loadMedia();
 SDL_Texture* loadTexture(std::string path);
@@ -47,24 +48,28 @@ int main(int argc, char* argv[])
   bool quit = false;
 	SDL_Event e;
 
-  // ItemStack* bread_stack = ItemUtil::createStack(ItemType::BREAD_LOAF, 12);
-  // while (!bread_stack->isEmpty())
-  // {
-  //   printf("There is a stack of %s with size %d\n",
-  //     Item::getName(bread_stack->itemType).c_str(), bread_stack->size());
-  //   Item* top = bread_stack->popNext();
-  //   printf("Popped off a %s item\n", Item::getName(top->itemType).c_str());
-  // }
+  Inventory* inventory = createInventory();
 
-  Inventory inventory(NULL, 3, 8, 10);
-  inventory.addStack(ItemUtil::createStack(ItemType::BREAD_LOAF, 12), 0, 0, false);
-  inventory.addStack(ItemUtil::createStack(ItemType::BREAD_LOAF, 12), 1, 0, false);
-  inventory.addStack(ItemUtil::createStack(ItemType::BREAD_LOAF, 12), 2, 0, false);
-  inventory.addStack(ItemUtil::createStack(ItemType::PISTOL, 1), 0, 0, true);
-  inventory.addStack(ItemUtil::createStack(ItemType::PISTOL_AMMO, 32), 0, 1, true);
-  inventory.addStack(ItemUtil::createStack(ItemType::CHICKEN_LEG, 6), 0, 2, true);
-  inventory.swapStacks(0, 0, false, 0, 2, true);
-  inventory.loadInHand();
+  char buffer[400];
+  int size = inventory->saveToByteStream(buffer, 400);
+  printf("Save took %d bytes\n", size);
+  FILE* file_handle = fopen("test_inventory_file", "wb");
+  if (file_handle)
+  {
+    fwrite(buffer, 1, size, file_handle);
+    fclose(file_handle);
+  }
+
+  // printf("Reading inventory from file\n");
+  // char buffer[400];
+  // FILE* file_handle = fopen("test_inventory_file", "rb");
+  // fread(buffer, 1, 400, file_handle);
+  // Inventory* inventory = Inventory::restoreFromByteStream(buffer, 400);
+  // printf("Done\n");
+
+  // inventory.swapStacks(0, 0, false, 0, 2, true);
+  // inventory.loadInHand();
+
 	// main loop
 	while (!quit)
 	{
@@ -96,7 +101,7 @@ int main(int argc, char* argv[])
     SDL_SetRenderDrawColor(gRenderer, 0x00, 0x00, 0x00, 0xFF);
     SDL_RenderFillRect(gRenderer, &screen_dim);
 
-    inventory.drawDebugTo(gRenderer, textureAtlas, fontAtlas);
+    inventory->drawDebugTo(gRenderer, textureAtlas, fontAtlas);
 
     // render screen
 		SDL_RenderPresent(gRenderer);
@@ -106,6 +111,25 @@ int main(int argc, char* argv[])
 	}
 
   close();
+}
+
+Inventory* createInventory()
+{
+  Inventory* inventory = new Inventory(NULL, 3, 8, 10);
+  inventory->addStack(ItemUtil::createStack(ItemType::BREAD_LOAF, 12), 0, 0, false);
+  inventory->addStack(ItemUtil::createStack(ItemType::BREAD_LOAF, 12), 1, 0, false);
+  inventory->addStack(ItemUtil::createStack(ItemType::BEER_MUG, 3), 2, 0, false);
+  inventory->addStack(ItemUtil::createStack(ItemType::SHOTGUN_AMMO, 10), 0, 3, false);
+  inventory->addStack(ItemUtil::createStack(ItemType::PISTOL_AMMO, 36), 0, 7, false);
+  inventory->addStack(ItemUtil::createStack(ItemType::BREAD_LOAF, 5), 1, 1, false);
+  inventory->addStack(ItemUtil::createStack(ItemType::BREAD_LOAF, 8), 2, 4, false);
+
+  inventory->addStack(ItemUtil::createStack(ItemType::PISTOL, 1), 0, 0, true);
+  inventory->addStack(ItemUtil::createStack(ItemType::PISTOL_AMMO, 32), 0, 1, true);
+  inventory->addStack(ItemUtil::createStack(ItemType::CHICKEN_LEG, 6), 0, 2, true);
+  inventory->addStack(ItemUtil::createStack(ItemType::SWORD, 1), 2, 0, false);
+
+  return inventory;
 }
 
 bool init()
