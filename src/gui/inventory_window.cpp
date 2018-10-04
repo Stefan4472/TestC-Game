@@ -36,7 +36,6 @@ InventoryWindow::InventoryWindow(Inventory* inventory, EngineGUIInterface* engin
 
 void InventoryWindow::handleInputEvent(SDL_Event e)
 {
-  printf("Window handling input...");
   switch (e.type)
   {
     // update mouse position
@@ -66,13 +65,12 @@ void InventoryWindow::handleInputEvent(SDL_Event e)
           break;
       }
   }
-  printf("Done\n");
 }
 
 void InventoryWindow::drawTo(SDL_Renderer* renderer, TextureAtlas* textureAtlas,
   FontAtlas* fontAtlas)
 {
-  printf("Drawing inventory...");
+  // printf("Drawing inventory...");
   // draw gray window outline
   SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
   SDL_RenderFillRect(renderer, &windowBounds);
@@ -80,9 +78,11 @@ void InventoryWindow::drawTo(SDL_Renderer* renderer, TextureAtlas* textureAtlas,
   // no dragged slot: test for hover
   if (!slotDragged && isMouseOverSlot(&selectedSlot))
   {
+    // pick up hovered stack
     ItemStack* hovered = inventory->getStack(selectedSlot);
     string item_name = Item::getName(hovered->itemType);
     string item_description = Item::getDescription(hovered->itemType);
+    // printf("Hovering over a stack of %d %s\n", hovered->size(), item_name.c_str());
 
     // color slot darker
     SDL_Rect slot_bounds = getSlotBounds(selectedSlot);
@@ -99,7 +99,7 @@ void InventoryWindow::drawTo(SDL_Renderer* renderer, TextureAtlas* textureAtlas,
 		x = mainInvBounds.x;
 		for (int j = 0; j < inventory->mainInvCols; j++)
 		{
-			if (!inventory->mainInvItems[i][j]->isEmpty())
+			if (inventory->mainInvItems[i][j]->itemType != ItemType::NONE)
 			{
 				textureAtlas->drawImg(renderer, inventory->mainInvItems[i][j]->itemTexture,
           x, y, false);
@@ -114,7 +114,7 @@ void InventoryWindow::drawTo(SDL_Renderer* renderer, TextureAtlas* textureAtlas,
 	// draw hotbar items
 	for (int j = 0; j < inventory->hotbarSize; j++)
 	{
-		if (!inventory->hotbarItems[j]->isEmpty())
+		if (inventory->hotbarItems[j]->itemType != ItemType::NONE)
 		{
 			textureAtlas->drawImg(renderer, inventory->hotbarItems[j]->itemTexture,
         x, hotbarBounds.y, false);
@@ -127,6 +127,7 @@ void InventoryWindow::drawTo(SDL_Renderer* renderer, TextureAtlas* textureAtlas,
   // draw dragged item, if any
   if (slotDragged)
   {
+    // printf("Drawing dragged stack, with texture %d\n", int(selectedStack->itemTexture));
     textureAtlas->drawImg(renderer, selectedStack->itemTexture, mouseX, mouseY, false);
   }
 
@@ -144,7 +145,7 @@ void InventoryWindow::drawTo(SDL_Renderer* renderer, TextureAtlas* textureAtlas,
   SDL_SetRenderDrawColor(renderer, 0xFF, 0x00, 0x00, 0xFF);
   SDL_RenderDrawRect(renderer, &mainInvBounds);
 
-  printf("Done\n");
+  // printf("Done\n");
 }
 
 void InventoryWindow::forceClose()
@@ -154,40 +155,62 @@ void InventoryWindow::forceClose()
 
 void InventoryWindow::handleMousePressed()
 {
+  printf("Handling Mouse Press...");
   // handle mouse over an inventory slot--"pick up" item
   if (isMouseOverSlot(&selectedSlot))
   {
-    // remove stack from inventory (temporarily)
-    selectedStack = inventory->rmvStack(selectedSlot);
-    slotDragged = true;
+    selectedStack = inventory->getStack(selectedSlot);
+
+    // remove stack from inventory (temporarily) and allow it to be dragged if
+    // not empty
+    if (selectedStack->itemType != ItemType::NONE)
+    {
+      printf("Picked up a stack of %d %s\n",selectedStack->size(), Item::getName(selectedStack->itemType).c_str());
+      inventory->rmvStack(selectedSlot);
+      slotDragged = true;
+    }
   }
+  printf("Done\n");
 }
 
 void InventoryWindow::handleMouseReleased()
 {
+  printf("Handling mouse release...");
+  InvCoordinate release_slot;
+
   // handle mouse over an inventory slot:
-  InvCoordinate release_slot(0, 0, false);
   if (isMouseOverSlot(&release_slot))
   {
     // add selectedStack to the moused-over slot. "Collect" the displaced slot
     selectedStack = inventory->addStack(selectedStack, release_slot);
-
-    if (selectedStack->isEmpty())
+    printf("Added stack back\n");
+    printf("Displaced a stack of %d %s\n",selectedStack->size(), Item::getName(selectedStack->itemType).c_str());
+    if (selectedStack->itemType == ItemType::NONE)
     {
-      selectedStack = NULL; // TODO: DELETE?
+      // delete stack and disable dragged item
+      delete selectedStack;
+      selectedStack = NULL;
       slotDragged = false;
+      printf("Ignoring\n");
     }
     else  // "pick up" displaced stack
     {
       selectedSlot = release_slot;
+      slotDragged = true;
+      printf("Picked up that stack\n");
     }
   }
   // handle mouse in window, but not over a particular slot: return stack to
   // original position
   else if (isMouseInWindow())
   {
+    printf("Non-sense click: adding slot back to original position\n");
     // add selected stack back to original slot
     ItemStack* displaced = inventory->addStack(selectedStack, selectedSlot);
+    if (displaced->itemType != ItemType::NONE)
+    {
+      throw runtime_error("Oops, displaced shouldn't have any items in it");
+    }
     delete displaced;
     slotDragged = false;
   }
@@ -196,7 +219,11 @@ void InventoryWindow::handleMouseReleased()
   {
     // TODO: DROP STACK
     printf("Dropping stack\n");
+    delete selectedStack;
+    selectedStack = NULL;
+    slotDragged = false;
   }
+  printf("Done\n");
 }
 
 SDL_Rect InventoryWindow::getSlotBounds(InvCoordinate slot)
@@ -220,16 +247,16 @@ bool InventoryWindow::isMouseOverSlot(InvCoordinate* slot)
   // handle mouse over main inventory
   if (pointInRect(mouseX, mouseY, mainInvBounds))
   {
-    printf("In Main Inv...");
+    // printf("In Main Inv...");
     slot->row = (mouseY - mainInvBounds.y) / 64;
     slot->col = (mouseX - mainInvBounds.x) / 64;
     slot->hotbar = false;
-    printf("Row is %d, col is %d\n", slot->row, slot->col);
+    // printf("Row is %d, col is %d\n", slot->row, slot->col);
     return true;
   }
   else if (pointInRect(mouseX, mouseY, hotbarBounds))
   {
-    printf("In hotbar\n");
+    // printf("In hotbar\n");
     slot->row = 0;
     slot->col = (mouseX - hotbarBounds.x) / 64;
     slot->hotbar = true;

@@ -177,8 +177,8 @@ ItemStack* Inventory::rmvStack(InvCoordinate slot)
 {
 	// assert specified slot is valid
 	rangeCheck(slot);
-
-	ItemStack* copied = NULL;
+	printf("Inventory: Removing Stack\n");
+	ItemStack* copied = new ItemStack();
 
 	// TODO: USE GETSTACK()?
 	if (slot.hotbar)
