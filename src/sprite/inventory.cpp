@@ -102,8 +102,12 @@ void Inventory::copyStackTo(InvCoordinate stackCoord, ItemStack* stack)
 
 ItemStack* Inventory::addStack(ItemStack* stack, InvCoordinate slot)
 {
+	cout << "Inventory: Adding Stack of " << stack->toString() << endl;
 	ItemStack* replaced = getStack(slot);
+	cout << "Displaced Stack of " << replaced->toString() << endl;
 	setStack(slot, stack);
+	cout << "Stack is now " << getStack(slot)->toString() << endl;
+	printf("Done adding\n");
 	return replaced;
 }
 
@@ -175,36 +179,38 @@ bool Inventory::autoAddStack(ItemStack* stack)
 
 ItemStack* Inventory::rmvStack(InvCoordinate slot)
 {
-	// assert specified slot is valid
-	rangeCheck(slot);
 	printf("Inventory: Removing Stack\n");
-	ItemStack* copied = new ItemStack();
+	ItemStack* to_remove = getStack(slot);
 
-	// TODO: USE GETSTACK()?
-	if (slot.hotbar)
-	{
-		hotbarItems[slot.col]->copyTo(copied);
-		hotbarItems[slot.col]->clearItems();
-	}
-	else
-	{
-		mainInvItems[slot.row][slot.col]->copyTo(copied);
-		mainInvItems[slot.row][slot.col]->clearItems();
-	}
+	ItemStack* copied = new ItemStack();
+	to_remove->copyTo(copied);
+	to_remove->clearItems();
+
+	cout << "Copied: " << copied->toString() << endl;
+	cout << "Cleared: " << to_remove->toString() << endl;
+	printf("Done removing\n");
 	return copied;
 }
 
 void Inventory::swapStacks(InvCoordinate slot1, InvCoordinate slot2)
 {
+	printf("Inventory swap\n");
 	// retrieve the stacks
 	ItemStack* stack_1 = getStack(slot1);
 	ItemStack* stack_2 = getStack(slot2);
+
+	cout << "Stack 1 is " << stack_1->toString() << endl;
+	cout << "Stack 2 is " << stack_2->toString() << endl;
 
 	// perform the swap
 	ItemStack temp;
 	stack_1->copyTo(&temp);
 	stack_2->copyTo(stack_1);
 	temp.copyTo(stack_2);
+
+	cout << "Stack 1 is now " << stack_1->toString() << endl;
+	cout << "Stack 2 is now " << stack_2->toString() << endl;
+	printf("Finished inventory swap\n");
 }
 
 Item* Inventory::getInHand()

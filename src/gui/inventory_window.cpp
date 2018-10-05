@@ -49,11 +49,6 @@ void InventoryWindow::handleInputEvent(SDL_Event e)
       handleMousePressed();
       break;
 
-    // mouse released
-    case SDL_MOUSEBUTTONUP:
-      handleMouseReleased();
-      break;
-
     // key pressed
     case SDL_KEYDOWN:
       switch (e.key.keysym.sym)
@@ -70,24 +65,25 @@ void InventoryWindow::handleInputEvent(SDL_Event e)
 void InventoryWindow::drawTo(SDL_Renderer* renderer, TextureAtlas* textureAtlas,
   FontAtlas* fontAtlas)
 {
-  // printf("Drawing inventory...");
   // draw gray window outline
   SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
   SDL_RenderFillRect(renderer, &windowBounds);
 
-  // no dragged slot: test for hover
-  if (!slotDragged && isMouseOverSlot(&selectedSlot))
+  // test for hover
+  if (isMouseOverSlot(&selectedSlot))
   {
-    // pick up hovered stack
-    ItemStack* hovered = inventory->getStack(selectedSlot);
-    string item_name = Item::getName(hovered->itemType);
-    string item_description = Item::getDescription(hovered->itemType);
-    // printf("Hovering over a stack of %d %s\n", hovered->size(), item_name.c_str());
-
     // color slot darker
     SDL_Rect slot_bounds = getSlotBounds(selectedSlot);
     SDL_SetRenderDrawColor(renderer, 0xCC, 0xCC, 0xCC, 0xFF);
     SDL_RenderFillRect(renderer, &slot_bounds);
+
+    // display name and description if no slot is being dragged
+    if (!slotDragged)
+    {
+      ItemStack* hovered = inventory->getStack(selectedSlot);
+      string item_name = Item::getName(hovered->itemType);
+      string item_description = Item::getDescription(hovered->itemType);
+    }
   }
 
   // draw main inventory slots
@@ -144,8 +140,6 @@ void InventoryWindow::drawTo(SDL_Renderer* renderer, TextureAtlas* textureAtlas,
   // draw hotbar bounds
   SDL_SetRenderDrawColor(renderer, 0xFF, 0x00, 0x00, 0xFF);
   SDL_RenderDrawRect(renderer, &mainInvBounds);
-
-  // printf("Done\n");
 }
 
 void InventoryWindow::forceClose()
@@ -156,8 +150,13 @@ void InventoryWindow::forceClose()
 void InventoryWindow::handleMousePressed()
 {
   printf("Handling Mouse Press...");
-  // handle mouse over an inventory slot--"pick up" item
-  if (isMouseOverSlot(&selectedSlot))
+
+  // an inventory slot is already being dragged
+  InvCoordinate release_slot;
+
+  // handle mouse over an inventory slot and no stack currently dragged.
+  // check if the hovered stack should be picked up
+  if (!slotDragged && isMouseOverSlot(&selectedSlot))
   {
     selectedStack = inventory->getStack(selectedSlot);
 
@@ -166,43 +165,41 @@ void InventoryWindow::handleMousePressed()
     if (selectedStack->itemType != ItemType::NONE)
     {
       printf("Picked up a stack of %d %s\n",selectedStack->size(), Item::getName(selectedStack->itemType).c_str());
-      inventory->rmvStack(selectedSlot);
+      selectedStack = inventory->rmvStack(selectedSlot);
       slotDragged = true;
     }
   }
-  printf("Done\n");
-}
-
-void InventoryWindow::handleMouseReleased()
-{
-  printf("Handling mouse release...");
-  InvCoordinate release_slot;
-
-  // handle mouse over an inventory slot:
-  if (isMouseOverSlot(&release_slot))
+  // handle mouse over an inventory slot and a stack being dragged
+  // drop the dragged stack into the hovered slot
+  else if (isMouseOverSlot(&release_slot))
   {
     // add selectedStack to the moused-over slot. "Collect" the displaced slot
-    selectedStack = inventory->addStack(selectedStack, release_slot);
+    ItemStack* displaced = inventory->addStack(selectedStack, release_slot);
     printf("Added stack back\n");
-    printf("Displaced a stack of %d %s\n",selectedStack->size(), Item::getName(selectedStack->itemType).c_str());
-    if (selectedStack->itemType == ItemType::NONE)
+    printf("Displaced a stack of %d %s\n", displaced->size(), Item::getName(displaced->itemType).c_str());
+    // displaced stack was empty
+    if (displaced->itemType == ItemType::NONE)
     {
       // delete stack and disable dragged item
-      delete selectedStack;
-      selectedStack = NULL;
+      delete displaced;
+      displaced = NULL;
       slotDragged = false;
+      // also invalidate selectedStack
+      selectedStack = NULL;
       printf("Ignoring\n");
     }
-    else  // "pick up" displaced stack
+    // displaced stack had items in it. pick it up
+    else
     {
       selectedSlot = release_slot;
+      selectedStack = displaced;
       slotDragged = true;
       printf("Picked up that stack\n");
     }
   }
   // handle mouse in window, but not over a particular slot: return stack to
   // original position
-  else if (isMouseInWindow())
+  else if (slotDragged && isMouseInWindow())
   {
     printf("Non-sense click: adding slot back to original position\n");
     // add selected stack back to original slot
@@ -215,7 +212,7 @@ void InventoryWindow::handleMouseReleased()
     slotDragged = false;
   }
   // handle mouse outside window: drop selected slot
-  else
+  else if (slotDragged)
   {
     // TODO: DROP STACK
     printf("Dropping stack\n");
@@ -223,6 +220,7 @@ void InventoryWindow::handleMouseReleased()
     selectedStack = NULL;
     slotDragged = false;
   }
+
   printf("Done\n");
 }
 

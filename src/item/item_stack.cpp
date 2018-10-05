@@ -125,3 +125,8 @@ void ItemStack::copyTo(ItemStack* other)
 		other->items[i] = items[i];
 	}
 }
+
+string ItemStack::toString()
+{
+	return "Stack of " + to_string(size()) + " " + Item::getName(itemType);
+}

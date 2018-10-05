@@ -52,6 +52,8 @@ class ItemStack
 		// copies the Items contained in this stack to the other stack, OVERWRITING
 		// the Items in the other stack. Does not delete any items.
 		void copyTo(ItemStack* other);
+		// debug string: "Stack of %d %s" (stack size, item name)
+		string toString();
 };
 
 #endif

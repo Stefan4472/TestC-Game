@@ -5,13 +5,12 @@
 #include <SDL2/SDL.h>
 #include <vector>
 #include <stdexcept>
+#include <iostream>
 #include "constants.h"
 #include "texture_atlas.h"
 #include "font_atlas.h"
 #include "inventory_coordinate.h"
 #include "item_util.h"
-// #include "gui_window.h"
-// #include "gui_img_button.h"
 #include "item.h"
 #include "item_stack.h"
 #include "sprite.h"
