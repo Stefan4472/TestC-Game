@@ -1,28 +1,28 @@
 #ifndef FONT_ATLAS_H
 #define FONT_ATLAS_H
 
+#include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
+#include <unordered_map>
+#include "font_ids.h"
+#include "loaded_font_spec.h"
+#include "rendered_char_spec.h"
 
-// The Font Atlas manages loaded fonts. It stores them based on the Fonts enum.
-
-enum Fonts
-{
-	NO_FONT,
-	MAIN_FONT,
-	NUM_FONTS
-};
+using namespace std;
 
 class FontAtlas
 {
-	// loaded fonts corresponding to Fonts enum
-	TTF_Font *loadedFonts[NUM_FONTS];
-	
+	private:
+		unordered_map<LoadedFontSpec, TTF_Font*> loadedFonts;
+		unordered_map<RenderedCharSpec, SDL_Texture*> renderedChars;
+
 	public:
 		// loads fonts to array
 		FontAtlas();
 		// returns corresponding Font
-		TTF_Font* getFont(int fontId);
-		// frees fonts
+		TTF_Font* getFont(SDL_Renderer* renderer, FontType fontId, int fontSize);
+		void drawTextTo(SDL_Renderer* renderer, string text, FontType fontType, int fontSize);
+		// frees fonts and rendered character textures
 		~FontAtlas();
 };
 #endif
