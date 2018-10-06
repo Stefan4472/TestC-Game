@@ -11,8 +11,29 @@ that has hash and equals functions.
 */
 struct LoadedFontSpec
 {
-	FontId fontId;
-	int fontSize;
+  public:
+  	FontId fontId;
+  	int fontSize;
+
+  LoadedFontSpec(FontId fontId, int fontSize);
+
+  bool operator==(const LoadedFontSpec& other) const
+  {
+    return fontId == other.fontId && fontSize == other.fontSize;
+  }
 };
 
+// TODO: DEFINE IN CPP FILE
+// define hashing function in std namespace
+namespace std
+{
+  template <>
+  struct hash<LoadedFontSpec>
+  {
+    size_t operator()(const LoadedFontSpec& spec) const
+    {
+      return int(spec.fontId) * 256 + spec.fontSize; // TODO: TEST
+    }
+  };
+}
 #endif

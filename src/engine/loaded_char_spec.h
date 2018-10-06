@@ -11,15 +11,16 @@ hash() functions.
 struct RenderedCharSpec
 {
   public:
-  	FontId fontType;
+  	FontId fontId;
   	int fontSize;
   	char renderedChar;
 
-    RenderedCharSpec( );
+    RenderedCharSpec(FontId fontId, int fontSize, char renderedChar);
 
-    bool operator==(const ChunkId& other) const
+    bool operator==(const RenderedCharSpec& other) const
     {
-      return x == other.x && y == other.y;
+      return fontId == other.fontId && fontSize == other.fontSize &&
+        renderedChar == other.renderedChar;
     }
 };
 
@@ -28,11 +29,11 @@ struct RenderedCharSpec
 namespace std
 {
   template <>
-  struct hash<ChunkId>
+  struct hash<RenderedCharSpec>
   {
-    size_t operator()(const ChunkId& coord) const
+    size_t operator()(const RenderedCharSpec& spec) const
     {
-      return coord.x + 39 * coord.y;
+      return int(spec.fontId) * 256 + spec.fontSize * 256 + spec.renderedChar; // TODO: TEST
     }
   };
 }
