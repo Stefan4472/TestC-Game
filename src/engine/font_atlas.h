@@ -29,6 +29,7 @@ class FontAtlas
 		SDL_Texture* getRenderedChar(SDL_Renderer* renderer, FontId fontId,
 			int fontSize, char character);
 
+		// TODO: ALLOW DRAWING FROM FONTSPEC (RENAMED FROM LOADEDFONTSPEC)
 		void drawTextTo(SDL_Renderer* renderer, string text, int x, int y,
 			FontId fontId, int fontSize);
 

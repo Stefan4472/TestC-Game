@@ -88,6 +88,7 @@ void InventoryWindow::drawTo(SDL_Renderer* renderer, TextureAtlas* textureAtlas,
 
   // draw main inventory slots
   int x = 0, y = mainInvBounds.y;
+  ItemStack* curr_stack = NULL;
 
 	// draw main inventory items
 	for (int i = 0; i < inventory->mainInvRows; i++)
@@ -95,10 +96,15 @@ void InventoryWindow::drawTo(SDL_Renderer* renderer, TextureAtlas* textureAtlas,
 		x = mainInvBounds.x;
 		for (int j = 0; j < inventory->mainInvCols; j++)
 		{
-			if (inventory->mainInvItems[i][j]->itemType != ItemType::NONE)
+      curr_stack = inventory->mainInvItems[i][j];
+			if (curr_stack->itemType != ItemType::NONE)
 			{
-				textureAtlas->drawImg(renderer, inventory->mainInvItems[i][j]->itemTexture,
-          x, y, false);
+				textureAtlas->drawImg(renderer, curr_stack->itemTexture, x, y, false);
+        if (curr_stack->size() > 1)
+        {
+          fontAtlas->drawTextTo(renderer, to_string(curr_stack->size()), x + 32,
+            y + 32, FontId::ORANGE_KID, 20);
+        }
 			}
 			x += 64;
 		}
@@ -110,11 +116,16 @@ void InventoryWindow::drawTo(SDL_Renderer* renderer, TextureAtlas* textureAtlas,
 	// draw hotbar items
 	for (int j = 0; j < inventory->hotbarSize; j++)
 	{
-		if (inventory->hotbarItems[j]->itemType != ItemType::NONE)
+    curr_stack = inventory->hotbarItems[j];
+		if (curr_stack->itemType != ItemType::NONE)
 		{
-			textureAtlas->drawImg(renderer, inventory->hotbarItems[j]->itemTexture,
-        x, hotbarBounds.y, false);
-		}
+			textureAtlas->drawImg(renderer, curr_stack->itemTexture, x, hotbarBounds.y, false);
+      if (curr_stack->size() > 1)
+      {
+        fontAtlas->drawTextTo(renderer, to_string(curr_stack->size()), x + 32, y + 32,
+          FontId::ORANGE_KID, 20);
+      }
+    }
 		x += 64;
 	}
 

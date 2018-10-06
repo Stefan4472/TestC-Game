@@ -103,7 +103,14 @@ void Inventory::copyStackTo(InvCoordinate stackCoord, ItemStack* stack)
 ItemStack* Inventory::addStack(ItemStack* stack, InvCoordinate slot)
 {
 	cout << "Inventory: Adding Stack of " << stack->toString() << endl;
-	ItemStack* replaced = getStack(slot);
+	ItemStack* replaced = getStack(slot); // TODO: THINK ABOUT THIS. DO WE NEED TO SWAP?
+
+	// attempt to combine "replaced" stack into current stack, then swap
+	while (stack->itemType == replaced->itemType && !replaced->isEmpty() &&
+		replaced->canAdd(stack->peekNext()))
+	{
+		replaced->addItem(stack->popNext());
+	}
 	cout << "Displaced Stack of " << replaced->toString() << endl;
 	setStack(slot, stack);
 	cout << "Stack is now " << getStack(slot)->toString() << endl;
