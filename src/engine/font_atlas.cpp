@@ -96,6 +96,37 @@ SDL_Texture* FontAtlas::getRenderedChar(SDL_Renderer* renderer, FontId fontId,
 	}
 }
 
+void FontAtlas::drawTextTo(SDL_Renderer* renderer, string text, int x, int y,
+	FontId fontId, int fontSize)
+{
+	SDL_Texture* char_texture = NULL;
+	int texture_w, texture_h;
+	int curr_coord = x;
+
+	for (int i = 0; i < text.size(); i++)
+	{
+		char_texture = getRenderedChar(renderer, fontId, fontSize, text.at(i));
+
+		// get texture width/height TODO: ALSO CACHE?
+		SDL_QueryTexture(char_texture, NULL, NULL, &texture_w, &texture_h);
+
+		// set source and destination coordinates
+		src.x = 0;
+		src.y = 0;
+		src.w = texture_w;
+		src.h = texture_h; // TODO: SHOULD BE CONSTANT
+
+		dest.x = curr_coord;
+		dest.y = y;
+		dest.w = texture_w;
+		dest.h = texture_h;
+
+		SDL_RenderCopy(renderer, char_texture, &src, &dest);
+
+		curr_coord += texture_w;
+	}
+}
+
 FontAtlas::~FontAtlas()
 {
 	printf("Freeing FontAtlas\n");  // TODO: ITERATE THROUGH BOTH MAPPINGS

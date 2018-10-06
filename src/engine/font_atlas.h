@@ -16,7 +16,7 @@ class FontAtlas
 	private:
 		unordered_map<LoadedFontSpec, TTF_Font*> fontCache;
 		unordered_map<RenderedCharSpec, SDL_Texture*> renderedCharCache;
-
+		SDL_Rect src, dest;
 	public:  // TODO: SUPPORT COLORS
 
 		// loads fonts to array
@@ -29,7 +29,8 @@ class FontAtlas
 		SDL_Texture* getRenderedChar(SDL_Renderer* renderer, FontId fontId,
 			int fontSize, char character);
 
-		void drawTextTo(SDL_Renderer* renderer, string text, FontId fontType, int fontSize);
+		void drawTextTo(SDL_Renderer* renderer, string text, int x, int y,
+			FontId fontId, int fontSize);
 
 		// frees fonts and rendered character textures
 		~FontAtlas();
