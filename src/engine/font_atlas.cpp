@@ -1,26 +1,110 @@
 #include "font_atlas.h"
 
-FontAtlas::FontAtlas()
+// array mapping FontId index to path to the corresponding font
+const string FONT_PATHS[] =
 {
-	loadedFonts[NO_FONT] = NULL;
-	loadedFonts[MAIN_FONT] = TTF_OpenFont( "fonts/joystix monospace.ttf", 28 );
-	// todo: error checking
-	
+	"",
+	"fonts/AdventPro-Light.ttf",
+	"fonts/gomarice_no_continue.ttf",
+	"fonts/joystix monospace.ttf",
+	"fonts/orange kid.ttf",
+	""
+};
+
+SDL_Texture* renderChar(SDL_Renderer* renderer, char charToLoad, TTF_Font* font)
+{
+	SDL_Surface* rendered_text_surface = TTF_RenderText_Solid(font, text, color);
+
+	if (rendered_text_surface)
+	{
+		// create texture
+		SDL_Texture* rendered_text = SDL_CreateTextureFromSurface(renderer, rendered_text_surface);
+
+		if (rendered_text)
+		{
+			// free original surface and return texture
+			SDL_FreeSurface(rendered_text_surface);
+			return rendered_text;
+		}
+		else
+		{
+			throw runtime_error("Unable to create texture");
+		}
+	}
+	else
+	{
+		printf("SDL_ttf Error: %s\n", TTF_GetError());
+		throw runtime_error("Unable to render text surface!");
+	}
 }
 
-TTF_Font* FontAtlas::getFont(int fontId)
+FontAtlas::FontAtlas()
 {
-	return loadedFonts[fontId];	
+
+}
+
+TTF_Font* FontAtlas::getFont(SDL_Renderer* renderer, FontId fontId, int fontSize)
+{
+	if (fontId == FontId::NONE || fontId == FontId::NUM_FONTS)
+	{
+		throw runtime_error("FontId out of bounds");
+	}
+
+	LoadedFontSpec requested_font(fontId, fontSize);
+
+	// search for font
+	unordered_map<LoadedFontSpec, TTF_Font*>::iterator iterator =
+		fontCache.find(requested_font);
+
+	// not found: load the font and add
+	if (iterator == fontCache.end())
+	{
+		printf("Not found in cache. Loading\n");
+		fontCache.emplace(requested_font, TTF_OpenFont(FONT_PATHS[int(fontId)], fontSize));
+	}
+	else
+	{
+		return iterator->second;
+	}
+}
+
+TextureId* FontAtlas::getRenderedChar(SDL_Renderer* renderer, FontId fontId,
+	int fontSize, char character)
+{
+	RenderedCharSpec requested_char(fontId, fontSize, character);
+
+	// search for char
+	unordered_map<RenderedCharSpec, SDL_Texture*>::iterator iterator =
+		renderedCharCache.find(requested_char);
+
+	// not found: get the font and render the char
+	if (iterator == renderedCharCache.end())
+	{
+		// get the font instance
+		TTF_Font* font = getFont(renderer, fontId, fontSize);
+
+		// TODO: IS EMPLACE THE CORRECT METHOD?
+		renderedCharCache.emplace(requested_char, renderChar(renderer, character, font));
+	}
+	else
+	{
+		return iterator->second;
+	}
 }
 
 FontAtlas::~FontAtlas()
 {
-	printf("Freeing Fonts\n");
-	for (int i = 1; i < NUM_FONTS; i++) 
-	{
-		printf("closing font %d\n", i);
-		TTF_CloseFont(loadedFonts[i]);
-		printf("done\n");
-		loadedFonts[i] = NULL;
-	}
+	printf("Freeing FontAtlas\n");  // TODO: ITERATE THROUGH BOTH MAPPINGS
+	// free loaded fonts
+	for (pair<LoadedFontSpec, TTF_Font*> font_pair : fontCache)
+  {
+		TTF_CloseFont(font_pair.second);
+  }
+
+	// free rendered chars
+	for (pair<RenderedCharSpec, SDL_Texture*> rendered_pair : renderedCharCache)
+  {
+		SDL_DestroyTexture(rendered_pair.second);
+  }
+	printf("Done\n");
 }

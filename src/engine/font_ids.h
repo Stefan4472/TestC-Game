@@ -5,7 +5,7 @@ enum class FontId
 {
   NONE,
   ADVENT_PRO,
-  CONTINUE,
+  NO_CONTINUE,
   JOYSTIX,
   ORANGE_KID,
   NUM_FONTS
