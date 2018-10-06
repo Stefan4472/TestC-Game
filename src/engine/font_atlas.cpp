@@ -1,14 +1,14 @@
 #include "font_atlas.h"
 
-// array mapping FontId index to path to the corresponding font
+// array mapping FontId index to path to the corresponding font. Paths are
+// relative to the src folder
 const string FONT_PATHS[] =
 {
 	"",
-	"fonts/AdventPro-Light.ttf",
-	"fonts/gomarice_no_continue.ttf",
-	"fonts/joystix monospace.ttf",
-	"fonts/orange kid.ttf",
-	""
+	"../fonts/AdventPro-Light.ttf",
+	"../fonts/gomarice_no_continue.ttf",
+	"../fonts/joystix monospace.ttf",
+	"../fonts/orange kid.ttf"
 };
 
 SDL_Texture* renderChar(SDL_Renderer* renderer, char charToRender, TTF_Font* font)
@@ -62,9 +62,17 @@ TTF_Font* FontAtlas::getFont(SDL_Renderer* renderer, FontId fontId, int fontSize
 	// not found: load the font and add
 	if (iterator == fontCache.end())
 	{
-		printf("Not found in cache. Loading\n");
-		fontCache.emplace(requested_font, TTF_OpenFont(FONT_PATHS[int(fontId)].c_str(),
-			fontSize));
+		printf("Not found in cache. Loading font %s size %d\n", FONT_PATHS[int(fontId)].c_str(), fontSize);
+		TTF_Font* loaded_font = TTF_OpenFont(FONT_PATHS[int(fontId)].c_str(), fontSize);
+		if (!loaded_font)
+		{
+			printf("Error Loading Font: %s\n", SDL_GetError());
+			throw runtime_error("Error Loading Font");
+		}
+		printf("Loaded font successfully\n");
+		fontCache.emplace(requested_font, loaded_font);
+
+		return loaded_font;
 	}
 	else
 	{
@@ -87,8 +95,11 @@ SDL_Texture* FontAtlas::getRenderedChar(SDL_Renderer* renderer, FontId fontId,
 		// get the font instance
 		TTF_Font* font = getFont(renderer, fontId, fontSize);
 
+		SDL_Texture* rendered_char = renderChar(renderer, character, font);
 		// TODO: IS EMPLACE THE CORRECT METHOD?
-		renderedCharCache.emplace(requested_char, renderChar(renderer, character, font));
+		renderedCharCache.emplace(requested_char, rendered_char);
+
+		return rendered_char;
 	}
 	else
 	{

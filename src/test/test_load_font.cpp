@@ -1,13 +1,10 @@
-// testing the FontAtlas, which supports rendering/drawing text in various fonts and sizes
-// g++ test/test_font_atlas.cpp engine/font_atlas.cpp engine/rendered_char_spec.cpp engine/loaded_font_spec.cpp -o test_font_atlas -Iengine -I. -lSDL2 -lSDL2_image -lSDL2_ttf -std=c++11
+// testing loading a font using SDL
+// g++ test/test_load_font.cpp -o test_load_font -I. -lSDL2 -lSDL2_ttf -std=c++11
 #include <SDL2/SDL.h>
-#include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
 #include <stdio.h>
 #include <string>
 #include <unistd.h>
-#include "font_ids.h"
-#include "font_atlas.h"
 
 using namespace std;
 
@@ -16,12 +13,9 @@ void close();
 
 SDL_Window* gWindow = NULL;
 SDL_Renderer* gRenderer = NULL;
-FontAtlas* fontAtlas = NULL;
 
 const int SCREEN_WIDTH = 640;
 const int SCREEN_HEIGHT = 480;
-
-SDL_Rect screen_dim { 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT };
 
 const int TILE_WIDTH = 32;
 const int TILE_HEIGHT = 32;
@@ -29,18 +23,16 @@ const int TILE_HEIGHT = 32;
 int main(int argc, char* argv[])
 {
   init();
-  fontAtlas = new FontAtlas();
 
-  // fill screen white
-  SDL_SetRenderDrawColor(gRenderer, 0xFF, 0xFF, 0x00, 0xFF);
-  SDL_RenderFillRect(gRenderer, &screen_dim);
-
-  fontAtlas->drawTextTo(gRenderer, "Hello World", 100, 100, FontId::ORANGE_KID, 20);
-
-  // render screen
-  SDL_RenderPresent(gRenderer);
-
-  sleep(10);
+  TTF_Font* loaded_font = TTF_OpenFont("../fonts/orange kid.ttf", 20);
+  if (loaded_font)
+  {
+    printf("Loaded font successfully\n");
+  }
+  else
+  {
+    printf("Error Loading Font: %s\n", SDL_GetError());
+  }
 
   close();
 }
@@ -93,9 +85,6 @@ void close()
 {
 	printf("Close function reached\n");
 
-  delete fontAtlas;
-  fontAtlas = NULL;
-
 	// destroy renderer
 	SDL_DestroyRenderer( gRenderer );
 	gRenderer = NULL;
@@ -107,10 +96,6 @@ void close()
 	gWindow = NULL;
 
 	printf("Destroyed Window\n");
-
-	// quit SDL subsystems
-	IMG_Quit();
-	printf("Quit IMG\n");
 
   TTF_Quit();
   printf("Quit TTF\n");
