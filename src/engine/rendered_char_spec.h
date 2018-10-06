@@ -2,6 +2,7 @@
 #define RENDERED_CHAR_SPEC_H
 
 #include <unordered_map>
+#include "font_ids.h"
 
 /*
 Defines a texture of a character rendered by the FontEngine. Essentially a tuple

@@ -1,6 +1,7 @@
 #ifndef LOADED_FONT_SPEC_H
 #define LOADED_FONT_SPEC_H
 
+#include <unordered_map>
 #include "font_ids.h"
 
 using namespace std;

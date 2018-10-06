@@ -24,12 +24,12 @@ class FontAtlas
 
 		// returns rendered font for given FontType and size. This uses the
 		// loadedFonts cache, and will load the font if it isn't already in the cache
-		TTF_Font* getFont(SDL_Renderer* renderer, FontType fontId, int fontSize);
+		TTF_Font* getFont(SDL_Renderer* renderer, FontId fontId, int fontSize);
 
-		TextureId* getRenderedChar(SDL_Renderer* renderer, FontId fontId, 
+		SDL_Texture* getRenderedChar(SDL_Renderer* renderer, FontId fontId,
 			int fontSize, char character);
 
-		void drawTextTo(SDL_Renderer* renderer, string text, FontType fontType, int fontSize);
+		void drawTextTo(SDL_Renderer* renderer, string text, FontId fontType, int fontSize);
 
 		// frees fonts and rendered character textures
 		~FontAtlas();

@@ -11,9 +11,12 @@ const string FONT_PATHS[] =
 	""
 };
 
-SDL_Texture* renderChar(SDL_Renderer* renderer, char charToLoad, TTF_Font* font)
+SDL_Texture* renderChar(SDL_Renderer* renderer, char charToRender, TTF_Font* font)
 {
-	SDL_Surface* rendered_text_surface = TTF_RenderText_Solid(font, text, color);
+	// TODO: COLOR SUPPORT?
+	string to_render(1, charToRender);
+	SDL_Surface* rendered_text_surface = TTF_RenderText_Solid(font, to_render.c_str(),
+		SDL_Color { 0, 0, 0 });
 
 	if (rendered_text_surface)
 	{
@@ -60,7 +63,8 @@ TTF_Font* FontAtlas::getFont(SDL_Renderer* renderer, FontId fontId, int fontSize
 	if (iterator == fontCache.end())
 	{
 		printf("Not found in cache. Loading\n");
-		fontCache.emplace(requested_font, TTF_OpenFont(FONT_PATHS[int(fontId)], fontSize));
+		fontCache.emplace(requested_font, TTF_OpenFont(FONT_PATHS[int(fontId)].c_str(),
+			fontSize));
 	}
 	else
 	{
@@ -68,7 +72,7 @@ TTF_Font* FontAtlas::getFont(SDL_Renderer* renderer, FontId fontId, int fontSize
 	}
 }
 
-TextureId* FontAtlas::getRenderedChar(SDL_Renderer* renderer, FontId fontId,
+SDL_Texture* FontAtlas::getRenderedChar(SDL_Renderer* renderer, FontId fontId,
 	int fontSize, char character)
 {
 	RenderedCharSpec requested_char(fontId, fontSize, character);
