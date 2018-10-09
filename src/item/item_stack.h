@@ -20,7 +20,7 @@ class ItemStack
 		// capacity of the stack for the given item
 		int maxStackSize;
 
-	public:
+	public:  // TODO: MAINTAIN SIZE COUNTER TO AVOID MAKING CALLS TO VECTOR'S SIZE() AND EMPTY()
 		// creates empty stack of ItemType::NONE
 		ItemStack();
 		// creates stack with the given Item
@@ -46,6 +46,10 @@ class ItemStack
 		// attempts to combine this stack *into* the other stack. Returns whether
 		// at least one item was added into the other stack
 		bool combineInto(ItemStack* other);
+		// splits this stack in half, and puts the other half into a new ItemStack.
+		// returns an empty stack if this stack is empty. If this stack has one item,
+		// puts the item in the newly-created split
+		ItemStack* split();
 		// returns top item in the stack without removing it (can be null)
 		Item* peekNext();
 		// removes top item in the stack and returns it (can be null)

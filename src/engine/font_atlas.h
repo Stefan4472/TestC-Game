@@ -33,6 +33,10 @@ class FontAtlas
 		void drawTextTo(SDL_Renderer* renderer, string text, int x, int y,
 			FontId fontId, int fontSize);
 
+		int drawFixedWidthTextTo(SDL_Renderer* renderer, string text, int widthPx,
+			int x, int y, FontId fontId, int fontSize, bool drawBackground=false,
+			SDL_Color backgroundColor=SDL_Color{0, 0, 0});
+
 		// frees fonts and rendered character textures
 		~FontAtlas();
 };

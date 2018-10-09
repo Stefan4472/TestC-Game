@@ -138,6 +138,12 @@ void FontAtlas::drawTextTo(SDL_Renderer* renderer, string text, int x, int y,
 	}
 }
 
+int FontAtlas::drawFixedWidthTextTo(SDL_Renderer* renderer, string text, int widthPx,
+	int x, int y, FontId fontId, int fontSize, bool drawBackground, SDL_Color backgroundColor)
+{
+
+}
+
 FontAtlas::~FontAtlas()
 {
 	printf("Freeing FontAtlas\n");  // TODO: ITERATE THROUGH BOTH MAPPINGS

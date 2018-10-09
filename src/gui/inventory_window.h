@@ -41,7 +41,8 @@ class InventoryWindow : public GuiWindowInterface
 
     //InvCoordinate resolveCoordinate
 
-    void handleMousePressed();
+    void handleLeftMouseClick();
+    void handleRightMouseClick();
 
     SDL_Rect getSlotBounds(InvCoordinate slot);
 

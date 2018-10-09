@@ -46,7 +46,14 @@ void InventoryWindow::handleInputEvent(SDL_Event e)
 
     // mouse clicked
     case SDL_MOUSEBUTTONDOWN:
-      handleMousePressed();
+			if (e.button.button == SDL_BUTTON_LEFT)
+			{
+				handleLeftMouseClick();
+			}
+			else if (e.button.button == SDL_BUTTON_RIGHT)
+			{
+				handleRightMouseClick();
+			}
       break;
 
     // key pressed
@@ -166,11 +173,10 @@ void InventoryWindow::forceClose()
 
 }
 
-void InventoryWindow::handleMousePressed()
+void InventoryWindow::handleLeftMouseClick()
 {
-  printf("Handling Mouse Press...");
+  printf("Handling Left Mouse Press...");
 
-  // an inventory slot is already being dragged
   InvCoordinate release_slot;
 
   // handle mouse over an inventory slot and no stack currently dragged.
@@ -238,6 +244,65 @@ void InventoryWindow::handleMousePressed()
     delete selectedStack;
     selectedStack = NULL;
     slotDragged = false;
+  }
+
+  printf("Done\n");
+}
+
+void InventoryWindow::handleRightMouseClick()
+{
+  printf("Handling Right Mouse Press...");
+
+  InvCoordinate release_slot;
+	// TODO: POTENTIALLY RE-ORDER/RE-WRITE IF STATEMENTS TO BE MORE CLEAR
+
+  // handle mouse over an inventory slot and no stack currently dragged.
+  // if the stack has at least one item, split it and pick up the split stack
+  if (!slotDragged && isMouseOverSlot(&selectedSlot))
+  {
+    ItemStack* hovered_stack = inventory->getStack(selectedSlot);
+
+    if (hovered_stack->itemType != ItemType::NONE)
+    {
+      printf("Splitting a stack of %d %s\n", hovered_stack->size(),
+				Item::getName(hovered_stack->itemType).c_str());
+      selectedStack = hovered_stack->split();
+			cout << "Split stack is " << selectedStack << endl;
+      slotDragged = true;
+    }
+  }
+  // handle mouse over an inventory slot and a stack being dragged
+  // attempt to drop one item from the dragged stack into the hovered slot
+  else if (isMouseOverSlot(&release_slot))
+  {
+		ItemStack* hovered_stack = inventory->getStack(release_slot);
+
+		if (hovered_stack->canAdd(selectedStack->peekNext()))
+		{
+			hovered_stack->addItem(selectedStack->popNext());
+		}
+
+		// handle case where stack is now empty: delete
+		if (selectedStack->isEmpty())
+		{
+			delete selectedStack;
+			selectedStack = NULL;
+			slotDragged = false;
+		}
+  }
+  // handle mouse outside window: drop one of the selectedStack
+  else if (slotDragged && !isMouseInWindow())
+  {
+    printf("Dropping item (TODO)\n");
+		delete selectedStack->popNext();
+
+		// handle case where stack is now empty: delete
+		if (selectedStack->isEmpty())
+		{
+			delete selectedStack;
+			selectedStack = NULL;
+			slotDragged = false;
+		}
   }
 
   printf("Done\n");

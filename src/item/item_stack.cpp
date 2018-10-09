@@ -84,6 +84,19 @@ bool ItemStack::combineInto(ItemStack* other)
 	return added;
 }
 
+ItemStack* ItemStack::split()
+{
+	ItemStack* split = new ItemStack();
+	int to_transfer = size() == 1 ? 1 : size() / 2;
+
+	for (int i = 0; i < to_transfer; i++)
+	{
+		split->addItem(popNext());
+	}
+
+	return split;
+}
+
 Item* ItemStack::peekNext()
 {
 	if (items.size())
@@ -98,22 +111,25 @@ Item* ItemStack::peekNext()
 
 Item* ItemStack::popNext()
 {
-	if (items.size())
+	if (items.empty())
+	{
+		return NULL;
+	}
+	else
 	{
 		Item* item = items.back();
 		items.pop_back();
 
 		// set id to NONE if stack is now empty
-		if (!items.size())
+		if (items.empty())
 		{
-			itemType = ItemType::NONE;
+			itemType = ItemType::NONE;  // TODO: RESET METHOD
+			itemTexture = TextureId::TEXTURE_NONE;
+			items.clear();
+			maxStackSize = 0;
 		}
 
 		return item;
-	}
-	else
-	{
-		return NULL;
 	}
 }
 
