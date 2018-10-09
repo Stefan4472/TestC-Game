@@ -120,7 +120,9 @@ void InventoryWindow::drawTo(SDL_Renderer* renderer, TextureAtlas* textureAtlas,
 		if (curr_stack->itemType != ItemType::NONE)
 		{
 			textureAtlas->drawImg(renderer, curr_stack->itemTexture, x, hotbarBounds.y, false);
-      if (curr_stack->size() > 1)
+
+			// draw number of items in stack if greater than 1
+			if (curr_stack->size() > 1)
       {
         fontAtlas->drawTextTo(renderer, to_string(curr_stack->size()), x + 32, y + 32,
           FontId::ORANGE_KID, 20);
@@ -136,6 +138,12 @@ void InventoryWindow::drawTo(SDL_Renderer* renderer, TextureAtlas* textureAtlas,
   {
     // printf("Drawing dragged stack, with texture %d\n", int(selectedStack->itemTexture));
     textureAtlas->drawImg(renderer, selectedStack->itemTexture, mouseX, mouseY, false);
+
+		if (selectedStack->size() > 1)
+		{
+			fontAtlas->drawTextTo(renderer, to_string(selectedStack->size()), mouseX + 16,
+				mouseY + 16, FontId::ORANGE_KID, 20);
+		}
   }
 
   // TODO: NAME+DESCRIPTION OF HOVERED ITEM, IF ANY

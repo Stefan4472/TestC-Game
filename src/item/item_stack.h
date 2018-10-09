@@ -43,6 +43,9 @@ class ItemStack
 		// attempts to add the given item to the stack.
 		// returns whether it was successfully added
 		bool addItem(Item* toAdd);
+		// attempts to combine this stack *into* the other stack. Returns whether
+		// at least one item was added into the other stack
+		bool combineInto(ItemStack* other);
 		// returns top item in the stack without removing it (can be null)
 		Item* peekNext();
 		// removes top item in the stack and returns it (can be null)

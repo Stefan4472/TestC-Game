@@ -73,6 +73,17 @@ bool ItemStack::addItem(Item* toAdd)
 	}
 }
 
+bool ItemStack::combineInto(ItemStack* other)
+{
+	bool added = false;
+	while (!isEmpty() && other->canAdd(peekNext()))
+	{
+		other->addItem(popNext());
+		added = true;
+	}
+	return added;
+}
+
 Item* ItemStack::peekNext()
 {
 	if (items.size())
