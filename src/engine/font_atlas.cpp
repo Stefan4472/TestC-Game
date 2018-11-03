@@ -141,7 +141,49 @@ void FontAtlas::drawTextTo(SDL_Renderer* renderer, string text, int x, int y,
 int FontAtlas::drawFixedWidthTextTo(SDL_Renderer* renderer, string text, int widthPx,
 	int x, int y, FontId fontId, int fontSize, bool drawBackground, SDL_Color backgroundColor)
 {
+	int curr_line_width = 0, curr_line_x = 0, curr_line_y = y;
+	SDL_Texture* char_texture = NULL;
+	int texture_w, texture_h; // TODO: NEEDS SOME WORK 
+	int curr_x = x;
 
+	SDL_SetRenderDrawColor(renderer, backgroundColor.r, backgroundColor.g,
+		backgroundColor.b, backgroundColor.a);
+
+	// draw the background for the first line of text
+	if (drawBackground)
+	{
+		backgroundDest = SDL_Rect { x, y - fontSize, widthPx, fontSize };
+		// SDL_RenderFillRect(renderer, &backgroundDest);
+	}
+
+	for (int i = 0; i < text.size(); i++) // TODO: BETTER ALGORITHM (THAT DOESN'T SPLIT WORDS)
+	{
+		char_texture = getRenderedChar(renderer, fontId, fontSize, text.at(i));
+
+		// get texture width/height
+		SDL_QueryTexture(char_texture, NULL, NULL, &texture_w, &texture_h);
+
+		// start a new line if this character goes past the alloted line width
+		if (curr_line_x + texture_w > widthPx)
+		{
+			curr_line_y += fontSize;
+			curr_line_x = 0;
+
+			curr_x = x;
+
+			backgroundDest = SDL_Rect { x, curr_line_y - fontSize, widthPx, fontSize };
+			// SDL_RenderFillRect(renderer, &backgroundDest);
+		}
+
+		// set source and destination coordinates
+		src = SDL_Rect { 0, 0, texture_w, texture_h };
+		dest = SDL_Rect { curr_x, curr_line_y, texture_w, texture_h };
+
+		SDL_RenderCopy(renderer, char_texture, &src, &dest);
+
+		curr_line_x += texture_w;
+		curr_x += texture_w;
+	}
 }
 
 FontAtlas::~FontAtlas()

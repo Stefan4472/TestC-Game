@@ -76,21 +76,12 @@ void InventoryWindow::drawTo(SDL_Renderer* renderer, TextureAtlas* textureAtlas,
   SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
   SDL_RenderFillRect(renderer, &windowBounds);
 
-  // test for hover
+  // test for hover: color the slot darker
   if (isMouseOverSlot(&selectedSlot))
   {
-    // color slot darker
     SDL_Rect slot_bounds = getSlotBounds(selectedSlot);
     SDL_SetRenderDrawColor(renderer, 0xCC, 0xCC, 0xCC, 0xFF);
     SDL_RenderFillRect(renderer, &slot_bounds);
-
-    // display name and description if no slot is being dragged
-    if (!slotDragged)
-    {
-      ItemStack* hovered = inventory->getStack(selectedSlot);
-      string item_name = Item::getName(hovered->itemType);
-      string item_description = Item::getDescription(hovered->itemType);
-    }
   }
 
   // draw main inventory slots
@@ -138,6 +129,21 @@ void InventoryWindow::drawTo(SDL_Renderer* renderer, TextureAtlas* textureAtlas,
 		x += 64;
 	}
 
+	// write name and description of hovered item, if any
+  if (!slotDragged && isMouseOverSlot(&selectedSlot))
+  {
+    ItemStack* hovered = inventory->getStack(selectedSlot);
+		if (hovered->itemType != ItemType::NONE)
+		{
+	    string item_name = Item::getName(hovered->itemType);
+	    string item_description = Item::getDescription(hovered->itemType);
+
+			//fontAtlas->drawTextTo(renderer, item_name, mouseX + 20, mouseY, FontId::ORANGE_KID, 22);
+			//fontAtlas->drawTextTo(renderer, item_description, mouseX + 20, mouseY + 24,
+			//	FontId::ORANGE_KID, 20);
+		}
+  }
+
   // draw mouse ?
 
   // draw dragged item, if any
@@ -152,8 +158,6 @@ void InventoryWindow::drawTo(SDL_Renderer* renderer, TextureAtlas* textureAtlas,
 				mouseY + 16, FontId::ORANGE_KID, 20);
 		}
   }
-
-  // TODO: NAME+DESCRIPTION OF HOVERED ITEM, IF ANY
 
   // draw window bounds
   SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);

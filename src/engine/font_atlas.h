@@ -16,7 +16,7 @@ class FontAtlas
 	private:
 		unordered_map<LoadedFontSpec, TTF_Font*> fontCache;
 		unordered_map<RenderedCharSpec, SDL_Texture*> renderedCharCache;
-		SDL_Rect src, dest;
+		SDL_Rect src, dest, backgroundDest;
 	public:  // TODO: SUPPORT COLORS
 
 		// loads fonts to array
