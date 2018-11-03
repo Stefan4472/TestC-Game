@@ -108,7 +108,11 @@ void Sprite::startWalking()
 	}
 
 	moveState = MoveState::WALK;
-	listener->onMovementChanged(facingDir, moveState);
+
+	if (listener)
+	{
+		listener->onMovementChanged(facingDir, moveState);
+	}
 }
 
 void Sprite::startRunning()
@@ -140,7 +144,11 @@ void Sprite::startRunning()
 	}
 
 	moveState = MoveState::RUN;
-	listener->onMovementChanged(facingDir, moveState);
+
+	if (listener)
+	{
+		listener->onMovementChanged(facingDir, moveState);
+	}
 }
 
 void Sprite::stopMoving()
@@ -149,7 +157,11 @@ void Sprite::stopMoving()
 	speedY = 0;
 
 	moveState = MoveState::IDLE;
-	listener->onMovementChanged(facingDir, moveState);
+
+	if (listener)
+	{
+		listener->onMovementChanged(facingDir, moveState);
+	}
 }
 
 void Sprite::moveBack()
@@ -176,7 +188,7 @@ void Sprite::setDir(int newDir)
 			facingDir = Direction::RIGHT;
 			lineOfSightOffsetX = hitbox.w;
 			lineOfSightOffsetY = 0;
-			lineOfSight.w = sightDistance; 
+			lineOfSight.w = sightDistance;
 			lineOfSight.h = sightWidth;
 			break;
 
@@ -208,7 +220,10 @@ void Sprite::setDir(int newDir)
 			throw runtime_error("Unhandled/Invalid facingDir (" + to_string(static_cast<int>(facingDir)) + ")");
 	}
 
-	listener->onMovementChanged(facingDir, moveState);
+	if (listener)
+	{
+		listener->onMovementChanged(facingDir, moveState);
+	}
 }
 
 void Sprite::update(int ms) {
@@ -228,7 +243,10 @@ void Sprite::addHealth(float amount)
 	currHp = currHp > fullHp ? fullHp : currHp;
 	printf("Sprite received %f health to hit %f hp\n", amount, currHp);
 
-	listener->onSpriteHealthChanged(amount, currHp);
+	if (listener)
+	{
+		listener->onSpriteHealthChanged(amount, currHp);
+	}
 }
 
 void Sprite::loseHealth(float amount)
@@ -244,5 +262,8 @@ void Sprite::loseHealth(float amount)
 	}
 	printf("Sprite lost %f health to hit %f hp\n", amount, currHp);
 
-	listener->onSpriteHealthChanged(-amount, currHp);
+	if (listener)
+	{
+		listener->onSpriteHealthChanged(-amount, currHp);		
+	}
 }

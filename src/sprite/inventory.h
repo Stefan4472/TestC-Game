@@ -6,9 +6,9 @@
 #include <vector>
 #include <stdexcept>
 #include <iostream>
-#include "constants.h"
 #include "texture_atlas.h"
 #include "font_atlas.h"
+#include "inventory_listener.h"
 #include "inventory_coordinate.h"
 #include "item_util.h"
 #include "item.h"
@@ -30,18 +30,6 @@ using namespace std;
 // the getAction(), getBuff(), and getAttack() methods.
 // Example usage: Call inventory->useInHand(), then store inventory->getAction(), getBuff(), getAttack().
 // Store those which are non-null.
-
-// An InventoryListener is an interface that allows callbacks from an Inventory. The implementing object
-// must register itself via setInventoryListener().
-class InventoryListener
-{
-	public:
-		// user changes item currently equipped (in-hand). May be NULL if no item is
-		// equipped in-hand
-		virtual void onInHandItemChanged(Item* newItem) = 0;
-		// user drops a stack
-		virtual void onStackDropped(ItemStack* stack) = 0;
-};
 
 class Inventory // TODO: SEPARATE CLASS FOR NON-SPRITE INVENTORIES, DESTRUCTOR
 {

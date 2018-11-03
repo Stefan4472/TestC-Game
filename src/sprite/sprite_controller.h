@@ -4,11 +4,15 @@
 #include <SDL2/SDL.h>
 #include <stack>
 #include "sprite.h"
-#include "healthbar.h"
+#include "direction.h"
+#include "move_state.h"
+#include "sprite_healthbar.h"
 #include "sprite_action.h"
 #include "inventory.h"
 #include "attack.h"
 #include "sound.h"
+
+using namespace std;
 
 // The SpriteController provides the AI controlling a sprite. It is essentially a Finite State Machine
 // that manages the action a Sprite is currently following, and handles responses to certain events/
@@ -20,7 +24,7 @@
 class SpriteController : public InventoryListener, public SpriteListener
 {
 	public:
-		SpriteController(Sprite* sprite);
+		SpriteController(Sprite* sprite, Inventory* inventory);
 
 		// the sprite being controlled
 		Sprite* sprite = NULL;
@@ -31,25 +35,27 @@ class SpriteController : public InventoryListener, public SpriteListener
 
 		// healthbar, which may be drawn over the sprite
 		SpriteHealthBar* healthbar = NULL;
-		// number of ms to show healthbar (0 do not show)
+		// number of ms to show healthbar (0 = do not show)
 		int showHealthbarMs = 0;
 
+		// milliseconds since sprite last made a footstep sound
+		int msSinceFootstep = 0;
+
 		// stack of Actions sprite will complete
-		std::stack<SpriteAction*> actionStack;
-		// list of Items sprite wants to drop. Meant to be picked up by the Map/Gamedriver
-		std::vector<Item*> drops;
+		stack<SpriteAction*> actionStack;
+		// list of ItemStacks sprite wants to drop. Meant to be picked up by the Map/Gamedriver
+		vector<ItemStack*> drops;
 		// list of Attacks sprite wants to carry out. Meant to be picked up by the Map/Gamedriver
 		// a sprite may have multiple attacks progressing, e.g. if several bullets have been fired
-		std::vector<Attack*> attacks;
-		// list of SoundIds the sprite has requested. Meant to be picked up by the Map/Gamedriver
-		std::vector<int> sounds;
-		// list of buffs currently affecting player
-		std::vector<SpriteAction*> buffs;
+		vector<Attack*> attacks;
+		// list of Sounds the sprite has requested. Meant to be picked up by the Map/Gamedriver
+		vector<Sound> sounds;
+		// list of buffs currently affecting the sprite
+		vector<SpriteBuff*> buffs;
 		// list of sprites that are friends TODO: HASHMAP
-		std::vector<Sprite*> friends;
+		vector<Sprite*> friends;
 		// list of sprites that are enemies. The sprite may act hostile when it sees them TODO: HASHMAP
-		std::vector<Sprite*> enemies;
-		// TODO: VECTOR OF DROPS
+		vector<Sprite*> enemies;
 
 		// updates state of sprite by given number of milliseconds
 		// by default updates all attacks as well as inhand item--DOES NOT CHANGE OR APPLY ACTIONSTACK!!
@@ -57,10 +63,13 @@ class SpriteController : public InventoryListener, public SpriteListener
 
 		// inventory callback when in-hand item has changed
 		virtual void onInHandItemChanged(Item* newItem);
-		// sprite callback when hp changes
-		virtual void onSpriteHealthChanged(int amount, int currHp);
 
-		// responds to sprite running into an object or invalid position on the Map
+		// SpriteListener callback when sprite's movement state changes
+		virtual void onMovementChanged(Direction dir, MoveState moveState);
+		// SpriteListener callback when hp changes
+		virtual void onSpriteHealthChanged(int amount, int newHp);
+
+		// responds to sprite running into an object or invalid position on the Map TODO: SEPARATE INTO COLLISION AND INVALID SPACE
 		virtual void handleMapCollision();
 		// responds to sprite running into another sprite
 		virtual void handleSpriteCollision(Sprite* other);
@@ -72,7 +81,7 @@ class SpriteController : public InventoryListener, public SpriteListener
 		virtual void handleSpriteSeen(Sprite* sprite);
 
 		// draws sprite to the screen
-		virtual void drawTo(SDL_Renderer* renderer, TextureAtlas* textureAtlas, int offsetX, int offsetY);
+		virtual void drawTo(SDL_Renderer* renderer, TextureAtlas* textureAtlas);
 
 };
 #endif

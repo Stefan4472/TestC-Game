@@ -1,8 +1,12 @@
 #include "sprite_controller.h"
 
-SpriteController::SpriteController(Sprite* sprite)
+SpriteController::SpriteController(Sprite* sprite, Inventory* inventory)
 {
 	this->sprite = sprite;
+	sprite->setListener(this);
+
+	this->inventory = inventory;
+	inventory->setListener(this);
 }
 
 void SpriteController::onInHandItemChanged(Item* newItem)
@@ -10,11 +14,16 @@ void SpriteController::onInHandItemChanged(Item* newItem)
 	inHand = newItem;
 }
 
-void SpriteController::onSpriteHealthChanged(int amount, int currHp)
+void SpriteController::onSpriteHealthChanged(int amount, int newHp)
 {
 	printf("SpriteController received onSpriteHealthChanged callback for %d and %d. Showing Healthbar\n", amount, currHp);
 	// set healthbar to show for 200 ms
 	showHealthbarMs += 200;
+
+	if (newHp <= 0)
+	{
+		handleSpriteDead();
+	}
 }
 
 void SpriteController::handleMapCollision()

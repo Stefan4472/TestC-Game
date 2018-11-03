@@ -21,7 +21,7 @@ class Sprite  // TODO: IMPLEMENT MAPOBJECT FOR DRAWING. KNOCKBACK(POWER) METHOD,
 
 	public: // TODO: MAKE SOME PRIVATE/PROTECTED. MAKE COORDINATES DOUBLE
 		// create sprite of given type at given game coordinates
-		Sprite(SpriteType spriteType, float x, float y, SpriteListener* listener);
+		Sprite(SpriteType spriteType, float x, float y, SpriteListener* listener=NULL);
 		// type of sprite this is
 		SpriteType spriteType = SpriteType::NONE;
 		// offset of start of hitbox, from sprite's x and y (x + hitboxOffsetX = hitbox.x)
@@ -34,9 +34,6 @@ class Sprite  // TODO: IMPLEMENT MAPOBJECT FOR DRAWING. KNOCKBACK(POWER) METHOD,
 		int sightDistance = 256, sightWidth = 96;
 
 		// MAP_POSITION HITBOX? DRAW_POSITION?
-
-		// animation player used by sprite TODO: MAKE PROTECTED, ADD DRAWTO()
-		AnimationPlayer* animPlayer = NULL;
 
 		// game coordinates of sprite top-left
 		float x, y;
