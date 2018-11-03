@@ -4,12 +4,13 @@
 /*
 Defines actions a sprite can take.
 */
-enum class SpriteActionType 
+enum class SpriteActionType
 {
 	IDLE,
 	WALK,
 	RUN,
-	USING_ITEM
+	USING_ITEM,
+  DYING
 };
 
 #endif

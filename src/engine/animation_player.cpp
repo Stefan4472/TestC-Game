@@ -1,8 +1,7 @@
 #include "animation_player.h"
 
-AnimationPlayer::AnimationPlayer(TextureAtlas* textureAtlas) // TODO: PROVIDE INIT DIRECTION AND ANIMATION
+AnimationPlayer::AnimationPlayer() // TODO: PROVIDE INIT DIRECTION AND ANIMATION
 {
-	this->textureAtlas = textureAtlas;
 	frameCounter = 0;
 }
 
@@ -57,7 +56,7 @@ void AnimationPlayer::update(int ms)
 	msLeftThisFrame -= ms;
 }
 
-void AnimationPlayer::drawTo(SDL_Renderer* renderer, float x, float y)
+void AnimationPlayer::drawTo(SDL_Renderer* renderer, TextureAtlas* textureAtlas, float x, float y)
 {
 	assert(currAnim);
 	dest.x = x;

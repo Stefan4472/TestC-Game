@@ -3,6 +3,7 @@
 
 #include <SDL2/SDL.h>
 #include "texture_atlas.h"
+#include "defined_animation.h"
 #include "animation_sequence.h"
 #include "animation_player.h"
 #include "spritesheet.h"
@@ -15,28 +16,22 @@
 // Spritesheets from the TextureAtlas and creates AnimationSequences for requested animations. It
 // maintains a cache, to speed up future queries.
 
-
-// defines an animation sequence TODO
-struct DefinedAnimation
-{
-	int spriteType;
-	int actionType;
-	int inHandId;
-};
-
 class AnimationEngine
 {
-	Spritesheet *CIV_IDLE_RIGHT = NULL, *CIV_IDLE_LEFT = NULL, *CIV_IDLE_UP = NULL, *CIV_IDLE_DOWN = NULL; // TODO: SOME SORT OF INDEXED SYSTEM
-	Spritesheet *CIV_WALK_RIGHT = NULL, *CIV_WALK_LEFT = NULL, *CIV_WALK_UP = NULL, *CIV_WALK_DOWN = NULL;
-	Spritesheet *CIV_RUN_RIGHT = NULL, *CIV_RUN_LEFT = NULL, *CIV_RUN_UP = NULL, *CIV_RUN_DOWN = NULL;
-
-	Spritesheet *PLA_IDLE_RIGHT = NULL, *PLA_IDLE_LEFT = NULL, *PLA_IDLE_UP = NULL, *PLA_IDLE_DOWN = NULL;
-	Spritesheet *PLA_WALK_RIGHT = NULL, *PLA_WALK_LEFT = NULL, *PLA_WALK_UP = NULL, *PLA_WALK_DOWN = NULL;
-	Spritesheet *PLA_RUN_RIGHT = NULL, *PLA_RUN_LEFT = NULL, *PLA_RUN_UP = NULL, *PLA_RUN_DOWN = NULL;
-
 	private:
 		TextureAtlas* textureAtlas = NULL;
 
+		// TODO: SOME SORT OF INDEXED SYSTEM
+		Spritesheet *CIV_IDLE_RIGHT = NULL, *CIV_IDLE_LEFT = NULL, *CIV_IDLE_UP = NULL, *CIV_IDLE_DOWN = NULL;
+		Spritesheet *CIV_WALK_RIGHT = NULL, *CIV_WALK_LEFT = NULL, *CIV_WALK_UP = NULL, *CIV_WALK_DOWN = NULL;
+		Spritesheet *CIV_RUN_RIGHT = NULL, *CIV_RUN_LEFT = NULL, *CIV_RUN_UP = NULL, *CIV_RUN_DOWN = NULL;
+
+		Spritesheet *PLA_IDLE_RIGHT = NULL, *PLA_IDLE_LEFT = NULL, *PLA_IDLE_UP = NULL, *PLA_IDLE_DOWN = NULL;
+		Spritesheet *PLA_WALK_RIGHT = NULL, *PLA_WALK_LEFT = NULL, *PLA_WALK_UP = NULL, *PLA_WALK_DOWN = NULL;
+		Spritesheet *PLA_RUN_RIGHT = NULL, *PLA_RUN_LEFT = NULL, *PLA_RUN_UP = NULL, *PLA_RUN_DOWN = NULL;
+
+		AnimationSequence* createAnim(DefinedAnimation animSpec);
+		
 	public:
 		AnimationEngine(TextureAtlas* textureAtlas);
 

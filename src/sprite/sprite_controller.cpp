@@ -1,7 +1,7 @@
 #include "sprite_controller.h"
 
 SpriteController::SpriteController(Sprite* sprite, Inventory* inventory,
-	TextureAtlas* textureAtlas, AnimationEngine* animEngine)
+	AnimationEngine* animEngine)
 {
 	this->sprite = sprite;
 	sprite->setListener(this);
@@ -10,13 +10,13 @@ SpriteController::SpriteController(Sprite* sprite, Inventory* inventory,
 	inventory->setListener(this);
 
 	this->animEngine = animEngine;
-	animPlayer = new AnimationPlayer(textureAtlas);
+	animPlayer = new AnimationPlayer(); // TODO: INIT ANIM AND DIRECTION
 }
 
 void SpriteController::onInHandItemChanged(Item* newItem)
 {
 	inHand = newItem;
-
+	animPlayer->setAnimSequence(animEngine->getAnim(sprite->spriteType, currActionState, inHand->itemType));
 }
 
 void SpriteController::onSpriteHealthChanged(int amount, int newHp)

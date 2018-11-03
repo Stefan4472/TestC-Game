@@ -35,6 +35,7 @@ AnimationEngine::AnimationEngine(TextureAtlas* textureAtlas)
 	PLA_RUN_DOWN = new Spritesheet(textureAtlas, PLAYER_RUN_DOWN, 4, 100);
 	printf("Finished Initializing AnimEngine\n");
 }
+
 // TODO: CACHING
 AnimationSequence* AnimationEngine::get(int spriteType, int actionType, int inHandId) // TODO: INDEX-BASED METHOD AND CACHE
 {

@@ -26,8 +26,7 @@ using namespace std;
 class SpriteController : public InventoryListener, public SpriteListener
 {
 	public:
-		SpriteController(Sprite* sprite, Inventory* inventory, TextureAtlas* textureAtlas,
-			AnimationEngine* animEngine);
+		SpriteController(Sprite* sprite, Inventory* inventory, AnimationEngine* animEngine);
 
 		// the sprite being controlled
 		Sprite* sprite = NULL;
