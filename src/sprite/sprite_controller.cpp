@@ -1,17 +1,22 @@
 #include "sprite_controller.h"
 
-SpriteController::SpriteController(Sprite* sprite, Inventory* inventory)
+SpriteController::SpriteController(Sprite* sprite, Inventory* inventory,
+	TextureAtlas* textureAtlas, AnimationEngine* animEngine)
 {
 	this->sprite = sprite;
 	sprite->setListener(this);
 
 	this->inventory = inventory;
 	inventory->setListener(this);
+
+	this->animEngine = animEngine;
+	animPlayer = new AnimationPlayer(textureAtlas);
 }
 
 void SpriteController::onInHandItemChanged(Item* newItem)
 {
 	inHand = newItem;
+
 }
 
 void SpriteController::onSpriteHealthChanged(int amount, int newHp)
@@ -39,7 +44,7 @@ void SpriteController::handleSpriteCollision(Sprite* other)
 void SpriteController::update(int ms)
 {
 	// update animation
-	sprite->animPlayer->update(ms);
+	animPlayer->update(ms);
 
 	// update attacks, removing those that are finished
 	for (int i = 0; i < attacks.size(); )
@@ -61,7 +66,6 @@ void SpriteController::update(int ms)
 	{
 		if (buffs[i]->apply(sprite, ms))
 		{
-			printf("Applying buff to %d\n", sprite);
 			i++;
 		}
 		else
@@ -76,6 +80,7 @@ void SpriteController::update(int ms)
 	if (inHand && inHand->destroy)
 	{
 		delete inHand;
+		inHand = NULL;
 	}
 	else if (inHand)
 	{
@@ -101,10 +106,16 @@ void SpriteController::handleSpriteSeen(Sprite* sprite)
 	return;
 }
 
+void Sprite::handleSpriteDead()
+{
+	sprite->dead = true;
+	sprite->destroy = true;
+}
+
 void SpriteController::drawTo(SDL_Renderer* renderer, TextureAtlas* textureAtlas)
 {
 	// draw sprite's current animation
-	sprite->animPlayer->drawTo(renderer, sprite->x, sprite->y);
+	animPlayer->drawTo(renderer, sprite->x, sprite->y);
 
 	// draw in-hand
 	if (inHand) // TODO: THIS SHOULD BE TAKEN CARE OF BY THE ANIMATION ENGINE

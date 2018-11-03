@@ -5,7 +5,7 @@
 #include <stdexcept>
 #include <SDL2/SDL.h>
 #include <string>
-#include "constants.h"
+#include "item_type.h"
 #include "texture_atlas.h"
 #include "attack.h"
 #include "sprite_buff.h"
@@ -13,25 +13,6 @@
 class SpriteAction;
 
 using namespace std;
-
-// Defines the types of items in the game. Indexes used as keys to retrieve
-// properties of the ItemType the const arrays
-enum class ItemType
-{
-	NONE,
-	BREAD_LOAF,
-	CHICKEN_LEG,
-	BEER_MUG,
-	GREEN_POTION,
-	SCROLL,
-	SWORD,
-	PISTOL,
-	PISTOL_AMMO,
-	SHOTGUN_AMMO,
-	RIFLE_AMMO,
-	SHOTGUN,
-	TOMMYGUN
-};
 
 // hashing function for ItemType
 namespace std {

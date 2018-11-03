@@ -3,6 +3,8 @@
 
 #include <SDL2/SDL.h>
 #include <stack>
+#include "animation_engine.h"
+#include "animation_player.h"
 #include "sprite.h"
 #include "direction.h"
 #include "move_state.h"
@@ -24,7 +26,8 @@ using namespace std;
 class SpriteController : public InventoryListener, public SpriteListener
 {
 	public:
-		SpriteController(Sprite* sprite, Inventory* inventory);
+		SpriteController(Sprite* sprite, Inventory* inventory, TextureAtlas* textureAtlas,
+			AnimationEngine* animEngine);
 
 		// the sprite being controlled
 		Sprite* sprite = NULL;
@@ -32,6 +35,9 @@ class SpriteController : public InventoryListener, public SpriteListener
 		Inventory* inventory = NULL;
 		// item sprite has in hand. Used for drawing
 		Item* inHand = NULL;
+
+		AnimationEngine* animEngine = NULL;
+		AnimationPlayer* animPlayer = NULL;
 
 		// healthbar, which may be drawn over the sprite
 		SpriteHealthBar* healthbar = NULL;
@@ -79,9 +85,11 @@ class SpriteController : public InventoryListener, public SpriteListener
 		virtual void handleSoundHeard(Sound* sound);
 		// handles sprite seeing another sprite
 		virtual void handleSpriteSeen(Sprite* sprite);
+		// handles sprite's health hitting or dropping below zero
+		virtual void handleSpriteDead();
 
 		// draws sprite to the screen
-		virtual void drawTo(SDL_Renderer* renderer, TextureAtlas* textureAtlas);
+		virtual void drawTo(SDL_Renderer* renderer, TextureAtlas* textureAtlas, int offsetX, int offsetY);
 
 };
 #endif

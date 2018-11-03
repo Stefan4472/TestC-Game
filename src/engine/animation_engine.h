@@ -6,19 +6,15 @@
 #include "animation_sequence.h"
 #include "animation_player.h"
 #include "spritesheet.h"
-#include "constants.h"
+#include "sprite_type.h"
+#include "sprite_action_type.h"
 
+// TODO: UPDATE COMMENTS
 // The AnimationEngine creates and stores AnimationSequences. Requests can be made for an animation,
 // using specific criteria e.g. Sprite type, in hand item, current action. The AnimationEngine loads
 // Spritesheets from the TextureAtlas and creates AnimationSequences for requested animations. It
 // maintains a cache, to speed up future queries.
 
-enum SPRITE_ACTIONS
-{
-	SPRITE_IDLE,
-	SPRITE_WALK,
-	SPRITE_RUN
-};
 
 // defines an animation sequence TODO
 struct DefinedAnimation
@@ -38,12 +34,14 @@ class AnimationEngine
 	Spritesheet *PLA_WALK_RIGHT = NULL, *PLA_WALK_LEFT = NULL, *PLA_WALK_UP = NULL, *PLA_WALK_DOWN = NULL;
 	Spritesheet *PLA_RUN_RIGHT = NULL, *PLA_RUN_LEFT = NULL, *PLA_RUN_UP = NULL, *PLA_RUN_DOWN = NULL;
 
+	private:
+		TextureAtlas* textureAtlas = NULL;
 
 	public:
 		AnimationEngine(TextureAtlas* textureAtlas);
+
 		// returns an AnimationSequence for the given sprite holding inHandId and doing the given SPRITE_ACTION
-		AnimationSequence* get(int spriteType, int actionType, int inHandId);
-		TextureAtlas* textureAtlas = NULL;
+		AnimationSequence* getAnim(SpriteType spriteType, SpriteAction actionType, ItemType inHandItemType);
 };
 
 #endif
