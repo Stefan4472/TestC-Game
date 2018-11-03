@@ -1,46 +1,42 @@
 #include "sprite.h"
 
-Sprite::Sprite(int spriteType, float x, float y, AnimationEngine* animEngine)
+const float SPRITE_WALK_SPEEDS[] = { 0, 0.1f, 0.25f };
+const float SPRITE_RUN_SPEEDS[] = { 0, 0.3f, 0.4f };
+const int SPRITE_START_HEALTH[] = { 0, 30, 100 };
+
+Sprite::Sprite(SpriteType spriteType, float x, float y, SpriteListener* listener)
 {
-	printf("Sprite received animEngine %d\n", animEngine);
-	printf("Creating Sprite of type %d at %f, %f...\n", spriteType, x, y);
+	printf("Creating sprite...");
 	this->spriteType = spriteType;
 	this->x = x;
 	this->y = y;
-	this->animEngine = animEngine;
-	animPlayer = new AnimationPlayer(animEngine->textureAtlas);
+	this->listener = listener;
 
-	if (spriteType == SPRITE_TYPE_CIVILIAN)
+	switch (spriteType)
 	{
-		walkSpeed = 0.1f;
-		runSpeed = 0.2f;
-		// note: this depends on the image of the sprite, and will need to be adjusted at times. Also: hitboxes corresponding to frames of spritesheets
-		hitboxOffsetX = 7;
-		hitboxOffsetY = 25;
-		hitbox.w = 20;
-		hitbox.h = 6;
+		case SpriteType::CIVILIAN:
+			// note: this depends on the image of the sprite, and will need to be adjusted at times. Also: hitboxes corresponding to frames of spritesheets
+			hitboxOffsetX = 7;
+			hitboxOffsetY = 25;
+			hitbox.w = 20;
+			hitbox.h = 6;
+			fullHp = 30;
+			break;
 
-		fullHp = 30;
-		currHp = 30;
-	}
-	else if (spriteType == SPRITE_TYPE_PLAYER)
-	{
-		hitboxOffsetX = 10;
-		hitboxOffsetY = 44;
-		hitbox.w = 32;
-		hitbox.h = 13;
+		case SpriteType::PLAYER:
+			hitboxOffsetX = 10;
+			hitboxOffsetY = 44;
+			hitbox.w = 32;
+			hitbox.h = 13;
+			fullHp = 100;
+			break;
 
-		fullHp = 100;
-		currHp = 100;
-	}
-	else
-	{
-		printf("EXCEPTION: Invalid Sprite Type %d\n", spriteType);
+		default:
+			throw runtime_error("Unhandled/Invalid Sprite Type (" + to_string(static_cast<int>(spriteType)) + ")");
 	}
 
-	//printf(animEngine->get(spriteType, SPRITE_IDLE, NULL)->toString());
-	animPlayer->setAnimSequence(animEngine->get(spriteType, SPRITE_IDLE, NULL));
-	setDir(DIRECTION_DOWN);
+	// default to facing down
+	setDir(Direction::DOWN);
 	printf("Done\n");
 }
 
@@ -49,21 +45,20 @@ SDL_Point Sprite::getRightHandPosition() // todo: standardize for all sprites
 	// TODO: JUST USE ON SPRITE MODEL SO THIS WORKS FOR ALL (CURRENTLY WILL BE OFF FOR CIVILIAN)
 	switch (facingDir)
 	{
-		case DIRECTION_RIGHT:
+		case Direction::RIGHT:
 			return SDL_Point { x + 24, y + 44 };
 
-		case DIRECTION_UP:
+		case Direction::UP:
 			return SDL_Point { x + 42, y + 41 };
 
-		case DIRECTION_DOWN:
+		case Direction::DOWN:
 			return SDL_Point { x + 13, y + 40 };
 
-		case DIRECTION_LEFT:
+		case Direction::LEFT:
 			return SDL_Point { x + 19, y + 41 };
 
 		default:
-			printf("Weird!! PlayerSprite, don't know which animation to show!\n");
-			break;
+			throw runtime_error("Unhandled/Invalid facingDir (" + to_string(static_cast<int>(facingDir)) + ")");
 	}
 }
 
@@ -82,77 +77,79 @@ void Sprite::move(int ms) {
 
 	lineOfSight.x = x + lineOfSightOffsetX;
 	lineOfSight.y = y + lineOfSightOffsetY;
-
 }
 
 void Sprite::startWalking()
 {
-	animPlayer->setAnimSequence(animEngine->get(spriteType, SPRITE_WALK, NULL));
-
-	switch( facingDir )
+	switch (facingDir)
 	{
-		case DIRECTION_RIGHT:
+		case Direction::RIGHT:
 			speedX = walkSpeed;
 			speedY = 0;
 			break;
 
-		case DIRECTION_UP:
+		case Direction::UP:
 			speedX = 0;
 			speedY = -walkSpeed;
 			break;
 
-		case DIRECTION_LEFT:
+		case Direction::LEFT:
 			speedX = -walkSpeed;
 			speedY = 0;
 			break;
 
-		case DIRECTION_DOWN:
+		case Direction::DOWN:
 			speedX = 0;
 			speedY = walkSpeed;
 			break;
 
 		default:
-			printf("Sprite::startMoving received invalid facingDir! %d\n", facingDir);
+			throw runtime_error("Unhandled/Invalid facingDir (" + to_string(static_cast<int>(facingDir)) + ")");
 	}
+
+	moveState = MoveState::WALK;
+	listener->onMovementChanged(facingDir, moveState);
 }
 
 void Sprite::startRunning()
 {
-	animPlayer->setAnimSequence(animEngine->get(spriteType, SPRITE_RUN, NULL));
-
-	switch( facingDir )
+	switch (facingDir)
 	{
-		case DIRECTION_RIGHT:
+		case Direction::RIGHT:
 			speedX = runSpeed;
 			speedY = 0;
 			break;
 
-		case DIRECTION_UP:
+		case Direction::UP:
 			speedX = 0;
 			speedY = -runSpeed;
 			break;
 
-		case DIRECTION_LEFT:
+		case Direction::LEFT:
 			speedX = -runSpeed;
 			speedY = 0;
 			break;
 
-		case DIRECTION_DOWN:
+		case Direction::DOWN:
 			speedX = 0;
 			speedY = runSpeed;
 			break;
 
 		default:
-			printf("Sprite::startRunning received unkown facingDir! %d\n", facingDir);
+			throw runtime_error("Unhandled/Invalid facingDir (" + to_string(static_cast<int>(facingDir)) + ")");
 	}
+
+	moveState = MoveState::RUN;
+	listener->onMovementChanged(facingDir, moveState);
 }
 
 void Sprite::stopMoving()
 {
-	animPlayer->setAnimSequence(animEngine->get(spriteType, SPRITE_IDLE, NULL));
-
 	speedX = 0;
 	speedY = 0;
+
+	moveState = MoveState::IDLE;
+	listener->onMovementChanged(facingDir, moveState);
 }
 
 void Sprite::moveBack()
@@ -164,40 +161,43 @@ void Sprite::moveBack()
 	hitbox.y = y + hitboxOffsetY;
 }
 
-void Sprite::setDir(int dir)
+void Sprite::setDir(int newDir)
 {
-	// change of direction: queue animPlayer TODO: MAKE SURE THE DIRECTION IS SUPPORTED
-	animPlayer->setDir(dir);
-
-	// set animation, direction, and lineOfSight
-	switch (dir)
+	// do nothing if sprite is already facing that direction
+	if (newDir == facingDir)
 	{
-		case DIRECTION_RIGHT:
-			facingDir = DIRECTION_RIGHT;
+		return;
+	}
+
+	// set direction and lineOfSight TODO: CENTER LINEOFSIGHT BOX
+	switch (newDir)
+	{
+		case Direction::RIGHT:
+			facingDir = Direction::RIGHT;
 			lineOfSightOffsetX = hitbox.w;
 			lineOfSightOffsetY = 0;
-			lineOfSight.w = sightDistance; // todo: center. also, hitbox is too small: want full dimensions of sprite
+			lineOfSight.w = sightDistance; 
 			lineOfSight.h = sightWidth;
 			break;
 
-		case DIRECTION_UP:
-			facingDir = DIRECTION_UP;
+		case Direction::UP:
+			facingDir = Direction::UP;
 			lineOfSightOffsetX = 0;
 			lineOfSightOffsetY = -sightDistance;
 			lineOfSight.w = sightWidth;
 			lineOfSight.h = sightDistance;
 			break;
 
-		case DIRECTION_LEFT:
-			facingDir = DIRECTION_LEFT;
+		case Direction::LEFT:
+			facingDir = Direction::LEFT;
 			lineOfSightOffsetX = -sightDistance;
 			lineOfSightOffsetY = 0;
 			lineOfSight.w = sightDistance;
 			lineOfSight.h = sightWidth;
 			break;
 
-		case DIRECTION_DOWN:
-			facingDir = DIRECTION_DOWN;
+		case Direction::DOWN:
+			facingDir = Direction::DOWN;
 			lineOfSightOffsetX = 0;
 			lineOfSightOffsetY = hitbox.h;
 			lineOfSight.w = sightWidth;
@@ -205,13 +205,14 @@ void Sprite::setDir(int dir)
 			break;
 
 		default:
-			printf("Weird!! Don't know which animation to show! Facing dir = %d\n", facingDir);
-			break;
+			throw runtime_error("Unhandled/Invalid facingDir (" + to_string(static_cast<int>(facingDir)) + ")");
 	}
+
+	listener->onMovementChanged(facingDir, moveState);
 }
 
 void Sprite::update(int ms) {
-	animPlayer->update(ms);
+
 }
 
 void Sprite::setListener(SpriteListener* listener)
@@ -222,14 +223,12 @@ void Sprite::setListener(SpriteListener* listener)
 void Sprite::addHealth(float amount)
 {
 	currHp += amount;
+
 	// norm to fullHp
 	currHp = currHp > fullHp ? fullHp : currHp;
 	printf("Sprite received %f health to hit %f hp\n", amount, currHp);
 
-	if (listener)
-	{
-		listener->onSpriteHealthChanged(amount, currHp);
-	}
+	listener->onSpriteHealthChanged(amount, currHp);
 }
 
 void Sprite::loseHealth(float amount)
@@ -245,8 +244,5 @@ void Sprite::loseHealth(float amount)
 	}
 	printf("Sprite lost %f health to hit %f hp\n", amount, currHp);
 
-	if (listener)
-	{
-		listener->onSpriteHealthChanged(-amount, currHp);
-	}
+	listener->onSpriteHealthChanged(-amount, currHp);
 }

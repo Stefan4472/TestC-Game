@@ -3,32 +3,27 @@
 
 #include <SDL2/SDL.h>
 #include <vector>
-#include "constants.h"
-#include "engine/animation_engine.h"
+#include <stdexcept>
+#include "sprite_listener.h"
+#include "direction.h"
+#include "move_state.h"
+#include "sprite_type.h"
 
-// Listener interface for receiving sprite callbacks
-class SpriteListener
-{
-	public:
-		virtual void onSpriteHealthChanged(int amount, int currHealth) = 0;
-};
-
-// Sprite base class
-
-class Sprite
+/*
+Sprite base class. This is a kind of "low-level" class, it's meant to be
+manipulated and provide basic logic but doesn't know the actions it's doing.
+*/
+class Sprite  // TODO: IMPLEMENT MAPOBJECT FOR DRAWING. KNOCKBACK(POWER) METHOD, WEIGHT ATTRIBUTE, ARMOR ATTRIBUTE
 {
 	protected:
-		// pointer to AnimationEngine
-		AnimationEngine* animEngine = NULL;
-
-		// registered listener
+		// registered listener for state-change callbacks
 		SpriteListener* listener = NULL;
 
 	public: // TODO: MAKE SOME PRIVATE/PROTECTED. MAKE COORDINATES DOUBLE
-		// create sprite of given type (see AnimationEngine)
-		Sprite(int spriteType, float x, float y, AnimationEngine* animEngine);
+		// create sprite of given type at given game coordinates
+		Sprite(SpriteType spriteType, float x, float y, SpriteListener* listener);
 		// type of sprite this is
-		int spriteType = 0;
+		SpriteType spriteType = SpriteType::NONE;
 		// offset of start of hitbox, from sprite's x and y (x + hitboxOffsetX = hitbox.x)
 		int hitboxOffsetX, hitboxOffsetY;
 		// offset of start of lineOfSight, from sprite's x and y
@@ -43,9 +38,9 @@ class Sprite
 		// animation player used by sprite TODO: MAKE PROTECTED, ADD DRAWTO()
 		AnimationPlayer* animPlayer = NULL;
 
-		// virtual coordinates
-		float x = -1, y = -1;
-		// virtual coordinates at last frame
+		// game coordinates of sprite top-left
+		float x, y;
+		// virtual coordinates at last frame TODO: WHAT IF SPRITE CAN'T BE PLACED IN FIRST FRAME OF EXISTENCE?
 		float lastX = -1, lastY = -1;
 		// pixels moved per ms in x and y
 		float speedX = 0, speedY = 0;
@@ -65,28 +60,24 @@ class Sprite
 		bool destroy = false;
 
 		// direction currently facing
-		int facingDir = DIRECTION_DOWN;
+		Direction facingDir = DIRECTION::NONE;
+		MoveState moveState;
 
-		// whether sprite is trying to aim in-hand item
-		bool aiming = false;
-		// coordinates of tile being aimed at. Only valid when aiming = true
-		SDL_Rect aimRect = { 0, 0, 32, 32 };
+		// // whether sprite is trying to aim in-hand item
+		// bool aiming = false;
+		// // coordinates of tile being aimed at. Only valid when aiming = true
+		// SDL_Rect aimRect = { 0, 0, 32, 32 };
 
 		// get coordinates of sprite's right hand
 		virtual SDL_Point getRightHandPosition();
 
-		// sets coordinates to intended DIRECTION, given number of milliseconds since last frame
+		// TODO: COMMENTING
 		void move(int ms);
-		// sets speeds and animation to make sprite walk in direction it is facing in
 		void startWalking();
-		// sets speeds and animation to make sprite run in direction it is facing in
 		void startRunning();
-		// sets speeds to zero and animation to idle in current facingDir
 		void stopMoving();
-		// moves sprite to position it was at in previous frame
 		void moveBack();
-		// sets direction to given DIRECTION direction
-		void setDir(int dir);
+		void setDir(Direction dir);
 
 		// finalizes DIRECTION and any other updates to the sprite's state
 		virtual void update(int ms);
@@ -94,9 +85,6 @@ class Sprite
 		void addHealth(float amount);
 		// subtracts given amount from sprite's currHp
 		void loseHealth(float amount);
-
-		//void drawTo(SDL_Renderer* renderer, x, y);
-
 };
 
 #endif

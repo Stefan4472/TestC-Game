@@ -6,6 +6,7 @@ Defines the types of sprites recognized by the Sprite class.
 */
 enum class SpriteType
 {
+	NONE,
 	CIVILIAN,
 	PLAYER
 };
