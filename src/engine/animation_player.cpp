@@ -20,7 +20,7 @@ void AnimationPlayer::setDir(int newDir)
 	// animSequence must be set before direction can be set
 	assert(animSequence);
 	assert(animSequence->hasDir(newDir));
-	assert(newDir != DIRECTION::DIRECTION_NONE);
+	assert(newDir != DIRECTION::NONE);
 
 	// change if new direction different than current, and allowed in sequence
 	// if (newDir != dir && animSequence->hasDir(newDir))
