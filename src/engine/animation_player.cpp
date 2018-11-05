@@ -1,18 +1,32 @@
 #include "animation_player.h"
 
-AnimationPlayer::AnimationPlayer() // TODO: PROVIDE INIT DIRECTION AND ANIMATION
+AnimationPlayer::AnimationPlayer()
 {
-	frameCounter = 0;
+
 }
 
-void AnimationPlayer::setAnimSequence(AnimationSequence* sequence)
+AnimationPlayer::AnimationPlayer(AnimationSequence* initSequence, Direction initDirection)
 {
-	animSequence = sequence;
-	if (dir == DIRECTION::DIRECTION_NONE)
+	setAnim(initSequence);
+	this->currDir = initDirection;
+}
+
+void AnimationPlayer::setAnim(AnimationSequence* sequence)
+{
+	assert(sequence);
+	currSequence = sequence;
+
+	int num_anims = sequence->getNumAnimations();
+
+	// initialize framecounters and millisecond counters
+	frameCounters.resize(num_anims);
+	msLeftThisFrame.resize(num_anims);
+
+	for (int i = 0; i < num_anims; i++)
 	{
-		dir = DIRECTION::DIRECTION_DOWN;
+		frameCounters[i] = 0;
+		msLeftThisFrame[i] = 0;
 	}
-	setDir(dir);
 }
 
 void AnimationPlayer::setDir(int newDir)
@@ -20,9 +34,8 @@ void AnimationPlayer::setDir(int newDir)
 	// animSequence must be set before direction can be set
 	assert(animSequence);
 	assert(animSequence->hasDir(newDir));
-	assert(newDir != DIRECTION::NONE);
 
-	// change if new direction different than current, and allowed in sequence
+	// change if new direction different from current
 	// if (newDir != dir && animSequence->hasDir(newDir))
 	// {
 		dir = newDir;

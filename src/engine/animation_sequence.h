@@ -1,33 +1,34 @@
 #ifndef ANIMATION_SEQUENCE_H
 #define ANIMATION_SEQUENCE_H
 
+#include <SDL2/SDL.h>  // TODO: 2DPOINT UTILITY CLASS/struct
 #include <vector>
-#include <stdio.h>
-#include "constants.h"
-#include "spritesheet.h"
+#include "character_animation.h"
 
-// Defines how to draw an animation. TODO: Can include multiple spritesheets at different offsets.
+using namespace std;
+
+/*
+defines how to draw one or multiple character_animations in parallel
+*/
+// Defines how to draw an animation, which may be made up of multiple CharacterAnimations.
+// TODO: EXPLAIN. TODO: Can include multiple spritesheets at different offsets.
 // Contains one spritesheet for each direction. May be null if that direction is not permitted.
 // Does not contain stateful information--that role is delegated to AnimationPlayer
 
 class AnimationSequence // TODO: ADD COMPLEXITY AS NECESSASRY
 {
-	// spritesheets to be played
-	//std::vector<Spritesheet*> spritesheets;
+	private:
+		// spritesheets to be played in parallel
+		vector<CharacterAnimation*> anims;  // TODO: WHERE TO STORE OFFSETS?
+		vector <SDL_Point> offsets; // TODO: NOT GOOD--DIFFERENT DIRECTIONS COULD HAVE DIFFERENT OFFSETS
 
 	public:
-		AnimationSequence(Spritesheet* right, Spritesheet* left, Spritesheet* up, Spritesheet* down);
-		// spritesheets, indexed by direction
-		Spritesheet* anims[5] = { NULL, NULL, NULL, NULL, NULL };
-		// offset from given (x, y) to draw animation
-		SDL_Point offset = SDL_Point { 0, 0 };
-		// returns whether the sequence has an animation for the given direction
-		bool hasDir(int dir);
-		// prints information for debugging
-		void printDebug();
+		AnimationSequence();
 
-		// adds spritesheet to the sequence
-		//void addAnim(Spritesheet* right, Spritesheet* left, Spritesheet* up, Spritesheet* down);
+		// TODO: MAKE IT POSSIBLE TO REMOVE? WE'D NEED TO RETURN AN INT INDEX FOR REMOVAL
+		void addAnimation(CharacterAnimation* anim, int drawOffsetX, int drawOffsetY);
+
+		int getNumAnimations();
 };
 
 #endif

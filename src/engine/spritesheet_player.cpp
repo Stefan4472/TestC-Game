@@ -36,7 +36,7 @@ void SpritesheetPlayer::reset()
 	msLeftThisFrame = currSheet->msPerFrame;
 }
 
-void SpritesheetPlayer::passTime(int ms)
+void SpritesheetPlayer::update(int ms)
 {
   assert(currSheet);
 	if (!paused)

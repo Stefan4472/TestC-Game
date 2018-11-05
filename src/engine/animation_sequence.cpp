@@ -1,19 +1,18 @@
 #include "animation_sequence.h"
 
-AnimationSequence::AnimationSequence(Spritesheet* right, Spritesheet* left, Spritesheet* up, Spritesheet* down)
+AnimationSequence::AnimationSequence()
 {
-	anims[DIRECTION::UP] = up;
-	anims[DIRECTION::DOWN] = down;
-	anims[DIRECTION::RIGHT] = right;
-	anims[DIRECTION::LEFT] =	left;
+
 }
 
-bool AnimationSequence::hasDir(int dir)
+void AnimationSequence::addAnimation(CharacterAnimation* anim, int drawOffsetX,
+	int drawOffsetY)
 {
-	return anims[dir];
+	anims.push_back(anim);
+	offsets.push_back(SDL_Point { drawOffsetX, drawOffsetY });
 }
 
-void AnimationSequence::printDebug()
+int AnimationSequence::getNumAnimations()
 {
-	printf("AnimSequence With Spritesheets %lu %lu %lu %lu %d\n", anims[0], anims[1], anims[2], anims[3], anims[4]);
+	return anims.size();
 }
