@@ -60,5 +60,5 @@ void SpritesheetPlayer::drawTo(SDL_Renderer* renderer, TextureAtlas* textureAtla
 	src.x = currSheet->frameWidth * frameCounter;
 	dest.x = x;
 	dest.y = y;
-	textureAtlas->drawSubimg(renderer, currSheet->textureId, src, x, y );
+	textureAtlas->drawSubimg(renderer, currSheet->textureId, src, x, y);
 }

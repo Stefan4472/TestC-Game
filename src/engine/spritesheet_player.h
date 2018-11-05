@@ -39,7 +39,7 @@ class SpritesheetPlayer  // TODO: SUPPORT NON-LOOPING SPRITESHEETS. ALSO, DEST R
 		void reset();
 		// increments duration by given number of milliseconds
 		void passTime(int ms);
-		// draws current frame to given renderer
+		// draws current frame to given renderer TODO: MAY NEED A BOOL USE_OFFSETS ARG
 		void drawTo(SDL_Renderer* renderer, TextureAtlas* textureAtlas, float x, float y);
 
 };
