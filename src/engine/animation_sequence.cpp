@@ -2,10 +2,10 @@
 
 AnimationSequence::AnimationSequence(Spritesheet* right, Spritesheet* left, Spritesheet* up, Spritesheet* down)
 {
-	anims[DIRECTION::DIRECTION_UP] = up;
-	anims[DIRECTION::DIRECTION_DOWN] = down;
-	anims[DIRECTION::DIRECTION_RIGHT] = right;
-	anims[DIRECTION::DIRECTION_LEFT] =	left;
+	anims[DIRECTION::UP] = up;
+	anims[DIRECTION::DOWN] = down;
+	anims[DIRECTION::RIGHT] = right;
+	anims[DIRECTION::LEFT] =	left;
 }
 
 bool AnimationSequence::hasDir(int dir)
