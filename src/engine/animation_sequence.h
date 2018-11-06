@@ -17,18 +17,18 @@ defines how to draw one or multiple character_animations in parallel
 
 class AnimationSequence // TODO: ADD COMPLEXITY AS NECESSASRY
 {
-	private:
+	public:
+		AnimationSequence();
+
 		// spritesheets to be played in parallel
 		vector<CharacterAnimation*> anims;  // TODO: WHERE TO STORE OFFSETS?
 		vector <SDL_Point> offsets; // TODO: NOT GOOD--DIFFERENT DIRECTIONS COULD HAVE DIFFERENT OFFSETS
-
-	public:
-		AnimationSequence();
 
 		// TODO: MAKE IT POSSIBLE TO REMOVE? WE'D NEED TO RETURN AN INT INDEX FOR REMOVAL
 		void addAnimation(CharacterAnimation* anim, int drawOffsetX, int drawOffsetY);
 
 		int getNumAnimations();
+
 };
 
 #endif

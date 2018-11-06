@@ -16,12 +16,11 @@ using namespace std;
 Plays an AnimationSequence. Set the AnimationSequence through the set() method, and call
 update() and draw() as per usual. Attempt to set/change direction via setDir().
 TODO: SUPPORT ANIMATIONSEQUENCE INTERRUPT VIA A STACK
+TODO: REFACTORING AND IMPROVEMENTS ONCE USAGE IS BETTER UNDERSTOOD
 */
 
 class AnimationPlayer
 {
-		// source and destination rects for drawing
-		SDL_Rect src = {0, 0, 0, 0}, dest = {0, 0, 0, 0};
 		// sequence being played
 		AnimationSequence* currSequence = NULL;
 		// current direction of spritesheets being played
@@ -29,16 +28,16 @@ class AnimationPlayer
 
 		vector<int> frameCounters;
 		vector<int> msLeftThisFrame;
-		vector<Spritesheet*> currSpritesheets;
+		vector<SDL_Rect> srcRects;
 
 	public:
 		AnimationPlayer();
 		AnimationPlayer(AnimationSequence* initSequence, Direction initDirection);
 
-		// sets sequence to play
+		// stops the current sequence and begins the given one from the front
 		void setAnim(AnimationSequence* sequence);
 		// sets direction
-		void setDir(int dir);
+		void setDir(Direction newDir);
 		// increments duration by given number of milliseconds
 		void update(int ms);
 		// draws current AnimationSequence to given renderer (via currAnim) TODO: BOOL USE_OFFSET

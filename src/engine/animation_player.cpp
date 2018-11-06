@@ -2,13 +2,13 @@
 
 AnimationPlayer::AnimationPlayer()
 {
-
+	numSpritesheets = 0;
 }
 
 AnimationPlayer::AnimationPlayer(AnimationSequence* initSequence, Direction initDirection)
 {
 	setAnim(initSequence);
-	this->currDir = initDirection;
+	setDir(initDirection);
 }
 
 void AnimationPlayer::setAnim(AnimationSequence* sequence)
@@ -29,50 +29,61 @@ void AnimationPlayer::setAnim(AnimationSequence* sequence)
 	}
 }
 
-void AnimationPlayer::setDir(int newDir)
+void AnimationPlayer::setDir(Direction newDir)
 {
 	// animSequence must be set before direction can be set
 	assert(animSequence);
 	assert(animSequence->hasDir(newDir));
 
 	// change if new direction different from current
-	// if (newDir != dir && animSequence->hasDir(newDir))
-	// {
-		dir = newDir;
-		currAnim = animSequence->anims[dir];  // TODO currAnim IS BEING SET TO 0 / ISN'T BEING INITIALIZES
-		frameCounter = 0;
-		msLeftThisFrame = currAnim->msPerFrame;
+	if (newDir != currDir)
+	{
+		currDir = newDir;
+		Spritesheet* sheet = NULL;
 
-		src.w = currAnim->frameWidth;
-		src.h = currAnim->frameHeight;
+		for (int i = 0; i < currSequence->getNumAnimations(); i++)
+		{
+			sheet = animSequence->anims[i]->get(newDir);
+			assert(sheet);
+			// TODO: RESET ANIM ON DIRECTION CHANGE?
 
-		dest.w = currAnim->frameWidth;
-		dest.h = currAnim->frameHeight;
-	// }
-	// else if (!animSequence->hasDir(newDir))
-	// {
-	// 	printf("WARNING: AnimationPlayer does not have direction '%d'\n", newDir);
-	// }
+			// set source rectangles
+			srcRects[i].w = sheet->frameWidth;
+			srcRects[i].h = sheet->frameHeight;
+		}
+	}
 }
 
 void AnimationPlayer::update(int ms)
 {
-	assert(currAnim);
-	// more time passed than is left for the frame--show next frame
-	while (ms > msLeftThisFrame)
+	Spritesheet* sheet = NULL;
+	int ms_copy;
+	for (int i = 0; i < currSequence->getNumAnimations(); i++)
 	{
-		ms -= msLeftThisFrame;
-		frameCounter = (frameCounter + 1) % currAnim->numFrames;
-		src.x = currAnim->frameWidth * frameCounter;
-		msLeftThisFrame = currAnim->msPerFrame;
+		ms_copy = ms;
+		sheet = currSequence->anims[i]->get(currDir);
+		assert(sheet);
+
+		// more time passed than is left for the frame--show next frame
+		while (ms_copy > msLeftThisFrame[i])
+		{
+			ms_copy -= msLeftThisFrame[i];
+			frameCounters[i] = (frameCounters[i] + 1) % sheet->numFrames;
+			srcRects[i].x = sheet->frameWidth * frameCounters[i];
+			msLeftThisFrame[i] = sheet->msPerFrame;
+		}
+		msLeftThisFrame[i] -= ms;
 	}
-	msLeftThisFrame -= ms;
 }
 
 void AnimationPlayer::drawTo(SDL_Renderer* renderer, TextureAtlas* textureAtlas, float x, float y)
 {
-	assert(currAnim);
-	dest.x = x;
-	dest.y = y;
-	textureAtlas->drawSubimg(renderer, currAnim->sheetImageId, src, x, y); // TODO: OFFSETS?
+	Spritesheet* sheet = NULL;
+	for (int i = 0; i < currSequence->getNumAnimations(); i++)
+	{
+		sheet = currSequence->anims[i]->get(currDir);
+		assert(sheet);
+		destRects[i].x = x;
+		destRects[i].y = y;
+		textureAtlas->drawSubimg(renderer, sheet->textureId, srcRects[i], x, y); // TODO: OFFSETS?
 }
