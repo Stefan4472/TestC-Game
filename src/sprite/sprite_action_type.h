@@ -2,13 +2,13 @@
 #define SPRITE_ACTION_TYPE_H
 
 /*
-Defines actions a sprite can take.
+Defines actions a sprite can take. TODO: RENAME SPRITESTATE?
 */
 enum class SpriteActionType
 {
-	IDLE,
-	WALK,
-	RUN,
+	IDLING,
+	WALKING,
+	RUNNING,
 	USING_ITEM,
   DYING
 };

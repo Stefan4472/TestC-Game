@@ -4,6 +4,10 @@ AnimationEngine::AnimationEngine(TextureAtlas* textureAtlas)
 {
 	this->textureAtlas = textureAtlas;
 
+	storedCharacterAnims[static_cast<int>(SpriteType::CIVILIAN)][static_cast<int>(SpriteActionType::IDLING)] =
+		new CharacterAnimation(
+			new Spritesheet(TextureId::CIVILIAN_IDLE_RIGHT, 1, 100, false, textureAtlas->getWidth(TextureId::CIVILIAN_IDLE_RIGHT), textureAtlas->getHeight(TextureId::CIVILIAN_IDLE_RIGHT));
+		);
 	CIV_IDLE_RIGHT = new Spritesheet(textureAtlas, CIVILIAN_IDLE_RIGHT, 1, 100);
 	CIV_IDLE_LEFT = new Spritesheet(textureAtlas, CIVILIAN_IDLE_LEFT, 1, 100);
 	CIV_IDLE_UP = new Spritesheet(textureAtlas, CIVILIAN_IDLE_UP, 1, 100);
@@ -34,12 +38,38 @@ AnimationEngine::AnimationEngine(TextureAtlas* textureAtlas)
 	PLA_RUN_UP = new Spritesheet(textureAtlas, PLAYER_RUN_UP, 4, 100);
 	PLA_RUN_DOWN = new Spritesheet(textureAtlas, PLAYER_RUN_DOWN, 4, 100);
 	printf("Finished Initializing AnimEngine\n");
+
+	storedCharacterAnims
 }
 
 // TODO: CACHING
-AnimationSequence* AnimationEngine::get(int spriteType, int actionType, int inHandId) // TODO: INDEX-BASED METHOD AND CACHE
+AnimationSequence* AnimationEngine::createAnim(DefinedAnimation animSpec)
 {
-	printf("AnimEngine queried for %d / %d / %d\n", spriteType, actionType, inHandId);
+	AnimationSequence* created = new AnimationSequence();
+	CharacterAnimation* base_anim = NULL;
+
+	switch (animSpec.spriteType)
+	{
+		case SpriteType::CIVILIAN:
+			switch (animSpec.actionType)
+			{
+				case SpriteActionType::IDLE:
+					base_anim = new AnimationSequence(CIV_IDLE_RIGHT, CIV_IDLE_LEFT, CIV_IDLE_UP, CIV_IDLE_DOWN);
+
+				case SPRITE_WALK:
+					return new AnimationSequence(CIV_WALK_RIGHT, CIV_WALK_LEFT, CIV_WALK_UP, CIV_WALK_DOWN);
+
+				case SPRITE_RUN:
+					return new AnimationSequence(CIV_RUN_RIGHT, CIV_RUN_LEFT, CIV_RUN_UP, CIV_RUN_DOWN);
+			};
+			break;
+
+		case SpriteType::PLAYER:
+			break;
+
+		default:
+			throw runtime_error("Invalid/Unhandled SpriteType"):
+	}
 	if (spriteType == SPRITE_TYPE_CIVILIAN)
 	{
 		printf("Civilian ");
@@ -78,5 +108,26 @@ AnimationSequence* AnimationEngine::get(int spriteType, int actionType, int inHa
 	{
 		printf("ERROR: ANIMATION_ENGINE.CPP SPRITETYPE NOT RECOGNIZED\N");
 		return NULL;
+	}
+}
+
+AnimationSequence* AnimationEngine::getAnim(SpriteType spriteType,
+	SpriteAction actionType, ItemType inHandItemType)
+{
+	DefinedAnimation requested_anim(spriteType, actionType, inHandItemType);
+
+	unordered_map<DefinedAnimation, AnimationSequence*>::const_iterator cache_result =
+		cachedSequences.find(requested_anim);
+
+	// sequence doesn't exist in cache: create it and add it
+	if (cache_result == cachedSequences.end())
+	{
+		AnimationSequence* created_sequence = createAnim(requested_anim);
+		cachedSequences[requested_anim] = created_sequence;
+		return created_sequence;
+	}
+	else
+	{
+		return cache_result->second;
 	}
 }
