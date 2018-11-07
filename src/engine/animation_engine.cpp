@@ -1,32 +1,59 @@
 #include "animation_engine.h"
 
+// struct used to store constant information about a spritesheet.
+// used below to save and retrieve Spritesheet settings in a convenient way
+struct SpritesheetSettings
+{
+	TextureId textureId;
+	int numFrames, msPerFrame;
+	bool loop;
+
+	SpritesheetSettings(TextureId textureId, int numFrames, int msPerFrame, bool loop)
+	{
+		this->textureId = textureId;
+		this->numFrames = numFrames;  // TODO: USE INITIALIZER LIST?
+		this->msPerFrame = msPerFrame;
+		this->loop = loop;
+	}
+}
+
+// saved Spritesheet settings, indexed by SpritesheetId
+const SpritesheetSettings SPRITESHEET_SETTINGS[SpritesheetIds::NUM_SPRITESHEETS] =
+{
+	SpritesheetSettings(TextureId::NONE, 0, 0, false),
+	SpritesheetSettings(TextureId::CIVILIAN_IDLE_UP, 1, 100, true),
+	SpritesheetSettings(TextureId::CIVILIAN_IDLE_DOWN, 1, 100, true),
+	SpritesheetSettings(TextureId::CIVILIAN_IDLE_LEFT, 1, 100, true),
+	SpritesheetSettings(TextureId::CIVILIAN_IDLE_RIGHT, 1, 100, true),
+	SpritesheetSettings(TextureId::CIVILIAN_WALK_UP, 3, 100, true),
+	SpritesheetSettings(TextureId::CIVILIAN_WALK_DOWN, 3, 100, true),
+	SpritesheetSettings(TextureId::CIVILIAN_WALK_LEFT, 3, 100, true),
+	SpritesheetSettings(TextureId::CIVILIAN_WALK_RIGHT, 3, 100, true),
+	SpritesheetSettings(TextureId::CIVILIAN_RUN_UP, 3, 100, true),
+	SpritesheetSettings(TextureId::CIVILIAN_RUN_DOWN, 3, 100, true),
+	SpritesheetSettings(TextureId::CIVILIAN_RUN_LEFT, 3, 100, true),
+	SpritesheetSettings(TextureId::CIVILIAN_RUN_RIGHT, 3, 100, true),
+	SpritesheetSettings(TextureId::PLAYER_IDLE_UP, 1, 100, true),
+	SpritesheetSettings(TextureId::PLAYER_IDLE_DOWN, 1, 100, true),
+	SpritesheetSettings(TextureId::PLAYER_IDLE_LEFT, 1, 100, true),
+	SpritesheetSettings(TextureId::PLAYER_IDLE_RIGHT, 1, 100, true),
+	SpritesheetSettings(TextureId::PLAYER_WALK_UP, 4, 100, true),
+	SpritesheetSettings(TextureId::PLAYER_WALK_DOWN, 4, 100, true),
+	SpritesheetSettings(TextureId::PLAYER_WALK_LEFT, 4, 100, true),
+	SpritesheetSettings(TextureId::PLAYER_WALK_RIGHT, 4, 100, true),
+	SpritesheetSettings(TextureId::PLAYER_RUN_UP, 4, 100, true),
+	SpritesheetSettings(TextureId::PLAYER_RUN_DOWN, 4, 100, true),
+	SpritesheetSettings(TextureId::PLAYER_RUN_LEFT, 4, 100, true),
+	SpritesheetSettings(TextureId::PLAYER_RUN_RIGHT, 4, 100, true)
+};
+
 AnimationEngine::AnimationEngine(TextureAtlas* textureAtlas)
 {
-	this->textureAtlas = textureAtlas;
+	// this->textureAtlas = textureAtlas;
 
-	storedCharacterAnims[static_cast<int>(SpriteType::CIVILIAN)][static_cast<int>(SpriteActionType::IDLING)] =
-		new CharacterAnimation(
-			new Spritesheet(TextureId::CIVILIAN_IDLE_RIGHT, 1, 100, false, textureAtlas->getWidth(TextureId::CIVILIAN_IDLE_RIGHT), textureAtlas->getHeight(TextureId::CIVILIAN_IDLE_RIGHT));
-		);
-	CIV_IDLE_RIGHT = new Spritesheet(textureAtlas, CIVILIAN_IDLE_RIGHT, 1, 100);
-	CIV_IDLE_LEFT = new Spritesheet(textureAtlas, CIVILIAN_IDLE_LEFT, 1, 100);
-	CIV_IDLE_UP = new Spritesheet(textureAtlas, CIVILIAN_IDLE_UP, 1, 100);
-	CIV_IDLE_DOWN = new Spritesheet(textureAtlas, CIVILIAN_IDLE_DOWN, 1, 100);
+	spritesheets[SpritesheetId::NONE] = NULL;
+	spritesheets[SpritesheetId::CIVILIAN_IDLE_UP] = createSpritesheet(SpritesheetId::CIVILIAN_IDLE_UP);
 
-	CIV_WALK_RIGHT = new Spritesheet(textureAtlas, CIVILIAN_WALK_RIGHT, 3, 100);
-	CIV_WALK_LEFT = new Spritesheet(textureAtlas, CIVILIAN_WALK_LEFT, 3, 100);
-	CIV_WALK_UP = new Spritesheet(textureAtlas, CIVILIAN_WALK_UP, 3, 100);
-	CIV_WALK_DOWN = new Spritesheet(textureAtlas, CIVILIAN_WALK_DOWN, 3, 100);
-
-	CIV_RUN_RIGHT = new Spritesheet(textureAtlas, CIVILIAN_RUN_RIGHT, 3, 100);
-	CIV_RUN_LEFT = new Spritesheet(textureAtlas, CIVILIAN_RUN_LEFT, 3, 100);
-	CIV_RUN_UP = new Spritesheet(textureAtlas, CIVILIAN_RUN_UP, 3, 100);
-	CIV_RUN_DOWN = new Spritesheet(textureAtlas, CIVILIAN_RUN_DOWN, 3, 100);
-
-	PLA_IDLE_RIGHT = new Spritesheet(textureAtlas, PLAYER_IDLE_RIGHT, 1, 100);
-	PLA_IDLE_LEFT = new Spritesheet(textureAtlas, PLAYER_IDLE_LEFT, 1, 100);
-	PLA_IDLE_UP = new Spritesheet(textureAtlas, PLAYER_IDLE_UP, 1, 100);
-	PLA_IDLE_DOWN = new Spritesheet(textureAtlas, PLAYER_IDLE_DOWN, 1, 100);
 
 	PLA_WALK_RIGHT = new Spritesheet(textureAtlas, PLAYER_WALK_RIGHT, 4, 100);
 	PLA_WALK_LEFT = new Spritesheet(textureAtlas, PLAYER_WALK_LEFT, 4, 100);
@@ -40,6 +67,16 @@ AnimationEngine::AnimationEngine(TextureAtlas* textureAtlas)
 	printf("Finished Initializing AnimEngine\n");
 
 	storedCharacterAnims
+}
+
+Spritesheet* AnimationEngine::createSpritesheet(SpritesheetId spritesheetId)
+{
+	// retrieve settings by index
+	SpritesheetSettings settings = SPRITESHEET_SETTINGS[static_cast<int>(spritesheetId)];
+
+	return new Spritesheet(settings.textureId, settings.numFrames, settings.msPerFrame,
+		settings.loop, textureAtlas->getWidth(settings.textureId),
+		textureAtlas->getHeight(settings.textureId));
 }
 
 // TODO: CACHING

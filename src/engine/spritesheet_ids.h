@@ -3,11 +3,12 @@
 
 /*
 Defins all Spritesheets known to the engine.
+TODO: MAKE SURE TO KEEP NUM_SPRITESHEETS (BELOW) UP-TO-DATE!
 */
 enum class SpritesheetId
 {
   NONE,
-  
+
   CIVILIAN_IDLE_UP,
   CIVILIAN_IDLE_DOWN,
   CIVILIAN_IDLE_LEFT,
@@ -38,4 +39,9 @@ enum class SpritesheetId
 	PLAYER_RUN_LEFT,
   PLAYER_RUN_RIGHT
 };
+
+namespace SpritesheetIds
+{
+  final int NUM_SPRITESHEETS = 25;
+}
 #endif

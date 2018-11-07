@@ -9,14 +9,17 @@ A CharacterModel defines the SpritesheetIds to be played for a Sprite's various
 possible actions. It is stateless.
 */
 
-struct CharacterModel
+class CharacterModel
 {
-  CharacterModel(SpritesheetId (*animations)[5][5]);
+  private:
+    // store Spritesheet Ids indexed by SpriteActionType x Direction
+    // this array should have thenumber of SpriteActionTypes (rows) * number of Directions (cols)
+    SpritesheetId animations[5][5];
 
-  // store Spritesheet Ids indexed by SpriteType x Direction
-  // this array should have thenumber of SpriteActionTypes (rows) * number of Directions (cols)
-  SpritesheetId (&animations)[5][5];
+  public:
+    CharacterModel(SpritesheetId animations[5][5]);
 
+    CharacterAnimation* getAnim(SpriteActionType action);
 };
 
 // TODO: THIS WILL GET COMPLETELY DESTROYED IF ANY CHANGE IS MADE TO SPRITE_ACTION_TYPE OR Direction

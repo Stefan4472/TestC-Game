@@ -10,7 +10,7 @@
 #include "spritesheet_ids.h"
 #include "spritesheet.h"
 #include "sprite_type.h"
-#include "sprite_action_type.h"
+#include "sprite_state.h"
 
 using namespace std;
 
@@ -25,6 +25,10 @@ class AnimationEngine
 	private:
 		TextureAtlas* textureAtlas = NULL;
 
+		// loaded spritesheets, indexed by SpritesheedId
+		Spritesheet* spritesheets[SpritesheetIds::NUM_SPRITESHEETS];
+		// loaded character animations
+
 		// TODO: SOME SORT OF INDEXED SYSTEM
 		Spritesheet *CIV_IDLE_RIGHT = NULL, *CIV_IDLE_LEFT = NULL, *CIV_IDLE_UP = NULL, *CIV_IDLE_DOWN = NULL;
 		Spritesheet *CIV_WALK_RIGHT = NULL, *CIV_WALK_LEFT = NULL, *CIV_WALK_UP = NULL, *CIV_WALK_DOWN = NULL;
@@ -38,6 +42,10 @@ class AnimationEngine
 		CharacterAnimation* storedCharacterAnims[3][5];
 
 		unordered_map<DefinedAnimation, AnimationSequence*> cachedSequences;
+
+		// creates and returns a new Spritesheet for the given SpritesheetId.
+		// uses settings stored in animation_engine.cpp
+		Spritesheet* createSpritesheet(SpritesheetId spritesheetId);
 
 		CharacterAnimation* loadCharacterAnim()
 		AnimationSequence* createAnim(DefinedAnimation animSpec);
