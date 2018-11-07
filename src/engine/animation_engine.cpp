@@ -102,8 +102,6 @@ AnimationEngine::AnimationEngine(TextureAtlas* textureAtlas)
 	);
 
 	printf("Finished Initializing AnimEngine\n");
-
-	storedCharacterAnims
 }
 
 Spritesheet* AnimationEngine::createSpritesheet(SpritesheetId spritesheetId)
@@ -120,75 +118,32 @@ Spritesheet* AnimationEngine::createSpritesheet(SpritesheetId spritesheetId)
 AnimationSequence* AnimationEngine::createAnim(DefinedAnimation animSpec)
 {
 	AnimationSequence* created = new AnimationSequence();
-	CharacterAnimation* base_anim = NULL;
 
-	switch (animSpec.spriteType)
+	// add sprite model animation
+	created->addAnimation(getModel(animSpec.spriteType)->getAnim(animSpec.actionType));
+
+	if (animSpec.inHandItemType)
 	{
-		case SpriteType::CIVILIAN:
-			switch (animSpec.actionType)
-			{
-				case SpriteActionType::IDLE:
-					base_anim = new AnimationSequence(CIV_IDLE_RIGHT, CIV_IDLE_LEFT, CIV_IDLE_UP, CIV_IDLE_DOWN);
-
-				case SPRITE_WALK:
-					return new AnimationSequence(CIV_WALK_RIGHT, CIV_WALK_LEFT, CIV_WALK_UP, CIV_WALK_DOWN);
-
-				case SPRITE_RUN:
-					return new AnimationSequence(CIV_RUN_RIGHT, CIV_RUN_LEFT, CIV_RUN_UP, CIV_RUN_DOWN);
-			};
-			break;
-
-		case SpriteType::PLAYER:
-			break;
-
-		default:
-			throw runtime_error("Invalid/Unhandled SpriteType"):
+		printf("No support for inHandItemType yet\n"); // TODO: ADD SUPPORT
 	}
-	if (spriteType == SPRITE_TYPE_CIVILIAN)
-	{
-		printf("Civilian ");
-		switch (actionType)
-		{
-			case SPRITE_IDLE:
-				printf("Idling\n");
-				return new AnimationSequence(CIV_IDLE_RIGHT, CIV_IDLE_LEFT, CIV_IDLE_UP, CIV_IDLE_DOWN);
 
-			case SPRITE_WALK:
-				return new AnimationSequence(CIV_WALK_RIGHT, CIV_WALK_LEFT, CIV_WALK_UP, CIV_WALK_DOWN);
+	return created;
+}
 
-			case SPRITE_RUN:
-				return new AnimationSequence(CIV_RUN_RIGHT, CIV_RUN_LEFT, CIV_RUN_UP, CIV_RUN_DOWN);
-		};
-	}
-	else if (spriteType == SPRITE_TYPE_PLAYER)
-	{
-		printf("player ");
-		switch (actionType)
-		{
-			case SPRITE_IDLE:
-				printf("idling\n");
-				return new AnimationSequence(PLA_IDLE_RIGHT, PLA_IDLE_LEFT, PLA_IDLE_UP, PLA_IDLE_DOWN);
+Spritesheet* AnimationEngine::getSpritesheet(SpritesheetId spritesheetId)
+{
+	return spritesheets[static_cast<int>(spritesheetId)];
+}
 
-			case SPRITE_WALK:
-				printf("walking\n");
-				return new AnimationSequence(PLA_WALK_RIGHT, PLA_WALK_LEFT, PLA_WALK_UP, PLA_WALK_DOWN);
-
-			case SPRITE_RUN:
-				printf("running\n");
-				return new AnimationSequence(PLA_RUN_RIGHT, PLA_RUN_LEFT, PLA_RUN_UP, PLA_RUN_DOWN);
-		};
-	}
-	else
-	{
-		printf("ERROR: ANIMATION_ENGINE.CPP SPRITETYPE NOT RECOGNIZED\N");
-		return NULL;
-	}
+CharacterModel* AnimationEngine::getModel(SpriteType spriteType)
+{
+	return characterModels[static_cast<int>(spriteType)];
 }
 
 AnimationSequence* AnimationEngine::getAnim(SpriteType spriteType,
-	SpriteAction actionType, ItemType inHandItemType)
+	SpriteState spriteState, ItemType inHandItemType)
 {
-	DefinedAnimation requested_anim(spriteType, actionType, inHandItemType);
+	DefinedAnimation requested_anim(spriteType, spriteState, inHandItemType);
 
 	unordered_map<DefinedAnimation, AnimationSequence*>::const_iterator cache_result =
 		cachedSequences.find(requested_anim);

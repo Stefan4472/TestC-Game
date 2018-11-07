@@ -30,25 +30,26 @@ class AnimationEngine
 		// loaded character models, indexed by SpriteType
 		CharacterModel* characterModels[SpriteType::NUM_TYPES];
 
-
-		// loaded CharacterAnimation objects, indexed by SpriteType x SpriteActionType
-		CharacterAnimation* storedCharacterAnims[3][5];
-
+		// cache of created AnimationSequences, indexed by DefinedAnimation specs
 		unordered_map<DefinedAnimation, AnimationSequence*> cachedSequences;
 
 		// creates and returns a new Spritesheet for the given SpritesheetId.
 		// uses settings stored in animation_engine.cpp
 		Spritesheet* createSpritesheet(SpritesheetId spritesheetId);
-
-		CharacterAnimation* loadCharacterAnim()
+		// creates and returns a new AnimationSequence for the given specs.
+		// uses the character model of the DefinedAnimation's SpriteType
 		AnimationSequence* createAnim(DefinedAnimation animSpec);
 
 	public:
-		// initialize all spritesheets
+		// initialize all spritesheets and character models
 		AnimationEngine(TextureAtlas* textureAtlas);
 
+		// returns loaded spritesheet for given id
+		Spritesheet* getSpritesheet(SpritesheetId spritesheetId);
+		// return CharacterModel for given SpriteType
+		CharacterModel* getModel(SpriteType spriteType);
 		// returns an AnimationSequence for the given sprite holding inHandId and doing the given SPRITE_ACTION
-		AnimationSequence* getAnim(SpriteType spriteType, SpriteAction actionType, ItemType inHandItemType);
+		AnimationSequence* getAnim(SpriteType spriteType, SpriteState spriteState, ItemType inHandItemType);
 };
 
 #endif

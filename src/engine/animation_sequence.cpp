@@ -4,7 +4,7 @@ AnimationSequence::AnimationSequence()
 {
 
 }
-
+// TODO: LAYERS?
 void AnimationSequence::addAnimation(CharacterAnimation* anim, int drawOffsetX,
 	int drawOffsetY)
 {
