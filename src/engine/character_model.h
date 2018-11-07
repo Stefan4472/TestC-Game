@@ -12,27 +12,17 @@ possible actions. It is stateless.
 class CharacterModel
 {
   private:
-    // store Spritesheet Ids indexed by SpriteActionType x Direction
-    // this array should have thenumber of SpriteActionTypes (rows) * number of Directions (cols)
-    SpritesheetId animations[5][5];
+    // character animations indexed by SpriteState
+    CharacterAnimation* animsByState[SpriteStates::NUM_STATES];
 
   public:
-    CharacterModel(SpritesheetId animations[5][5]);
+    // init model with CharacterAnimations for each sprite state
+    CharacterModel(CharacterAnimation* idleAnim, CharacterAnimation* walkAnim,
+      CharacterAnimation* runAnim, CharacterAnimation* useItemAnim,
+      CharacterAnimation* dieAnim);
 
-    CharacterAnimation* getAnim(SpriteActionType action);
+    // get CharacterAnimation for a specified direction
+    CharacterAnimation* getAnim(SpriteState spriteState);
 };
 
-// TODO: THIS WILL GET COMPLETELY DESTROYED IF ANY CHANGE IS MADE TO SPRITE_ACTION_TYPE OR Direction
-namespace CharacterModels  // TODO: SEPARATE INTO SEPARATE FILE?
-{
-  extern CharacterModel NULL_MODEL;  // TODO: MAKE FINAL
-  extern CharacterModel CIVILIAN_MODEL;
-  extern CharacterModel PLAYER_MODEL;
-
-  extern CharacterModel CHARACTER_MODELS[3];
-
-  // return CharacterModel for the given SpriteType. Indexes into the
-  // CHARACTER_MODELS array
-  CharacterModel getModel(SpriteType spriteType);
-}
 #endif

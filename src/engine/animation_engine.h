@@ -27,16 +27,9 @@ class AnimationEngine
 
 		// loaded spritesheets, indexed by SpritesheedId
 		Spritesheet* spritesheets[SpritesheetIds::NUM_SPRITESHEETS];
-		// loaded character animations
+		// loaded character models, indexed by SpriteType
+		CharacterModel* characterModels[3]; // TODO: NUM_SPRITE_TYPES
 
-		// TODO: SOME SORT OF INDEXED SYSTEM
-		Spritesheet *CIV_IDLE_RIGHT = NULL, *CIV_IDLE_LEFT = NULL, *CIV_IDLE_UP = NULL, *CIV_IDLE_DOWN = NULL;
-		Spritesheet *CIV_WALK_RIGHT = NULL, *CIV_WALK_LEFT = NULL, *CIV_WALK_UP = NULL, *CIV_WALK_DOWN = NULL;
-		Spritesheet *CIV_RUN_RIGHT = NULL, *CIV_RUN_LEFT = NULL, *CIV_RUN_UP = NULL, *CIV_RUN_DOWN = NULL;
-
-		Spritesheet *PLA_IDLE_RIGHT = NULL, *PLA_IDLE_LEFT = NULL, *PLA_IDLE_UP = NULL, *PLA_IDLE_DOWN = NULL;
-		Spritesheet *PLA_WALK_RIGHT = NULL, *PLA_WALK_LEFT = NULL, *PLA_WALK_UP = NULL, *PLA_WALK_DOWN = NULL;
-		Spritesheet *PLA_RUN_RIGHT = NULL, *PLA_RUN_LEFT = NULL, *PLA_RUN_UP = NULL, *PLA_RUN_DOWN = NULL;
 
 		// loaded CharacterAnimation objects, indexed by SpriteType x SpriteActionType
 		CharacterAnimation* storedCharacterAnims[3][5];
