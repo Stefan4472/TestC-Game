@@ -49,21 +49,58 @@ const SpritesheetSettings SPRITESHEET_SETTINGS[SpritesheetIds::NUM_SPRITESHEETS]
 
 AnimationEngine::AnimationEngine(TextureAtlas* textureAtlas)
 {
-	// this->textureAtlas = textureAtlas;
-
+	// create spritesheets
 	spritesheets[SpritesheetId::NONE] = NULL;
 	spritesheets[SpritesheetId::CIVILIAN_IDLE_UP] = createSpritesheet(SpritesheetId::CIVILIAN_IDLE_UP);
+	spritesheets[SpritesheetId::CIVILIAN_IDLE_DOWN] = createSpritesheet(SpritesheetId::CIVILIAN_IDLE_DOWN);
+	spritesheets[SpritesheetId::CIVILIAN_IDLE_LEFT] = createSpritesheet(SpritesheetId::CIVILIAN_IDLE_LEFT);
+	spritesheets[SpritesheetId::CIVILIAN_IDLE_RIGHT] = createSpritesheet(SpritesheetId::CIVILIAN_IDLE_RIGHT);
+	spritesheets[SpritesheetId::CIVILIAN_WALK_UP] = createSpritesheet(SpritesheetId::CIVILIAN_WALK_UP);
+	spritesheets[SpritesheetId::CIVILIAN_WALK_DOWN] = createSpritesheet(SpritesheetId::CIVILIAN_WALK_DOWN);
+	spritesheets[SpritesheetId::CIVILIAN_WALK_LEFT] = createSpritesheet(SpritesheetId::CIVILIAN_WALK_LEFT);
+	spritesheets[SpritesheetId::CIVILIAN_WALK_RIGHT] = createSpritesheet(SpritesheetId::CIVILIAN_WALK_RIGHT);
+	spritesheets[SpritesheetId::CIVILIAN_RUN_UP] = createSpritesheet(SpritesheetId::CIVILIAN_RUN_UP);
+	spritesheets[SpritesheetId::CIVILIAN_RUN_DOWN] = createSpritesheet(SpritesheetId::CIVILIAN_RUN_DOWN);
+	spritesheets[SpritesheetId::CIVILIAN_RUN_LEFT] = createSpritesheet(SpritesheetId::CIVILIAN_RUN_LEFT);
+	spritesheets[SpritesheetId::CIVILIAN_RUN_RIGHT] = createSpritesheet(SpritesheetId::CIVILIAN_RUN_RIGHT);
+	spritesheets[SpritesheetId::PLAYER_IDLE_UP] = createSpritesheet(SpritesheetId::PLAYER_IDLE_UP);
+	spritesheets[SpritesheetId::PLAYER_IDLE_DOWN] = createSpritesheet(SpritesheetId::PLAYER_IDLE_DOWN);
+	spritesheets[SpritesheetId::PLAYER_IDLE_LEFT] = createSpritesheet(SpritesheetId::PLAYER_IDLE_LEFT);
+	spritesheets[SpritesheetId::PLAYER_IDLE_RIGHT] = createSpritesheet(SpritesheetId::PLAYER_IDLE_RIGHT);
+	spritesheets[SpritesheetId::PLAYER_WALK_UP] = createSpritesheet(SpritesheetId::PLAYER_WALK_UP);
+	spritesheets[SpritesheetId::PLAYER_WALK_DOWN] = createSpritesheet(SpritesheetId::PLAYER_WALK_DOWN);
+	spritesheets[SpritesheetId::PLAYER_WALK_LEFT] = createSpritesheet(SpritesheetId::PLAYER_WALK_LEFT);
+	spritesheets[SpritesheetId::PLAYER_WALK_RIGHT] = createSpritesheet(SpritesheetId::PLAYER_WALK_RIGHT);
+	spritesheets[SpritesheetId::PLAYER_RUN_UP] = createSpritesheet(SpritesheetId::PLAYER_RUN_UP);
+	spritesheets[SpritesheetId::PLAYER_RUN_DOWN] = createSpritesheet(SpritesheetId::PLAYER_RUN_DOWN);
+	spritesheets[SpritesheetId::PLAYER_RUN_LEFT] = createSpritesheet(SpritesheetId::PLAYER_RUN_LEFT);
+	spritesheets[SpritesheetId::PLAYER_RUN_RIGHT] = createSpritesheet(SpritesheetId::PLAYER_RUN_RIGHT);
 
+	// create character models
+	characterModels[SpriteType::NONE] = new CharacterModel(
+		new CharacterAnimation(spritesheets[SpritesheetId::NONE], spritesheets[SpritesheetId::NONE], spritesheets[SpritesheetId::NONE], spritesheets[SpritesheetId::NONE]),
+		new CharacterAnimation(spritesheets[SpritesheetId::NONE], spritesheets[SpritesheetId::NONE], spritesheets[SpritesheetId::NONE], spritesheets[SpritesheetId::NONE]),
+		new CharacterAnimation(spritesheets[SpritesheetId::NONE], spritesheets[SpritesheetId::NONE], spritesheets[SpritesheetId::NONE], spritesheets[SpritesheetId::NONE]),
+		new CharacterAnimation(spritesheets[SpritesheetId::NONE], spritesheets[SpritesheetId::NONE], spritesheets[SpritesheetId::NONE], spritesheets[SpritesheetId::NONE]),
+		new CharacterAnimation(spritesheets[SpritesheetId::NONE], spritesheets[SpritesheetId::NONE], spritesheets[SpritesheetId::NONE], spritesheets[SpritesheetId::NONE])
+	);
 
-	PLA_WALK_RIGHT = new Spritesheet(textureAtlas, PLAYER_WALK_RIGHT, 4, 100);
-	PLA_WALK_LEFT = new Spritesheet(textureAtlas, PLAYER_WALK_LEFT, 4, 100);
-	PLA_WALK_UP = new Spritesheet(textureAtlas, PLAYER_WALK_UP, 4, 100);
-	PLA_WALK_DOWN = new Spritesheet(textureAtlas, PLAYER_WALK_DOWN, 4, 100);
+	characterModels[SpriteType::CIVILIAN] = new CharacterModel(
+		new CharacterAnimation(spritesheets[SpritesheetId::CIVILIAN_IDLE_RIGHT], spritesheets[SpritesheetId::CIVILIAN_IDLE_LEFT], spritesheets[SpritesheetId::CIVILIAN_IDLE_UP], spritesheets[SpritesheetId::CIVILIAN_IDLE_DOWN]),
+		new CharacterAnimation(spritesheets[SpritesheetId::CIVILIAN_WALK_RIGHT], spritesheets[SpritesheetId::CIVILIAN_WALK_LEFT], spritesheets[SpritesheetId::CIVILIAN_WALK_UP], spritesheets[SpritesheetId::CIVILIAN_WALK_DOWN]),
+		new CharacterAnimation(spritesheets[SpritesheetId::CIVILIAN_RUN_RIGHT], spritesheets[SpritesheetId::CIVILIAN_RUN_LEFT], spritesheets[SpritesheetId::CIVILIAN_RUN_UP], spritesheets[SpritesheetId::CIVILIAN_RUN_DOWN]),
+		new CharacterAnimation(spritesheets[SpritesheetId::NONE], spritesheets[SpritesheetId::NONE], spritesheets[SpritesheetId::NONE], spritesheets[SpritesheetId::NONE]),
+		new CharacterAnimation(spritesheets[SpritesheetId::NONE], spritesheets[SpritesheetId::NONE], spritesheets[SpritesheetId::NONE], spritesheets[SpritesheetId::NONE])
+	);
 
-	PLA_RUN_RIGHT = new Spritesheet(textureAtlas, PLAYER_RUN_RIGHT, 4, 100);
-	PLA_RUN_LEFT = new Spritesheet(textureAtlas, PLAYER_RUN_LEFT, 4, 100);
-	PLA_RUN_UP = new Spritesheet(textureAtlas, PLAYER_RUN_UP, 4, 100);
-	PLA_RUN_DOWN = new Spritesheet(textureAtlas, PLAYER_RUN_DOWN, 4, 100);
+	characterModels[SpriteType::CIVILIAN] = new CharacterModel(
+		new CharacterAnimation(spritesheets[SpritesheetId::PLAYER_IDLE_RIGHT], spritesheets[SpritesheetId::PLAYER_IDLE_LEFT], spritesheets[SpritesheetId::PLAYER_IDLE_UP], spritesheets[SpritesheetId::PLAYER_IDLE_DOWN]),
+		new CharacterAnimation(spritesheets[SpritesheetId::PLAYER_WALK_RIGHT], spritesheets[SpritesheetId::PLAYER_WALK_LEFT], spritesheets[SpritesheetId::PLAYER_WALK_UP], spritesheets[SpritesheetId::PLAYER_WALK_DOWN]),
+		new CharacterAnimation(spritesheets[SpritesheetId::PLAYER_RUN_RIGHT], spritesheets[SpritesheetId::PLAYER_RUN_LEFT], spritesheets[SpritesheetId::PLAYER_RUN_UP], spritesheets[SpritesheetId::PLAYER_RUN_DOWN]),
+		new CharacterAnimation(spritesheets[SpritesheetId::NONE], spritesheets[SpritesheetId::NONE], spritesheets[SpritesheetId::NONE], spritesheets[SpritesheetId::NONE]),
+		new CharacterAnimation(spritesheets[SpritesheetId::NONE], spritesheets[SpritesheetId::NONE], spritesheets[SpritesheetId::NONE], spritesheets[SpritesheetId::NONE])
+	);
+
 	printf("Finished Initializing AnimEngine\n");
 
 	storedCharacterAnims

@@ -11,4 +11,9 @@ enum class SpriteType
 	PLAYER
 };
 
+namespace SpriteTypes
+{
+	final int NUM_TYPES = 3;
+}
+
 #endif

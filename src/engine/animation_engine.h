@@ -28,7 +28,7 @@ class AnimationEngine
 		// loaded spritesheets, indexed by SpritesheedId
 		Spritesheet* spritesheets[SpritesheetIds::NUM_SPRITESHEETS];
 		// loaded character models, indexed by SpriteType
-		CharacterModel* characterModels[3]; // TODO: NUM_SPRITE_TYPES
+		CharacterModel* characterModels[SpriteType::NUM_TYPES];
 
 
 		// loaded CharacterAnimation objects, indexed by SpriteType x SpriteActionType
