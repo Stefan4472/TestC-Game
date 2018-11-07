@@ -7,7 +7,7 @@
 #include "animation_player.h"
 #include "sprite.h"
 #include "direction.h"
-#include "move_state.h"
+#include "sprite_state.h"
 #include "sprite_healthbar.h"
 #include "sprite_action.h"
 #include "inventory.h"
@@ -15,6 +15,8 @@
 #include "sound.h"
 
 using namespace std;
+
+// TODO: REMOVE MOVE_STATE.H AND COMMENT
 
 // The SpriteController provides the AI controlling a sprite. It is essentially a Finite State Machine
 // that manages the action a Sprite is currently following, and handles responses to certain events/
@@ -35,7 +37,9 @@ class SpriteController : public InventoryListener, public SpriteListener
 		// item sprite has in hand. Used for drawing
 		Item* inHand = NULL;
 
+		// pointer to engine that creates animations
 		AnimationEngine* animEngine = NULL;
+		// used to play the sprite's animations
 		AnimationPlayer* animPlayer = NULL;
 
 		// healthbar, which may be drawn over the sprite

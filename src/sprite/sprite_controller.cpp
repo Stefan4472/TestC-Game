@@ -10,13 +10,18 @@ SpriteController::SpriteController(Sprite* sprite, Inventory* inventory,
 	inventory->setListener(this);
 
 	this->animEngine = animEngine;
-	animPlayer = new AnimationPlayer(); // TODO: INIT ANIM AND DIRECTION
+
+	// create AnimationPlayer and set to idling down
+	animPlayer = new AnimationPlayer(); //
+	animPlayer->setAnim(animEngine->getAnim(sprite->spriteType, SpriteState::IDLE, ItemType::NONE),
+		Direction::DOWN);
 }
 
 void SpriteController::onInHandItemChanged(Item* newItem)
 {
+	// change in-hand and update animation being played
 	inHand = newItem;
-	animPlayer->setAnimSequence(animEngine->getAnim(sprite->spriteType, currActionState, inHand->itemType));
+	animPlayer->setAnim(animEngine->getAnim(sprite->spriteType, currActionState, inHand->itemType));
 }
 
 void SpriteController::onSpriteHealthChanged(int amount, int newHp)
@@ -33,7 +38,7 @@ void SpriteController::onSpriteHealthChanged(int amount, int newHp)
 
 void SpriteController::handleMapCollision()
 {
-	sprite->moveBack();	// TODO: SEND TO TOP ACTION ON ACTIONSTACK?
+	sprite->moveBack();	// TODO: SEND TO TOP ACTION ON ACTIONSTACK? THIS NEEDS TO BE IMPROVED
 }
 
 void SpriteController::handleSpriteCollision(Sprite* other)
@@ -112,7 +117,7 @@ void Sprite::handleSpriteDead()
 	sprite->destroy = true;
 }
 
-void SpriteController::drawTo(SDL_Renderer* renderer, TextureAtlas* textureAtlas)
+void SpriteController::drawTo(SDL_Renderer* renderer, TextureAtlas* textureAtlas, int offsetX, int offsetY)
 {
 	// draw sprite's current animation
 	animPlayer->drawTo(renderer, sprite->x, sprite->y);

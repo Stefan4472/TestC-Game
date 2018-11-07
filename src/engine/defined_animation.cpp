@@ -1,9 +1,9 @@
 #include "defined_animation.h"
 
-DefinedAnimation::DefinedAnimation(SpriteType spriteType, SpriteActionType actionType,
-  ItemType inHandItemType);
+DefinedAnimation::DefinedAnimation(SpriteType spriteType, SpriteState spriteState,
+  ItemType inHandItemType)
 {
   this->spriteType = spriteType;
-  this->actionType = actionType;
+  this->spriteState = spriteState;
   this->inHandItemType = inHandItemType;
 }

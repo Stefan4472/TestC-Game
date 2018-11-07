@@ -7,7 +7,8 @@
 #include "defined_animation.h"
 #include "animation_sequence.h"
 #include "animation_player.h"
-#include "spritesheet_ids.h"
+#include "character_model.h"
+#include "spritesheet_id.h"
 #include "spritesheet.h"
 #include "sprite_type.h"
 #include "sprite_state.h"
@@ -23,19 +24,17 @@ using namespace std;
 class AnimationEngine
 {
 	private:
-		TextureAtlas* textureAtlas = NULL;
-
 		// loaded spritesheets, indexed by SpritesheedId
 		Spritesheet* spritesheets[SpritesheetIds::NUM_SPRITESHEETS];
 		// loaded character models, indexed by SpriteType
-		CharacterModel* characterModels[SpriteType::NUM_TYPES];
+		CharacterModel* characterModels[SpriteTypes::NUM_TYPES];
 
 		// cache of created AnimationSequences, indexed by DefinedAnimation specs
 		unordered_map<DefinedAnimation, AnimationSequence*> cachedSequences;
 
 		// creates and returns a new Spritesheet for the given SpritesheetId.
 		// uses settings stored in animation_engine.cpp
-		Spritesheet* createSpritesheet(SpritesheetId spritesheetId);
+		Spritesheet* createSpritesheet(TextureAtlas* textureAtlas, SpritesheetId spritesheetId);
 		// creates and returns a new AnimationSequence for the given specs.
 		// uses the character model of the DefinedAnimation's SpriteType
 		AnimationSequence* createAnim(DefinedAnimation animSpec);
@@ -49,7 +48,8 @@ class AnimationEngine
 		// return CharacterModel for given SpriteType
 		CharacterModel* getModel(SpriteType spriteType);
 		// returns an AnimationSequence for the given sprite holding inHandId and doing the given SPRITE_ACTION
-		AnimationSequence* getAnim(SpriteType spriteType, SpriteState spriteState, ItemType inHandItemType);
+		AnimationSequence* getSequence(SpriteType spriteType, SpriteState spriteState,
+			ItemType inHandItemType);
 };
 
 #endif

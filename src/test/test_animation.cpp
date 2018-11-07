@@ -1,4 +1,5 @@
 // tests animation_engine, animation_sequence and animation_player
+// NOTE: THIS IS THE OLD ANIMATION SYSTEM, AND IS NO LONGER WORKING
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>

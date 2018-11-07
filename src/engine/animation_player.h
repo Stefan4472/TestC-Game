@@ -3,7 +3,7 @@
 
 #include <SDL2/SDL.h>
 #include <assert.h>
-#include <sdlexcept>
+#include <stdexcept>
 #include <vector>
 #include "direction.h"
 #include "texture_atlas.h"

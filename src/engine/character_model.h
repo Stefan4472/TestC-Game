@@ -1,8 +1,10 @@
 #ifndef CHARACTER_MODEL_H
 #define CHARACTER_MODEL_H
 
-#include "spritesheet_ids.h"
+#include "character_animation.h"
+#include "spritesheet_id.h"
 #include "sprite_type.h"
+#include "sprite_state.h"
 
 /*
 A CharacterModel defines the SpritesheetIds to be played for a Sprite's various

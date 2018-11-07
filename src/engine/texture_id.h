@@ -4,7 +4,7 @@
 /*
 Specifies the ids of all textures known to the game engine. Used with TextureAtlas.
 */
-enum TextureId
+enum class TextureId
 {
 	TEXTURE_NONE,  // actually a black square
 	TILE_GRASS,
@@ -65,9 +65,12 @@ enum TextureId
 	TEXTURE_RIFLE_AMMO,
 	TEXTURE_SHOTGUN,
 	TEXTURE_TOMMYGUN,
-	TEXTURE_MUZZLE_FLASH,
-  
-  NUM_TEXTURES
+	TEXTURE_MUZZLE_FLASH
 };
+
+namespace TextureIds
+{
+	const int NUM_TEXTURES = 51;
+}
 
 #endif

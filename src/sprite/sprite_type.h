@@ -13,7 +13,7 @@ enum class SpriteType
 
 namespace SpriteTypes
 {
-	final int NUM_TYPES = 3;
+	const int NUM_TYPES = 3;
 }
 
 #endif

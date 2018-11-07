@@ -2,7 +2,7 @@
 
 AnimationPlayer::AnimationPlayer()
 {
-	numSpritesheets = 0;
+
 }
 
 AnimationPlayer::AnimationPlayer(AnimationSequence* initSequence, Direction initDirection)
@@ -32,8 +32,8 @@ void AnimationPlayer::setAnim(AnimationSequence* sequence)
 void AnimationPlayer::setDir(Direction newDir)
 {
 	// animSequence must be set before direction can be set
-	assert(animSequence);
-	assert(animSequence->hasDir(newDir));
+	assert(currSequence);
+	assert(currSequence->hasDir(newDir));
 
 	// change if new direction different from current
 	if (newDir != currDir)
@@ -83,7 +83,6 @@ void AnimationPlayer::drawTo(SDL_Renderer* renderer, TextureAtlas* textureAtlas,
 	{
 		sheet = currSequence->anims[i]->get(currDir);
 		assert(sheet);
-		destRects[i].x = x;
-		destRects[i].y = y;
 		textureAtlas->drawSubimg(renderer, sheet->textureId, srcRects[i], x, y); // TODO: OFFSETS?
+	}
 }

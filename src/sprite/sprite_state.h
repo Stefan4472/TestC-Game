@@ -15,7 +15,7 @@ enum class SpriteState
 
 namespace SpriteStates
 {
-  final int NUM_STATES = 5;
+  const int NUM_STATES = 5;
 }
 
 #endif

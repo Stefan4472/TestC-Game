@@ -1,6 +1,7 @@
 #ifndef CHARACTER_ANIM_H
 #define CHARACTER_ANIM_H
 
+#include <cstddef>
 #include "spritesheet.h"
 #include "direction.h"
 

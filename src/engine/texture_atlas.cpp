@@ -107,34 +107,28 @@ int TextureAtlas::getHeight(int textureId)
 	return textureRegions[textureId].h;
 }
 
-void TextureAtlas::drawImg(SDL_Renderer* renderer, int textureId, float x,
+void TextureAtlas::drawImg(SDL_Renderer* renderer, TextureId textureId, float x,
 	float y, bool useMapOffset)
 {
-	if (textureId < 0 || textureId > TextureId::NUM_TEXTURES)
-	{
-		throw runtime_error("TextureId out of bounds");
-	}
+	int texture_index = static_cast<int>(textureId);
 
 	dest.x = useMapOffset ? x - mapOffsetX : x;
 	dest.y = useMapOffset ? y - mapOffsetY : y;
-	dest.w = textureRegions[textureId].w;
-	dest.h = textureRegions[textureId].h;
+	dest.w = textureRegions[texture_index].w;
+	dest.h = textureRegions[texture_index].h;
 
 	// draw from atlas
-	SDL_RenderCopy(renderer, atlasImg, &textureRegions[textureId], &dest);
+	SDL_RenderCopy(renderer, atlasImg, &textureRegions[texture_index], &dest);
 }
 
-void TextureAtlas::drawSubimg(SDL_Renderer* renderer, int textureId, SDL_Rect src,
+void TextureAtlas::drawSubimg(SDL_Renderer* renderer, TextureId textureId, SDL_Rect src,
 	float x, float y, bool useMapOffset)
 {
-	if (textureId < 0 || textureId > TextureId::NUM_TEXTURES)
-	{
-		throw runtime_error("TextureId out of bounds");
-	}
+	int texture_index = static_cast<int>(textureId);
 
 	// adjust source coordinates to get coordinate in full atlas
-	src.x = src.x + textureRegions[textureId].x;
-	src.y = src.y + textureRegions[textureId].y;
+	src.x = src.x + textureRegions[texture_index].x;
+	src.y = src.y + textureRegions[texture_index].y;
 
 	dest.x = useMapOffset ? x - mapOffsetX : x;
 	dest.y = useMapOffset ? y - mapOffsetY : y;

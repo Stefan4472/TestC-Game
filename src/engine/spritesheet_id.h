@@ -42,6 +42,6 @@ enum class SpritesheetId
 
 namespace SpritesheetIds
 {
-  final int NUM_SPRITESHEETS = 25;
+  const int NUM_SPRITESHEETS = 25;
 }
 #endif
