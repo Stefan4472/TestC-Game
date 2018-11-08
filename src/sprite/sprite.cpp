@@ -46,16 +46,16 @@ SDL_Point Sprite::getRightHandPosition() // todo: standardize for all sprites
 	switch (facingDir)
 	{
 		case Direction::RIGHT:
-			return SDL_Point { x + 24, y + 44 };
+			return SDL_Point { (int) x + 24, (int) y + 44 };
 
 		case Direction::UP:
-			return SDL_Point { x + 42, y + 41 };
+			return SDL_Point { (int) x + 42, (int) y + 41 };
 
 		case Direction::DOWN:
-			return SDL_Point { x + 13, y + 40 };
+			return SDL_Point { (int) x + 13, (int) y + 40 };
 
 		case Direction::LEFT:
-			return SDL_Point { x + 19, y + 41 };
+			return SDL_Point { (int) x + 19, (int) y + 41 };
 
 		default:
 			throw runtime_error("Unhandled/Invalid facingDir (" + to_string(static_cast<int>(facingDir)) + ")");
@@ -107,12 +107,7 @@ void Sprite::startWalking()
 			throw runtime_error("Unhandled/Invalid facingDir (" + to_string(static_cast<int>(facingDir)) + ")");
 	}
 
-	moveState = MoveState::WALK;
-
-	if (listener)
-	{
-		listener->onMovementChanged(facingDir, moveState);
-	}
+	changeMoveState(facingDir, SpriteState::WALKING);
 }
 
 void Sprite::startRunning()
@@ -143,12 +138,7 @@ void Sprite::startRunning()
 			throw runtime_error("Unhandled/Invalid facingDir (" + to_string(static_cast<int>(facingDir)) + ")");
 	}
 
-	moveState = MoveState::RUN;
-
-	if (listener)
-	{
-		listener->onMovementChanged(facingDir, moveState);
-	}
+	changeMoveState(facingDir, SpriteState::RUNNING);
 }
 
 void Sprite::stopMoving()
@@ -156,12 +146,7 @@ void Sprite::stopMoving()
 	speedX = 0;
 	speedY = 0;
 
-	moveState = MoveState::IDLE;
-
-	if (listener)
-	{
-		listener->onMovementChanged(facingDir, moveState);
-	}
+	changeMoveState(facingDir, SpriteState::IDLING);
 }
 
 void Sprite::moveBack()
@@ -173,7 +158,7 @@ void Sprite::moveBack()
 	hitbox.y = y + hitboxOffsetY;
 }
 
-void Sprite::setDir(int newDir)
+void Sprite::setDir(Direction newDir)
 {
 	// do nothing if sprite is already facing that direction
 	if (newDir == facingDir)
@@ -220,9 +205,20 @@ void Sprite::setDir(int newDir)
 			throw runtime_error("Unhandled/Invalid facingDir (" + to_string(static_cast<int>(facingDir)) + ")");
 	}
 
-	if (listener)
+	changeMoveState(facingDir, currState);
+}
+
+void Sprite::changeMoveState(Direction dir, SpriteState state)
+{
+	if (dir != facingDir || state != currState)
 	{
-		listener->onMovementChanged(facingDir, moveState);
+		facingDir = dir;
+		currState = state;
+
+		if (listener)
+		{
+			listener->onMovementChanged(facingDir, currState);
+		}
 	}
 }
 
@@ -245,7 +241,7 @@ void Sprite::addHealth(float amount)
 
 	if (listener)
 	{
-		listener->onSpriteHealthChanged(amount, currHp);
+		listener->onHealthChanged(amount, currHp);
 	}
 }
 
@@ -264,6 +260,6 @@ void Sprite::loseHealth(float amount)
 
 	if (listener)
 	{
-		listener->onSpriteHealthChanged(-amount, currHp);		
+		listener->onHealthChanged(-amount, currHp);
 	}
 }

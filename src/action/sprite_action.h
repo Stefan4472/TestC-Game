@@ -2,8 +2,8 @@
 #define SPRITE_ACTION_H
 
 #include <cmath>
-#include "game_utils.h"
-#include "constants.h"
+#include <stdio.h>
+// #include "game_utils.h"
 
 class Sprite;
 

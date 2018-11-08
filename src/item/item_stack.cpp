@@ -124,7 +124,7 @@ Item* ItemStack::popNext()
 		if (items.empty())
 		{
 			itemType = ItemType::NONE;  // TODO: RESET METHOD
-			itemTexture = TextureId::TEXTURE_NONE;
+			itemTexture = TextureId::NONE;
 			items.clear();
 			maxStackSize = 0;
 		}
@@ -136,7 +136,7 @@ Item* ItemStack::popNext()
 void ItemStack::clearItems()
 {
 	itemType = ItemType::NONE;
-	itemTexture = TextureId::TEXTURE_NONE;
+	itemTexture = TextureId::NONE;
 	items.clear(); // TODO: NEED TO CLEAR THE ITEMS VECTOR?
 	maxStackSize = 0;
 }

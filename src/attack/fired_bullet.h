@@ -5,6 +5,8 @@
 #include <cmath>
 #include <stdexcept>
 #include "texture_atlas.h"
+#include "texture_id.h"
+#include "direction.h"
 #include "attack.h"
 class Gun;
 #include "gun.h"

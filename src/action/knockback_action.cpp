@@ -1,27 +1,27 @@
 #include "knockback_action.h"
 
-KnockbackAction::KnockbackAction(int direction)
+KnockbackAction::KnockbackAction(Direction direction)
 {
 	this->direction = direction;
 }
-	
+
 void KnockbackAction::init(Sprite* sprite)
 {
 	switch (direction)
 	{
-		case DIRECTION_RIGHT:
+		case Direction::RIGHT:
 			sprite->speedX = 4;
 			break;
 
-		case DIRECTION_LEFT:
+		case Direction::LEFT:
 			sprite->speedX = -4;
 			break;
 
-		case DIRECTION_UP:
+		case Direction::UP:
 			sprite->speedY = -4;
 			break;
 
-		case DIRECTION_DOWN:
+		case Direction::DOWN:
 			sprite->speedY = 4;
 			break;
 	}

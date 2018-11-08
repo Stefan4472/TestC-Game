@@ -1,26 +1,26 @@
 #include "punch.h"
 
-Punch::Punch(SDL_Point handPos, int facingDir, Sprite* attacker) : Attack(getPos(handPos, facingDir), attacker)
+Punch::Punch(SDL_Point handPos, Direction facingDir, Sprite* attacker) : Attack(getPos(handPos, facingDir), attacker)
 {
 	damage = 5;
 }
 
-SDL_Rect Punch::getPos(SDL_Point handPos, int facingDir)
+SDL_Rect Punch::getPos(SDL_Point handPos, Direction facingDir)
 {
 	switch (facingDir)
 	{
-		case DIRECTION_RIGHT:
+		case Direction::RIGHT:
 			return SDL_Rect { handPos.x, handPos.y - PUNCH_WIDTH / 2, PUNCH_LENGTH, PUNCH_WIDTH };
-			
-		case DIRECTION_UP:
+
+		case Direction::UP:
 			return SDL_Rect { handPos.x - PUNCH_WIDTH / 2, handPos.y - PUNCH_LENGTH, PUNCH_WIDTH, PUNCH_LENGTH };
-				
-		case DIRECTION_DOWN:
+
+		case Direction::DOWN:
 			return SDL_Rect { handPos.x - PUNCH_WIDTH / 2, handPos.y, PUNCH_WIDTH, PUNCH_LENGTH };
-			
-		case DIRECTION_LEFT:
+
+		case Direction::LEFT:
 			return SDL_Rect { handPos.x - PUNCH_LENGTH, handPos.y - PUNCH_WIDTH / 2, PUNCH_LENGTH, PUNCH_WIDTH };
-			
+
 	}
 }
 

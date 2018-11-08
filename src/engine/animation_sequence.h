@@ -1,7 +1,7 @@
 #ifndef ANIMATION_SEQUENCE_H
 #define ANIMATION_SEQUENCE_H
 
-#include <SDL2/SDL.h>  // TODO: 2DPOINT UTILITY CLASS/struct
+#include <SDL2/SDL.h>  // TODO: 2D_POINT UTILITY CLASS/struct
 #include <vector>
 #include "character_animation.h"
 

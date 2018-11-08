@@ -53,7 +53,7 @@ void Gun::update(int ms)
 
 void Gun::use(Sprite* actor)
 {
-	printf("Gun: actor direction is %d\n", actor->facingDir);
+	printf("Gun: actor direction is %d\n", static_cast<int>(actor->facingDir));
 	if (bulletsLoaded && msSinceShot >= coolOff)
 	{
 		SDL_Point hand_pos = actor->getRightHandPosition();
@@ -72,20 +72,20 @@ void Gun::use(Sprite* actor)
 
 		switch (actor->facingDir)
 		{
-			case DIRECTION_RIGHT:
-				lastRecoilAction = new KnockbackAction(DIRECTION_LEFT);
+			case Direction::RIGHT:
+				lastRecoilAction = new KnockbackAction(Direction::LEFT);
 				break;
 
-			case DIRECTION_UP:
-				lastRecoilAction = new KnockbackAction(DIRECTION_DOWN);
+			case Direction::UP:
+				lastRecoilAction = new KnockbackAction(Direction::DOWN);
 				break;
 
-			case DIRECTION_LEFT:
-				lastRecoilAction = new KnockbackAction(DIRECTION_RIGHT);
+			case Direction::LEFT:
+				lastRecoilAction = new KnockbackAction(Direction::RIGHT);
 				break;
 
-			case DIRECTION_DOWN:
-				lastRecoilAction = new KnockbackAction(DIRECTION_UP);
+			case Direction::DOWN:
+				lastRecoilAction = new KnockbackAction(Direction::UP);
 				break;
 		}
 

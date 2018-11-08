@@ -3,11 +3,14 @@
 
 #include <SDL2/SDL.h>
 #include <vector>
+#include <string>
 #include <stdexcept>
 #include "sprite_listener.h"
 #include "direction.h"
-#include "move_state.h"
+#include "sprite_state.h"
 #include "sprite_type.h"
+
+using namespace std;
 
 /*
 Sprite base class. This is a kind of "low-level" class, it's meant to be
@@ -57,13 +60,13 @@ class Sprite  // TODO: IMPLEMENT MAPOBJECT FOR DRAWING. KNOCKBACK(POWER) METHOD,
 		bool destroy = false;
 
 		// direction currently facing
-		Direction facingDir = DIRECTION::NONE;
-		MoveState moveState;
+		Direction facingDir = Direction::NONE;
+		SpriteState currState;
 
-		// // whether sprite is trying to aim in-hand item
-		// bool aiming = false;
+		// // whether sprite is trying to aim in-hand item TODO: CURRENTLY NOT REALLY IN USE
+		bool aiming = false;
 		// // coordinates of tile being aimed at. Only valid when aiming = true
-		// SDL_Rect aimRect = { 0, 0, 32, 32 };
+		SDL_Rect aimRect = { 0, 0, 32, 32 };
 
 		// get coordinates of sprite's right hand
 		virtual SDL_Point getRightHandPosition();
@@ -75,6 +78,9 @@ class Sprite  // TODO: IMPLEMENT MAPOBJECT FOR DRAWING. KNOCKBACK(POWER) METHOD,
 		void stopMoving();
 		void moveBack();
 		void setDir(Direction dir);
+		// set currState to the new state and call the SpriteListener if necessary TODO: MAKE PRIVATE? MEANT AS A HELPER FUNCTION
+		void changeMoveState(Direction dir, SpriteState state);
+		// void handleDeath
 
 		// finalizes DIRECTION and any other updates to the sprite's state
 		virtual void update(int ms);

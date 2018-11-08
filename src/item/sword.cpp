@@ -14,22 +14,22 @@ void Sword::use(Sprite* actor) // TODO: REFACTORING, ADDITIONS, CLEAN UP
 	// set position pased on handPosition and direction
 	switch (actor->facingDir)
 	{
-		case DIRECTION_RIGHT:		 // todo: this will require tweaking
+		case Direction::RIGHT:		 // todo: this will require tweaking
 			position.x = handPos.x;
 			position.y = handPos.y - 16;
 			break;
 
-		case DIRECTION_LEFT:
+		case Direction::LEFT:
 			position.x = handPos.x - 32;
 			position.y = handPos.y - 16;
 			break;
 
-		case DIRECTION_UP:
+		case Direction::UP:
 			position.x = handPos.x - 16;
 			position.y = handPos.y - 32;
 			break;
 
-		case DIRECTION_DOWN:
+		case Direction::DOWN:
 			position.x = handPos.x - 16;
 			position.y = handPos.y;
 			break;

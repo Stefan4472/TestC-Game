@@ -72,11 +72,13 @@ class SpriteController : public InventoryListener, public SpriteListener
 
 		// inventory callback when in-hand item has changed
 		virtual void onInHandItemChanged(Item* newItem);
+		// inventory callback when an item is dropped from the inventory screen
+		virtual void onStackDropped(ItemStack* stack);
 
 		// SpriteListener callback when sprite's movement state changes
-		virtual void onMovementChanged(Direction dir, MoveState moveState);
+		virtual void onMovementChanged(Direction dir, SpriteState moveState);
 		// SpriteListener callback when hp changes
-		virtual void onSpriteHealthChanged(int amount, int newHp);
+		virtual void onHealthChanged(int amount, int newHp);
 
 		// responds to sprite running into an object or invalid position on the Map TODO: SEPARATE INTO COLLISION AND INVALID SPACE
 		virtual void handleMapCollision();

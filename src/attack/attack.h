@@ -2,29 +2,29 @@
 #define ATTACK_H
 
 #include <SDL2/SDL.h>
-#include "constants.h"
 #include "texture_atlas.h"
 #include "sprite_action.h"
+#include "direction.h"
 class Sprite;
 
 // An Attack is created by a Sprite. It has a direction it is exerted in, and a
 // position where it occurs on the map, defined by a rect. It also has a pointer
 // to the initiating Sprite, and a pointer to the weapon used.
 
-// Attacks can change over time, for example a bullet moving, or an explosion. 
-// This is implemented via the update() method, which passes the number of 
+// Attacks can change over time, for example a bullet moving, or an explosion.
+// This is implemented via the update() method, which passes the number of
 // milliseconds since the last frame the attack was used in.
 
 // An attack can sometimes also be drawn to the map (e.g. a Bullet). Such attacks
 // can override the drawTo method.
 class Attack
-{	
+{
 	protected:
 		// number of ms this attack exists
 		int duration = 0;
 		// number of ms this attack has existed
 		int elapsedTime = 0;
-		
+
 	public:
 		Attack(SDL_Rect position, Sprite* attacker);
 		// position attack currently covers in map

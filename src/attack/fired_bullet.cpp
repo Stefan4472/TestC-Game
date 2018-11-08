@@ -46,22 +46,22 @@ FiredBullet::FiredBullet(Sprite* attacker, Gun* gun) : Attack(SDL_Rect { attacke
 
 		switch (attacker->facingDir)
 		{
-			case DIRECTION_RIGHT:
+			case Direction::RIGHT:
 				speedX = BULLET_SPEED;// - randomization;
 				//speedY = randomization;
 				break;
 
-			case DIRECTION_LEFT:
+			case Direction::LEFT:
 				speedX = -BULLET_SPEED;// - randomization;
 				//speedY = randomization;
 				break;
 
-			case DIRECTION_UP:
+			case Direction::UP:
 				speedY = -BULLET_SPEED;// - randomization;
 				//speedY = randomization;
 				break;
 
-			case DIRECTION_DOWN:
+			case Direction::DOWN:
 				speedY = BULLET_SPEED;// - randomization;
 				//speedY = randomization;
 				break;
@@ -87,5 +87,5 @@ void FiredBullet::update(int ms)
 void FiredBullet::drawToMap(SDL_Renderer* renderer, TextureAtlas* textureAtlas,
 	float offsetX, float offsetY)
 {
-	textureAtlas->drawImg(renderer, MOVING_BULLET, position.x - offsetX, position.y - offsetY);
+	textureAtlas->drawImg(renderer, TextureId::MOVING_BULLET, position.x - offsetX, position.y - offsetY);
 }

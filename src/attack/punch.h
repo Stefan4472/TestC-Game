@@ -4,6 +4,7 @@
 #include <SDL2/SDL.h>
 #include "texture_atlas.h"
 #include "attack.h"
+#include "direction.h"
 
 // A punch is a (relatively weak) directional attack a sprite can execute without holding any item in its hand.
 
@@ -16,9 +17,9 @@ class Punch : public Attack
 	// num pixels punch extends (width and height)
 	const int PUNCH_WIDTH = 32, PUNCH_LENGTH = 32;
 	public:
-		Punch(SDL_Point handPos, int facingDir, Sprite* attacker);
+		Punch(SDL_Point handPos, Direction facingDir, Sprite* attacker);
 		// returns position of attack on map given handposition and direction of sprite
-		SDL_Rect getPos(SDL_Point handPos, int facingDir);
+		SDL_Rect getPos(SDL_Point handPos, Direction facingDir);
 		void update(int ms);
 		void handleSpriteCollision();
 		void handleObjectCollision();

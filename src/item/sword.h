@@ -6,10 +6,11 @@
 #include "attack.h"
 #include "sword_swing.h"
 #include "sprite.h"
+#include "direction.h"
 
 class Sword : public Item
 {
-	int swingDirection = 0;
+	Direction swingDirection = Direction::NONE;
 	// sprite using the sword
 	Sprite* actor = NULL;
 	// damage done by the sword

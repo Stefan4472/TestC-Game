@@ -3,7 +3,7 @@
 // TextureIds corresponding to ItemType enum
 const TextureId ITEM_TEXTURES[NUM_ITEM_TYPES] =
 {
-	TextureId::TEXTURE_NONE,
+	TextureId::NONE,
 	TextureId::BREAD_LOAF,
 	TextureId::CHICKEN_LEG,
 	TextureId::BEER_MUG,

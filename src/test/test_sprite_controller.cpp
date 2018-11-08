@@ -1,5 +1,5 @@
 // test PlayerController
-// g++ test/test_sprite_controller.cpp engine/animation_engine.cpp engine/animation_player.cpp engine/animation_sequence.cpp engine/character_animation.cpp engine/character_model.cpp engine/defined_animation.cpp engine/spritesheet.cpp engine/texture_atlas.cpp -o test_sprite_controller -Iengine -Isprite -Iitem -lSDL2 -lSDL2_image -std=c++11
+// g++ test/test_sprite_controller.cpp engine/animation_engine.cpp engine/animation_player.cpp engine/animation_sequence.cpp engine/character_animation.cpp engine/character_model.cpp engine/defined_animation.cpp engine/spritesheet.cpp engine/texture_atlas.cpp engine/font_atlas.cpp engine/sound.cpp engine/loaded_font_spec.cpp engine/rendered_char_spec.cpp sprite/sprite_controller.cpp sprite/inventory_coordinate.cpp sprite/inventory.cpp sprite/sprite.cpp item/item.cpp item/item_stack.cpp item/bullet.cpp item/consumable.cpp item/gun.cpp item/item_drop.cpp item/sword.cpp attack/attack.cpp attack/punch.cpp attack/sword_swing.cpp attack/fired_bullet.cpp action/sprite_action.cpp action/knockback_action.cpp buff/sprite_buff.cpp util/item_util.cpp game_utils.cpp -o test_sprite_controller -Iengine -Isprite -Iitem -Iattack -Iaction -Ibuff -Iutil -lSDL2 -lSDL2_image -lSDL2_ttf -std=c++11
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
@@ -7,6 +7,9 @@
 #include <string>
 #include "texture_atlas.h"
 #include "animation_engine.h"
+#include "sprite.h"
+#include "inventory.h"
+#include "sprite_controller.h"
 
 using namespace std;
 
@@ -28,6 +31,12 @@ int main()
   loadMedia();
   TextureAtlas t_atlas = TextureAtlas(textureAtlasImg);
   AnimationEngine anim_eng = AnimationEngine(&t_atlas);
+  Sprite sprite = Sprite(SpriteType::PLAYER, 100, 100);
+  Inventory inventory = Inventory(&sprite, 0, 0, 5);
+  SpriteController controller = SpriteController(&sprite, &inventory, &anim_eng);
+
+  inventory.setListener(&controller);
+  sprite.setListener(&controller);
 
   Uint32 last_time = SDL_GetTicks();
 	Uint32 curr_time, ticks_since_last_frame;

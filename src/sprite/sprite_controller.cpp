@@ -13,7 +13,7 @@ SpriteController::SpriteController(Sprite* sprite, Inventory* inventory,
 
 	// create AnimationPlayer and set to idling down
 	animPlayer = new AnimationPlayer(); //
-	animPlayer->setAnim(animEngine->getAnim(sprite->spriteType, SpriteState::IDLE, ItemType::NONE),
+	animPlayer->setAnim(animEngine->getAnim(sprite->spriteType, SpriteState::IDLING, ItemType::NONE),
 		Direction::DOWN);
 }
 
@@ -21,10 +21,17 @@ void SpriteController::onInHandItemChanged(Item* newItem)
 {
 	// change in-hand and update animation being played
 	inHand = newItem;
-	animPlayer->setAnim(animEngine->getAnim(sprite->spriteType, currActionState, inHand->itemType));
+	animPlayer->setAnim(animEngine->getSequence(sprite->spriteType, sprite->currState, inHand->itemType));
 }
 
-void SpriteController::onSpriteHealthChanged(int amount, int newHp)
+void SpriteController::onStackDropped(ItemStack* stack)
+{
+	printf("Controller notified of ItemStack dropped\n");
+	delete stack;
+	stack = NULL;
+}
+
+void SpriteController::onHealthChanged(int amount, int newHp)
 {
 	printf("SpriteController received onSpriteHealthChanged callback for %d and %d. Showing Healthbar\n", amount, currHp);
 	// set healthbar to show for 200 ms
@@ -111,7 +118,7 @@ void SpriteController::handleSpriteSeen(Sprite* sprite)
 	return;
 }
 
-void Sprite::handleSpriteDead()
+void SpriteController::handleSpriteDead()
 {
 	sprite->dead = true;
 	sprite->destroy = true;
@@ -126,7 +133,7 @@ void SpriteController::drawTo(SDL_Renderer* renderer, TextureAtlas* textureAtlas
 	if (inHand) // TODO: THIS SHOULD BE TAKEN CARE OF BY THE ANIMATION ENGINE
 	{
 		SDL_Point hand_location = sprite->getRightHandPosition();
-		textureAtlas->draw(renderer, inHand->textureId, (int) (hand_location.x), (int) (hand_location.y));
+		textureAtlas->drawImg(renderer, textureAtlas, getTextureId(inHand->itemType), (int) (hand_location.x), (int) (hand_location.y));
 		//inHand->drawTo(renderer, (int) (hand_location.x - offsetX), (int) (hand_location.y - offsetY));
 	}
 
