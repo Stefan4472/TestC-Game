@@ -17,6 +17,9 @@ defines how to draw one or multiple character_animations in parallel
 
 class AnimationSequence // TODO: ADD COMPLEXITY AS NECESSASRY
 {
+	private:
+		int numAnims = 0;
+		
 	public:
 		AnimationSequence();
 

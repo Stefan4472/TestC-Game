@@ -31,24 +31,32 @@ void AnimationPlayer::setAnim(AnimationSequence* sequence)
 
 void AnimationPlayer::setDir(Direction newDir)
 {
-	// animSequence must be set before direction can be set
-	assert(currSequence);
+	printf("AnimationPlayer setting dir to %d\n", int(newDir));
 
 	// change if new direction different from current
 	if (newDir != currDir)
 	{
 		currDir = newDir;
-		Spritesheet* sheet = NULL;
 
-		for (int i = 0; i < currSequence->getNumAnimations(); i++)
+		// update source rectangles if there's currently a sequence loaded
+		if (currSequence)
 		{
-			sheet = currSequence->anims[i]->get(newDir);
-			assert(sheet);
-			// TODO: RESET ANIM ON DIRECTION CHANGE?
+			Spritesheet* sheet = NULL;
 
-			// set source rectangles
-			srcRects[i].w = sheet->frameWidth;
-			srcRects[i].h = sheet->frameHeight;
+			for (int i = 0; i < currSequence->getNumAnimations(); i++)
+			{
+				cout << "i is " << i << endl;
+				cout << "anim at i is " << currSequence->anims[i] << endl;
+				cout << currSequence->anims[i]->hasDir(currDir) << endl;
+				sheet = currSequence->anims[i]->get(newDir);
+				cout << "Sheet for the direction is " << sheet << endl;
+				assert(sheet);
+				// TODO: RESET ANIM ON DIRECTION CHANGE?
+
+				// set source rectangles
+				srcRects[i].w = sheet->frameWidth;
+				srcRects[i].h = sheet->frameHeight;
+			}
 		}
 	}
 }

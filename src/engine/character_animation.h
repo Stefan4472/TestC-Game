@@ -2,8 +2,11 @@
 #define CHARACTER_ANIM_H
 
 #include <cstddef>
+#include <iostream>
 #include "spritesheet.h"
 #include "direction.h"
+
+using namespace std;
 
 /*
 Basically a wrapper for storing a spritesheet for each direction.
@@ -13,7 +16,7 @@ class CharacterAnimation
 {
   private:
     // spritesheets, indexed by direction
-    Spritesheet* anims[5] = { NULL, NULL, NULL, NULL, NULL };
+    Spritesheet* anims[5];
 
   public:
     CharacterAnimation(Spritesheet* right, Spritesheet* left, Spritesheet* up, Spritesheet* down);

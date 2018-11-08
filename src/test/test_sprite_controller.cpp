@@ -40,10 +40,10 @@ int main()
   SpriteController controller = SpriteController(&sprite, &inventory, &anim_eng);
   printf("Created controller\n");
 
-  inventory.setListener(&controller);
-  printf("Set inventory listener\n");
-  sprite.setListener(&controller);
-  printf("Set sprite listener\n");
+  // inventory.setListener(&controller);
+  // printf("Set inventory listener\n");
+  // sprite.setListener(&controller);
+  // printf("Set sprite listener\n");
 
   Uint32 last_time = SDL_GetTicks();
 	Uint32 curr_time, ticks_since_last_frame;

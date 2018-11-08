@@ -117,6 +117,7 @@ Spritesheet* AnimationEngine::createSpritesheet(TextureAtlas* textureAtlas, Spri
 // TODO: CACHING
 AnimationSequence* AnimationEngine::createAnim(DefinedAnimation animSpec)
 {
+	cout << "Creating animation" << endl;
 	AnimationSequence* created = new AnimationSequence();
 
 	// add sprite model animation
@@ -126,7 +127,7 @@ AnimationSequence* AnimationEngine::createAnim(DefinedAnimation animSpec)
 	{
 		printf("No support for inHandItemType yet\n"); // TODO: ADD SUPPORT
 	}
-
+	cout << "done" << endl;
 	return created;
 }
 
@@ -143,6 +144,9 @@ CharacterModel* AnimationEngine::getModel(SpriteType spriteType)
 AnimationSequence* AnimationEngine::getSequence(SpriteType spriteType,
 	SpriteState spriteState, ItemType inHandItemType)
 {
+	cout << "AnimEngine requesting sequence for sprite " << int(spriteType) << " in state " <<
+		int(spriteState) << " holding item of type " << int(inHandItemType) << endl;
+
 	DefinedAnimation requested_anim(spriteType, spriteState, inHandItemType);
 
 	unordered_map<DefinedAnimation, AnimationSequence*>::const_iterator cache_result =
@@ -151,12 +155,15 @@ AnimationSequence* AnimationEngine::getSequence(SpriteType spriteType,
 	// sequence doesn't exist in cache: create it and add it
 	if (cache_result == cachedSequences.end())
 	{
+		cout << "No result in cache" << endl;
 		AnimationSequence* created_sequence = createAnim(requested_anim);
 		cachedSequences[requested_anim] = created_sequence;
+		cout << "Created animation and added to cache" << endl;
 		return created_sequence;
 	}
 	else
 	{
+		cout << "Found result in cache, returning" << endl;
 		return cache_result->second;
 	}
 }

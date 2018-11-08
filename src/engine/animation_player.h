@@ -2,6 +2,7 @@
 #define ANIMATION_PLAYER_H
 
 #include <SDL2/SDL.h>
+#include <iostream>
 #include <assert.h>
 #include <stdexcept>
 #include <vector>

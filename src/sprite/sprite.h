@@ -27,6 +27,10 @@ class Sprite  // TODO: IMPLEMENT MAPOBJECT FOR DRAWING. KNOCKBACK(POWER) METHOD,
 		Sprite(SpriteType spriteType, float x, float y, SpriteListener* listener=NULL);
 		// type of sprite this is
 		SpriteType spriteType = SpriteType::NONE;
+		// direction currently facing
+		Direction facingDir = Direction::NONE;
+		// state the sprite is currently in
+		SpriteState currState = SpriteState::IDLING;
 		// offset of start of hitbox, from sprite's x and y (x + hitboxOffsetX = hitbox.x)
 		int hitboxOffsetX, hitboxOffsetY;
 		// offset of start of lineOfSight, from sprite's x and y
@@ -58,10 +62,6 @@ class Sprite  // TODO: IMPLEMENT MAPOBJECT FOR DRAWING. KNOCKBACK(POWER) METHOD,
 		bool dead = false;
 		// whether sprite should be deleted and removed from game
 		bool destroy = false;
-
-		// direction currently facing
-		Direction facingDir = Direction::NONE;
-		SpriteState currState;
 
 		// // whether sprite is trying to aim in-hand item TODO: CURRENTLY NOT REALLY IN USE
 		bool aiming = false;

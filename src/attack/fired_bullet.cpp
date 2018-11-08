@@ -1,6 +1,6 @@
 #include "fired_bullet.h"
 
-FiredBullet::FiredBullet(Sprite* attacker, Gun* gun) : Attack(SDL_Rect { attacker->x, attacker->y, 32, 32 }/*attacker->getRightHandPosition()*/, attacker)
+FiredBullet::FiredBullet(Sprite* attacker, Gun* gun) : Attack(SDL_Rect { (int) attacker->x, (int) attacker->y, 32, 32 }/*attacker->getRightHandPosition()*/, attacker)
 {
 	switch (gun->ammunitionType)
 	{

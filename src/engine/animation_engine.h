@@ -2,6 +2,7 @@
 #define ANIMATION_ENGINE_H
 
 #include <SDL2/SDL.h>
+#include <iostream>
 #include <unordered_map>
 #include "texture_atlas.h"
 #include "defined_animation.h"

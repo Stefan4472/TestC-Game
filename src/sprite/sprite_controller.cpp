@@ -3,21 +3,29 @@
 SpriteController::SpriteController(Sprite* sprite, Inventory* inventory,
 	AnimationEngine* animEngine)
 {
+	printf("Initializing SpriteController\n");
 	this->sprite = sprite;
 	sprite->setListener(this);
+	printf("Set sprite listener\n");
 
 	this->inventory = inventory;
 	inventory->setListener(this);
+	printf("Set inventory listener\n");
 
 	this->animEngine = animEngine;
+	cout << "AnimEngine is " << animEngine << endl;
 
 	// create AnimationPlayer and set to idling down
 	animPlayer = new AnimationPlayer(); //
+	printf("Created AnimationPlayer\n");
 	AnimationSequence* init_sequence = animEngine->getSequence(
-		sprite->spriteType, sprite->currState, inventory->getInHand()->itemType);
+		sprite->spriteType, sprite->currState, inventory->getInHand() ? inventory->getInHand()->itemType : ItemType::NONE);
+	printf("Got first sequence\n");
 
 	animPlayer->setAnim(init_sequence);
+	printf("Set animation\n");
 	animPlayer->setDir(sprite->facingDir);
+	printf("Set direction\n");
 }
 
 void SpriteController::onInHandItemChanged(Item* newItem)
