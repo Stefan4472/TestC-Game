@@ -13,15 +13,19 @@ SpriteController::SpriteController(Sprite* sprite, Inventory* inventory,
 
 	// create AnimationPlayer and set to idling down
 	animPlayer = new AnimationPlayer(); //
-	animPlayer->setAnim(animEngine->getAnim(sprite->spriteType, SpriteState::IDLING, ItemType::NONE),
-		Direction::DOWN);
+	AnimationSequence* init_sequence = animEngine->getSequence(
+		sprite->spriteType, sprite->currState, inventory->getInHand()->itemType);
+
+	animPlayer->setAnim(init_sequence);
+	animPlayer->setDir(sprite->facingDir);
 }
 
 void SpriteController::onInHandItemChanged(Item* newItem)
 {
 	// change in-hand and update animation being played
 	inHand = newItem;
-	animPlayer->setAnim(animEngine->getSequence(sprite->spriteType, sprite->currState, inHand->itemType));
+	animPlayer->setAnim(animEngine->getSequence(sprite->spriteType, sprite->currState,
+		inHand->itemType));
 }
 
 void SpriteController::onStackDropped(ItemStack* stack)
@@ -33,7 +37,8 @@ void SpriteController::onStackDropped(ItemStack* stack)
 
 void SpriteController::onHealthChanged(int amount, int newHp)
 {
-	printf("SpriteController received onSpriteHealthChanged callback for %d and %d. Showing Healthbar\n", amount, currHp);
+	printf("SpriteController received onSpriteHealthChanged callback for %d and %d. "
+	 "Showing Healthbar\n", amount, newHp);
 	// set healthbar to show for 200 ms
 	showHealthbarMs += 200;
 
@@ -41,6 +46,13 @@ void SpriteController::onHealthChanged(int amount, int newHp)
 	{
 		handleSpriteDead();
 	}
+}
+
+void SpriteController::onMovementChanged(Direction dir, SpriteState moveState)
+{
+	// change animation to reflect the change
+	animPlayer->setAnim(animEngine->getSequence(sprite->spriteType, sprite->currState,
+		inHand->itemType));
 }
 
 void SpriteController::handleMapCollision()
@@ -127,13 +139,13 @@ void SpriteController::handleSpriteDead()
 void SpriteController::drawTo(SDL_Renderer* renderer, TextureAtlas* textureAtlas, int offsetX, int offsetY)
 {
 	// draw sprite's current animation
-	animPlayer->drawTo(renderer, sprite->x, sprite->y);
+	animPlayer->drawTo(renderer, textureAtlas, sprite->x, sprite->y);
 
 	// draw in-hand
 	if (inHand) // TODO: THIS SHOULD BE TAKEN CARE OF BY THE ANIMATION ENGINE
 	{
 		SDL_Point hand_location = sprite->getRightHandPosition();
-		textureAtlas->drawImg(renderer, textureAtlas, getTextureId(inHand->itemType), (int) (hand_location.x), (int) (hand_location.y));
+		textureAtlas->drawImg(renderer, Item::getTextureId(inHand->itemType), (int) (hand_location.x), (int) (hand_location.y));
 		//inHand->drawTo(renderer, (int) (hand_location.x - offsetX), (int) (hand_location.y - offsetY));
 	}
 

@@ -10,6 +10,7 @@
 #include "sprite_state.h"
 #include "sprite_healthbar.h"
 #include "sprite_action.h"
+#include "sprite_listener.h"
 #include "inventory.h"
 #include "attack.h"
 #include "sound.h"

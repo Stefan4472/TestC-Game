@@ -1,21 +1,21 @@
-#include "healthbar.h"
+#include "sprite_healthbar.h"
 
 SpriteHealthBar::SpriteHealthBar(int spriteWidth, int currHp, int fullHp)
 {
 	outlineRect.w = (int) (spriteWidth * 1.5f);
 	outlineRect.h = 10;
-	
+
 	xOffset = - (int) (spriteWidth * 0.25f);
 	yOffset = -15;
 
 	this->fullHp = fullHp;
 	this->currHp = currHp;
-	
+
 	hpRatio = (float) currHp / fullHp;
-	
+
 	fillRect.w = (int) outlineRect.w * hpRatio;
 	fillRect.h = outlineRect.h;
-	
+
 	fillRed = getRed(hpRatio);
 	fillGreen = getGreen(hpRatio);
 	fillBlue = 0;
@@ -39,9 +39,9 @@ void SpriteHealthBar::changeHealth(int amount)
 	// floor at zero
 	currHp = currHp < 0 ? 0 : currHp;
 	hpRatio = (float) currHp / fullHp;
-	
+
 	fillRect.w = (int) outlineRect.w * hpRatio;
-	
+
 	fillRed = getRed(hpRatio);
 	fillGreen = getGreen(hpRatio);
 }
@@ -53,11 +53,10 @@ void SpriteHealthBar::drawTo(SDL_Renderer* renderer, float spriteX, float sprite
 	fillRect.x = spriteX + xOffset;
 	fillRect.y = spriteY + yOffset;
 	SDL_RenderFillRect(renderer, &fillRect);
-	
+
 	// draw outline on top
 	SDL_SetRenderDrawColor(renderer, outlineRed, outlineGreen, outlineBlue, SDL_ALPHA_OPAQUE);
 	outlineRect.x = spriteX + xOffset;
 	outlineRect.y = spriteY + yOffset;
 	SDL_RenderDrawRect(renderer, &outlineRect);
 }
-
