@@ -33,7 +33,6 @@ void AnimationPlayer::setDir(Direction newDir)
 {
 	// animSequence must be set before direction can be set
 	assert(currSequence);
-	assert(currSequence->hasDir(newDir));
 
 	// change if new direction different from current
 	if (newDir != currDir)
@@ -43,7 +42,7 @@ void AnimationPlayer::setDir(Direction newDir)
 
 		for (int i = 0; i < currSequence->getNumAnimations(); i++)
 		{
-			sheet = animSequence->anims[i]->get(newDir);
+			sheet = currSequence->anims[i]->get(newDir);
 			assert(sheet);
 			// TODO: RESET ANIM ON DIRECTION CHANGE?
 

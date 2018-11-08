@@ -6,7 +6,7 @@ Specifies the ids of all textures known to the game engine. Used with TextureAtl
 */
 enum class TextureId
 {
-	TEXTURE_NONE,  // actually a black square
+	NONE,  // actually a black square
 	TILE_GRASS,
 	TILE_BROWN_BRICK,
 	TILE_DARK_BRICK,

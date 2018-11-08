@@ -78,27 +78,27 @@ AnimationEngine::AnimationEngine(TextureAtlas* textureAtlas)
 
 	// create character models
 	characterModels[static_cast<int>(SpriteType::NONE)] = new CharacterModel(
-		new CharacterAnimation(spritesheets[static_cast<int>(SpritesheetId::NONE)], spritesheets[SpritesheetId::NONE], spritesheets[SpritesheetId::NONE], spritesheets[SpritesheetId::NONE]),
-		new CharacterAnimation(spritesheets[SpritesheetId::NONE], spritesheets[SpritesheetId::NONE], spritesheets[SpritesheetId::NONE], spritesheets[SpritesheetId::NONE]),
-		new CharacterAnimation(spritesheets[SpritesheetId::NONE], spritesheets[SpritesheetId::NONE], spritesheets[SpritesheetId::NONE], spritesheets[SpritesheetId::NONE]),
-		new CharacterAnimation(spritesheets[SpritesheetId::NONE], spritesheets[SpritesheetId::NONE], spritesheets[SpritesheetId::NONE], spritesheets[SpritesheetId::NONE]),
-		new CharacterAnimation(spritesheets[SpritesheetId::NONE], spritesheets[SpritesheetId::NONE], spritesheets[SpritesheetId::NONE], spritesheets[SpritesheetId::NONE])
+		new CharacterAnimation(spritesheets[static_cast<int>(SpritesheetId::NONE)], spritesheets[static_cast<int>(SpritesheetId::NONE)], spritesheets[static_cast<int>(SpritesheetId::NONE)], spritesheets[static_cast<int>(SpritesheetId::NONE)]),
+		new CharacterAnimation(spritesheets[static_cast<int>(SpritesheetId::NONE)], spritesheets[static_cast<int>(SpritesheetId::NONE)], spritesheets[static_cast<int>(SpritesheetId::NONE)], spritesheets[static_cast<int>(SpritesheetId::NONE)]),
+		new CharacterAnimation(spritesheets[static_cast<int>(SpritesheetId::NONE)], spritesheets[static_cast<int>(SpritesheetId::NONE)], spritesheets[static_cast<int>(SpritesheetId::NONE)], spritesheets[static_cast<int>(SpritesheetId::NONE)]),
+		new CharacterAnimation(spritesheets[static_cast<int>(SpritesheetId::NONE)], spritesheets[static_cast<int>(SpritesheetId::NONE)], spritesheets[static_cast<int>(SpritesheetId::NONE)], spritesheets[static_cast<int>(SpritesheetId::NONE)]),
+		new CharacterAnimation(spritesheets[static_cast<int>(SpritesheetId::NONE)], spritesheets[static_cast<int>(SpritesheetId::NONE)], spritesheets[static_cast<int>(SpritesheetId::NONE)], spritesheets[static_cast<int>(SpritesheetId::NONE)])
 	);
 
 	characterModels[static_cast<int>(SpriteType::CIVILIAN)] = new CharacterModel(
-		new CharacterAnimation(spritesheets[SpritesheetId::CIVILIAN_IDLE_RIGHT], spritesheets[SpritesheetId::CIVILIAN_IDLE_LEFT], spritesheets[SpritesheetId::CIVILIAN_IDLE_UP], spritesheets[SpritesheetId::CIVILIAN_IDLE_DOWN]),
-		new CharacterAnimation(spritesheets[SpritesheetId::CIVILIAN_WALK_RIGHT], spritesheets[SpritesheetId::CIVILIAN_WALK_LEFT], spritesheets[SpritesheetId::CIVILIAN_WALK_UP], spritesheets[SpritesheetId::CIVILIAN_WALK_DOWN]),
-		new CharacterAnimation(spritesheets[SpritesheetId::CIVILIAN_RUN_RIGHT], spritesheets[SpritesheetId::CIVILIAN_RUN_LEFT], spritesheets[SpritesheetId::CIVILIAN_RUN_UP], spritesheets[SpritesheetId::CIVILIAN_RUN_DOWN]),
-		new CharacterAnimation(spritesheets[SpritesheetId::NONE], spritesheets[SpritesheetId::NONE], spritesheets[SpritesheetId::NONE], spritesheets[SpritesheetId::NONE]),
-		new CharacterAnimation(spritesheets[SpritesheetId::NONE], spritesheets[SpritesheetId::NONE], spritesheets[SpritesheetId::NONE], spritesheets[SpritesheetId::NONE])
+		new CharacterAnimation(spritesheets[static_cast<int>(SpritesheetId::CIVILIAN_IDLE_RIGHT)], spritesheets[static_cast<int>(SpritesheetId::CIVILIAN_IDLE_LEFT)], spritesheets[static_cast<int>(SpritesheetId::CIVILIAN_IDLE_UP)], spritesheets[static_cast<int>(SpritesheetId::CIVILIAN_IDLE_DOWN)]),
+		new CharacterAnimation(spritesheets[static_cast<int>(SpritesheetId::CIVILIAN_WALK_RIGHT)], spritesheets[static_cast<int>(SpritesheetId::CIVILIAN_WALK_LEFT)], spritesheets[static_cast<int>(SpritesheetId::CIVILIAN_WALK_UP)], spritesheets[static_cast<int>(SpritesheetId::CIVILIAN_WALK_DOWN)]),
+		new CharacterAnimation(spritesheets[static_cast<int>(SpritesheetId::CIVILIAN_RUN_RIGHT)], spritesheets[static_cast<int>(SpritesheetId::CIVILIAN_RUN_LEFT)], spritesheets[static_cast<int>(SpritesheetId::CIVILIAN_RUN_UP)], spritesheets[static_cast<int>(SpritesheetId::CIVILIAN_RUN_DOWN)]),
+		new CharacterAnimation(spritesheets[static_cast<int>(SpritesheetId::NONE)], spritesheets[static_cast<int>(SpritesheetId::NONE)], spritesheets[static_cast<int>(SpritesheetId::NONE)], spritesheets[static_cast<int>(SpritesheetId::NONE)]),
+		new CharacterAnimation(spritesheets[static_cast<int>(SpritesheetId::NONE)], spritesheets[static_cast<int>(SpritesheetId::NONE)], spritesheets[static_cast<int>(SpritesheetId::NONE)], spritesheets[static_cast<int>(SpritesheetId::NONE)])
 	);
 
 	characterModels[static_cast<int>(SpriteType::CIVILIAN)] = new CharacterModel(
-		new CharacterAnimation(spritesheets[SpritesheetId::PLAYER_IDLE_RIGHT], spritesheets[SpritesheetId::PLAYER_IDLE_LEFT], spritesheets[SpritesheetId::PLAYER_IDLE_UP], spritesheets[SpritesheetId::PLAYER_IDLE_DOWN]),
-		new CharacterAnimation(spritesheets[SpritesheetId::PLAYER_WALK_RIGHT], spritesheets[SpritesheetId::PLAYER_WALK_LEFT], spritesheets[SpritesheetId::PLAYER_WALK_UP], spritesheets[SpritesheetId::PLAYER_WALK_DOWN]),
-		new CharacterAnimation(spritesheets[SpritesheetId::PLAYER_RUN_RIGHT], spritesheets[SpritesheetId::PLAYER_RUN_LEFT], spritesheets[SpritesheetId::PLAYER_RUN_UP], spritesheets[SpritesheetId::PLAYER_RUN_DOWN]),
-		new CharacterAnimation(spritesheets[SpritesheetId::NONE], spritesheets[SpritesheetId::NONE], spritesheets[SpritesheetId::NONE], spritesheets[SpritesheetId::NONE]),
-		new CharacterAnimation(spritesheets[SpritesheetId::NONE], spritesheets[SpritesheetId::NONE], spritesheets[SpritesheetId::NONE], spritesheets[SpritesheetId::NONE])
+		new CharacterAnimation(spritesheets[static_cast<int>(SpritesheetId::PLAYER_IDLE_RIGHT)], spritesheets[static_cast<int>(SpritesheetId::PLAYER_IDLE_LEFT)], spritesheets[static_cast<int>(SpritesheetId::PLAYER_IDLE_UP)], spritesheets[static_cast<int>(SpritesheetId::PLAYER_IDLE_DOWN)]),
+		new CharacterAnimation(spritesheets[static_cast<int>(SpritesheetId::PLAYER_WALK_RIGHT)], spritesheets[static_cast<int>(SpritesheetId::PLAYER_WALK_LEFT)], spritesheets[static_cast<int>(SpritesheetId::PLAYER_WALK_UP)], spritesheets[static_cast<int>(SpritesheetId::PLAYER_WALK_DOWN)]),
+		new CharacterAnimation(spritesheets[static_cast<int>(SpritesheetId::PLAYER_RUN_RIGHT)], spritesheets[static_cast<int>(SpritesheetId::PLAYER_RUN_LEFT)], spritesheets[static_cast<int>(SpritesheetId::PLAYER_RUN_UP)], spritesheets[static_cast<int>(SpritesheetId::PLAYER_RUN_DOWN)]),
+		new CharacterAnimation(spritesheets[static_cast<int>(SpritesheetId::NONE)], spritesheets[static_cast<int>(SpritesheetId::NONE)], spritesheets[static_cast<int>(SpritesheetId::NONE)], spritesheets[static_cast<int>(SpritesheetId::NONE)]),
+		new CharacterAnimation(spritesheets[static_cast<int>(SpritesheetId::NONE)], spritesheets[static_cast<int>(SpritesheetId::NONE)], spritesheets[static_cast<int>(SpritesheetId::NONE)], spritesheets[static_cast<int>(SpritesheetId::NONE)])
 	);
 
 	printf("Finished Initializing AnimEngine\n");
@@ -120,9 +120,9 @@ AnimationSequence* AnimationEngine::createAnim(DefinedAnimation animSpec)
 	AnimationSequence* created = new AnimationSequence();
 
 	// add sprite model animation
-	created->addAnimation(getModel(animSpec.spriteType)->getAnim(animSpec.actionType));
+	created->addAnimation(getModel(animSpec.spriteType)->getAnim(animSpec.spriteState));
 
-	if (animSpec.inHandItemType)
+	if (animSpec.inHandItemType != ItemType::NONE)
 	{
 		printf("No support for inHandItemType yet\n"); // TODO: ADD SUPPORT
 	}

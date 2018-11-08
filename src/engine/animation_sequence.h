@@ -25,7 +25,7 @@ class AnimationSequence // TODO: ADD COMPLEXITY AS NECESSASRY
 		vector <SDL_Point> offsets; // TODO: NOT GOOD--DIFFERENT DIRECTIONS COULD HAVE DIFFERENT OFFSETS
 
 		// TODO: MAKE IT POSSIBLE TO REMOVE? WE'D NEED TO RETURN AN INT INDEX FOR REMOVAL
-		void addAnimation(CharacterAnimation* anim, int drawOffsetX, int drawOffsetY);
+		void addAnimation(CharacterAnimation* anim, int drawOffsetX=0, int drawOffsetY=0);
 
 		int getNumAnimations();
 

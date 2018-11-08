@@ -53,9 +53,9 @@ class TextureAtlas
 		float mapOffsetX = 0, mapOffsetY = 0;
 
 		// returns width (px) of specified Texture image
-		int getWidth(int textureId);
+		int getWidth(TextureId textureId);
 		// returns height (px) of specified Texture image
-		int getHeight(int textureId);
+		int getHeight(TextureId textureId);
 
 		// draws image given by textureId to given SDL_Surface at x,y
 		void drawImg(SDL_Renderer* renderer, TextureId textureId, float x, float y,
